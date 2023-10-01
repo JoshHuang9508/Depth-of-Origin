@@ -26,6 +26,8 @@ public class EnemyBasicLogic : MonoBehaviour
             if (value < health)
             {
                 //play hit animation
+
+                //health text
                 RectTransform text_Transform = Instantiate(healthText).GetComponent<RectTransform>();
                 text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
@@ -38,8 +40,8 @@ public class EnemyBasicLogic : MonoBehaviour
 
             if (health <= 0)
             {
-                Destroy(gameObject);
                 //play dead animation
+                Destroy(gameObject);
             }
         }
         get

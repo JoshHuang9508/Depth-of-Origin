@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 public class WeaponMovement : MonoBehaviour
 {
     public float attackSpeed;
+    public float attackCooldown;
     public float weaponDamage = 1f;
     public float knockbackForce;
     public float knockbackTime;
     public float knockbackSpeed;
-    float swingTime = 20; //總揮動動畫偵數
-
-    bool isflip;
-    float startAngle;
+    float swingTime = 10; //總揮動動畫偵數
 
     public SpriteRenderer spriteRenderer;
+    public BoxCollider2D boxCollider2;
     SummonWeapon summonWeapon;
     
 
@@ -51,21 +50,17 @@ public class WeaponMovement : MonoBehaviour
         }
     }
 
-    float rotz;
+    float rotz = 60f;
 
-    public void WeaponSwing(bool _isflip, float _startAngle)
+    public void WeaponSwing(bool isflip, float startAngle)
     {
-        startAngle = _startAngle;
-        spriteRenderer.flipX = _isflip;
-        isflip = _isflip;
-        rotz = 60f;
-        StopCoroutine(delay());
-        StartCoroutine(delay());
+        StartCoroutine(swing_animation(isflip, startAngle));
     }
 
-    private IEnumerator delay()
+    private IEnumerator swing_animation(bool isflip, float startAngle)
     {
-        Debug.Log(startAngle - 90);
+        //Debug.Log(startAngle - 90);
+
         for (float i = 1; i <= swingTime; i++)
         {
             if (!isflip)
@@ -73,18 +68,26 @@ public class WeaponMovement : MonoBehaviour
                 Quaternion angle = Quaternion.Euler(0, 0, startAngle + rotz - 90);
                 rotz -= (120 / swingTime);
                 this.transform.rotation = angle;
-                yield return new WaitForSeconds(1 / attackSpeed);
+                yield return new WaitForSeconds(attackSpeed / swingTime);
             }
             else if (isflip)
             {
                 Quaternion angle = Quaternion.Euler(0, 0, startAngle - rotz - 90);
                 rotz -= (120 / swingTime);
                 this.transform.rotation = angle;
-                yield return new WaitForSeconds(1 / attackSpeed);
+                yield return new WaitForSeconds(attackSpeed / swingTime);
             }
         }
+
+        spriteRenderer.enabled = false;
+        boxCollider2.enabled = false;
+
+        yield return new WaitForSeconds(attackCooldown);
+
+        //Debug.Log("cooldown over");
+
         summonWeapon = GetComponentInParent<SummonWeapon>();
-        summonWeapon.get_return();
+        summonWeapon.cooldown_over();
         Destroy(gameObject);
     }
 }

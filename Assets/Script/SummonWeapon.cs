@@ -6,6 +6,7 @@ public class SummonWeapon : MonoBehaviour
 {
     bool isflip;
     float startAngle;
+    bool summonEnabler = true;
 
     Vector2 mousePos;
     Vector2 currentPos;
@@ -41,15 +42,22 @@ public class SummonWeapon : MonoBehaviour
 
     public void summon_weapon()
     {
-        Interactable.enabled = false;
-        var sword = Instantiate(weapons, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-        sword.transform.parent = this.transform;
-        weaponMovement = GetComponentInChildren<WeaponMovement>();
-        weaponMovement.WeaponSwing(isflip, startAngle);
+        if (summonEnabler)
+        {
+            summonEnabler = false;
+            var sword = Instantiate(weapons, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+            sword.transform.parent = this.transform;
+            weaponMovement = GetComponentInChildren<WeaponMovement>();
+            weaponMovement.WeaponSwing(isflip, startAngle);
+        }
+        else
+        {
+
+        }
     }
 
-    public void get_return()
+    public void cooldown_over()
     {
-        Interactable.enabled = true;
+        summonEnabler = true;
     }
 }

@@ -6,7 +6,6 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
 {
     float movement_x;
     float movement_y;
-    float time_in_attackField = 0;
     bool movementEnabler = true;
     bool damageEnabler = true;
     bool attackEnabler = true;
@@ -30,6 +29,11 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
     // Update is called once per frame
     void Update()
     {
+        //moving();
+    }
+
+    void FixedUpdate()
+    {
         moving();
     }
 
@@ -37,26 +41,30 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
     {
         if (Vector3.Distance(target.position, this.transform.position) <= chaseField && Vector3.Distance(target.position, this.transform.position) >= attackField && movementEnabler)
         {
-            movement_x = (this.transform.position.x - target.position.x <= 0) ?  1  :  -1 ;
-            movement_y = (this.transform.position.y - target.position.y <= 0) ?  1  :  -1 ;
+            movement_x = (this.transform.position.x - target.position.x <= 0) ? 1 : -1;
+            movement_y = (this.transform.position.y - target.position.y <= 0) ? 1 : -1;
             Vector3 movement = new Vector3(movement_x * moveSpeed, movement_y * moveSpeed, 0.0f);
-            currentRb.velocity = new Vector2(movement.x,  movement.y);
+            currentRb.velocity = new Vector2(movement.x, movement.y);
 
-            animator.SetBool("ismove",true);
+            //play animation
+            animator.SetBool("ismove", true);
             animator.SetBool("ischase", true);
         }
         else if (Vector3.Distance(target.position, this.transform.position) > chaseField && movementEnabler)
         {
             currentRb.velocity = new Vector2(0.0f, 0.0f);
 
+            //play animation
             animator.SetBool("ismove", false);
             animator.SetBool("ischase", false);
         }
-        else if (Vector3.Distance(target.position, this.transform.position) < attackField  && movementEnabler)
+        else if (Vector3.Distance(target.position, this.transform.position) < attackField && movementEnabler)
         {
+            currentRb.velocity = new Vector2(0.0f, 0.0f);
             attacking();
 
-            animator.SetBool("ismove",false);
+            //play animation
+            animator.SetBool("ismove", false);
             animator.SetBool("ischase", true);
         }
 
@@ -72,9 +80,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
 
     void attacking()
     {
-        time_in_attackField += Time.deltaTime;
-
-        if (time_in_attackField >= attackSpeed * 10 * Time.deltaTime)
+        if (attackEnabler)
         {
             Debug.Log("enemy trying to attack");
 
@@ -83,7 +89,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
 
             damageableObject.OnHit(attackDamage, direction * knockbackForce * 1000, knockbackTime);
 
-            time_in_attackField = 0;
+            StartCoroutine(attack_delay());
         }
     }
 
@@ -92,11 +98,10 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         if (damageEnabler)
         {
             Health -= damage;
+            currentRb.AddForce(knockbackForce);
             StartCoroutine(damage_delay());
         }
 
-        StopCoroutine(knockback_delay(knockbackTime));
-        currentRb.AddForce(knockbackForce);
         StartCoroutine(knockback_delay(knockbackTime));
     }
 
@@ -113,6 +118,11 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         yield return new WaitForSeconds(0.2f);
         damageEnabler = true;
     }
-
     
+    private IEnumerator attack_delay()
+    {
+        attackEnabler = false;
+        yield return new WaitForSeconds(attackSpeed);
+        attackEnabler = true;
+    }
 }

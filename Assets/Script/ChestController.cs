@@ -7,12 +7,12 @@ public class ChestController : MonoBehaviour
 
     public bool isOpen;
 
-    public Animator animation;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -27,13 +27,13 @@ public class ChestController : MonoBehaviour
         {
             isOpen = true;
             Debug.Log("Opened a chest");
-            animation.SetBool("isOpen", isOpen);
+            animator.SetBool("isOpen", isOpen);
         }
         else if (isOpen)
         {
             isOpen = false;
             Debug.Log("Closed a chest");
-            animation.SetBool("isOpen", isOpen);
+            animator.SetBool("isOpen", isOpen);
         }
     }
 }
