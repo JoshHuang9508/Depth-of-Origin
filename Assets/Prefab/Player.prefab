@@ -387,6 +387,7 @@ GameObject:
   - component: {fileID: 6620274609419863507}
   - component: {fileID: 7080452751912215658}
   - component: {fileID: 3662812508140342213}
+  - component: {fileID: 8144663042990987219}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -502,3 +503,17 @@ MonoBehaviour:
   walkSpeed: 10
   health: 200
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+--- !u!114 &8144663042990987219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8569169420657907073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae4e6c353c9f7b944aac8c51b009510b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 0}
+  inventorySize: 8
