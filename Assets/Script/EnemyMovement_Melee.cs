@@ -34,10 +34,10 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
 
     void FixedUpdate()
     {
-        moving();
+        Moving();
     }
 
-    void moving()
+    void Moving()
     {
         if (Vector3.Distance(target.position, this.transform.position) <= chaseField && Vector3.Distance(target.position, this.transform.position) >= attackField && movementEnabler)
         {
@@ -61,7 +61,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         else if (Vector3.Distance(target.position, this.transform.position) < attackField && movementEnabler)
         {
             currentRb.velocity = new Vector2(0.0f, 0.0f);
-            attacking();
+            Attacking();
 
             //play animation
             animator.SetBool("ismove", false);
@@ -78,7 +78,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         }
     }
 
-    void attacking()
+    void Attacking()
     {
         if (attackEnabler)
         {
@@ -99,23 +99,22 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         {
             Health -= damage;
             currentRb.AddForce(knockbackForce);
-            StartCoroutine(damage_delay());
+            StartCoroutine(damage_delay(knockbackTime));
+            StartCoroutine(knockback_delay());
         }
-
-        StartCoroutine(knockback_delay(knockbackTime));
     }
 
-    private IEnumerator knockback_delay(float knockbackTime)
+    private IEnumerator knockback_delay()
     {
         movementEnabler = false;
-        yield return new WaitForSeconds(knockbackTime);
+        yield return new WaitForSeconds(0.1f);
         movementEnabler = true;
     }
 
-    private IEnumerator damage_delay()
+    private IEnumerator damage_delay(float knockbackTime)
     {
         damageEnabler = false;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(knockbackTime);
         damageEnabler = true;
     }
     

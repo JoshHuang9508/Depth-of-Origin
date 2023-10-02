@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1787765739640469318}
   - component: {fileID: 6377702375731850407}
+  - component: {fileID: 5374799336318319710}
   - component: {fileID: 5755088595644540972}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,6 +86,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &5374799336318319710
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139805091225566764}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.35}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 2.25}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.35}
+  m_EdgeRadius: 0.1
 --- !u!95 &5755088595644540972
 Animator:
   serializedVersion: 5
@@ -116,12 +162,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6779981174932069755}
   - component: {fileID: 1546655450705620875}
-  - component: {fileID: 5224018518396573343}
+  - component: {fileID: 899383743598771897}
   - component: {fileID: 9209800542321583625}
   - component: {fileID: 4171673858368689678}
   m_Layer: 0
   m_Name: BigDemon
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,8 +200,8 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
---- !u!58 &5224018518396573343
-CircleCollider2D:
+--- !u!70 &899383743598771897
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -187,8 +233,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.4
+  m_Size: {x: 0.8, y: 0.4}
+  m_Direction: 1
 --- !u!50 &9209800542321583625
 Rigidbody2D:
   serializedVersion: 4
@@ -230,11 +276,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: 
   health: 100
-  attackSpeed: 1
-  attackDamage: 10
+  attackSpeed: 2
+  attackDamage: 2
   moveSpeed: 3
   chaseField: 10
-  attackField: 1.2
+  attackField: 1.5
   knockbackForce: 3
   knockbackTime: 0
   knockbackSpeed: 0

@@ -210,7 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b9ce23ab9198747a9bfab51a260524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lootMinItems: 1
+  lootMaxItems: 1
   isOpen: 0
+  lootings: []
 --- !u!95 &344404685478440640
 Animator:
   serializedVersion: 5

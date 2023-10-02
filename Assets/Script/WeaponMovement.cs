@@ -13,15 +13,17 @@ public class WeaponMovement : MonoBehaviour
     public float knockbackSpeed;
     float swingTime = 10; //總揮動動畫偵數
 
-    public SpriteRenderer spriteRenderer;
-    public BoxCollider2D boxCollider2;
+    SpriteRenderer spriteRenderer;
+    BoxCollider2D boxCollider2;
     SummonWeapon summonWeapon;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider2 = GetComponent<BoxCollider2D>();
+        summonWeapon = GetComponentInParent<SummonWeapon>();
     }
 
     // Update is called once per frame
@@ -86,8 +88,7 @@ public class WeaponMovement : MonoBehaviour
 
         //Debug.Log("cooldown over");
 
-        summonWeapon = GetComponentInParent<SummonWeapon>();
-        summonWeapon.cooldown_over();
+        summonWeapon.CooldownOver();
         Destroy(gameObject);
     }
 }

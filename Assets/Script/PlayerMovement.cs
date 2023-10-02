@@ -21,10 +21,10 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
     // Update is called once per frame
     void Update()
     {
-        moving();
+        Moving();
     }
 
-    void moving()
+    void Moving()
     {
         if (movementEnabler)
         {
@@ -32,7 +32,6 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
             animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
 
             Vector3 movement = new Vector3(Input.GetAxis("Horizontal") * walkSpeed, Input.GetAxis("Vertical") * walkSpeed, 0.0f);
-            //transform.position = transform.position + movement * Time.deltaTime * speed;
             currentRb.velocity = new Vector2(movement.x, movement.y);
 
             if (Input.GetAxis("Horizontal") < 0)

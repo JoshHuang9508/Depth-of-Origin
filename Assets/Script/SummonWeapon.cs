@@ -40,7 +40,7 @@ public class SummonWeapon : MonoBehaviour
         }
     }
 
-    public void summon_weapon()
+    public void Summon()
     {
         if (summonEnabler)
         {
@@ -50,13 +50,9 @@ public class SummonWeapon : MonoBehaviour
             weaponMovement = GetComponentInChildren<WeaponMovement>();
             weaponMovement.WeaponSwing(isflip, startAngle);
         }
-        else
-        {
-
-        }
     }
 
-    public void cooldown_over()
+    public void CooldownOver()
     {
         summonEnabler = true;
     }
