@@ -40,17 +40,27 @@ public class UIInventoryPage : MonoBehaviour
             uiItem.OnItemEndDrag += HandleItemEndDrag;
             uiItem.OnRightMouseBtnClicked += HandleShowItemActions;
             uiItem.OnItemDropped += Handleswap;
+            
         }
     }
 
     private void Handleswap(UIInventoryItem item)
     {
-
+        int index = listofUIitems.IndexOf(item);
+        if (index == -1)
+        {
+            mouseFollower.toggle(false);
+            currentDraggedItemIndex = -1;
+            return;
+        }
+        listofUIitems[currentDraggedItemIndex].SetData(index == 0 ? image : image2, quantity);
+        listofUIitems[index].SetData(currentDraggedItemIndex == 0 ? image : image2, quantity);
+        currentDraggedItemIndex = -1;
     }
 
     private void HandleShowItemActions(UIInventoryItem item)
     {
-
+        
     }
 
     private void HandleItemEndDrag(UIInventoryItem item)
@@ -60,8 +70,14 @@ public class UIInventoryPage : MonoBehaviour
 
     private void HandleBeginDrag(UIInventoryItem item)
     {
+        int index = listofUIitems.IndexOf(item);
+        if (index == -1)
+        {
+            return;
+        }
+        currentDraggedItemIndex = index;
         mouseFollower.toggle(true);
-        mouseFollower.SetData(image,quantity);
+        mouseFollower.SetData(index == 0 ? image:image2,quantity);
     }
 
     private void HandleItemSelection(UIInventoryItem item)

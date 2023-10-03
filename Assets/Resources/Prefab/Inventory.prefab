@@ -1430,11 +1430,11 @@ MonoBehaviour:
   contentPanel: {fileID: 9028665342054083046}
   itemDescription: {fileID: 7944270807284415589}
   mouseFollower: {fileID: 0}
-  image: {fileID: 0}
-  image2: {fileID: 0}
-  quantity: 0
-  title: 
-  description: 
+  image: {fileID: 21300000, guid: f035fbb821305744db795dc7c75e7ae6, type: 3}
+  image2: {fileID: 21300000, guid: 3e6bf30fc3f6d014ea3e2b28721b599a, type: 3}
+  quantity: 1
+  title: Potions
+  description: gain some buff
 --- !u!1 &7926909795797103300
 GameObject:
   m_ObjectHideFlags: 0
