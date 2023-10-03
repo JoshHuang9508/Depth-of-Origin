@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa67908e8f6096419a7e67765db5a3f, type: 3}
+  m_Name: HealthPotion
+  m_EditorClassIdentifier: 
+  <IsStackable>k__BackingField: 1
+  <MaxStackSize>k__BackingField: 64
+  <Name>k__BackingField: Health Potion
+  <Description>k__BackingField: 'In the world of perilous adventures and treacherous
+    battles, where danger lurks around every corner, there exists a precious elixir
+    known to all as the Health Potion. Crafted by the skilled hands of alchemists
+    and herbalists, this potion is a true lifeline for the brave souls who dare to
+    explore the unknown.
+
+    
+
+    Contained within a vial of crystal-clear glass,
+    the Health Potion''s vibrant, radiant liquid seems to glow with the essence of
+    life itself. Its aroma carries the soothing scent of healing herbs and revitalizing
+    magic, promising solace to the wounded and hope to the weary.
+
+    
+
+    When
+    consumed, the Health Potion works its miraculous magic, knitting together wounds,
+    soothing bruises, and revitalizing the spirit. In the heat of battle, it can
+    mend even the most grievous injuries, allowing adventurers to rise from the brink
+    of defeat to fight another day.
+
+    
+
+    Throughout history, the Health Potion
+    has been the trusted companion of heroes and explorers, turning the tide of battles
+    and enabling the most daring of escapades. Its presence is a testament to the
+    resilience of those who dare to face adversity head-on.
+
+    
+
+    Will you
+    keep a stash of Health Potions close at hand as you embark on your journey, knowing
+    that they may be the key to survival in the face of insurmountable odds?'
+  <ItemImage>k__BackingField: {fileID: 21300000, guid: f035fbb821305744db795dc7c75e7ae6, type: 3}

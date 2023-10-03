@@ -6,7 +6,7 @@ using TMPro;
 
 public class UIInventoryDescription : MonoBehaviour
 {
-    [SerializeField] private Image itemImage;
+    [SerializeField] private Image inventoryItemUIImage;
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text description;
 
@@ -17,16 +17,16 @@ public class UIInventoryDescription : MonoBehaviour
 
     public void ResetDescription()
     {
-        this.itemImage.gameObject.SetActive(false);
+        this.inventoryItemUIImage.gameObject.SetActive(false);
         this.title.text = "";
         this.description.text = "";
     }
 
-    public void SetDescription(Sprite sprite,string itemname,string itemDescription)
+    public void SetDescription(Sprite sprite,string inventoryItemUIname,string inventoryItemUIDescription)
     {
-        this.itemImage.gameObject.SetActive(true);
-        this.itemImage.sprite = sprite;
-        this.title.text = itemname;
-        this.description.text = itemDescription;
+        this.inventoryItemUIImage.gameObject.SetActive(true);
+        this.inventoryItemUIImage.sprite = sprite;
+        this.title.text = inventoryItemUIname;
+        this.description.text = inventoryItemUIDescription;
     }
 }
