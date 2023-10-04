@@ -49,15 +49,14 @@ public class WeaponMovement : MonoBehaviour
     {
         //Debug.Log(startAngle - 90);
 
-        animator.SetBool("isflip", isflip);
         spriteRenderer.flipX = isflip;
         animator.speed = attackSpeed;
-        yield return new WaitForSeconds(0.2f / attackSpeed);
+        animator.SetBool("isflip", isflip);
+        animator.SetTrigger("swing");
+
         yield return new WaitForSeconds(attackCooldown);
-
-        //Debug.Log("cooldown over");
-
         summonWeapon.CooldownOver();
+        yield return new WaitForSeconds(5);
         Destroy(gameObject);
     }
 }

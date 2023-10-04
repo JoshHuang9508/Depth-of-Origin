@@ -24,13 +24,6 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         currentRb = GetComponent<Rigidbody2D>();
         damageableObject = target.GetComponentInParent<Damage_Interface>();
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //moving();
     }
 
     void FixedUpdate()
@@ -106,8 +99,10 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
 
     private IEnumerator knockback_delay(float knockbackTime)
     {
+        animator.enabled = false;
         movementEnabler = false;
         yield return new WaitForSeconds(knockbackTime);
+        animator.enabled = true;
         movementEnabler = true;
     }
 

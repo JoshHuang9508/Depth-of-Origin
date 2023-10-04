@@ -56,8 +56,10 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
 
     private IEnumerator knockback_delay(float knockbackTime)
     {
+        animator.enabled = false;
         movementEnabler = false;
         yield return new WaitForSeconds(knockbackTime);
+        animator.enabled = true;
         movementEnabler = true;
     }
 }

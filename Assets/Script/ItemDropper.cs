@@ -27,7 +27,7 @@ public class ItemDropper : MonoBehaviour
 
         for (int i = 0; i <= randonDropTimesCounter - 1; i++)
         {
-            float distance = Random.Range(0, 0);
+            float distance = Random.Range(-2.5f, 2.5f);
             int randonDrop = Random.Range(0, lootings.Count);
             var dropItem = Instantiate(
                 lootings[randonDrop], 
