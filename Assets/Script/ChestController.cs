@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ChestController : MonoBehaviour
 {
-    public int lootMinItems;
-    public int lootMaxItems;
     public bool isOpen;
-    public List<GameObject> lootings;
 
+    public UnityEvent interAction;
     Animator animator;
 
     // Start is called before the first frame update
@@ -32,33 +31,16 @@ public class ChestController : MonoBehaviour
             isOpen = true;
             animator.SetBool("isOpen", isOpen);
 
-            DropItems();
+            interAction.Invoke();
         }
         else if (isOpen)
         {
             //Debug.Log("Closed a chest");
 
-            isOpen = false;
-            animator.SetBool("isOpen", isOpen);
+            //isOpen = false;
+            //animator.SetBool("isOpen", isOpen);
         }
     }
 
-    public void DropItems()
-    {
-        int randonDropTimesCounter = Random.Range(lootMinItems, lootMaxItems);
-
-        //Debug.Log(randonDropTimesCounter);
-
-        lootings = new List<GameObject>(Resources.LoadAll<GameObject>("Prefab/Lootings/ChestLevel1"));
-
-        for (int i = 0; i <= randonDropTimesCounter - 1; i++){
-
-            int randonDrop = Random.Range(0, lootings.Count);
-
-            //Debug.Log(lootings[randonDrop]);
-
-            var DropItem = Instantiate(lootings[randonDrop], new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-            DropItem.transform.parent = this.transform;
-        }
-    }
+    
 }
