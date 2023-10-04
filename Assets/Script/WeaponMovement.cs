@@ -5,31 +5,16 @@ using System.Threading.Tasks;
 
 public class WeaponMovement : MonoBehaviour
 {
-    public float attackSpeed;
+    public float attackSpeed = 1f;
     public float attackCooldown;
     public float weaponDamage = 1f;
     public float knockbackForce;
     public float knockbackTime;
     public float knockbackSpeed;
-    float swingTime = 10; //總揮動動畫偵數
 
     SpriteRenderer spriteRenderer;
-    BoxCollider2D boxCollider2;
     Animator animator;
     SummonWeapon summonWeapon;
-    
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -51,12 +36,9 @@ public class WeaponMovement : MonoBehaviour
         }
     }
 
-    float rotz = 60f;
-
     public void WeaponSwing(bool isflip)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        boxCollider2 = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
         summonWeapon = GetComponentInParent<SummonWeapon>();
 

@@ -49,6 +49,7 @@ public class SummonWeapon : MonoBehaviour
             sword.transform.parent = this.transform;
             weaponMovement = GetComponentInChildren<WeaponMovement>();
             weaponMovement.WeaponSwing(isflip);
+            //**need consider about far distant weapon**
             transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
         }
     }

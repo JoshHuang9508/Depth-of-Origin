@@ -21,7 +21,7 @@ public class PlayerBasicLogic : MonoBehaviour
                 text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
-                Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
                 text_Transform.SetParent(canvas.transform);
             }
 

@@ -7,21 +7,21 @@ public class SceneLoader : MonoBehaviour
 {
 
     public int SceneNum;
+    public float transitionTime = 1f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Animator transition;
 
     public void LoadScene()
     {
+        StartCoroutine(Load_delay());
+    }
+
+    private IEnumerator Load_delay()
+    {
+        transition.SetTrigger("Start");
+
+        yield return new WaitForSeconds(transitionTime);
+
         SceneManager.LoadScene(SceneNum);
     }
 }

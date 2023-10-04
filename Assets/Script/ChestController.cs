@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ChestController : MonoBehaviour
 {
     public bool isOpen;
+    public int lootMinItems;
+    public int lootMaxItems;
 
-    public UnityEvent interAction;
+    public List<GameObject> lootings;
+    public GameObject itemDropper;
     Animator animator;
 
     // Start is called before the first frame update
@@ -29,16 +31,19 @@ public class ChestController : MonoBehaviour
             //Debug.Log("Opened a chest");
 
             isOpen = true;
-            animator.SetBool("isOpen", isOpen);
+            animator.SetTrigger("Open");
 
-            interAction.Invoke();
+            var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+            ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
+            ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
+            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
         }
         else if (isOpen)
         {
             //Debug.Log("Closed a chest");
 
-            //isOpen = false;
-            //animator.SetBool("isOpen", isOpen);
+            isOpen = false;
+            animator.SetTrigger("Close");
         }
     }
 

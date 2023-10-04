@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2787995703536168644}
   - component: {fileID: 334294825837532046}
   - component: {fileID: 3104876453195976919}
-  - component: {fileID: 6876805132348726940}
   - component: {fileID: 344404685478440640}
   m_Layer: 0
   m_Name: Chest
@@ -214,35 +213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  interAction:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6876805132348726940}
-        m_TargetAssemblyTypeName: ItemDropper, Assembly-CSharp
-        m_MethodName: DropItems
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &6876805132348726940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649638023399775088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e15f2f7245b8c64cb7d70f218c05a5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lootMinItems: 7
-  lootMaxItems: 8
+  lootMinItems: 5
+  lootMaxItems: 7
   lootings:
   - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
   - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
@@ -251,7 +223,7 @@ MonoBehaviour:
   - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
   - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
   - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
 --- !u!95 &344404685478440640
 Animator:
   serializedVersion: 7

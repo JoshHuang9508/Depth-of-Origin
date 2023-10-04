@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
 {
-    public int lootMinItems;
-    public int lootMaxItems;
-
-    public List<GameObject> lootings;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +17,7 @@ public class ItemDropper : MonoBehaviour
         
     }
 
-    public void DropItems()
+    public void DropItems(List<GameObject> lootings, int lootMinItems, int lootMaxItems)
     {
         int randonDropTimesCounter = Random.Range(lootMinItems, lootMaxItems);
 
@@ -31,37 +27,58 @@ public class ItemDropper : MonoBehaviour
 
         for (int i = 0; i <= randonDropTimesCounter - 1; i++)
         {
-            float position = Random.Range(-3f, 3f);
+            float distance = Random.Range(0, 0);
             int randonDrop = Random.Range(0, lootings.Count);
-
-            //Debug.Log(lootings[randonDrop]);
-
-            var DropItem = Instantiate(lootings[randonDrop], new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-            DropItem.transform.parent = this.transform;
-            StartCoroutine(dropAnimation(DropItem, position));
+            var dropItem = Instantiate(
+                lootings[randonDrop], 
+                new Vector3(
+                    transform.position.x,
+                    transform.position.y,
+                    transform.position.z
+                    ),
+                new Quaternion(
+                    0.0f, 
+                    0.0f, 
+                    0.0f, 
+                    0.0f
+                    )
+                );
+            dropItem.transform.parent = transform.parent;
+            StartCoroutine(dropAnimation(dropItem, distance));
         }
     }
 
-    private IEnumerator dropAnimation(GameObject DropItem, float position)
+    private IEnumerator dropAnimation(GameObject dropItem, float distance)
     {
-        float temp = position / 2;
-        if(position > 0)
+        float temp = distance / 2;
+        if(distance >= 0)
         {
-            for (float x = 0f; x <= position; x += 0.1f)
+            for (float x = 0f; x <= distance; x += 0.1f)
             {
                 float y = -1 * ((x - temp) * (x - temp)) + (temp * temp);
-                DropItem.transform.position = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
+                dropItem.transform.position = new Vector3(
+                    transform.position.x + x,
+                    transform.position.y + y,
+                    transform.position.z
+                    );
                 yield return new WaitForSeconds(0.01f);
             }
         }
-        if(position < 0)
+        if(distance <= 0)
         {
-            for (float x = 0f; x >= position; x -= 0.1f)
+            for (float x = 0f; x >= distance; x -= 0.1f)
             {
                 float y = -1 * ((x - temp) * (x - temp)) + (temp * temp);
-                DropItem.transform.position = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
+                dropItem.transform.position = new Vector3(
+                    transform.position.x + x,
+                    transform.position.y + y,
+                    transform.position.z
+                    );
                 yield return new WaitForSeconds(0.01f);
             }
         }
+
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
     }
 }

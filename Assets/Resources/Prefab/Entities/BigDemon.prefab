@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5374799336318319710}
   - component: {fileID: 5755088595644540972}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: big_demon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,7 @@ Animator:
   m_GameObject: {fileID: 1139805091225566764}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 040cb7a8f36e14c429fc71a48cf8ad36, type: 2}
+  m_Controller: {fileID: 9100000, guid: a373054face4e1a4b9126fa951782966, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -288,4 +288,13 @@ MonoBehaviour:
   knockbackForce: 3
   knockbackTime: 0
   knockbackSpeed: 0
+  lootMinItems: 2
+  lootMaxItems: 5
+  lootings:
+  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+  itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}

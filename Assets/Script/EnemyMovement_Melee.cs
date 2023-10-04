@@ -24,6 +24,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         currentRb = GetComponent<Rigidbody2D>();
         damageableObject = target.GetComponentInParent<Damage_Interface>();
+        
     }
 
     // Update is called once per frame
@@ -82,13 +83,12 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
     {
         if (attackEnabler)
         {
-            Debug.Log("enemy trying to attack");
+            //Debug.Log("enemy trying to attack");
 
             Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
             Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;
 
             damageableObject.OnHit(attackDamage, direction * knockbackForce * 1000, knockbackTime);
-
             StartCoroutine(attack_delay());
         }
     }

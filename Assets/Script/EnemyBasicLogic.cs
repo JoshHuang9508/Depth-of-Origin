@@ -16,8 +16,12 @@ public class EnemyBasicLogic : MonoBehaviour
     public float knockbackForce;
     public float knockbackTime;
     public float knockbackSpeed;
+    public int lootMinItems;
+    public int lootMaxItems;
 
+    public List<GameObject> lootings;
     public GameObject healthText;
+    public GameObject itemDropper;
 
     public float Health
     {
@@ -32,7 +36,7 @@ public class EnemyBasicLogic : MonoBehaviour
                 text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
-                Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
                 text_Transform.SetParent(canvas.transform);
             }
 
@@ -41,6 +45,13 @@ public class EnemyBasicLogic : MonoBehaviour
             if (health <= 0)
             {
                 //play dead animation
+
+                //drop items
+                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+                ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
+                ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
+                itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
+
                 Destroy(gameObject);
             }
         }
@@ -52,6 +63,6 @@ public class EnemyBasicLogic : MonoBehaviour
 
     private void Start()
     {
-
+        
     }
 }
