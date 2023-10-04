@@ -48,7 +48,8 @@ public class SummonWeapon : MonoBehaviour
             var sword = Instantiate(weapons, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             sword.transform.parent = this.transform;
             weaponMovement = GetComponentInChildren<WeaponMovement>();
-            weaponMovement.WeaponSwing(isflip, startAngle);
+            weaponMovement.WeaponSwing(isflip);
+            transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
         }
     }
 

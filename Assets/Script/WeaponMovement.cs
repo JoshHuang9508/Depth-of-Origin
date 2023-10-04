@@ -15,6 +15,7 @@ public class WeaponMovement : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
     BoxCollider2D boxCollider2;
+    Animator animator;
     SummonWeapon summonWeapon;
     
 
@@ -52,40 +53,24 @@ public class WeaponMovement : MonoBehaviour
 
     float rotz = 60f;
 
-    public void WeaponSwing(bool isflip, float startAngle)
+    public void WeaponSwing(bool isflip)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2 = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
         summonWeapon = GetComponentInParent<SummonWeapon>();
-        if (isflip) spriteRenderer.flipX = true;
-        StartCoroutine(swing_animation(isflip, startAngle));
+
+        StartCoroutine(swing_animation(isflip));
     }
 
-    private IEnumerator swing_animation(bool isflip, float startAngle)
+    private IEnumerator swing_animation(bool isflip)
     {
         //Debug.Log(startAngle - 90);
 
-        for (float i = 1; i <= swingTime; i++)
-        {
-            if (!isflip)
-            {
-                Quaternion angle = Quaternion.Euler(0, 0, startAngle + rotz - 90);
-                rotz -= (120 / swingTime);
-                this.transform.rotation = angle;
-                yield return new WaitForSeconds(attackSpeed / swingTime);
-            }
-            else if (isflip)
-            {
-                Quaternion angle = Quaternion.Euler(0, 0, startAngle - rotz - 90);
-                rotz -= (120 / swingTime);
-                this.transform.rotation = angle;
-                yield return new WaitForSeconds(attackSpeed / swingTime);
-            }
-        }
-
-        spriteRenderer.enabled = false;
-        boxCollider2.enabled = false;
-
+        animator.SetBool("isflip", isflip);
+        spriteRenderer.flipX = isflip;
+        animator.speed = attackSpeed;
+        yield return new WaitForSeconds(0.2f / attackSpeed);
         yield return new WaitForSeconds(attackCooldown);
 
         //Debug.Log("cooldown over");
