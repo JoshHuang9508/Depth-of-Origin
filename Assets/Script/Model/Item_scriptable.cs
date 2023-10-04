@@ -19,3 +19,4 @@ public class Item_scriptable : ScriptableObject
 
     
 }
+

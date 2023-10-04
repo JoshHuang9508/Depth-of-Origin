@@ -24,11 +24,11 @@ public class UIInventoryItem : MonoBehaviour,IPointerClickHandler,IBeginDragHand
     public void ResetData()
     {
         this.inventoryItemUIImage.gameObject.SetActive(false);
-        empty = true;
+        this.empty = true;
     }
     public void Deselect()
     {
-        borderImage.enabled = false;
+        this.borderImage.enabled = false;
     }
 
     public void SetData(Sprite sprite,int quantity)
@@ -36,7 +36,7 @@ public class UIInventoryItem : MonoBehaviour,IPointerClickHandler,IBeginDragHand
         this.inventoryItemUIImage.gameObject.SetActive(true);
         this.inventoryItemUIImage.sprite = sprite;
         this.quantityText.text = quantity + "";
-        empty = false;
+        this.empty = false;
     }
 
     public void Select()

@@ -64,7 +64,7 @@ public class UIInventoryPage : MonoBehaviour
 
     public void UpdateData(int inventoryItemUIIndex,Sprite inventoryItemUIImage , int inventoryItemUIQuantity)
     {
-        if(listofUIinventoryItemUIs.Count > inventoryItemUIQuantity)
+        if(listofUIinventoryItemUIs.Count > inventoryItemUIIndex)
         {
             listofUIinventoryItemUIs[inventoryItemUIIndex].SetData(inventoryItemUIImage, inventoryItemUIQuantity);
         }
