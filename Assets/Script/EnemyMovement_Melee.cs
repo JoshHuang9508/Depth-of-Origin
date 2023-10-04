@@ -100,14 +100,14 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
             Health -= damage;
             currentRb.AddForce(knockbackForce);
             StartCoroutine(damage_delay(knockbackTime));
-            StartCoroutine(knockback_delay());
+            StartCoroutine(knockback_delay(knockbackTime));
         }
     }
 
-    private IEnumerator knockback_delay()
+    private IEnumerator knockback_delay(float knockbackTime)
     {
         movementEnabler = false;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(knockbackTime);
         movementEnabler = true;
     }
 
