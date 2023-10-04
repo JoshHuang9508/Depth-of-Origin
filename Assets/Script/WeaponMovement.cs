@@ -21,9 +21,7 @@ public class WeaponMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        boxCollider2 = GetComponent<BoxCollider2D>();
-        summonWeapon = GetComponentInParent<SummonWeapon>();
+        
     }
 
     // Update is called once per frame
@@ -56,6 +54,10 @@ public class WeaponMovement : MonoBehaviour
 
     public void WeaponSwing(bool isflip, float startAngle)
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider2 = GetComponent<BoxCollider2D>();
+        summonWeapon = GetComponentInParent<SummonWeapon>();
+        if (isflip) spriteRenderer.flipX = true;
         StartCoroutine(swing_animation(isflip, startAngle));
     }
 
