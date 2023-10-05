@@ -27,7 +27,7 @@ public class WeaponMovement : MonoBehaviour
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
-                damageableObject.OnHit(weaponDamage, direction * knockbackForce * 1000, knockbackTime);
+                damageableObject.OnHit(weaponDamage, direction * knockbackForce, knockbackTime);
             }
         }
         else

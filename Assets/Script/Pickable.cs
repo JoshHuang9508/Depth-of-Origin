@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pickable : MonoBehaviour
 {
     bool pickEnabler = false;
+    Rigidbody2D currentRb;
 
     // Start is called before the first frame update
     void Start()
@@ -15,17 +16,19 @@ public class Pickable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        currentRb = GetComponent<Rigidbody2D>();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && pickEnabler)
         {
-            //Destroy(gameObject);
-            Vector3 Dir = collision.transform.position - transform.position;
-            float distance = Vector3.Distance(transform.position, collision.transform.position);
-            transform.position = Vector3.MoveTowards(transform.position, collision.transform.position, distance);
+            int movement_x = (this.transform.position.x - collision.transform.position.x <= 0) ? 1 : -1;
+            int movement_y = (this.transform.position.y - collision.transform.position.y <= 0) ? 1 : -1;
+            Vector3 movement = new Vector3(movement_x * 8, movement_y * 8, 0.0f);
+            currentRb.velocity = new Vector2(movement.x, movement.y);
+            float distance = Vector2.Distance(this.transform.position, collision.transform.position);
+            if (distance <= 0.2) Destroy(gameObject);
         }
     }
 

@@ -81,7 +81,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
             Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
             Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;
 
-            damageableObject.OnHit(attackDamage, direction * knockbackForce * 1000, knockbackTime);
+            damageableObject.OnHit(attackDamage, direction * knockbackForce, knockbackTime);
             StartCoroutine(attack_delay());
         }
     }
@@ -91,7 +91,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         if (damageEnabler)
         {
             Health -= damage;
-            currentRb.AddForce(knockbackForce);
+            currentRb.velocity = knockbackForce;
             StartCoroutine(damage_delay(knockbackTime));
             StartCoroutine(knockback_delay(knockbackTime));
         }

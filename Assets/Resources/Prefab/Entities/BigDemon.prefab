@@ -252,7 +252,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 50
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -285,16 +285,12 @@ MonoBehaviour:
   moveSpeed: 3
   chaseField: 10
   attackField: 1
-  knockbackForce: 3
-  knockbackTime: 0.5
+  knockbackForce: 50
+  knockbackTime: 0
   knockbackSpeed: 0
   lootMinItems: 2
   lootMaxItems: 5
   lootings:
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}

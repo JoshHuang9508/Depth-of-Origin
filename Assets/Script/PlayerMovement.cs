@@ -34,14 +34,7 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
             Vector3 movement = new Vector3(Input.GetAxis("Horizontal") * walkSpeed, Input.GetAxis("Vertical") * walkSpeed, 0.0f);
             currentRb.velocity = new Vector2(movement.x, movement.y);
 
-            if (Input.GetAxis("Horizontal") < 0)
-            {
-                spriteRenderer.flipX = true;
-            }
-            else if (Input.GetAxis("Horizontal") > 0)
-            {
-                spriteRenderer.flipX = false;
-            }
+            spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
         }
     }
 
@@ -50,7 +43,7 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
         Health -= damage;
 
         StopCoroutine(knockback_delay(knockbackTime));
-        currentRb.AddForce(knockbackForce);
+        currentRb.velocity = knockbackForce;
         StartCoroutine(knockback_delay(knockbackTime));
     }
 
@@ -58,7 +51,7 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
     {
         animator.enabled = false;
         movementEnabler = false;
-        yield return new WaitForSeconds(knockbackTime);
+        yield return new WaitForSeconds(knockbackTime + 0.2f);
         animator.enabled = true;
         movementEnabler = true;
     }
