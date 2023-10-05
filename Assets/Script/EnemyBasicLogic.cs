@@ -47,7 +47,7 @@ public class EnemyBasicLogic : MonoBehaviour
                 //play dead animation
 
                 //drop items
-                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
                 itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);

@@ -30,18 +30,13 @@ public class ItemDropper : MonoBehaviour
             float distance = Random.Range(-2.5f, 2.5f);
             int randonDrop = Random.Range(0, lootings.Count);
             var dropItem = Instantiate(
-                lootings[randonDrop], 
+                lootings[randonDrop],
                 new Vector3(
                     transform.position.x,
                     transform.position.y,
                     transform.position.z
                     ),
-                new Quaternion(
-                    0.0f, 
-                    0.0f, 
-                    0.0f, 
-                    0.0f
-                    )
+                Quaternion.identity
                 );
             dropItem.transform.parent = transform.parent;
             StartCoroutine(dropAnimation(dropItem, distance));

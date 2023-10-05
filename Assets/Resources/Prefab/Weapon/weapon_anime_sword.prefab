@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSpeed: 1
-  attackCooldown: 2
-  weaponDamage: 10
+  attackCooldown: 0
+  weaponDamage: 1000000
   knockbackForce: 3
   knockbackTime: 1
   knockbackSpeed: 0
