@@ -23,6 +23,8 @@ public class Pickable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && pickEnabler)
         {
             Destroy(gameObject);
+            
+
         }
     }
 
