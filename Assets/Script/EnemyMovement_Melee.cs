@@ -26,7 +26,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         damageableObject = target.GetComponentInParent<Damage_Interface>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         Moving();
     }
@@ -37,8 +37,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         {
             movement_x = (this.transform.position.x - target.position.x <= 0) ? 1 : -1;
             movement_y = (this.transform.position.y - target.position.y <= 0) ? 1 : -1;
-            Vector3 movement = new Vector3(movement_x * moveSpeed, movement_y * moveSpeed, 0.0f);
-            currentRb.velocity = new Vector2(movement.x, movement.y);
+            currentRb.velocity = new Vector3(movement_x * moveSpeed, movement_y * moveSpeed, 0.0f);
 
             //play animation
             animator.SetBool("ismove", true);

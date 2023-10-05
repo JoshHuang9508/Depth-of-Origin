@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2988415608447563257}
   - component: {fileID: 1106780877391962154}
   - component: {fileID: 9174834730059873725}
-  - component: {fileID: 2798512377720659484}
   - component: {fileID: 8181839799420350489}
+  - component: {fileID: 2798512377720659484}
   m_Layer: 0
   m_Name: weapon_anime_sword
   m_TagString: Untagged
@@ -109,24 +109,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2798512377720659484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6740076035439635677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5996085bc784b674a87108f92f55edb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackSpeed: 1
-  attackCooldown: 2
-  weaponDamage: 100
-  knockbackForce: 3
-  knockbackTime: 1
-  knockbackSpeed: 0
 --- !u!61 &8181839799420350489
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -161,7 +143,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.9375}
+  m_Offset: {x: 0, y: 1.219959}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -171,5 +153,23 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1.875}
+  m_Size: {x: 0.5, y: 1.310082}
   m_EdgeRadius: 0
+--- !u!114 &2798512377720659484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740076035439635677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5996085bc784b674a87108f92f55edb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSpeed: 1
+  attackCooldown: 2
+  weaponDamage: 100
+  knockbackForce: 3
+  knockbackTime: 1
+  knockbackSpeed: 0

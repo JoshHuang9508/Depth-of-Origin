@@ -5,10 +5,14 @@ using UnityEngine;
 public class PlayerMovement : PlayerBasicLogic, Damage_Interface
 {
     bool movementEnabler = true;
+    bool sprintEnabler = false;
+    int walkSpeedMutiplyer = 1;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
     Rigidbody2D currentRb;
+
+    public KeyCode sprintKey;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +26,8 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
     void Update()
     {
         Moving();
+
+        if (Input.GetKeyDown(sprintKey)) Sprint();
     }
 
     void Moving()
@@ -31,10 +37,22 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
             animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
             animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
 
-            Vector3 movement = new Vector3(Input.GetAxis("Horizontal") * walkSpeed, Input.GetAxis("Vertical") * walkSpeed, 0.0f);
+            Vector3 movement = new Vector3(
+                Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer, 
+                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer, 
+                0.0f
+            );
             currentRb.velocity = new Vector2(movement.x, movement.y);
 
             spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
+        }
+    }
+
+    void Sprint()
+    {
+        if (!sprintEnabler && movementEnabler)
+        {
+            StartCoroutine(sprint_delay());
         }
     }
 
@@ -54,5 +72,15 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
         yield return new WaitForSeconds(knockbackTime + 0.2f);
         animator.enabled = true;
         movementEnabler = true;
+    }
+
+    private IEnumerator sprint_delay()
+    {
+        sprintEnabler = true;
+        walkSpeedMutiplyer = 3;
+        yield return new WaitForSeconds(0.2f);
+        walkSpeedMutiplyer = 1;
+        yield return new WaitForSeconds(2f);
+        sprintEnabler = false;
     }
 }

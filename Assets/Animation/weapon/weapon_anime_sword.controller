@@ -54,7 +54,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 580, y: 100, z: 0}
-  m_EntryPosition: {x: 580, y: -30, z: 0}
+  m_EntryPosition: {x: 580, y: -20, z: 0}
   m_ExitPosition: {x: 580, y: 230, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 3724623530358167796}
@@ -75,6 +75,12 @@ AnimatorController:
     m_Controller: {fileID: 0}
   - m_Name: swing
     m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Blend
+    m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0

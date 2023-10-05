@@ -28,6 +28,8 @@ public class ItemDropper : MonoBehaviour
             Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
             dropItemRb.velocity = new Vector2(distance_x * 10, distance_y * 10);
         }
+
+        Destroy(gameObject);
     }
 
 }
