@@ -15,9 +15,11 @@ public class WeaponMovement : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Animator animator;
     SummonWeapon summonWeapon;
+    //Animator camShake;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //camShake = GameObject.FindWithTag("MainCamera").GetComponent<Animator>();
         Damage_Interface damageableObject = collision.GetComponentInParent<Damage_Interface>();
 
         if (damageableObject != null)
@@ -28,6 +30,7 @@ public class WeaponMovement : MonoBehaviour
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
                 damageableObject.OnHit(weaponDamage, direction * knockbackForce, knockbackTime);
+                //camShake.SetTrigger("shake");
             }
         }
         else
