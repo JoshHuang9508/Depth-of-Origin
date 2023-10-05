@@ -22,9 +22,10 @@ public class Pickable : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && pickEnabler)
         {
-            Destroy(gameObject);
-            
-
+            //Destroy(gameObject);
+            Vector3 Dir = collision.transform.position - transform.position;
+            float distance = Vector3.Distance(transform.position, collision.transform.position);
+            transform.position = Vector3.MoveTowards(transform.position, collision.transform.position, distance);
         }
     }
 
