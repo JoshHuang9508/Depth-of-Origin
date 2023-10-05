@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8866fe34d8094894da38f2273901cb8e
+guid: 57793a2a0befe8c49b113830e8d62dc0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3966301110949134133
-    second: fire1_0
+      213: -1194323918617041696
+    second: torch5_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,11 +46,11 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 9
-  spritePivot: {x: 0.5, y: -0.5}
+  alignment: 7
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -98,22 +98,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fire1_0
+      name: torch5_0
       rect:
         serializedVersion: 2
         x: 456
-        y: 605
-        width: 169
-        height: 335
-      alignment: 9
-      pivot: {x: 0.5, y: -0.5}
+        y: 424
+        width: 153
+        height: 742
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc0c3a9672ed4f8c0800000000000000
-      internalID: -3966301110949134133
+      spriteID: 0e4241c49b8ec6fe0800000000000000
+      internalID: -1194323918617041696
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      fire1_0: -3966301110949134133
+      torch5_0: -1194323918617041696
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

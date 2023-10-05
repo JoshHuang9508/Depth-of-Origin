@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: b9621d3cf6e9b7f4898dfeefff8512df
+guid: dcd666f014b7337429d04330738a961b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5035712391760483859
-    second: fire5_0
-  - first:
-      213: 7399964061594545221
-    second: fire5_1
+      213: 6468185900616684096
+    second: torch2_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -40,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -49,11 +46,11 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 9
-  spritePivot: {x: 0.5, y: -0.5}
+  alignment: 7
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -101,43 +98,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fire5_0
-      rect:
-        serializedVersion: 2
-        x: 517
-        y: 938
-        width: 17
-        height: 17
-      alignment: 9
-      pivot: {x: 0.5, y: -0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: de96512924e8d1ab0800000000000000
-      internalID: -5035712391760483859
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fire5_1
+      name: torch2_0
       rect:
         serializedVersion: 2
         x: 456
-        y: 605
-        width: 169
-        height: 320
-      alignment: 9
-      pivot: {x: 0.5, y: -0.5}
+        y: 424
+        width: 153
+        height: 727
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54ceff97b14f1b660800000000000000
-      internalID: 7399964061594545221
+      spriteID: 04292738ecc93c950800000000000000
+      internalID: 6468185900616684096
       vertices: []
       indices: 
       edges: []
@@ -153,8 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      fire5_0: -5035712391760483859
-      fire5_1: 7399964061594545221
+      torch2_0: 6468185900616684096
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
