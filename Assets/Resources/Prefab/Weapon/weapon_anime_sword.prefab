@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &9174834730059873725
 Animator:
   serializedVersion: 7
@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSpeed: 1
-  attackCooldown: 0
-  weaponDamage: 1000000
+  attackCooldown: 2
+  weaponDamage: 100
   knockbackForce: 3
   knockbackTime: 1
   knockbackSpeed: 0
