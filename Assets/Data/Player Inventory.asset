@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a27b708ad75848846a8a7d4872c6bfc0, type: 3}
-  m_Name: PlayerInventory
+  m_Script: {fileID: 11500000, guid: 957ac6ef5e92b114f8c289f0a6302dca, type: 3}
+  m_Name: Player Inventory
   m_EditorClassIdentifier: 
   inventoryItems:
-  - quantity: 5
-    item: {fileID: 11400000, guid: 75b1ace0750fe3d48b997ca934aa46d3, type: 2}
+  - quantity: 10
+    item: {fileID: 11400000, guid: 66df5a5815f06fe4d8b7275db7e40af7, type: 2}
+  - quantity: 0
+    item: {fileID: 0}
   - quantity: 0
     item: {fileID: 0}
   - quantity: 1
-    item: {fileID: 11400000, guid: 2a37d92d7ff082f4bb6f0c0d39fdb210, type: 2}
-  - quantity: 0
-    item: {fileID: 0}
+    item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
   - quantity: 0
     item: {fileID: 0}
   - quantity: 0

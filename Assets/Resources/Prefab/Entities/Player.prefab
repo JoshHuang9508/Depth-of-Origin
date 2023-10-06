@@ -444,8 +444,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 1
-  m_PointLightOuterRadius: 5
+  m_PointLightInnerRadius: 1.7944201
+  m_PointLightOuterRadius: 6
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2ab589d484d0440bc20af99cc714ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons: {fileID: 4857680875645216774, guid: 91aa8beedc05d9243b97995866405f0a, type: 3}
+  weapons: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}
   Interactable: {fileID: 2010235778089167822}
 --- !u!1 &7679574081871269009
 GameObject:
@@ -605,7 +605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2228989426840269524}
   - component: {fileID: 6510023701829312135}
-  - component: {fileID: 6242776433592507242}
+  - component: {fileID: 8903441655975318729}
   - component: {fileID: 7080452751912215658}
   - component: {fileID: 3662812508140342213}
   - component: {fileID: 8144663042990987219}
@@ -646,8 +646,8 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
---- !u!58 &6242776433592507242
-CircleCollider2D:
+--- !u!70 &8903441655975318729
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -681,7 +681,8 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Size: {x: 0.6, y: 0.3}
+  m_Direction: 1
 --- !u!50 &7080452751912215658
 Rigidbody2D:
   serializedVersion: 4
@@ -694,7 +695,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
+  m_Mass: 1
   m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -724,7 +725,7 @@ MonoBehaviour:
   walkSpeed: 6
   health: 200
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
-  sprintKey: 304
+  sprintKey: 0
 --- !u!114 &8144663042990987219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,5 +739,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 0}
-  InventoryData: {fileID: 11400000, guid: d11043de33fe3524e8ba9c513678784c, type: 2}
-  inventorySize: 10
+  InventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}

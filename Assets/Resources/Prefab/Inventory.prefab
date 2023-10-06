@@ -1081,7 +1081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed2d72a991fb2c04c84c099332a5849b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryItemUIImage: {fileID: 0}
+  itemImage: {fileID: 3465034059983875618}
   title: {fileID: 5718930009880049006}
   description: {fileID: 382646867885422294}
 --- !u!1 &6588759838494016760
@@ -1426,9 +1426,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5ce9ca5257ca742bf19c00bc0475e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryItemUIprefab: {fileID: 0}
+  itemPrefabs: {fileID: 4365655565283933360, guid: c4f21629444bd8c4887900be18a4ceb9, type: 3}
   contentPanel: {fileID: 9028665342054083046}
-  inventoryItemUIDescription: {fileID: 7944270807284415589}
+  itemDescription: {fileID: 7944270807284415589}
   mouseFollower: {fileID: 0}
 --- !u!1 &7926909795797103300
 GameObject:

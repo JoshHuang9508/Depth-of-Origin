@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2aa67908e8f6096419a7e67765db5a3f, type: 3}
-  m_Name: HealthPotion
+  m_Name: Heal Potion
   m_EditorClassIdentifier: 
-  <IsStackable>k__BackingField: 1
+  <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 64
-  <Name>k__BackingField: Health Potion
+  <Name>k__BackingField: Heal Potion
   <Description>k__BackingField: 'In the world of perilous adventures and treacherous
     battles, where danger lurks around every corner, there exists a precious elixir
     known to all as the Health Potion. Crafted by the skilled hands of alchemists
