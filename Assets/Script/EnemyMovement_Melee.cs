@@ -61,14 +61,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
             animator.SetBool("ischase", true);
         }
 
-        if (this.transform.position.x - target.position.x > 0.2)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else if (this.transform.position.x - target.position.x < -0.2)
-        {
-            spriteRenderer.flipX = false;
-        }
+        spriteRenderer.flipX = (this.transform.position.x - target.position.x) > 0.2 ? true : false;
     }
 
     void Attacking()
@@ -91,7 +84,7 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
         {
             Health -= damage;
             currentRb.velocity = knockbackForce;
-            StartCoroutine(damage_delay(knockbackTime));
+            StartCoroutine(damage_delay());
             StartCoroutine(knockback_delay(knockbackTime));
         }
     }
@@ -100,15 +93,15 @@ public class EnemyMovement_Melee : EnemyBasicLogic, Damage_Interface
     {
         animator.enabled = false;
         movementEnabler = false;
-        yield return new WaitForSeconds(knockbackTime);
+        yield return new WaitForSeconds(knockbackTime / 1);
         animator.enabled = true;
         movementEnabler = true;
     }
 
-    private IEnumerator damage_delay(float knockbackTime)
+    private IEnumerator damage_delay()
     {
         damageEnabler = false;
-        yield return new WaitForSeconds(knockbackTime);
+        yield return new WaitForSeconds(0.2f);
         damageEnabler = true;
     }
     

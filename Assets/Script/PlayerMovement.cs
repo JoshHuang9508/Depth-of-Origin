@@ -29,13 +29,14 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
 
         if (Input.GetKeyDown(sprintKey)) Sprint();
     }
-
+     
     void Moving()
     {
-        if (movementEnabler)
-        {
-            animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
-            animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
+        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
+
+        if (movementEnabler && Input.anyKey) {
 
             Vector3 movement = new Vector3(
                 Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer, 
@@ -43,8 +44,6 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
                 0.0f
             );
             currentRb.velocity = new Vector2(movement.x, movement.y);
-
-            spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
         }
     }
 
@@ -69,7 +68,7 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
     {
         animator.enabled = false;
         movementEnabler = false;
-        yield return new WaitForSeconds(knockbackTime + 0.2f);
+        yield return new WaitForSeconds(knockbackTime / 1);
         animator.enabled = true;
         movementEnabler = true;
     }
