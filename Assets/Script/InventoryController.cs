@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,23 +7,59 @@ public class InventoryController : MonoBehaviour
 {
     [SerializeField] private UIInventoryPage inventoryUI;
 
-    [SerializeField] private Inventory_scriptable InventoryData;
+    [SerializeField] private InventorySO InventoryData;
 
-    public int inventorySize = 10;
     public void Start()
     {
-        inventoryUI.InitializeInventoryUI(inventorySize);
+        PrepareUI();
         //InventoryData.initialize();
+    }
+
+    private void PrepareUI()
+    {
+        inventoryUI.InitializeInventoryUI(InventoryData.Size);
+        this.inventoryUI.OnDescriptionRequested += HandleDescriptionRequest;
+        this.inventoryUI.OnSwapItems += HandleSwapItems;
+        this.inventoryUI.OnStartDragging += HandleDragging;
+        this.inventoryUI.OnItemActionRequested += HandleActionRequest;
+    }
+
+    private void HandleActionRequest(int itemIndex)
+    {
 
     }
+
+    private void HandleDragging(int itemIndex)
+    {
+
+    }
+
+    private void HandleSwapItems(int itemIndex_1, int itemIndex_2)
+    {
+ 
+    }
+
+    private void HandleDescriptionRequest(int itemIndex)
+    {
+        InventoryItem inventoryItem = InventoryData.GetItemAt(itemIndex);
+        if (inventoryItem.IsEmpty)
+        {
+            inventoryUI.Reselection();
+            return;
+        }
+            
+        ItemSO item = inventoryItem.item;
+        inventoryUI.UpdateDescription(itemIndex,item.ItemImage,item.name,item.Description);
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if(inventoryUI.isActiveAndEnabled == false)
+            if (inventoryUI.isActiveAndEnabled == false)
             {
                 inventoryUI.show();
-                foreach(var item in InventoryData.GetCurrentInventoryState())
+                foreach( var item in InventoryData.GetCurrentInventoryState())
                 {
                     inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
                 }

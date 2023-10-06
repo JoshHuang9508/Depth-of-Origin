@@ -725,6 +725,7 @@ MonoBehaviour:
   walkSpeed: 6
   health: 200
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+  sprintKey: 0
 --- !u!114 &8144663042990987219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,5 +739,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 0}
-  InventoryData: {fileID: 11400000, guid: d11043de33fe3524e8ba9c513678784c, type: 2}
-  inventorySize: 10
+  InventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}

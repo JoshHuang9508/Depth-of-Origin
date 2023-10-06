@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class Inventory_scriptable : ScriptableObject
+public class InventorySO : ScriptableObject
 {
     [SerializeField] private List<InventoryItem> inventoryItems;
 
@@ -19,7 +19,7 @@ public class Inventory_scriptable : ScriptableObject
         }
     }
 
-    public void AddItem(Item_scriptable item,int quantity)
+    public void AddItem(ItemSO item,int quantity)
     {
         for(int i = 0; i < inventoryItems.Count; i++)
         {
@@ -47,13 +47,18 @@ public class Inventory_scriptable : ScriptableObject
         }
         return returnValue;
     }
+
+    public InventoryItem GetItemAt(int itemIndex)
+    {
+        return inventoryItems[itemIndex];
+    }
 }
 
 [Serializable]
 public struct InventoryItem
 {
     public int quantity;
-    public Item_scriptable item;
+    public ItemSO item;
 
     public bool IsEmpty => item == null;
 
