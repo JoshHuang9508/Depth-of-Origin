@@ -25,11 +25,9 @@ public class Pickable : MonoBehaviour
 
         if (inRange && pickEnabler)
         {
-            Debug.Log("coming");
-
             int movement_x = (this.transform.position.x - target.transform.position.x <= 0) ? 1 : -1;
             int movement_y = (this.transform.position.y - target.transform.position.y <= 0) ? 1 : -1;
-            currentRb.velocity = new Vector3(movement_x * 8, movement_y * 8, 0.0f);
+            currentRb.velocity = new Vector3(movement_x * 12, movement_y * 12, 0.0f);
             float distance = Vector2.Distance(this.transform.position, target.transform.position);
             if (distance <= 0.2) Destroy(gameObject);
         }
