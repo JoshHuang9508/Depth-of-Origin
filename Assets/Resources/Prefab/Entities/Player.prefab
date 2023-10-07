@@ -605,7 +605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2228989426840269524}
   - component: {fileID: 6510023701829312135}
-  - component: {fileID: 8903441655975318729}
+  - component: {fileID: 6500169800978670275}
   - component: {fileID: 7080452751912215658}
   - component: {fileID: 3662812508140342213}
   - component: {fileID: 8144663042990987219}
@@ -646,8 +646,8 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
---- !u!70 &8903441655975318729
-CapsuleCollider2D:
+--- !u!58 &6500169800978670275
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -681,8 +681,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.6, y: 0.3}
-  m_Direction: 1
+  m_Radius: 0.25
 --- !u!50 &7080452751912215658
 Rigidbody2D:
   serializedVersion: 4
@@ -725,7 +724,7 @@ MonoBehaviour:
   walkSpeed: 6
   health: 200
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
-  sprintKey: 0
+  sprintKey: 304
 --- !u!114 &8144663042990987219
 MonoBehaviour:
   m_ObjectHideFlags: 0
