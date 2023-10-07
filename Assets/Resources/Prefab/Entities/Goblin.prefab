@@ -130,8 +130,8 @@ MonoBehaviour:
   moveSpeed: 5.5
   chaseField: 10
   attackField: 0.7
-  knockbackForce: 1
-  knockbackTime: 0.5
+  knockbackForce: 4
+  knockbackTime: 0.3
   knockbackSpeed: 0
   lootMinItems: 2
   lootMaxItems: 3
@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 8621909097956164669}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -0.0041956995}
+  m_LocalPosition: {x: 0, y: 0.45, z: -0.0041956995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
