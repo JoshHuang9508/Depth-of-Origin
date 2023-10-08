@@ -22,6 +22,7 @@ public class EnemyBasicLogic : MonoBehaviour
     public List<GameObject> lootings;
     public GameObject healthText;
     public GameObject itemDropper;
+    public GameObject skull;
 
     public float Health
     {
@@ -45,6 +46,10 @@ public class EnemyBasicLogic : MonoBehaviour
             if (health <= 0)
             {
                 //play dead animation
+                var Skull = Instantiate(skull, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+                Skull.transform.parent = transform.parent;
+                Rigidbody2D skullRb = Skull.GetComponent<Rigidbody2D>();
+                skullRb.velocity = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
 
                 //drop items
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
