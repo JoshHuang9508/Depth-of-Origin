@@ -30,13 +30,13 @@ namespace Inventory.Model
             {
                 for (int i = 0; i < inventoryItems.Count; i++)
                 {
-                    while(quantity > 1 && IsInventoryFull() == false)
+                    while(quantity > 0 && IsInventoryFull() == false)
                     {
                         quantity-=AddItemToFristFreeSlot(item,1);
                     }
                     InformAboutChange();
-                    return quantity;
                 }
+                return quantity;
             }
             quantity = AddStackableItem(item,quantity);
             InformAboutChange();
