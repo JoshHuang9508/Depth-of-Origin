@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestController : MonoBehaviour
+public class DoorController : MonoBehaviour
 {
     bool isOpen;
-    public int lootMinItems;
-    public int lootMaxItems;
 
-    public List<GameObject> lootings;
-    public GameObject itemDropper;
     Animator animator;
+    BoxCollider2D BoxCollider2D;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        BoxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -24,28 +22,23 @@ public class ChestController : MonoBehaviour
         
     }
 
-    public void OpenChest()
+    public void OpenDoor()
     {
         if (!isOpen)
         {
             //Debug.Log("Opened a chest");
 
             isOpen = true;
+            BoxCollider2D.enabled = false;
             animator.SetTrigger("Open");
-
-            var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-            ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-            ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
         }
         else if (isOpen)
         {
             //Debug.Log("Closed a chest");
 
             isOpen = false;
+            BoxCollider2D.enabled = true;
             animator.SetTrigger("Close");
         }
     }
-
-    
 }
