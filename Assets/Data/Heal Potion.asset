@@ -9,43 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aa67908e8f6096419a7e67765db5a3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 56923d6e9b5418b4891aee1f5f708943, type: 3}
   m_Name: Heal Potion
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 1
   <MaxStackSize>k__BackingField: 64
-  <Name>k__BackingField: Heal Potion
-  <Description>k__BackingField: 'In the world of perilous adventures and treacherous
-    battles, where danger lurks around every corner, there exists a precious elixir
-    known to all as the Health Potion. Crafted by the skilled hands of alchemists
-    and herbalists, this potion is a true lifeline for the brave souls who dare to
-    explore the unknown.
-
-
-
-    Contained within a vial of crystal-clear glass, the
-    Health Potion''s vibrant, radiant liquid seems to glow with the essence of life
-    itself. Its aroma carries the soothing scent of healing herbs and revitalizing
-    magic, promising solace to the wounded and hope to the weary.
-
-
-
-    When consumed,
-    the Health Potion works its miraculous magic, knitting together wounds, soothing
-    bruises, and revitalizing the spirit. In the heat of battle, it can mend even
-    the most grievous injuries, allowing adventurers to rise from the brink of defeat
-    to fight another day.
-
-
-
-    Throughout history, the Health Potion has been the
-    trusted companion of heroes and explorers, turning the tide of battles and enabling
-    the most daring of escapades. Its presence is a testament to the resilience of
-    those who dare to face adversity head-on.
-
-
-
-    Will you keep a stash of Health
-    Potions close at hand as you embark on your journey, knowing that they may be
-    the key to survival in the face of insurmountable odds?'
+  <Name>k__BackingField: Health Potion
+  <Description>k__BackingField: gain some health
   <ItemImage>k__BackingField: {fileID: 21300000, guid: f035fbb821305744db795dc7c75e7ae6, type: 3}
+  item: {fileID: 0}
+  <DefaultParameterList>k__BackingField: []
+  modifiersData:
+  - statModifier: {fileID: 11400000, guid: f89a9a8321884e24788fd05a431a1e39, type: 2}
+    value: 1

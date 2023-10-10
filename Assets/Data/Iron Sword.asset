@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f11c25631472e5b4c978f7360224a659, type: 3}
-  m_Name: Diamond Sword
+  m_Name: Iron Sword
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 1
-  <Name>k__BackingField: Diamond Sword
-  <Description>k__BackingField: mode of diamond
-  <ItemImage>k__BackingField: {fileID: 21300000, guid: f1840c10c6c4a81478d2776ebae6ee07, type: 3}
-  item: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}
+  <Name>k__BackingField: Iron Sword
+  <Description>k__BackingField: cut thing
+  <ItemImage>k__BackingField: {fileID: 21300000, guid: df36e5b4c29a79d46a85e765df452cac, type: 3}
+  item: {fileID: 4857680875645216774, guid: 91aa8beedc05d9243b97995866405f0a, type: 3}
   <DefaultParameterList>k__BackingField:
   - itemParameter: {fileID: 11400000, guid: c1db2ba334991364489f806200bd2912, type: 2}
     value: 100

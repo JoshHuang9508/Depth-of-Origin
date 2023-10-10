@@ -25,6 +25,16 @@ public class PlayerBasicLogic : MonoBehaviour
                 text_Transform.SetParent(canvas.transform);
             }
 
+            if (value > health)
+            {
+                RectTransform text_Transform = Instantiate(healthText).GetComponent<RectTransform>();
+                text_Transform.GetComponent<TextMeshProUGUI>().text = (value - health).ToString();
+                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+
+                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
+                text_Transform.SetParent(canvas.transform);
+            }
+
             health = value;
 
             if (health <= 0)
