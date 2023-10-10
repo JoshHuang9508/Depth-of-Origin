@@ -12,7 +12,8 @@ public class PickableSystem : MonoBehaviour
         Pickable item = collision.GetComponent<Pickable>();
         if(item != null)
         {
-            inventoryData.AddItem(item.InventoryItem, item.Quantity);
+            if(!collision.CompareTag("coins"))
+                inventoryData.AddItem(item.InventoryItem, item.Quantity);
         }
     }*/
 
