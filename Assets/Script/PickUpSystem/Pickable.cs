@@ -1,9 +1,14 @@
+using Inventory.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Pickable : MonoBehaviour
 {
+    [field: SerializeField] public ItemSO InventoryItem { get; private set; }
+    [field: SerializeField] public int Quantity { get; set; } = 1;
+
+
     bool pickEnabler = false;
     bool inRange = false;
     Rigidbody2D currentRb;
@@ -12,6 +17,7 @@ public class Pickable : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<SpriteRenderer>().sprite = InventoryItem.ItemImage;
         StartCoroutine(pickup_delay());
         currentRb = GetComponent<Rigidbody2D>();
     }
