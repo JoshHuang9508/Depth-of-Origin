@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6282961916038558326}
   - component: {fileID: 4930061763541320555}
   - component: {fileID: 8355131593799939424}
-  - component: {fileID: 5812316013691763067}
+  - component: {fileID: 4275282786802846849}
   m_Layer: 0
   m_Name: Muddy
   m_TagString: Untagged
@@ -111,7 +111,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &5812316013691763067
+--- !u!114 &4275282786802846849
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,26 +120,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4847229356752660979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf9b152d5be862548b7377ee1215c5cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  health: 80
-  attackSpeed: 1.5
-  attackDamage: 3
-  moveSpeed: 2
-  chaseField: 5
-  attackField: 0.8
-  knockbackForce: 0
-  knockbackTime: 1
-  knockbackSpeed: 0
-  lootMinItems: 1
-  lootMaxItems: 3
-  lootings:
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
+  enemySO: {fileID: 11400000, guid: f1d1cc89d5f980d4aac90a68555472bf, type: 2}
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  skull: {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
 --- !u!1 &9110136010203313015
 GameObject:
   m_ObjectHideFlags: 0

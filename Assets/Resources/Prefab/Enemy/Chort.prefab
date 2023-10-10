@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8559227890138153999}
   - component: {fileID: 8513226674078536245}
   - component: {fileID: 8622404294723266855}
-  - component: {fileID: 6597934631222012425}
+  - component: {fileID: -8197973253870904878}
   m_Layer: 0
   m_Name: Chort
   m_TagString: Untagged
@@ -111,7 +111,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &6597934631222012425
+--- !u!114 &-8197973253870904878
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,26 +120,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 91700730297484186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf9b152d5be862548b7377ee1215c5cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  health: 50
-  attackSpeed: 1
-  attackDamage: 2
-  moveSpeed: 5
-  chaseField: 15
-  attackField: 0.8
-  knockbackForce: 10
-  knockbackTime: 0.5
-  knockbackSpeed: 0
-  lootMinItems: 1
-  lootMaxItems: 3
-  lootings:
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
+  enemySO: {fileID: 11400000, guid: ec4cb9e906e1d60419fee64896450867, type: 2}
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  skull: {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
 --- !u!1 &5286208831638387633
 GameObject:
   m_ObjectHideFlags: 0

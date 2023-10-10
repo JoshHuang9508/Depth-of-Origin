@@ -1,9 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class PlayerMovement : PlayerBasicLogic, Damage_Interface
+public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 {
+    [Header("Basic Data")]
+    public float walkSpeed;
+    public float health;
+    public KeyCode sprintKey;
+
+    [Header("Connect Object")]
+    public GameObject healthText;
+
+    public float Health
+    {
+        set
+        {
+            if (value < health)
+            {
+                //play hit animation
+                RectTransform text_Transform = Instantiate(healthText).GetComponent<RectTransform>();
+                text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
+                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+
+                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
+                text_Transform.SetParent(canvas.transform);
+            }
+
+            health = value;
+
+            if (health <= 0)
+            {
+                Debug.Log("Player Dead");
+                //play dead animation
+            }
+        }
+        get
+        {
+            return health;
+        }
+    }
+
     bool movementEnabler = true;
     bool sprintEnabler = false;
     int walkSpeedMutiplyer = 1;
@@ -11,8 +49,6 @@ public class PlayerMovement : PlayerBasicLogic, Damage_Interface
     Animator animator;
     SpriteRenderer spriteRenderer;
     Rigidbody2D currentRb;
-
-    public KeyCode sprintKey;
 
     // Start is called before the first frame update
     void Start()

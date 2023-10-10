@@ -36,7 +36,7 @@ public class ChestController : MonoBehaviour
             var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
             ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
+            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems, "Chest");
         }
         else if (isOpen)
         {

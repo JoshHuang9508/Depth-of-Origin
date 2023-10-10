@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 2881702719382724517}
   - component: {fileID: 4890576480237555342}
   - component: {fileID: 8227658394066207456}
-  - component: {fileID: 1329541066068099760}
+  - component: {fileID: 8549880428337334668}
   m_Layer: 0
   m_Name: Ogre
   m_TagString: Untagged
@@ -265,7 +265,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1329541066068099760
+--- !u!114 &8549880428337334668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,26 +274,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4019345525713264864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf9b152d5be862548b7377ee1215c5cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  health: 200
-  attackSpeed: 2.5
-  attackDamage: 20
-  moveSpeed: 2
-  chaseField: 6
-  attackField: 1.2
-  knockbackForce: 30
-  knockbackTime: 1.5
-  knockbackSpeed: 0
-  lootMinItems: 4
-  lootMaxItems: 7
-  lootings:
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
+  enemySO: {fileID: 11400000, guid: cdbeb42b6357a714cad704cfa184574a, type: 2}
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  skull: {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}

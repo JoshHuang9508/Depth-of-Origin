@@ -6,8 +6,9 @@ using UnityEngine;
 public class Pickable : MonoBehaviour
 {
     [field: SerializeField] public ItemSO InventoryItem { get; private set; }
-    [field: SerializeField] public int Quantity { get; set; } = 1;
 
+    [SerializeField] private InventorySO inventoryData;
+    [field: SerializeField] public int Quantity { get; set; } = 1;
 
     bool pickEnabler = false;
     bool inRange = false;
@@ -17,7 +18,7 @@ public class Pickable : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = InventoryItem.ItemImage;
+        //GetComponent<SpriteRenderer>().sprite = InventoryItem.ItemImage;
         StartCoroutine(pickup_delay());
         currentRb = GetComponent<Rigidbody2D>();
     }
@@ -35,7 +36,11 @@ public class Pickable : MonoBehaviour
             int movement_y = (this.transform.position.y - target.transform.position.y <= 0) ? 1 : -1;
             currentRb.velocity = new Vector3(movement_x * 12, movement_y * 12, 0.0f);
             float distance = Vector2.Distance(this.transform.position, target.transform.position);
-            if (distance <= 0.2) Destroy(gameObject);
+            if (distance <= 0.2)
+            {
+                inventoryData.AddItem(InventoryItem, Quantity);
+                Destroy(gameObject);
+            }
         }
     }
 

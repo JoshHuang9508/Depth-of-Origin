@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 1546655450705620875}
   - component: {fileID: 8429592684673027775}
   - component: {fileID: 9209800542321583625}
-  - component: {fileID: 4171673858368689678}
+  - component: {fileID: 2009618545049335575}
   m_Layer: 0
   m_Name: BigDemon
   m_TagString: Untagged
@@ -265,7 +265,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &4171673858368689678
+--- !u!114 &2009618545049335575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,23 +274,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2376734355973025706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf9b152d5be862548b7377ee1215c5cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  health: 100
-  attackSpeed: 2
-  attackDamage: 2
-  moveSpeed: 3
-  chaseField: 10
-  attackField: 1.2
-  knockbackForce: 50
-  knockbackTime: 1
-  knockbackSpeed: 0
-  lootMinItems: 2
-  lootMaxItems: 5
-  lootings:
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
+  enemySO: {fileID: 11400000, guid: 647874ec2cace5945b1dfb487daf102d, type: 2}
   healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  skull: {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
+  spriteRenderer: {fileID: 6377702375731850407}

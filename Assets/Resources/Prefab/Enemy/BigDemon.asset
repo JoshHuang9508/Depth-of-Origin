@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194b6416e2c41514984d0126cd02fd2e, type: 3}
+  m_Name: BigDemon
+  m_EditorClassIdentifier: 
+  EnemyObject: {fileID: 2376734355973025706, guid: 3a34748eac96bf94e951cbbb55081f31, type: 3}
+  Name: BigDemon
+  health: 100
+  moveSpeed: 3
+  difficulty: 4
+  attackType: 0
+  attackSpeed: 2
+  attackDamage: 2
+  chaseField: 10
+  attackField: 1.2
+  knockbackForce: 50
+  knockbackTime: 1
+  knockbackSpeed: 0
+  lootMinItems: 2
+  lootMaxItems: 5
+  lootings:
+  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}

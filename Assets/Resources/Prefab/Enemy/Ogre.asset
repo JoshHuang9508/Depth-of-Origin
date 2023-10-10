@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194b6416e2c41514984d0126cd02fd2e, type: 3}
+  m_Name: Ogre
+  m_EditorClassIdentifier: 
+  EnemyObject: {fileID: 4019345525713264864, guid: 1819283707c313341bd682f378bc4c33, type: 3}
+  Name: 
+  health: 200
+  moveSpeed: 2
+  difficulty: 0
+  attackType: 0
+  attackSpeed: 2.5
+  attackDamage: 20
+  chaseField: 6
+  attackField: 1.2
+  knockbackForce: 30
+  knockbackTime: 1.5
+  knockbackSpeed: 0
+  lootMinItems: 4
+  lootMaxItems: 7
+  lootings:
+  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
+  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
+  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
+  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}

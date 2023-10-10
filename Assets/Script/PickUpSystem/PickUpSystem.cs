@@ -7,12 +7,17 @@ public class PickableSystem : MonoBehaviour
 {
     [SerializeField] private InventorySO inventoryData;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         Pickable item = collision.GetComponent<Pickable>();
         if(item != null)
         {
             inventoryData.AddItem(item.InventoryItem, item.Quantity);
         }
+    }*/
+
+    public void GetItems(ItemSO itemSO, int Quantity)
+    {
+        inventoryData.AddItem(itemSO, Quantity);
     }
 }
