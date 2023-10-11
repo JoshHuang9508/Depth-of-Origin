@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Pickable : MonoBehaviour
 {
-    [field: SerializeField] public ItemSO InventoryItem { get; private set; }
-
+    [field: SerializeField] public ItemSO InventoryItem { get; private set; } 
     [SerializeField] private InventorySO inventoryData;
+
     [field: SerializeField] public int Quantity { get; set; } = 1;
 
     bool pickEnabler = false;
@@ -26,10 +26,6 @@ public class Pickable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(inRange);
-        Debug.Log(target.gameObject.CompareTag("Player"));
-        Debug.Log(pickEnabler);
-
         if (inRange && pickEnabler)
         {
             int movement_x = (this.transform.position.x - target.transform.position.x <= 0) ? 1 : -1;

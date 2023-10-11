@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
 
-[CreateAssetMenu(fileName = "new enemy", menuName = "EnemySO")]
+[CreateAssetMenu(fileName = "new enemy", menuName = "Enemy")]
 public class EnemySO : ScriptableObject
 {
     public GameObject EnemyObject;
@@ -12,7 +12,7 @@ public class EnemySO : ScriptableObject
     public string Name;
     public float health;
     public float moveSpeed;
-    public Difficulty difficulty;
+    public Difficulty difficulty = Difficulty.Easy;
 
     [Header("Attacking")]
     public AttackType attackType;
@@ -28,6 +28,7 @@ public class EnemySO : ScriptableObject
     public int lootMinItems;
     public int lootMaxItems;
     public List<GameObject> lootings;
+    public List<GameObject> wreckage;
 }
 
 public enum AttackType

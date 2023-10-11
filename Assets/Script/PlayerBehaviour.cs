@@ -11,7 +11,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public KeyCode sprintKey;
 
     [Header("Connect Object")]
-    public GameObject healthText;
+    public GameObject damageText;
+    public Animator onHitEffect;
 
     public float Health
     {
@@ -20,7 +21,9 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             if (value < health)
             {
                 //play hit animation
-                RectTransform text_Transform = Instantiate(healthText).GetComponent<RectTransform>();
+
+                //show damage text
+                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
                 text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
@@ -94,6 +97,11 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public void OnHit(float damage, Vector2 knockbackForce, float knockbackTime)
     {
         Health -= damage;
+
+        //camera shake
+        CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
+        StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
+        onHitEffect.SetTrigger("Active");
 
         StopCoroutine(knockback_delay(knockbackTime));
         currentRb.velocity = knockbackForce;

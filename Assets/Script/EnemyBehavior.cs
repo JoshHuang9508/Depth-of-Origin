@@ -9,7 +9,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     public EnemySO enemySO;
 
     [Header("Connect Object")]
-    public GameObject healthText;
+    public GameObject damageText;
     public GameObject itemDropper;
 
     SpriteRenderer spriteRenderer;
@@ -32,7 +32,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
                 //play hit animation
 
                 //health text
-                RectTransform text_Transform = Instantiate(healthText).GetComponent<RectTransform>();
+                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
                 text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
@@ -50,7 +50,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(enemySO.lootings, enemySO.lootMinItems, enemySO.lootMaxItems, "Enemy");
+                itemDropperController.DropItems(enemySO.lootings, enemySO.wreckage, enemySO.lootMinItems, enemySO.lootMaxItems, "Enemy");
 
                 Destroy(gameObject);
             }

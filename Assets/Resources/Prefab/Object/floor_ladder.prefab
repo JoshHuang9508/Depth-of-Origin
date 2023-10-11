@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12ee58a5fcf031a49a2ee97b00bbd230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionTime: 1.5
   SceneNum: 0
-  transferPos: {x: 71, y: 15, z: 0}
-  transition: {fileID: 0}
+  transferPos: {x: 0, y: 0, z: 0}
+  transition: {fileID: 2187541673291462714, guid: 0596f7e6ef7054948a5ae2812f7cf038, type: 3}

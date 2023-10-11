@@ -24,13 +24,16 @@ public class WeaponMovement : MonoBehaviour
 
         if (damageableObject != null)
         {
-            if (collision.CompareTag("Enemy"))
+            if (collision.CompareTag("Enemy") || collision.CompareTag("BreakableObject"))
             {
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
                 damageableObject.OnHit(weaponDamage, direction * knockbackForce, knockbackTime);
-                //camShake.SetTrigger("shake");
+
+                //camera shake
+                CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
+                StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
             }
         }
         else

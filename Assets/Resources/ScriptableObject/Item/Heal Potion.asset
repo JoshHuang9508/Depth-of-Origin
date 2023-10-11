@@ -12,13 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56923d6e9b5418b4891aee1f5f708943, type: 3}
   m_Name: Heal Potion
   m_EditorClassIdentifier: 
-  <IsStackable>k__BackingField: 1
-  <MaxStackSize>k__BackingField: 64
-  <Name>k__BackingField: Health Potion
-  <Description>k__BackingField: gain some health
-  <ItemImage>k__BackingField: {fileID: 21300000, guid: f035fbb821305744db795dc7c75e7ae6, type: 3}
+  Name: 
+  Description: 
+  IsStackable: 1
+  MaxStackSize: 10
+  ItemImage: {fileID: 0}
   item: {fileID: 0}
-  <DefaultParameterList>k__BackingField: []
+  DefaultParameterList: []
+  E_walkSpeed: 0
+  E_health: 0
+  E_attackSpeed: 1
+  E_attackCooldown: 0
+  E_weaponDamage: 1
+  E_knockbackForce: 0
+  E_knockbackTime: 0
   modifiersData:
-  - statModifier: {fileID: 11400000, guid: f89a9a8321884e24788fd05a431a1e39, type: 2}
+  - effectType: 0
+    value: 1
+  - effectType: 0
     value: 1

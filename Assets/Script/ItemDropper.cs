@@ -6,19 +6,12 @@ public class ItemDropper : MonoBehaviour
 {
     public GameObject skull;
 
-    public void DropItems(List<GameObject> lootings, int lootMinItems, int lootMaxItems, string dropType)
+    public void DropItems(List<GameObject> lootings, List<GameObject> wreckages, int lootMinItems, int lootMaxItems, string dropType)
     {
-        int randonDropTimesCounter = Random.Range(lootMinItems, lootMaxItems);
-
-        //Debug.Log(randonDropTimesCounter);
-
-        for (int i = 0; i <= randonDropTimesCounter - 1; i++)
+        for (int i = 0; i <= Random.Range(lootMinItems, lootMaxItems) - 1; i++)
         {
-            float distance_x = Random.Range(-2, 2f);
-            float distance_y = Random.Range(-2f, 2f);
-            int randonDrop = Random.Range(0, lootings.Count);
             var dropItem = Instantiate(
-                lootings[randonDrop],
+                lootings[Random.Range(0, lootings.Count)],
                 new Vector3(
                     transform.position.x,
                     transform.position.y,
@@ -28,16 +21,27 @@ public class ItemDropper : MonoBehaviour
                 );
             dropItem.transform.parent = transform.parent;
             Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
-            dropItemRb.velocity = new Vector2(distance_x * 10, distance_y * 10);
+            dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
         }
 
-        if(dropType == "Enemy")
+        if(dropType == "Enemy" || dropType == "BreakableObject")
+        {
+            foreach (GameObject wreckage in wreckages)
+            {
+                var Wreckage = Instantiate(wreckage, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+                Wreckage.transform.parent = transform.parent;
+                Rigidbody2D WreckageRb = Wreckage.GetComponent<Rigidbody2D>();
+                WreckageRb.velocity = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
+            }
+        }
+
+        /*if(dropType == "Enemy")
         {
             var Skull = Instantiate(skull, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
             Skull.transform.parent = transform.parent;
             Rigidbody2D skullRb = Skull.GetComponent<Rigidbody2D>();
             skullRb.velocity = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
-        }
+        }*/
 
         Destroy(gameObject);
     }

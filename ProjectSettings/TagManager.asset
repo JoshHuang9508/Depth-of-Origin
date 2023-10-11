@@ -6,9 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Item
-  - ItemDropper
   - Wall
-  - coins
+  - BreakableObject
   layers:
   - Default
   - TransparentFX

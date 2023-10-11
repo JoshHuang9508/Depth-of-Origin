@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 7080452751912215658}
   - component: {fileID: 3662812508140342213}
   - component: {fileID: 8144663042990987219}
-  - component: {fileID: 2846914958782875642}
+  - component: {fileID: 1335620733868017069}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -684,8 +684,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 6
   health: 200
-  healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   sprintKey: 304
+  damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+  onHitEffect: {fileID: 8155716634984696415, guid: 5de54344b5737cb4b893261649bda216, type: 3}
 --- !u!114 &8144663042990987219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -700,8 +701,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 0}
   InventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
-  initialItems: []
---- !u!114 &2846914958782875642
+  initialItems:
+  - quantity: 1
+    item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
+    itemState: []
+  - quantity: 1
+    item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
+    itemState: []
+  - quantity: 5
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+--- !u!114 &1335620733868017069
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -710,7 +720,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8569169420657907073}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85a77a1cc913fa74ebd550637e673182, type: 3}
+  m_Script: {fileID: 11500000, guid: 242785a8acd1bec4fa8825bc60d1d0dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 0}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
+  parametersToModify:
+  - itemParameter: {fileID: 11400000, guid: c1db2ba334991364489f806200bd2912, type: 2}
+    value: -10
+  itemCurrentState:
+  - itemParameter: {fileID: 11400000, guid: c1db2ba334991364489f806200bd2912, type: 2}
+    value: 100

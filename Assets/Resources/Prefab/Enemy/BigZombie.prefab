@@ -124,9 +124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySO: {fileID: 11400000, guid: c0ba1e12c7a4d0742beeecfba58693f9, type: 2}
-  healthText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+  damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  spriteRenderer: {fileID: 0}
 --- !u!1 &8221578410903588125
 GameObject:
   m_ObjectHideFlags: 0

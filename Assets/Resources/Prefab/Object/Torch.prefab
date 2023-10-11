@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7013729961195538209}
   - component: {fileID: 8259937006636223684}
+  - component: {fileID: 8506122522807383759}
   m_Layer: 0
   m_Name: TorchLight
   m_TagString: Untagged
@@ -84,6 +85,18 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &8506122522807383759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3369651959669865916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c82e43b35629b840a79f862fc541cda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7639605266877218686
 GameObject:
   m_ObjectHideFlags: 0

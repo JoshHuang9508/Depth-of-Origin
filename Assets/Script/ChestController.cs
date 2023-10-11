@@ -5,11 +5,15 @@ using UnityEngine;
 public class ChestController : MonoBehaviour
 {
     bool isOpen;
+    [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-
     public List<GameObject> lootings;
+    public List<GameObject> wreckage;
+
+    [Header("Connect Object")]
     public GameObject itemDropper;
+
     Animator animator;
 
     // Start is called before the first frame update
@@ -36,15 +40,15 @@ public class ChestController : MonoBehaviour
             var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
             ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems, "Chest");
+            itemDropperController.DropItems(lootings, wreckage, lootMinItems, lootMaxItems, "Chest");
         }
-        else if (isOpen)
+        /*else if (isOpen)
         {
             //Debug.Log("Closed a chest");
 
             isOpen = false;
             animator.SetTrigger("Close");
-        }
+        }*/
     }
 
     
