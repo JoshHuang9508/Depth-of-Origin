@@ -5,12 +5,7 @@ using System.Threading.Tasks;
 
 public class WeaponMovement : MonoBehaviour
 {
-    public float attackSpeed = 1f;
-    public float attackCooldown;
-    public float weaponDamage = 1f;
-    public float knockbackForce;
-    public float knockbackTime;
-    public float knockbackSpeed;
+    public WeaponSO weaponSO;
 
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -29,7 +24,7 @@ public class WeaponMovement : MonoBehaviour
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
-                damageableObject.OnHit(weaponDamage, direction * knockbackForce, knockbackTime);
+                damageableObject.OnHit(weaponSO.weaponDamage, direction * weaponSO.knockbackForce, weaponSO.knockbackTime);
 
                 //camera shake
                 CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
@@ -56,11 +51,11 @@ public class WeaponMovement : MonoBehaviour
         //Debug.Log(startAngle - 90);
 
         spriteRenderer.flipX = isflip;
-        animator.speed = attackSpeed;
+        animator.speed = weaponSO.attackSpeed;
         animator.SetBool("isflip", isflip);
         animator.SetTrigger("swing");
 
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds(weaponSO.attackCooldown);
         summonWeapon.CooldownOver();
         yield return new WaitForSeconds(5);
         Destroy(gameObject);

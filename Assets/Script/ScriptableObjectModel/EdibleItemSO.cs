@@ -1,69 +1,67 @@
+using Inventory.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Inventory.Model
+[CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
+public class EdibleItemSO : ItemSO
 {
-    [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-    public class EdibleItemSO : ItemSO, IDestoryableItem, IItemAction
+    [Header("Effect settings")]
+    public float E_walkSpeed;
+    public float E_health;
+    public float E_attackSpeed = 1f;
+    public float E_attackCooldown;
+    public float E_weaponDamage = 1f;
+    public float E_knockbackForce;
+    public float E_knockbackTime;
+
+    public string ActionName => "Consume";
+
+    [SerializeField] private List<ModifierData> modifiersData = new List<ModifierData>();
+
+    [Serializable]
+    public class ModifierData
     {
-        [Header("Effect settings")]
-        public float E_walkSpeed;
-        public float E_health;
-        public float E_attackSpeed = 1f;
-        public float E_attackCooldown;
-        public float E_weaponDamage = 1f;
-        public float E_knockbackForce;
-        public float E_knockbackTime;
+        public EffectType effectType;
+        //public CharacterStatModifierSO statModifier;
+        public float value;
+    }
 
-        public string ActionName => "Consume";
+    public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
 
-        [SerializeField] private List<ModifierData> modifiersData = new List<ModifierData>();
+        if (player == null) return true;
 
-        [Serializable]
-        public class ModifierData
+        foreach (ModifierData data in modifiersData)
         {
-            public EffectType effectType;
-            //public CharacterStatModifierSO statModifier;
-            public float value;
-        }
+            Debug.Log("Use");
 
-        public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
-        {
-            PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
-
-            if (player == null) return true;
-
-            foreach (ModifierData data in modifiersData)
+            switch (data.effectType)
             {
-                Debug.Log("Use");
-
-                switch (data.effectType)
-                {
-                    case EffectType.a:
-                        Debug.Log("a");
-                        break;
-                }
+                case EffectType.a:
+                    Debug.Log("a");
+                    break;
             }
-            return true;
         }
-
-        public enum EffectType
-        {
-            a, b, c, d
-        }
+        return true;
     }
 
-    public interface IDestoryableItem
+    public enum EffectType
     {
-
+        a, b, c, d
     }
+}
 
-    public interface IItemAction
-    {
-        public string ActionName { get; }
-        bool PerformAction(GameObject character, List<ItemParameter> itemState);
+public interface IDestoryableItem
+{
 
-    }
+}
+
+public interface IItemAction
+{
+    public string ActionName { get; }
+    bool PerformAction(GameObject character, List<ItemParameter> itemState);
+
 }

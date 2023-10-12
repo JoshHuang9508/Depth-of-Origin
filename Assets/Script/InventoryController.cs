@@ -39,7 +39,7 @@ namespace Inventory
             inventoryUI.ResetAllItems();
             foreach (var item in inventoryState)
             {
-                inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
+                inventoryUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Inventory
             InventoryItem inventoryItem = InventoryData.GetItemAt(itemIndex);
             if (inventoryItem.IsEmpty)
                 return;
-            inventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage, inventoryItem.quantity);
+            inventoryUI.CreateDraggedItem(inventoryItem.item.Image, inventoryItem.quantity);
         }
 
         private void HandleSwapItems(int itemIndex_1, int itemIndex_2)
@@ -96,7 +96,7 @@ namespace Inventory
 
             ItemSO item = inventoryItem.item;
             string description = PrepareDescription(inventoryItem);
-            inventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, description);
+            inventoryUI.UpdateDescription(itemIndex, item.Image, item.name, description);
         }
 
         public string PrepareDescription(InventoryItem inventoryItem)
@@ -120,7 +120,7 @@ namespace Inventory
                     inventoryUI.show();
                     foreach (var item in InventoryData.GetCurrentInventoryState())
                     {
-                        inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
+                        inventoryUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
                     }
                 }
                 else

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class AgentWeapon : MonoBehaviour
 {
-    [SerializeField] private EquippableItemSO weapon;
+    [SerializeField] private WeaponSO weapon;
     [SerializeField] private InventorySO inventoryData;
     [SerializeField] private List<ItemParameter> parametersToModify, itemCurrentState;
 
-    public void SetWeapon(EquippableItemSO weaponItemSO,List<ItemParameter> itemState)
+    public void SetWeapon(WeaponSO weaponItemSO,List<ItemParameter> itemState)
     {
         if(weapon != null)
         {
@@ -18,7 +18,7 @@ public class AgentWeapon : MonoBehaviour
         this.weapon = weaponItemSO;
         this.itemCurrentState = new List<ItemParameter>(itemState);
         SummonWeapon summonWeapon = GetComponentInChildren<SummonWeapon>();
-        summonWeapon.weapons = weapon.item;
+        summonWeapon.weapons = weapon.weaponObject;
         ModifyParameters();
     }
     public void ModifyParameters()

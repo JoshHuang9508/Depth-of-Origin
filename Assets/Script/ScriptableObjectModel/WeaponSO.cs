@@ -12,4 +12,16 @@ public class WeaponSO : ItemSO
     public float weaponDamage = 1f;
     public float knockbackForce;
     public float knockbackTime;
+    public GameObject weaponObject;
+
+    public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
+    {
+        AgentWeapon weapon = player.GetComponent<AgentWeapon>();
+        if (weapon != null)
+        {
+            weapon.SetWeapon(this, itemState == null ? DefaultParameterList : itemState);
+            return true;
+        }
+        return false;
+    }
 }

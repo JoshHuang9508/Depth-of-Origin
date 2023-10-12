@@ -16,8 +16,8 @@ namespace Inventory.Model
         public int MaxStackSize = 1;
 
         [Header("Reference")]
-        public Sprite ItemImage;
-        public GameObject item;
+        public Sprite Image;
+        public GameObject DropItem;
         public List<ItemParameter> DefaultParameterList;
 
         public int ID => GetInstanceID();

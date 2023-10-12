@@ -44,6 +44,10 @@ public class SummonWeapon : MonoBehaviour
     {
         if (summonEnabler)
         {
+            for (var i = this.transform.childCount - 1; i >= 0; i--)
+            {
+                Object.Destroy(this.transform.GetChild(i).gameObject);
+            }
             summonEnabler = false;
             var sword = Instantiate(weapons, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             sword.transform.parent = this.transform;
