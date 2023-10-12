@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Inventory.Model;
 
 public class BreakableObject : MonoBehaviour, Damage_Interface
 {
@@ -11,7 +12,7 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
     [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-    public List<GameObject> lootings;
+    public List<ItemSO> lootings;
     public List<GameObject> wreckage;
 
     [Header("Connect Object")]
@@ -47,7 +48,8 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(lootings, wreckage, lootMinItems, lootMaxItems, "BreakableObject");
+                itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
+                itemDropperController.DropWrackages(wreckage);
 
                 Destroy(gameObject);
             }

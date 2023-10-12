@@ -14,6 +14,7 @@ namespace Inventory.Model
         [Header("State")]
         public bool IsStackable;
         public int MaxStackSize = 1;
+        public Rarity Rarity;
 
         [Header("Reference")]
         public Sprite Image;
@@ -33,6 +34,11 @@ namespace Inventory.Model
         {
             return other.itemParameter == itemParameter;
         }
+    }
+
+    public enum Rarity
+    {
+        Common, Uncommon, Rare, Exotic, Mythic, Legendary 
     }
 }
 

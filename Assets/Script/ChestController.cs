@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Inventory.Model;
 
 public class ChestController : MonoBehaviour
 {
@@ -8,8 +9,7 @@ public class ChestController : MonoBehaviour
     [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-    public List<GameObject> lootings;
-    public List<GameObject> wreckage;
+    public List<ItemSO> lootings;
 
     [Header("Connect Object")]
     public GameObject itemDropper;
@@ -40,15 +40,15 @@ public class ChestController : MonoBehaviour
             var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
             ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropItems(lootings, wreckage, lootMinItems, lootMaxItems, "Chest");
+            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
         }
-        /*else if (isOpen)
+        else if (isOpen)
         {
             //Debug.Log("Closed a chest");
 
             isOpen = false;
             animator.SetTrigger("Close");
-        }*/
+        }
     }
 
     

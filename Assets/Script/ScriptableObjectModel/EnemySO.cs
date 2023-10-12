@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
+using Inventory.Model;
 
 [CreateAssetMenu(fileName = "new enemy", menuName = "Enemy")]
 public class EnemySO : ScriptableObject
@@ -27,7 +28,7 @@ public class EnemySO : ScriptableObject
     [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-    public List<GameObject> lootings;
+    public List<ItemSO> lootings;
     public List<GameObject> wreckage;
 }
 

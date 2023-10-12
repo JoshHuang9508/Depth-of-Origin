@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -2160807733512234645}
   - component: {fileID: 8991145502629534035}
   - component: {fileID: 1580979216827947262}
+  - component: {fileID: -3344829333070863771}
   m_Layer: 0
   m_Name: _model_item
   m_TagString: Untagged
@@ -188,8 +189,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0, y: 0.6875, z: 0}
-    m_Extent: {x: 0.15625, y: 0.6875, z: 0}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -218,7 +219,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <InventoryItem>k__BackingField: {fileID: 0}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
-  <Quantity>k__BackingField: 1
+--- !u!114 &-3344829333070863771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2482709967473776010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fada03115d638bd4b8110318843ee74b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <InventoryItem>k__BackingField: {fileID: 0}
+  spriteRenderer: {fileID: 2244761267995483345}
+  spriteLight2D: {fileID: 8991145502629534035}
+  backgroundLight2D: {fileID: 3580978521451499591}
 --- !u!1 &4372730835014328670
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +246,7 @@ GameObject:
   - component: {fileID: 6269602669344965347}
   - component: {fileID: 3580978521451499591}
   m_Layer: 0
-  m_Name: Light 2D
+  m_Name: _model_item_bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,7 +284,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.9620712, g: 0.9811321, b: 0.19607843, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 0.001
   m_LightVolumeIntensity: 0.35
   m_LightVolumeEnabled: 1
   m_ApplyToSortingLayers: 000000001ba5d6de8577cca45b06122f9fd65809

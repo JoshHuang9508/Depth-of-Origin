@@ -215,16 +215,8 @@ MonoBehaviour:
   lootMinItems: 4
   lootMaxItems: 6
   lootings:
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 2482709967473776010, guid: f8843af40abe0364e923c6faff21d4a8, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  - {fileID: 3998415391066531494, guid: 43107ac39a46d9e478c316e1eab95c72, type: 3}
-  wreckage:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 70a1d35cec35c494191bbc998731c2cf, type: 2}
+  - {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
 --- !u!95 &344404685478440640
 Animator:

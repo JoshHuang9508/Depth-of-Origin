@@ -2,23 +2,24 @@ using Inventory.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Pickable : MonoBehaviour
 {
-    [field: SerializeField] public ItemSO InventoryItem { get; private set; } 
-    [SerializeField] private InventorySO inventoryData;
+    [field: SerializeField] public ItemSO InventoryItem { get; set; }
+    [field: SerializeField] private InventorySO inventoryData;
 
-    [field: SerializeField] public int Quantity { get; set; } = 1;
+    [SerializeField] public int Quantity { get; set; } = 1;
 
     bool pickEnabler = false;
     bool inRange = false;
     Rigidbody2D currentRb;
     Collider2D target;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        //GetComponent<SpriteRenderer>().sprite = InventoryItem.ItemImage;
         StartCoroutine(pickup_delay());
         currentRb = GetComponent<Rigidbody2D>();
     }

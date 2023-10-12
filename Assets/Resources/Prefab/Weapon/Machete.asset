@@ -16,11 +16,13 @@ MonoBehaviour:
   Description: 
   IsStackable: 0
   MaxStackSize: 1
-  ItemImage: {fileID: 21300000, guid: df36e5b4c29a79d46a85e765df452cac, type: 3}
-  item: {fileID: 4857680875645216774, guid: 91aa8beedc05d9243b97995866405f0a, type: 3}
+  Rarity: 0
+  Image: {fileID: 21300000, guid: df36e5b4c29a79d46a85e765df452cac, type: 3}
+  DropItem: {fileID: 0}
   DefaultParameterList: []
   attackSpeed: 1.5
   attackCooldown: 0.6
-  weaponDamage: 10
+  weaponDamage: 100
   knockbackForce: 20
   knockbackTime: 0.35
+  weaponObject: {fileID: 4857680875645216774, guid: 91aa8beedc05d9243b97995866405f0a, type: 3}
