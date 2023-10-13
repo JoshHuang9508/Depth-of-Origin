@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO
+public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
 {
     [Header("Effect settings")]
     public float E_walkSpeed;

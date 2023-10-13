@@ -16,8 +16,9 @@ MonoBehaviour:
   Description: 
   IsStackable: 1
   MaxStackSize: 10
-  ItemImage: {fileID: -34613403954200881, guid: 47521ce5782bbd3429e6b21bad8ce200, type: 3}
-  item: {fileID: 0}
+  Rarity: 0
+  Image: {fileID: 21300000, guid: f035fbb821305744db795dc7c75e7ae6, type: 3}
+  DropItem: {fileID: 0}
   DefaultParameterList: []
   E_walkSpeed: 0
   E_health: 0

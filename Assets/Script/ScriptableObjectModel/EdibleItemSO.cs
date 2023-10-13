@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-public class EdibleItemSO : ItemSO
+public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
 {
     [Header("Effect settings")]
     public float E_walkSpeed;

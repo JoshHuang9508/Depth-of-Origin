@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new weapon", menuName = "Items/Weapon")]
-public class WeaponSO : ItemSO
+public class WeaponSO : ItemSO,IDestoryableItem,IItemAction
 {
     [Header("Basic Data")]
     public float attackSpeed = 1f;
@@ -13,6 +13,8 @@ public class WeaponSO : ItemSO
     public float knockbackForce;
     public float knockbackTime;
     public GameObject weaponObject;
+
+    public string ActionName => "Equip";
 
     public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
     {
