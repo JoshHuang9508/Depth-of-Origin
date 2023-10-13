@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class HealthText : MonoBehaviour
+public class DamageText : MonoBehaviour
 {
     public float time_to_live = 0.5f;
     public float floatspeed = 500;

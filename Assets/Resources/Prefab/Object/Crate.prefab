@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 6418074242122330549}
   - component: {fileID: 8512722144222009612}
   - component: {fileID: 3027661421850618480}
+  - component: {fileID: 4925476841127222390}
   m_Layer: 0
   m_Name: Crate
-  m_TagString: Untagged
+  m_TagString: BreakableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +118,7 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_CompositeOperation: 1
+  m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
@@ -131,3 +132,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4925476841127222390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824004977793593416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40960dae49b2047439559d5e4c2a898b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 20
+  lootMinItems: 2
+  lootMaxItems: 5
+  lootings: []
+  wreckage:
+  - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
+  damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+  itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}

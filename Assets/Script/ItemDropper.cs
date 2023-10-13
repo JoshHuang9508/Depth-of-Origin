@@ -1,35 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Inventory.Model;
 
 public class ItemDropper : MonoBehaviour
 {
-    public void DropItems(List<GameObject> lootings, int lootMinItems, int lootMaxItems)
+    public GameObject item_model;
+    public GameObject skull;
+
+    public void DropItems(List<ItemSO> lootings, int lootMinItems, int lootMaxItems)
     {
-        int randonDropTimesCounter = Random.Range(lootMinItems, lootMaxItems);
+        if (lootings.Count == 0) return;
 
-        //Debug.Log(randonDropTimesCounter);
-
-        for (int i = 0; i <= randonDropTimesCounter - 1; i++)
+        for (int i = 0; i <= Random.Range(lootMinItems, lootMaxItems) - 1; i++)
         {
-            float distance_x = Random.Range(-2, 2f);
-            float distance_y = Random.Range(-2f, 2f);
-            int randonDrop = Random.Range(0, lootings.Count);
+            int randomIndex = Random.Range(0, lootings.Count - 1);
+
             var dropItem = Instantiate(
-                lootings[randonDrop],
+                item_model,
                 new Vector3(
                     transform.position.x,
                     transform.position.y,
-                    transform.position.z
-                    ),
+                    transform.position.z),
                 Quaternion.identity
                 );
             dropItem.transform.parent = transform.parent;
+            Pickable dropItem_pickable = dropItem.GetComponent<Pickable>();
+            dropItem_pickable.InventoryItem = lootings[randomIndex];
+
+            InitialFromItemDropper dropItem_initial = dropItem.GetComponent<InitialFromItemDropper>();
+            dropItem_initial.InventoryItem = lootings[randomIndex];
+
             Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
-            dropItemRb.velocity = new Vector2(distance_x * 10, distance_y * 10);
+            dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
         }
 
         Destroy(gameObject);
+    }
+
+    public void DropWrackages(List<GameObject> wreckages) 
+    {
+        if (wreckages.Count == 0) return;
+
+        foreach (GameObject wreckage in wreckages)
+        {
+            var Wreckage = Instantiate(
+                wreckage, 
+                new Vector3(
+                    transform.position.x, 
+                    transform.position.y, 
+                    transform.position.z), 
+                Quaternion.identity);
+            Wreckage.transform.parent = transform.parent;
+            Rigidbody2D WreckageRb = Wreckage.GetComponent<Rigidbody2D>();
+            WreckageRb.velocity = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
+        }
     }
 
 }

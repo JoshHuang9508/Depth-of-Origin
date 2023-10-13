@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     int loadType = 1;
-    public float transitionTime;
     public int SceneNum;
     public Vector3 transferPos;
     public Animator transition;
@@ -27,7 +26,7 @@ public class SceneLoader : MonoBehaviour
     {
         transition.SetTrigger("Start");
 
-        yield return new WaitForSeconds(transitionTime);
+        yield return new WaitForSeconds(1.5f);
 
         switch (loadType)
         {

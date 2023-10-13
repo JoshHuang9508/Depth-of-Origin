@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7013729961195538209}
   - component: {fileID: 8259937006636223684}
+  - component: {fileID: 8506122522807383759}
   m_Layer: 0
   m_Name: TorchLight
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3369651959669865916}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48,12 +49,12 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 0.654902, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.43054393, b: 0.07058823, a: 1}
   m_Intensity: 0.6
-  m_LightVolumeIntensity: 1
-  m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 1ba5d6de000000005b06122f
-  m_LightCookieSprite: {fileID: 0}
+  m_LightVolumeIntensity: 0.025
+  m_LightVolumeEnabled: 1
+  m_ApplyToSortingLayers: 1ba5d6de000000008577cca45b06122f
+  m_LightCookieSprite: {fileID: 3877796201400429946, guid: b48393669af5cb44aa19097511018e8a, type: 3}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
@@ -63,7 +64,7 @@ MonoBehaviour:
   m_UseNormalMap: 0
   m_ShadowsEnabled: 0
   m_ShadowIntensity: 0.75
-  m_ShadowSoftness: 0
+  m_ShadowSoftness: 0.3
   m_ShadowSoftnessFalloffIntensity: 0.5
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
@@ -72,8 +73,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 1.5
-  m_PointLightOuterRadius: 4
+  m_PointLightInnerRadius: 1
+  m_PointLightOuterRadius: 5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -84,6 +85,18 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &8506122522807383759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3369651959669865916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c82e43b35629b840a79f862fc541cda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7639605266877218686
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4542475392164437929}
   - component: {fileID: 1588636778863846795}
+  - component: {fileID: 844096241242444398}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Untagged
@@ -110,7 +124,7 @@ Transform:
   m_GameObject: {fileID: 7639605266877218686}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18, y: 2.75, z: 0}
+  m_LocalPosition: {x: 17.25, y: 2.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -158,14 +172,36 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Sprite: {fileID: 1575828932, guid: 545b5fa894e695b46ae1e6978cb0426f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!95 &844096241242444398
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7639605266877218686}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5acfabad63d134240b62ab757f8954b4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

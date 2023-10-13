@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Inventory.Model;
 
 public class ChestController : MonoBehaviour
 {
-    public bool isOpen;
+    bool isOpen;
+    [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
+    public List<ItemSO> lootings;
 
-    public List<GameObject> lootings;
+    [Header("Connect Object")]
     public GameObject itemDropper;
+
     Animator animator;
 
     // Start is called before the first frame update

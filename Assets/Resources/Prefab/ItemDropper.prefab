@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8855568884528203787}
   m_Layer: 0
   m_Name: ItemDropper
-  m_TagString: ItemDropper
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e15f2f7245b8c64cb7d70f218c05a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_model: {fileID: 2482709967473776010, guid: 194eaffed9419c64897b643233a288ad, type: 3}
+  skull: {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
