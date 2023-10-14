@@ -22,22 +22,22 @@ public class InitialFromItemDropper : MonoBehaviour
         switch (InventoryItem.Rarity)
         {
             case Rarity.Common:
-                backgroundLight2D.color = new Color(255, 255, 255);
+                backgroundLight2D.color = new Color(1, 1, 1);
                 break;
             case Rarity.Uncommon:
-                backgroundLight2D.color = new Color(245, 250, 50);
+                backgroundLight2D.color = new Color(1, 1, 0);
                 break;
             case Rarity.Rare:
-                backgroundLight2D.color = new Color(0, 255, 255);
+                backgroundLight2D.color = new Color(0, 1, 1);
                 break;
             case Rarity.Exotic:
-                backgroundLight2D.color = new Color(80, 0, 255);
+                backgroundLight2D.color = new Color(0, 0, 1);
                 break;
             case Rarity.Mythic:
-                backgroundLight2D.color = new Color(255, 0, 225);
+                backgroundLight2D.color = new Color(1, 0, 1);
                 break;
             case Rarity.Legendary:
-                backgroundLight2D.color = new Color(255, 0, 0);
+                backgroundLight2D.color = new Color(1, 0, 0);
                 break;
         }
     }
