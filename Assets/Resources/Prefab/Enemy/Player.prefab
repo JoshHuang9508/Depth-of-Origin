@@ -532,7 +532,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2ab589d484d0440bc20af99cc714ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}
+  weapons: {fileID: 0}
+  weaponSO: {fileID: 0}
   Interactable: {fileID: 2010235778089167822}
 --- !u!1 &7679574081871269009
 GameObject:
@@ -686,7 +687,7 @@ MonoBehaviour:
   health: 200
   sprintKey: 304
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
-  onHitEffect: {fileID: 8155716634984696415, guid: 5de54344b5737cb4b893261649bda216, type: 3}
+  onHitEffect: {fileID: 0}
 --- !u!114 &8144663042990987219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,9 +706,6 @@ MonoBehaviour:
   - quantity: 1
     item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
     itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
-    itemState: []
   - quantity: 5
     item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
     itemState: []
@@ -723,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 242785a8acd1bec4fa8825bc60d1d0dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
+  weaponSO: {fileID: 0}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
   parametersToModify:
   - itemParameter: {fileID: 11400000, guid: c1db2ba334991364489f806200bd2912, type: 2}

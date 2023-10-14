@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66c8d3cfe320a7f4abd45790f2ef9747, type: 3}
-  m_Name: Axe
+  m_Name: Anime_Sword_Mythic
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Anime Sword
   Description: 
   IsStackable: 0
   MaxStackSize: 1
-  Rarity: 2
-  Image: {fileID: 21300000, guid: d89374f3432c3804ab24a3382a352f2e, type: 3}
+  Rarity: 4
+  Image: {fileID: 21300000, guid: f1840c10c6c4a81478d2776ebae6ee07, type: 3}
   DropItem: {fileID: 0}
   DefaultParameterList: []
-  attackSpeed: 1
-  attackCooldown: 0
-  weaponDamage: 8
-  knockbackForce: 15
-  knockbackTime: 0.4
-  weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}
+  attackSpeed: 1.2
+  attackCooldown: 0.4
+  weaponDamage: 80
+  knockbackForce: 40
+  knockbackTime: 0.7
+  weaponObject: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}

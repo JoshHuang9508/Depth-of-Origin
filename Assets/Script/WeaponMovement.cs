@@ -10,11 +10,9 @@ public class WeaponMovement : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Animator animator;
     SummonWeapon summonWeapon;
-    //Animator camShake;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //camShake = GameObject.FindWithTag("MainCamera").GetComponent<Animator>();
         Damage_Interface damageableObject = collision.GetComponentInParent<Damage_Interface>();
 
         if (damageableObject != null)
@@ -48,6 +46,7 @@ public class WeaponMovement : MonoBehaviour
 
     private IEnumerator swing_animation(bool isflip)
     {
+
         //Debug.Log(startAngle - 90);
 
         spriteRenderer.flipX = isflip;

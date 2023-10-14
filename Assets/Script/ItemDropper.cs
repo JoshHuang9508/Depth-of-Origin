@@ -6,15 +6,19 @@ using Inventory.Model;
 public class ItemDropper : MonoBehaviour
 {
     public GameObject item_model;
-    public GameObject skull;
 
     public void DropItems(List<ItemSO> lootings, int lootMinItems, int lootMaxItems)
     {
-        if (lootings.Count == 0) return;
+        if (lootings.Count == 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+            
 
         for (int i = 0; i <= Random.Range(lootMinItems, lootMaxItems) - 1; i++)
         {
-            int randomIndex = Random.Range(0, lootings.Count - 1);
+            int randomIndex = Random.Range(0, lootings.Count);
 
             var dropItem = Instantiate(
                 item_model,
@@ -34,13 +38,15 @@ public class ItemDropper : MonoBehaviour
             Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
             dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
         }
-
-        Destroy(gameObject);
     }
 
     public void DropWrackages(List<GameObject> wreckages) 
     {
-        if (wreckages.Count == 0) return;
+        if (wreckages.Count == 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         foreach (GameObject wreckage in wreckages)
         {

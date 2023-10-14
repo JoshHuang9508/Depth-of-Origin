@@ -12,7 +12,8 @@ public class SummonWeapon : MonoBehaviour
     Vector2 currentPos;
     Vector2 Diraction;
 
-    public GameObject weapons;
+    public GameObject weapon;
+    public WeaponSO weaponSO;
     public Interactable Interactable;
     WeaponMovement weaponMovement;
 
@@ -44,14 +45,17 @@ public class SummonWeapon : MonoBehaviour
     {
         if (summonEnabler)
         {
+            if (this.weapon == null) return;
+
             for (var i = this.transform.childCount - 1; i >= 0; i--)
             {
                 Object.Destroy(this.transform.GetChild(i).gameObject);
             }
             summonEnabler = false;
-            var sword = Instantiate(weapons, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-            sword.transform.parent = this.transform;
-            weaponMovement = sword.GetComponent<WeaponMovement>();
+            GameObject weapon = Instantiate(this.weapon, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+            weapon.transform.parent = this.transform;
+            weaponMovement = weapon.GetComponent<WeaponMovement>();
+            weaponMovement.weaponSO = weaponSO;
             weaponMovement.WeaponSwing(isflip);
             //**need consider about far distant weapon**
             transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
