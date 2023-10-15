@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66c8d3cfe320a7f4abd45790f2ef9747, type: 3}
-  m_Name: Double Axe
+  m_Name: Axe_Common
   m_EditorClassIdentifier: 
-  Name: Double Axe
+  Name: 
   Description: 
   IsStackable: 0
   MaxStackSize: 1
   Rarity: 0
-  Image: {fileID: 21300000, guid: 85b785ab014598c40b5ae2d423367ee4, type: 3}
+  Image: {fileID: 21300000, guid: d89374f3432c3804ab24a3382a352f2e, type: 3}
   DropItem: {fileID: 0}
   DefaultParameterList: []
-  attackSpeed: 1.5
-  attackCooldown: 0
-  weaponDamage: 25
-  knockbackForce: 30
-  knockbackTime: 0.6
-  weaponObject: {fileID: 6740076035439635677, guid: b89b9cb154ba65e47aea34bf9c5efc90, type: 3}
+  attackSpeed: 0.8
+  attackCooldown: 1
+  weaponDamage: 8
+  knockbackForce: 10
+  knockbackTime: 0.4
+  weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}

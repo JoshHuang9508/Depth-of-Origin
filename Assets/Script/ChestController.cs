@@ -9,7 +9,7 @@ public class ChestController : MonoBehaviour
     [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-    public List<ItemSO> lootings;
+    public List<Lootings> lootings;
 
     [Header("Connect Object")]
     public GameObject itemDropper;

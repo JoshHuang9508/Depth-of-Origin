@@ -5,39 +5,58 @@ using Inventory.Model;
 
 public class ItemDropper : MonoBehaviour
 {
-    public GameObject item_model;
+    public GameObject itemModel;
+    public GameObject coinModel;
 
-    public void DropItems(List<ItemSO> lootings, int lootMinItems, int lootMaxItems)
+    public void DropItems(List<Lootings> lootings, int lootMinItems, int lootMaxItems)
     {
+        for (int i = 0; i < Random.Range(lootMinItems, lootMaxItems + 1); i++)
+        {
+            var dropItem = Instantiate(
+                coinModel,
+                new Vector3(
+                    transform.position.x,
+                    transform.position.y,
+                    transform.position.z),
+                Quaternion.identity,
+                transform.parent
+                );
+
+            dropItem.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
+        }
+
         if (lootings.Count == 0)
         {
             Destroy(gameObject);
             return;
         }
-            
 
-        for (int i = 0; i <= Random.Range(lootMinItems, lootMaxItems) - 1; i++)
+        foreach (Lootings _dropItem in lootings)
         {
-            int randomIndex = Random.Range(0, lootings.Count);
-
-            var dropItem = Instantiate(
-                item_model,
+            if(Random.Range(0, 100) <= _dropItem.chances)
+            {
+                var dropItem = Instantiate(
+                itemModel,
                 new Vector3(
                     transform.position.x,
                     transform.position.y,
                     transform.position.z),
-                Quaternion.identity
+                Quaternion.identity,
+                transform.parent
                 );
-            dropItem.transform.parent = transform.parent;
-            Pickable dropItem_pickable = dropItem.GetComponent<Pickable>();
-            dropItem_pickable.InventoryItem = lootings[randomIndex];
 
-            InitialFromItemDropper dropItem_initial = dropItem.GetComponent<InitialFromItemDropper>();
-            dropItem_initial.InventoryItem = lootings[randomIndex];
+                Pickable dropItemPickable = dropItem.GetComponent<Pickable>();
+                dropItemPickable.InventoryItem = _dropItem.lootings;
 
-            Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
-            dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
+                InitialFromItemDropper dropItemInitial = dropItem.GetComponent<InitialFromItemDropper>();
+                dropItemInitial.InventoryItem = _dropItem.lootings;
+
+                Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
+                dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
+            }
         }
+
+        Destroy(gameObject);
     }
 
     public void DropWrackages(List<GameObject> wreckages) 
@@ -56,11 +75,20 @@ public class ItemDropper : MonoBehaviour
                     transform.position.x, 
                     transform.position.y, 
                     transform.position.z), 
-                Quaternion.identity);
-            Wreckage.transform.parent = transform.parent;
+                Quaternion.identity,
+                transform.parent
+                );
+
             Rigidbody2D WreckageRb = Wreckage.GetComponent<Rigidbody2D>();
             WreckageRb.velocity = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
         }
     }
 
+}
+
+[System.Serializable]
+public struct Lootings
+{
+    public ItemSO lootings;
+    public float chances;
 }

@@ -28,7 +28,8 @@ public class EnemySO : ScriptableObject
     [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-    public List<ItemSO> lootings;
+
+    public List<Lootings> lootings;
     public List<GameObject> wreckage;
 }
 

@@ -21,8 +21,8 @@ MonoBehaviour:
   DropItem: {fileID: 0}
   DefaultParameterList: []
   attackSpeed: 1
-  attackCooldown: 0
-  weaponDamage: 15
+  attackCooldown: 0.8
+  weaponDamage: 36
   knockbackForce: 20
   knockbackTime: 0.4
   weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}

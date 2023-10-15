@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66c8d3cfe320a7f4abd45790f2ef9747, type: 3}
-  m_Name: Anime_Sword_Uncommon
+  m_Name: Double_Axe_Rare
   m_EditorClassIdentifier: 
-  Name: Anime Sword
+  Name: Double Axe
   Description: 
   IsStackable: 0
   MaxStackSize: 1
-  Rarity: 1
-  Image: {fileID: 21300000, guid: f1840c10c6c4a81478d2776ebae6ee07, type: 3}
+  Rarity: 2
+  Image: {fileID: 21300000, guid: 85b785ab014598c40b5ae2d423367ee4, type: 3}
   DropItem: {fileID: 0}
   DefaultParameterList: []
-  attackSpeed: 0.8
-  attackCooldown: 1.2
-  weaponDamage: 20
+  attackSpeed: 1.2
+  attackCooldown: 0.7
+  weaponDamage: 30
   knockbackForce: 30
-  knockbackTime: 0.5
-  weaponObject: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}
+  knockbackTime: 0.6
+  weaponObject: {fileID: 6740076035439635677, guid: b89b9cb154ba65e47aea34bf9c5efc90, type: 3}

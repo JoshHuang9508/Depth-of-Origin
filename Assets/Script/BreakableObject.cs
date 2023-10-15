@@ -12,7 +12,7 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
     [Header("Looting")]
     public int lootMinItems;
     public int lootMaxItems;
-    public List<ItemSO> lootings;
+    public List<Lootings> lootings;
     public List<GameObject> wreckage;
 
     [Header("Connect Object")]

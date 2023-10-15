@@ -27,6 +27,8 @@ MonoBehaviour:
   knockbackSpeed: 0
   lootMinItems: 3
   lootMaxItems: 5
-  lootings: []
+  lootings:
+  - lootings: {fileID: 0}
+    chances: 0
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}

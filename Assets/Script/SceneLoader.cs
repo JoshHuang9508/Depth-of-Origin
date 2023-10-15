@@ -34,6 +34,7 @@ public class SceneLoader : MonoBehaviour
                 //StartCoroutine(LoadAsyncScene());
                 SceneManager.LoadScene(SceneNum, LoadSceneMode.Single);
                 transition.SetTrigger("End");
+                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
                 break;
             case 2:
                 GameObject.FindWithTag("Player").transform.position = transferPos;
