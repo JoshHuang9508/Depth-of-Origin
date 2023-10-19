@@ -9,13 +9,12 @@ public class DontDestoryOnLoad : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
-
         if (instance == null)
             instance = gameObject;
         else
             Destroy(gameObject);
 
+        DontDestroyOnLoad(instance);
     }
 
     // Update is called once per frame

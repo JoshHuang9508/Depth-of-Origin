@@ -8,6 +8,7 @@ public class ItemDropper : MonoBehaviour
     public GameObject itemModel;
     public GameObject coinModel;
 
+    public void DropItems(List<Lootings> lootings) { }
     public void DropItems(List<Lootings> lootings, int lootMinItems, int lootMaxItems)
     {
         for (int i = 0; i < Random.Range(lootMinItems, lootMaxItems + 1); i++)
