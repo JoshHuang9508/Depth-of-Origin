@@ -19,12 +19,6 @@ public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
 
     public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
     {
-        /*AgentWeapon weapon = player.GetComponent<AgentWeapon>();
-        if (weapon != null)
-        {
-            weapon.SetWeapon(this, itemState == null ? DefaultParameterList : itemState);
-            return true;
-        }*/
         return false;
     }
 }

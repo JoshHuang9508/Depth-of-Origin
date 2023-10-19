@@ -15,7 +15,6 @@ public class SummonWeapon : MonoBehaviour
     public GameObject weapon;
     public WeaponSO weaponSO;
     public Interactable Interactable;
-    WeaponMovement weaponMovement;
 
     // Start is called before the first frame update
     void Start()
@@ -51,12 +50,13 @@ public class SummonWeapon : MonoBehaviour
             {
                 Object.Destroy(this.transform.GetChild(i).gameObject);
             }
+
             summonEnabler = false;
-            GameObject weapon = Instantiate(this.weapon, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-            weapon.transform.parent = this.transform;
-            weaponMovement = weapon.GetComponent<WeaponMovement>();
-            weaponMovement.weaponSO = weaponSO;
-            weaponMovement.WeaponSwing(isflip);
+
+            GameObject weapon = Instantiate(this.weapon, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), this.transform);
+            weapon.GetComponent<WeaponMovement>().weaponSO = weaponSO;
+            weapon.GetComponent<WeaponMovement>().WeaponSwing(isflip);
+
             //**need consider about far distant weapon**
             transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
         }

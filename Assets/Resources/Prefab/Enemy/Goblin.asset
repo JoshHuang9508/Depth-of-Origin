@@ -18,12 +18,12 @@ MonoBehaviour:
   moveSpeed: 5.5
   difficulty: 0
   attackType: 0
-  attackSpeed: 0.5
+  attackSpeed: 0.8
   attackDamage: 1
   chaseField: 10
   attackField: 0.7
-  knockbackForce: 4
-  knockbackTime: 0.3
+  knockbackForce: 10
+  knockbackTime: 0.2
   knockbackSpeed: 0
   lootMinItems: 2
   lootMaxItems: 3

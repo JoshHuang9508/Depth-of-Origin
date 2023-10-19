@@ -214,13 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lootMinItems: 1
   lootMaxItems: 2
-  lootings:
-  - {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
-  - {fileID: 11400000, guid: 70a1d35cec35c494191bbc998731c2cf, type: 2}
-  - {fileID: 11400000, guid: 8fd62065806c86f43a3d7a699a290e47, type: 2}
-  - {fileID: 11400000, guid: 37ccdf683e12205469e45faf5ba5cfd9, type: 2}
-  - {fileID: 11400000, guid: 0f512e6e296dae54ea4c32cc8963cd84, type: 2}
-  - {fileID: 11400000, guid: 15b399ec14547af49b69eb4659871d50, type: 2}
+  lootings: []
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
 --- !u!95 &344404685478440640
 Animator:

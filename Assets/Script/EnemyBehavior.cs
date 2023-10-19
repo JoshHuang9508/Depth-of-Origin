@@ -81,7 +81,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
 
     void Moving()
     {
-        if (Vector3.Distance(target.position, this.transform.position) <= enemySO.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemySO.attackField && movementEnabler)
+        if (Vector3.Distance(target.position, this.transform.position) <= enemySO.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemySO.attackField && movementEnabler && attackEnabler)
         {
             float movement_x = (this.transform.position.x - target.position.x <= 0) ? 1 : -1;
             float movement_y = (this.transform.position.y - target.position.y <= 0) ? 1 : -1;
@@ -91,7 +91,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
             animator.SetBool("ismove", true);
             animator.SetBool("ischase", true);
         }
-        else if (Vector3.Distance(target.position, this.transform.position) > enemySO.chaseField && movementEnabler)
+        else if (Vector3.Distance(target.position, this.transform.position) > enemySO.chaseField && movementEnabler && attackEnabler)
         {
             currentRb.velocity = new Vector2(0.0f, 0.0f);
 
@@ -99,7 +99,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
             animator.SetBool("ismove", false);
             animator.SetBool("ischase", false);
         }
-        else if (Vector3.Distance(target.position, this.transform.position) < enemySO.attackField && movementEnabler)
+        else if (Vector3.Distance(target.position, this.transform.position) < enemySO.attackField && movementEnabler && attackEnabler)
         {
             currentRb.velocity = new Vector2(0.0f, 0.0f);
             Attacking();
@@ -122,7 +122,9 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
             Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;
 
             damageableObject.OnHit(enemySO.attackDamage, direction * enemySO.knockbackForce, enemySO.knockbackTime);
-            StartCoroutine(attack_delay());
+            StartCoroutine(delay((enabler) => {
+                attackEnabler = enabler;
+            }, enemySO.attackSpeed));
         }
     }
 
@@ -132,31 +134,20 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
         {
             Health -= damage;
             currentRb.velocity = knockbackForce;
-            StartCoroutine(damage_delay());
-            StartCoroutine(knockback_delay(knockbackTime));
+            StartCoroutine(delay(enabler => {
+                damageEnabler = enabler;
+            }, 0.2f)) ;
+            StartCoroutine(delay(enabler => {
+                movementEnabler = enabler;
+                animator.enabled = enabler;
+            }, knockbackTime / 1));
         }
     }
 
-    private IEnumerator knockback_delay(float knockbackTime)
+    private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {
-        animator.enabled = false;
-        movementEnabler = false;
-        yield return new WaitForSeconds(knockbackTime / 1);
-        animator.enabled = true;
-        movementEnabler = true;
-    }
-
-    private IEnumerator damage_delay()
-    {
-        damageEnabler = false;
-        yield return new WaitForSeconds(0.2f);
-        damageEnabler = true;
-    }
-
-    private IEnumerator attack_delay()
-    {
-        attackEnabler = false;
-        yield return new WaitForSeconds(enemySO.attackSpeed);
-        attackEnabler = true;
+        callback(false);
+        yield return new WaitForSeconds(delayTime);
+        callback(true);
     }
 }

@@ -47,7 +47,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     bool movementEnabler = true;
     bool sprintEnabler = false;
-    int walkSpeedMutiplyer = 1;
+    bool walkSpeedMutiplyerEnabler = false;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
@@ -77,11 +77,14 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
         if (movementEnabler && Input.anyKey) {
 
+            int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
+
             Vector3 movement = new Vector3(
                 Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer, 
                 Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer, 
                 0.0f
             );
+
             currentRb.velocity = new Vector2(movement.x, movement.y);
         }
     }
@@ -90,9 +93,16 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     {
         if (!sprintEnabler && movementEnabler)
         {
-            StartCoroutine(sprint_delay());
+            StartCoroutine(delay(enabler => {
+                sprintEnabler = !enabler;
+            },2f));
+            StartCoroutine(delay(enabler => {
+                walkSpeedMutiplyerEnabler = !enabler;
+            }, 0.2f));
         }
     }
+
+    public int temp = 0;
 
     public void OnHit(float damage, Vector2 knockbackForce, float knockbackTime)
     {
@@ -103,27 +113,21 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
         onHitEffect.SetTrigger("Active");
 
-        StopCoroutine(knockback_delay(knockbackTime));
         currentRb.velocity = knockbackForce;
-        StartCoroutine(knockback_delay(knockbackTime));
+        StartCoroutine(delay(enabler => {
+            temp += !enabler ? 1 : -1;
+            if (temp > 0 && enabler) return;
+            movementEnabler = enabler;
+            animator.enabled = enabler;
+        },knockbackTime / 1));
     }
 
-    private IEnumerator knockback_delay(float knockbackTime)
+    private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {
-        animator.enabled = false;
-        movementEnabler = false;
-        yield return new WaitForSeconds(knockbackTime / 1);
-        animator.enabled = true;
-        movementEnabler = true;
+        callback(false);
+        yield return new WaitForSeconds(delayTime);
+        callback(true);
     }
 
-    private IEnumerator sprint_delay()
-    {
-        sprintEnabler = true;
-        walkSpeedMutiplyer = 3;
-        yield return new WaitForSeconds(0.2f);
-        walkSpeedMutiplyer = 1;
-        yield return new WaitForSeconds(2f);
-        sprintEnabler = false;
-    }
+    
 }

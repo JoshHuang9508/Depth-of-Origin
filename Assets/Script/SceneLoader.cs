@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,48 +32,37 @@ public class SceneLoader : MonoBehaviour
         switch (loadType)
         {
             case 1:
-                //StartCoroutine(LoadAsyncScene());
-                SceneManager.LoadScene(SceneNum, LoadSceneMode.Single);
-                transition.SetTrigger("End");
-                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneNum, LoadSceneMode.Additive);
+                asyncLoad.allowSceneActivation = false;
+
+                while (asyncLoad.progress < 0.9f)
+                {
+                    Debug.Log("Loading scene " + " [][] Progress: " + asyncLoad.progress);
+                    yield return null;
+                }
+
+                asyncLoad.allowSceneActivation = true;
+
+                while (!asyncLoad.isDone)
+                {
+                    yield return null;
+                }
+
+                Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(SceneNum);
+
+                if (sceneToLoad.IsValid())
+                {
+                    SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+                    SceneManager.SetActiveScene(sceneToLoad);
+                    transition.SetTrigger("End");
+                }
                 break;
+
             case 2:
                 GameObject.FindWithTag("Player").transform.position = transferPos;
-                yield return new WaitForSeconds(1f);
-                transition.SetTrigger("End"); 
+                GameObject.FindWithTag("CameraHold").transform.position = transferPos;
+                transition.SetTrigger("End");
                 break;
-        }
-    }
-
-    IEnumerator LoadAsyncScene()
-    {
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneNum, LoadSceneMode.Additive);
-        asyncLoad.allowSceneActivation = false;
-
-        Debug.Log(asyncLoad.ToString());
-
-        // Wait until the asynchronous scene fully loads
-        while (asyncLoad.progress < 0.9f)
-        {
-            Debug.Log("Loading scene " + " [][] Progress: " + asyncLoad.progress);
-            yield return null;
-        }
-
-        asyncLoad.allowSceneActivation = true;
-
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
-        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(SceneNum);
-
-        if (sceneToLoad.IsValid())
-        {
-            Debug.Log("Scene is Valid");
-            SceneManager.SetActiveScene(sceneToLoad);
-            transition.SetTrigger("End");
         }
     }
 }

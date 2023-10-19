@@ -34,8 +34,7 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
                 text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
-                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
-                text_Transform.SetParent(canvas.transform);
+                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
             }
 
             health = value;
@@ -45,11 +44,17 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
                 //play dead animation
 
                 //drop items
-                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
-                ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-                ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
-                itemDropperController.DropWrackages(wreckage);
+                var ItemDropper = Instantiate(
+                    itemDropper, 
+                    new Vector3(
+                        transform.position.x, 
+                        transform.position.y + 0.5f, 
+                        transform.position.z),
+                    Quaternion.identity,
+                    GameObject.FindWithTag("Item").transform
+                    );
+                ItemDropper.GetComponent<ItemDropper>().DropItems(lootings, lootMinItems, lootMaxItems);
+                ItemDropper.GetComponent<ItemDropper>().DropWrackages(wreckage);
 
                 Destroy(gameObject);
             }
@@ -65,14 +70,16 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
         if (damageEnabler)
         {
             Health -= damage;
-            StartCoroutine(damage_delay());
+            StartCoroutine(delay(enabler => {
+                damageEnabler = enabler;
+            }, 0.2f));
         }
     }
 
-    private IEnumerator damage_delay()
+    private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {
-        damageEnabler = false;
-        yield return new WaitForSeconds(0.2f);
-        damageEnabler = true;
+        callback(false);
+        yield return new WaitForSeconds(delayTime);
+        callback(true);
     }
 }
