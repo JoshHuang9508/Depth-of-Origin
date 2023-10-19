@@ -18,10 +18,10 @@ public class WeaponSO : ItemSO,IDestoryableItem,IItemAction
 
     public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
     {
-        AgentWeapon weapon = player.GetComponent<AgentWeapon>();
+        PlayerBehaviour weapon = player.GetComponent<PlayerBehaviour>();
         if (weapon != null)
         {
-            weapon.SetWeapon(this, itemState == null ? DefaultParameterList : itemState);
+            weapon.SetWeapon(this);
             return true;
         }
         return false;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Inventory.Model;
 
 public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 {
@@ -9,6 +10,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public float walkSpeed;
     public float health;
     public KeyCode sprintKey;
+    [SerializeField] public WeaponSO weaponSO;
+    [SerializeField] private InventorySO inventoryData;
 
     [Header("Connect Object")]
     public GameObject damageText;
@@ -120,6 +123,17 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             movementEnabler = enabler;
             animator.enabled = enabler;
         },knockbackTime / 1));
+    }
+
+    public void SetWeapon(WeaponSO weaponItemSO)
+    {
+        if (weaponSO != null)
+        {
+            inventoryData.AddItem(weaponSO, 1);
+        }
+        this.weaponSO = weaponItemSO;
+
+        GetComponentInChildren<SummonWeapon>().weaponSO = weaponSO;
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)

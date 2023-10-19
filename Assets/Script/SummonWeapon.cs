@@ -12,9 +12,8 @@ public class SummonWeapon : MonoBehaviour
     Vector2 currentPos;
     Vector2 Diraction;
 
-    public GameObject weapon;
-    public WeaponSO weaponSO;
     public Interactable Interactable;
+    public WeaponSO weaponSO;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +43,7 @@ public class SummonWeapon : MonoBehaviour
     {
         if (summonEnabler)
         {
-            if (this.weapon == null) return;
+            if (weaponSO == null) return;
 
             for (var i = this.transform.childCount - 1; i >= 0; i--)
             {
@@ -53,7 +52,7 @@ public class SummonWeapon : MonoBehaviour
 
             summonEnabler = false;
 
-            GameObject weapon = Instantiate(this.weapon, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), this.transform);
+            GameObject weapon = Instantiate(weaponSO.weaponObject, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), this.transform);
             weapon.GetComponent<WeaponMovement>().weaponSO = weaponSO;
             weapon.GetComponent<WeaponMovement>().WeaponSwing(isflip);
 
