@@ -10,6 +10,7 @@ public class InitialFromItemDropper : MonoBehaviour
 
     [Header("Connect Object")]
     public SpriteRenderer spriteRenderer;
+    public GameObject backgroundLightObject;
     public Light2D spriteLight2D;
     public Light2D backgroundLight2D;
 
