@@ -15,6 +15,7 @@ public class DontDestoryOnLoad : MonoBehaviour
             instance = gameObject;
         else
             Destroy(gameObject);
+
     }
 
     // Update is called once per frame

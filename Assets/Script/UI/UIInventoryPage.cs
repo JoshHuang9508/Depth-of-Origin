@@ -18,6 +18,8 @@ namespace Inventory.UI
 
         [SerializeField] private MouseFollower mouseFollower;
 
+        [SerializeField] private ItemActionPanel actionPanel;
+
         List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
 
@@ -133,10 +135,23 @@ namespace Inventory.UI
             {
                 item.Deselect();
             }
+            actionPanel.Toggle(false);
+        }
+
+        public void ShowItemAction(int itemIndex)
+        {
+            actionPanel.Toggle(true);
+            actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
+        }
+
+        public void AddAction(string actionName , Action performAction)
+        {
+            actionPanel.AddButton(actionName, performAction);
         }
 
         public void hide()
         {
+            actionPanel.Toggle(false);
             gameObject.SetActive(false);
             ResetDraggedItem();
         }
@@ -156,5 +171,7 @@ namespace Inventory.UI
                 item.Deselect();
             }
         }
+
+        
     }
 }

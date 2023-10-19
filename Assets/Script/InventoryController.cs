@@ -16,22 +16,27 @@ namespace Inventory
 
         public List<InventoryItem> initialItems = new List<InventoryItem>();
 
+        bool initialEnabler = true;
+
         public void Start()
         {
             PrepareUI();
-            PrepareInventoryData();
+            if(initialEnabler)
+                PrepareInventoryData();
+
         }
 
         private void PrepareInventoryData()
         {
             InventoryData.initialize();
             InventoryData.OnInventoryUpdated += UpdateInventoryUI;
-            foreach(InventoryItem item in initialItems)
+            foreach (InventoryItem item in initialItems)
             {
                 if (item.IsEmpty)
                     continue;
                 InventoryData.AddItem(item);
             }
+            initialEnabler = false;
         }
 
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
@@ -59,6 +64,33 @@ namespace Inventory
             {
                 return;
             }
+
+            IItemAction itemAction = inventoryItem.item as IItemAction;
+            if (itemAction != null)
+            {
+                inventoryUI.ShowItemAction(itemIndex);
+                inventoryUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+            }
+            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
+            if (destoryableItem != null)
+            {
+                inventoryUI.AddAction("Drop", () => DropItem(itemIndex,inventoryItem.quantity));
+            }
+        }
+
+        private void DropItem(int itemIndex, int quantity)
+        {
+            InventoryData.RemoveItem(itemIndex, quantity);
+            inventoryUI.Reselection();
+        }
+
+        public void PerformAction(int itemIndex)
+        {
+            InventoryItem inventoryItem = InventoryData.GetItemAt(itemIndex);
+            if (inventoryItem.IsEmpty)
+            {
+                return;
+            }
             IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
             if (destoryableItem != null)
             {
@@ -67,9 +99,10 @@ namespace Inventory
             IItemAction itemAction = inventoryItem.item as IItemAction;
             if (itemAction != null)
             {
-                itemAction.PerformAction(gameObject,inventoryItem.itemState);
+                itemAction.PerformAction(gameObject, inventoryItem.itemState);
+                if (InventoryData.GetItemAt(itemIndex).IsEmpty)
+                    inventoryUI.Reselection();
             }
-            
         }
 
         private void HandleDragging(int itemIndex)
