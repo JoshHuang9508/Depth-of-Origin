@@ -77,6 +77,9 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     void Update()
     {
         Moving();
+
+        Debug.Log(target.position);
+        Debug.Log(transform.position);
     }
 
     void Moving()
@@ -116,7 +119,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         if (attackEnabler)
         {
-            //Debug.Log("enemy trying to attack");
+            Debug.Log("enemy trying to attack");
 
             Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
             Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;

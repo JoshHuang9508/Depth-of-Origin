@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5755088595644540972}
   m_Layer: 0
   m_Name: big_demon
-  m_TagString: Enemy
+  m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 2009618545049335575}
   m_Layer: 0
   m_Name: BigDemon
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -277,6 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySO: {fileID: 11400000, guid: 647874ec2cace5945b1dfb487daf102d, type: 2}
+  enemySO: {fileID: 0}
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}

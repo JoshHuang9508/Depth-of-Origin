@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8197973253870904878}
   m_Layer: 0
   m_Name: Chort
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 808711658059045489}
   m_Layer: 0
   m_Name: chort
-  m_TagString: Enemy
+  m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

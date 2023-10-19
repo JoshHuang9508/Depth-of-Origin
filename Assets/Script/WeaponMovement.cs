@@ -17,7 +17,7 @@ public class WeaponMovement : MonoBehaviour
 
         if (damageableObject != null)
         {
-            if (collision.CompareTag("Enemy") || collision.CompareTag("BreakableObject"))
+            if (collision.CompareTag("HitBox") || collision.CompareTag("BreakableObject"))
             {
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;

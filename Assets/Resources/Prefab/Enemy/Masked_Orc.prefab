@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5193417611244355694}
   m_Layer: 0
   m_Name: masked_orc
-  m_TagString: Enemy
+  m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: -7707474399136439039}
   m_Layer: 0
   m_Name: Masked_Orc
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

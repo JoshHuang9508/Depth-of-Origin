@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4275282786802846849}
   m_Layer: 0
   m_Name: Muddy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 309414515119226229}
   m_Layer: 0
   m_Name: muddy
-  m_TagString: Enemy
+  m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

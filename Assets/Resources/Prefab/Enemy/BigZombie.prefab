@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4573645003030061134}
   m_Layer: 0
   m_Name: BigZombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 4543514221658266011}
   m_Layer: 0
   m_Name: big_zombie
-  m_TagString: Enemy
+  m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
