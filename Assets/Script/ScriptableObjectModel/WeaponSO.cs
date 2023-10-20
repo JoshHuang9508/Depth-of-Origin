@@ -1,4 +1,5 @@
 using Inventory.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,6 @@ public class WeaponSO : ItemSO,IDestoryableItem,IItemAction
     public GameObject weaponObject;
 
     public string ActionName => "Equip";
-
     public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour weapon = player.GetComponent<PlayerBehaviour>();
