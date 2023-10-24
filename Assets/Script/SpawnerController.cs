@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    public int SpawnLimit;
+    public int spawnLimit;
+    public int maxSpawnTimes;
 
     public List<EnemySO> spawnList;
 
@@ -18,7 +19,7 @@ public class SpawnerController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && stayMobs <= SpawnLimit && spawnEnabler)
+        if (collision.CompareTag("Player") && stayMobs <= spawnLimit && spawnEnabler && maxSpawnTimes != 0)
         {
             SpawnMobs();
             Debug.Log("Trying to spawn mobs");
@@ -37,6 +38,8 @@ public class SpawnerController : MonoBehaviour
 
     private void SpawnMobs()
     {
+        maxSpawnTimes--;
+
         spawnEnabler = false;
 
         int randomSpawnIndex = Random.Range(0, spawnList.Count);

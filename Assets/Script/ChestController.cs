@@ -50,6 +50,4 @@ public class ChestController : MonoBehaviour
             animator.SetTrigger("Close");
         }
     }
-
-    
 }

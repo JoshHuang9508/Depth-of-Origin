@@ -28,7 +28,7 @@ MonoBehaviour:
   lootMinItems: 2
   lootMaxItems: 5
   lootings:
-  - lootings: {fileID: 0}
-    chances: 0
+  - lootings: {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
+    chances: 10
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}

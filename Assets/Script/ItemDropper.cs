@@ -34,7 +34,7 @@ public class ItemDropper : MonoBehaviour
 
         foreach (Lootings _dropItem in lootings)
         {
-            if(Random.Range(0, 100) <= _dropItem.chances)
+            if(Random.Range(0, 100) < _dropItem.chances)
             {
                 var dropItem = Instantiate(
                 itemModel,
