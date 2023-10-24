@@ -14,11 +14,28 @@ public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
     public float E_weaponDamage = 1f;
     public float E_knockbackForce;
     public float E_knockbackTime;
+    EffectType effecttype;
+    public enum EffectType
+    {
+        armor, book, jewelry
+    }
 
     public string ActionName => "Equip";
 
     public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
     {
+        switch (effecttype)
+        {
+            case EffectType.armor:
+
+                break;
+            case EffectType.book:
+
+                break;
+            case EffectType.jewelry:
+
+                break;
+        }
         return false;
     }
 }

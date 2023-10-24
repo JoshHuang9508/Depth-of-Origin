@@ -1,4 +1,5 @@
 using Inventory.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,13 @@ public class WeaponSO : ItemSO,IDestoryableItem,IItemAction
     public float weaponDamage = 1f;
     public float knockbackForce;
     public float knockbackTime;
+    public float health = 10f;
+    public float strength = 50f;
+    public float critchance = 10f;
+    public float critdamage = 20f;
     public GameObject weaponObject;
 
     public string ActionName => "Equip";
-
     public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour weapon = player.GetComponent<PlayerBehaviour>();

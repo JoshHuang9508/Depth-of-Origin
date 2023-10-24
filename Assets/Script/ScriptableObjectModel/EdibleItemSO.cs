@@ -15,6 +15,10 @@ public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
     public float E_weaponDamage = 1f;
     public float E_knockbackForce;
     public float E_knockbackTime;
+    public enum EffectType
+    {
+        a, b, c, d
+    }
 
     public string ActionName => "Consume";
 
@@ -48,10 +52,7 @@ public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
         return true;
     }
 
-    public enum EffectType
-    {
-        a, b, c, d
-    }
+    
 }
 
 public interface IDestoryableItem

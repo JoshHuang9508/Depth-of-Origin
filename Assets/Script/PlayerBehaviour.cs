@@ -11,6 +11,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public float health;
     public KeyCode sprintKey;
     [SerializeField] public WeaponSO weaponSO;
+    [SerializeField] public ArmorSO armorSO;
     [SerializeField] private InventorySO inventoryData;
 
     [Header("Connect Object")]
@@ -134,6 +135,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         this.weaponSO = weaponItemSO;
 
         GetComponentInChildren<SummonWeapon>().weaponSO = weaponSO;
+
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
