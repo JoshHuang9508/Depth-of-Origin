@@ -25,7 +25,7 @@ public class WeaponSO : ItemSO,IDestoryableItem,IItemAction
         PlayerBehaviour weapon = player.GetComponent<PlayerBehaviour>();
         if (weapon != null)
         {
-            weapon.SetWeapon(this);
+            weapon.SetEquipment(this);
             return true;
         }
         return false;

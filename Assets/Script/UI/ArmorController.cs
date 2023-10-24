@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class ArmorController : MonoBehaviour
 {
-    public Image head,Armor, weapons,book;
-    public GameObject target,statsdisplay;
-    public TMP_Text health, str, movespeed, def,critrate,critdamage;
+    public Image jewelry, armor, weapons, book;
+    public GameObject target, statsdisplay;
+    public TMP_Text health, str, movespeed, def, critrate, critdamage;
     PlayerBehaviour player;
     private void Awake()
     {
@@ -18,8 +18,8 @@ public class ArmorController : MonoBehaviour
 
     public void initial()
     {
-        head.gameObject.SetActive(false);
-        Armor.gameObject.SetActive(false);
+        jewelry.gameObject.SetActive(false);
+        armor.gameObject.SetActive(false);
         weapons.gameObject.SetActive(false);
         book.gameObject.SetActive(false);
         health.text = "0";
@@ -47,6 +47,16 @@ public class ArmorController : MonoBehaviour
         {
             weapons.gameObject.SetActive (true);
             weapons.sprite = player.weapon1.Image;
+        }
+        if(player.armor != null)
+        {
+            armor.gameObject.SetActive(true);
+            armor.sprite = player.armor.Image;
+        }
+        if (player.jewelry != null)
+        {
+            jewelry.gameObject.SetActive(true);
+            jewelry.sprite = player.jewelry.Image;
         }
     }
 

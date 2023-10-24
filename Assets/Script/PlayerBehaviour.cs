@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Inventory.Model;
+using static UnityEditor.Progress;
+using System;
 
 public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 {
@@ -134,16 +136,30 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         },knockbackTime * (1f - (0.001f * defence))));
     }
 
-    public void SetWeapon(WeaponSO _weapon)
+    public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EffectType type)
+    { 
+        switch (type)
+        {
+            case EquippableItemSO.EffectType.armor:
+                armor = equipment;
+                break;
+            case EquippableItemSO.EffectType.jewelry:
+                jewelry = equipment;
+                break;
+            case EquippableItemSO.EffectType.book:
+                book = equipment;
+                break;
+        }
+    }
+    public void SetEquipment(WeaponSO weapon)
     {
         if (weapon1 != null)
         {
             inventoryData.AddItem(weapon1, 1);
         }
-        this.weapon1 = _weapon;
+        this.weapon1 = weapon;
 
         GetComponentInChildren<SummonWeapon>().weapon = weapon1;
-
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)

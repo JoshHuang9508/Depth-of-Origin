@@ -14,7 +14,7 @@ public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
     public float E_weaponDamage = 1f;
     public float E_knockbackForce;
     public float E_knockbackTime;
-    EffectType effecttype;
+    public EffectType effecttype;
     public enum EffectType
     {
         armor, book, jewelry
@@ -22,19 +22,13 @@ public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
 
     public string ActionName => "Equip";
 
-    public bool PerformAction(GameObject player, List<ItemParameter> itemState = null)
+    public bool PerformAction(GameObject _player, List<ItemParameter> itemState = null)
     {
-        switch (effecttype)
+        PlayerBehaviour player = _player.GetComponent<PlayerBehaviour>();
+        if (player != null)
         {
-            case EffectType.armor:
-
-                break;
-            case EffectType.book:
-
-                break;
-            case EffectType.jewelry:
-
-                break;
+            player.SetEquipment(this, effecttype);
+            return true;
         }
         return false;
     }
