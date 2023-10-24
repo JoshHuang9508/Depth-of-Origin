@@ -43,23 +43,23 @@ public class ArmorController : MonoBehaviour
     public void SetImage()
     {
 
-        if(player.weaponSO != null)
+        if(player.weapon1 != null)
         {
             weapons.gameObject.SetActive (true);
-            weapons.sprite = player.weaponSO.Image;
+            weapons.sprite = player.weapon1.Image;
         }
     }
 
     public void GetPlayerStats()
     {
-        if(player.weaponSO != null)
+        if(player.weapon1 != null)
         {
-            health.text = player.weaponSO.health.ToString();
-            str.text = player.weaponSO.strength.ToString();
+            health.text = player.weapon1.health.ToString();
+            str.text = player.weapon1.strength.ToString();
             movespeed.text = player.walkSpeed.ToString();
             def.text = "0";
-            critrate.text = player.weaponSO.critchance.ToString();
-            critdamage.text = player.weaponSO.critdamage.ToString();
+            critrate.text = player.weapon1.critchance.ToString();
+            critdamage.text = player.weapon1.critdamage.ToString();
         }
     }
 }

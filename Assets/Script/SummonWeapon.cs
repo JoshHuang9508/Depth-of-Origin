@@ -13,7 +13,7 @@ public class SummonWeapon : MonoBehaviour
     Vector2 Diraction;
 
     public Interactable Interactable;
-    public WeaponSO weaponSO;
+    public WeaponSO weapon;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +43,7 @@ public class SummonWeapon : MonoBehaviour
     {
         if (summonEnabler)
         {
-            if (weaponSO == null) return;
+            if (weapon == null) return;
 
             for (var i = this.transform.childCount - 1; i >= 0; i--)
             {
@@ -52,9 +52,9 @@ public class SummonWeapon : MonoBehaviour
 
             summonEnabler = false;
 
-            GameObject weapon = Instantiate(weaponSO.weaponObject, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), this.transform);
-            weapon.GetComponent<WeaponMovement>().weaponSO = weaponSO;
-            weapon.GetComponent<WeaponMovement>().WeaponSwing(isflip);
+            GameObject weaponSummoned = Instantiate(weapon.weaponObject, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), this.transform);
+            weaponSummoned.GetComponent<WeaponMovement>().weapon = weapon;
+            weaponSummoned.GetComponent<WeaponMovement>().WeaponSwing(isflip);
 
             //**need consider about far distant weapon**
             transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);

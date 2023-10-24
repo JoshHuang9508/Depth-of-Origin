@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 public class WeaponMovement : MonoBehaviour
 {
-    public WeaponSO weaponSO;
+    public WeaponSO weapon;
 
     SpriteRenderer spriteRenderer;
     Animator animator;
     SummonWeapon summonWeapon;
+    PlayerBehaviour player;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,7 +23,10 @@ public class WeaponMovement : MonoBehaviour
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
-                damageableObject.OnHit(weaponSO.weaponDamage, direction * weaponSO.knockbackForce, weaponSO.knockbackTime);
+                damageableObject.OnHit(
+                    weapon.weaponDamage * (1 + (0.01f * player.strength)) *¡@(Random.Range(0f, 100f) <= player.critRate ? 1 + (0.01f * player.critDamage) : 1), 
+                    direction * weapon.knockbackForce, 
+                    weapon.knockbackTime);
 
                 //camera shake
                 CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
@@ -40,6 +44,7 @@ public class WeaponMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         summonWeapon = GetComponentInParent<SummonWeapon>();
+        player = GetComponentInParent<PlayerBehaviour>();
 
         StartCoroutine(swing_animation(isflip));
     }
@@ -50,11 +55,11 @@ public class WeaponMovement : MonoBehaviour
         //Debug.Log(startAngle - 90);
 
         spriteRenderer.flipX = isflip;
-        animator.speed = weaponSO.attackSpeed;
+        animator.speed = weapon.attackSpeed;
         animator.SetBool("isflip", isflip);
         animator.SetTrigger("swing");
 
-        yield return new WaitForSeconds(weaponSO.attackCooldown);
+        yield return new WaitForSeconds(weapon.attackCooldown);
         summonWeapon.CooldownOver();
         yield return new WaitForSeconds(5);
         Destroy(gameObject);

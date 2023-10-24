@@ -9,9 +9,17 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     [Header("Basic Data")]
     public float walkSpeed;
     public float health;
+    public float strength;
+    public float defence;
+    public float critRate;
+    public float critDamage;
     public KeyCode sprintKey;
-    [SerializeField] public WeaponSO weaponSO;
-    [SerializeField] public ArmorSO armorSO;
+    [SerializeField] public WeaponSO weapon1;
+    [SerializeField] public WeaponSO weapon2;
+    [SerializeField] public WeaponSO weapon3;
+    [SerializeField] public EquippableItemSO armor;
+    [SerializeField] public EquippableItemSO jewelry;
+    [SerializeField] public EquippableItemSO book;
     [SerializeField] private InventorySO inventoryData;
 
     [Header("Connect Object")]
@@ -123,18 +131,18 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             if (temp > 0 && enabler) return;
             movementEnabler = enabler;
             animator.enabled = enabler;
-        },knockbackTime / 1));
+        },knockbackTime * (1f - (0.001f * defence))));
     }
 
-    public void SetWeapon(WeaponSO weaponItemSO)
+    public void SetWeapon(WeaponSO _weapon)
     {
-        if (weaponSO != null)
+        if (weapon1 != null)
         {
-            inventoryData.AddItem(weaponSO, 1);
+            inventoryData.AddItem(weapon1, 1);
         }
-        this.weaponSO = weaponItemSO;
+        this.weapon1 = _weapon;
 
-        GetComponentInChildren<SummonWeapon>().weaponSO = weaponSO;
+        GetComponentInChildren<SummonWeapon>().weapon = weapon1;
 
     }
 
@@ -144,6 +152,4 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         yield return new WaitForSeconds(delayTime);
         callback(true);
     }
-
-    
 }
