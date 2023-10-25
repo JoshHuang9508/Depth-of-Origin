@@ -24,7 +24,7 @@ namespace Inventory.Model
             }
         }
 
-        public int AddItem(ItemSO item, int quantity,List<ItemParameter> itemState = null)
+        public int AddItem(ItemSO item, int quantity, List<ItemParameter> itemState = null)
         {
             if(item.IsStackable == false)
             {
@@ -32,13 +32,13 @@ namespace Inventory.Model
                 {
                     while(quantity > 0 && IsInventoryFull() == false)
                     {
-                        quantity-=AddItemToFristFreeSlot(item,1,itemState);
+                        quantity -= AddItemToFristFreeSlot(item, 1, itemState);
                     }
                     InformAboutChange();
                 }
                 return quantity;
             }
-            quantity = AddStackableItem(item,quantity);
+            quantity = AddStackableItem(item, quantity);
             InformAboutChange();
             return quantity;
         }

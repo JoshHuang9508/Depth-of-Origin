@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SummonWeapon : MonoBehaviour
 {
+    public Interactable Interactable;
+    public WeaponSO weapon;
+
     bool isflip;
     float startAngle;
     bool summonEnabler = true;
@@ -11,9 +14,6 @@ public class SummonWeapon : MonoBehaviour
     Vector2 mousePos;
     Vector2 currentPos;
     Vector2 Diraction;
-
-    public Interactable Interactable;
-    public WeaponSO weapon;
 
     // Start is called before the first frame update
     void Start()
@@ -41,10 +41,8 @@ public class SummonWeapon : MonoBehaviour
 
     public void Summon()
     {
-        if (summonEnabler)
+        if (summonEnabler && (weapon = GetComponentInParent<PlayerBehaviour>().currentWeapon))
         {
-            if (weapon == null) return;
-
             for (var i = this.transform.childCount - 1; i >= 0; i--)
             {
                 Object.Destroy(this.transform.GetChild(i).gameObject);

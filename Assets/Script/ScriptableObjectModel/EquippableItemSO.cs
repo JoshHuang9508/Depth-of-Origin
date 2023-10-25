@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
+public class EquippableItemSO : ItemSO, IItemAction, IDestoryableItem
 {
     [Header("Effect settings")]
+    public float E_maxHealth;
+    public float E_strength;
     public float E_walkSpeed;
-    public float E_health;
-    public float E_attackSpeed = 1f;
-    public float E_attackCooldown;
-    public float E_weaponDamage = 1f;
-    public float E_knockbackForce;
-    public float E_knockbackTime;
-    public EffectType effecttype;
-    public enum EffectType
+    public float E_defence;
+    public float E_critRate;
+    public float E_critDamage;
+    public EquipmentType equipmentType;
+    public enum EquipmentType
     {
         armor, book, jewelry
     }
@@ -27,7 +26,7 @@ public class EquippableItemSO : ItemSO,IItemAction,IDestoryableItem
         PlayerBehaviour player = _player.GetComponent<PlayerBehaviour>();
         if (player != null)
         {
-            player.SetEquipment(this, effecttype);
+            player.SetEquipment(this, equipmentType);
             return true;
         }
         return false;

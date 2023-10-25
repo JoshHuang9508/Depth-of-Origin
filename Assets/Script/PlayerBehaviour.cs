@@ -5,49 +5,72 @@ using UnityEngine;
 using Inventory.Model;
 using static UnityEditor.Progress;
 using System;
+using Newtonsoft.Json;
 
 public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 {
     [Header("Basic Data")]
-    public float walkSpeed;
-    public float health;
-    public float strength;
-    public float defence;
-    public float critRate;
-    public float critDamage;
+    public float Basic_walkSpeed;
+    public float Basic_maxHealth;
+    public float Basic_strength;
+    public float Basic_defence;
+    public float Basic_critRate;
+    public float Basic_critDamage;
+
+    float E_walkSpeed;
+    float E_maxHealth;
+    float E_strength;
+    float E_defence;
+    float E_critRate;
+    float E_critDamage;
+
+    public WeaponSO weapon1;
+    public WeaponSO weapon2;
+    public WeaponSO weapon3;
+    public EquippableItemSO armor;
+    public EquippableItemSO jewelry;
+    public EquippableItemSO book;
+    private InventorySO inventoryData;
+
     public KeyCode sprintKey;
-    [SerializeField] public WeaponSO weapon1;
-    [SerializeField] public WeaponSO weapon2;
-    [SerializeField] public WeaponSO weapon3;
-    [SerializeField] public EquippableItemSO armor;
-    [SerializeField] public EquippableItemSO jewelry;
-    [SerializeField] public EquippableItemSO book;
-    [SerializeField] private InventorySO inventoryData;
+
+    [Header("Current Data")]
+    public float currentHealth;
+    public WeaponSO currentWeapon;
 
     [Header("Connect Object")]
     public GameObject damageText;
     public Animator onHitEffect;
 
+    public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
+    public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
+    public float strength { get { return Basic_strength + E_strength; } }
+    public float defence { get { return Basic_defence + E_defence; } }
+    public float critRate { get { return Basic_critRate + E_critRate; } }
+    public float critDamage { get { return Basic_critDamage + E_critDamage; } }
     public float Health
     {
         set
         {
-            if (value < health)
+            if (value < currentHealth)
             {
                 //play hit animation
 
                 //show damage text
                 RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-                text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
+                text_Transform.GetComponent<TextMeshProUGUI>().text = (Health - value).ToString();
                 text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
+                //camera shake
                 Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
                 text_Transform.SetParent(canvas.transform);
             }
 
-            health = value;
+            if (value > maxHealth) currentHealth = maxHealth;
 
-            if (health <= 0)
+            currentHealth = value;
+
+            if (currentHealth <= 0)
             {
                 Debug.Log("Player Dead");
                 //play dead animation
@@ -55,7 +78,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         }
         get
         {
-            return health;
+            return currentHealth;
         }
     }
 
@@ -70,6 +93,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = maxHealth;
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         currentRb = GetComponent<Rigidbody2D>();
@@ -79,8 +103,15 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     void Update()
     {
         Moving();
+        UpdatePlayerStates();
 
+        //sprint
         if (Input.GetKeyDown(sprintKey)) Sprint();
+
+        //set current weapon
+        if (Input.GetKey(KeyCode.Alpha1) && weapon1 != null) currentWeapon = weapon1;
+        if (Input.GetKey(KeyCode.Alpha2) && weapon2 != null) currentWeapon = weapon2;
+        if (Input.GetKey(KeyCode.Alpha3) && weapon3 != null) currentWeapon = weapon3;
     }
      
     void Moving()
@@ -136,30 +167,34 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         },knockbackTime * (1f - (0.001f * defence))));
     }
 
-    public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EffectType type)
+    public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
     { 
         switch (type)
         {
-            case EquippableItemSO.EffectType.armor:
+            case EquippableItemSO.EquipmentType.armor:
+                if (armor != null) inventoryData.AddItem(armor, 1);
                 armor = equipment;
                 break;
-            case EquippableItemSO.EffectType.jewelry:
+            case EquippableItemSO.EquipmentType.jewelry:
+                if (jewelry != null) inventoryData.AddItem(jewelry, 1);
                 jewelry = equipment;
                 break;
-            case EquippableItemSO.EffectType.book:
+            case EquippableItemSO.EquipmentType.book:
+                if (book != null) inventoryData.AddItem(book, 1);
                 book = equipment;
                 break;
         }
     }
     public void SetEquipment(WeaponSO weapon)
     {
-        if (weapon1 != null)
+        if (weapon1 == null) weapon1 = weapon;
+        else if (weapon2 == null) weapon2 = weapon;
+        else if (weapon3 == null) weapon3 = weapon;
+        else
         {
             inventoryData.AddItem(weapon1, 1);
+            weapon1 = weapon;
         }
-        this.weapon1 = weapon;
-
-        GetComponentInChildren<SummonWeapon>().weapon = weapon1;
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
@@ -167,5 +202,15 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         callback(false);
         yield return new WaitForSeconds(delayTime);
         callback(true);
+    }
+
+    private void UpdatePlayerStates()
+    {
+        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (currentWeapon != null ? currentWeapon.E_walkSpeed : 0);
+        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (currentWeapon != null ? currentWeapon.E_maxHealth : 0);
+        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (currentWeapon != null ? currentWeapon.E_strength : 0);
+        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (currentWeapon != null ? currentWeapon.E_defence : 0);
+        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (currentWeapon != null ? currentWeapon.E_critRate : 0);
+        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (currentWeapon != null ? currentWeapon.E_critDamage : 0);
     }
 }

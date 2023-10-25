@@ -8,13 +8,12 @@ using UnityEngine;
 public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
 {
     [Header("Effect settings")]
+    public float E_maxHealth;
+    public float E_strength;
     public float E_walkSpeed;
-    public float E_health;
-    public float E_attackSpeed = 1f;
-    public float E_attackCooldown;
-    public float E_weaponDamage = 1f;
-    public float E_knockbackForce;
-    public float E_knockbackTime;
+    public float E_defence;
+    public float E_critRate;
+    public float E_critDamage;
     public enum EffectType
     {
         a, b, c, d

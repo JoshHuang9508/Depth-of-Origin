@@ -18,7 +18,6 @@ namespace Inventory.Model
 
         [Header("Reference")]
         public Sprite Image;
-        public GameObject DropItem;
         public List<ItemParameter> DefaultParameterList;
 
         public int ID => GetInstanceID();

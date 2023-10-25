@@ -18,11 +18,16 @@ MonoBehaviour:
   MaxStackSize: 1
   Rarity: 3
   Image: {fileID: 21300000, guid: 85b785ab014598c40b5ae2d423367ee4, type: 3}
-  DropItem: {fileID: 0}
   DefaultParameterList: []
   attackSpeed: 1.4
   attackCooldown: 0.6
   weaponDamage: 47
   knockbackForce: 35
   knockbackTime: 0.7
+  E_walkSpeed: 0
+  E_maxHealth: 0
+  E_strength: 0
+  E_defence: 0
+  E_critRate: 0
+  E_critDamage: 0
   weaponObject: {fileID: 6740076035439635677, guid: b89b9cb154ba65e47aea34bf9c5efc90, type: 3}
