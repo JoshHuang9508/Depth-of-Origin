@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
-  lootMinItems: 2
-  lootMaxItems: 5
+  lootMinCoins: 1
+  lootMaxCoins: 4
   lootings: []
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}

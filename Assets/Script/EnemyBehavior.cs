@@ -42,8 +42,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(enemySO.lootings, enemySO.lootMinItems, enemySO.lootMaxItems);
-                itemDropperController.DropWrackages(enemySO.wreckage);
+                itemDropperController.Drop(enemySO.lootings, enemySO.lootMinItems, enemySO.lootMaxItems, enemySO.wreckage);
 
                 Destroy(gameObject);
             }
@@ -69,9 +68,6 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     void Update()
     {
         Moving();
-
-        //Debug.Log(target.position);
-        //Debug.Log(transform.position);
     }
 
     void Moving()
@@ -111,12 +107,11 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         if (attackEnabler)
         {
-            //Debug.Log("enemy trying to attack");
-
             Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
             Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;
 
             damageableObject.OnHit(enemySO.attackDamage, false, direction * enemySO.knockbackForce, enemySO.knockbackTime);
+
             StartCoroutine(delay((enabler) => {
                 attackEnabler = enabler;
             }, enemySO.attackSpeed));
@@ -131,15 +126,21 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
 
             //damage text
             RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-            text_Transform.GetComponent<TextMeshProUGUI>().text = damage.ToString();
-            text_Transform.GetComponent<TextMeshProUGUI>().color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
-            text_Transform.GetComponent<TextMeshProUGUI>().outlineWidth = isCrit ? 0.4f : 0f;
-            text_Transform.GetComponent<TextMeshProUGUI>().outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
             text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
             text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
+            TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+            text_MeshProUGUI.text = damage.ToString();
+            text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+            text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+            text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
+
+
             //knockback
             currentRb.velocity = knockbackForce;
+
+
+            //delay
             StartCoroutine(delay(enabler => {
                 damageEnabler = enabler;
             }, 0.2f)) ;

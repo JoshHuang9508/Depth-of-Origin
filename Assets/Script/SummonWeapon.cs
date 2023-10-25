@@ -6,6 +6,7 @@ public class SummonWeapon : MonoBehaviour
 {
     public Interactable Interactable;
     public WeaponSO weapon;
+    public PlayerBehaviour player;
 
     bool isflip;
     float startAngle;
@@ -41,7 +42,7 @@ public class SummonWeapon : MonoBehaviour
 
     public void Summon()
     {
-        if (summonEnabler && (weapon = GetComponentInParent<PlayerBehaviour>().currentWeapon))
+        if (summonEnabler && (weapon = player.weapon[player.currentWeapon]))
         {
             for (var i = this.transform.childCount - 1; i >= 0; i--)
             {

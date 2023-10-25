@@ -24,9 +24,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     float E_critRate;
     float E_critDamage;
 
-    public WeaponSO weapon1;
-    public WeaponSO weapon2;
-    public WeaponSO weapon3;
+    public List<WeaponSO> weapon;
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
@@ -35,7 +33,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     [Header("Current Data")]
     public float currentHealth;
-    public WeaponSO currentWeapon;
+    public int currentWeapon = 0;
 
     [Header("Connect Object")]
     public GameObject damageText;
@@ -94,49 +92,19 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     void Update()
     {
         Moving();
-        UpdatePlayerStates();
+
 
         //sprint
         if (Input.GetKeyDown(sprintKey)) Sprint();
 
+
         //set current weapon
-        if (Input.GetKey(KeyCode.Alpha1) && weapon1 != null) currentWeapon = weapon1;
-        if (Input.GetKey(KeyCode.Alpha2) && weapon2 != null) currentWeapon = weapon2;
-        if (Input.GetKey(KeyCode.Alpha3) && weapon3 != null) currentWeapon = weapon3;
+        if (Input.GetKey(KeyCode.Alpha1)) currentWeapon = 0;
+        if (Input.GetKey(KeyCode.Alpha2)) currentWeapon = 1;
+        if (Input.GetKey(KeyCode.Alpha3)) currentWeapon = 2;
     }
      
-    void Moving()
-    {
-        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
-        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
-        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
-
-        if (movementEnabler && Input.anyKey) {
-
-            int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
-
-            Vector3 movement = new Vector3(
-                Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer, 
-                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer, 
-                0.0f
-            );
-
-            currentRb.velocity = new Vector2(movement.x, movement.y);
-        }
-    }
-
-    void Sprint()
-    {
-        if (!sprintEnabler && movementEnabler)
-        {
-            StartCoroutine(delay(enabler => {
-                sprintEnabler = !enabler;
-            },2f));
-            StartCoroutine(delay(enabler => {
-                walkSpeedMutiplyerEnabler = !enabler;
-            }, 0.2f));
-        }
-    }
+    
 
     public int temp = 0;
 
@@ -146,19 +114,27 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
         //damage text
         RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-        text_Transform.GetComponent<TextMeshProUGUI>().text = damage.ToString();
-        text_Transform.GetComponent<TextMeshProUGUI>().color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
-        text_Transform.GetComponent<TextMeshProUGUI>().outlineWidth = isCrit ? 0.4f : 0f;
-        text_Transform.GetComponent<TextMeshProUGUI>().outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
         text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform); 
+        text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
+        TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+        text_MeshProUGUI.text = damage.ToString();
+        text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+        text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+        text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
+
 
         //camera shake
         CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
         StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
         onHitEffect.SetTrigger("Active");
 
+
+        //knockback
         currentRb.velocity = knockbackForce;
+
+        
+        //delay
         StartCoroutine(delay(enabler => {
             temp += !enabler ? 1 : -1;
             if (temp > 0 && enabler) return;
@@ -169,9 +145,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
     {
-        /*Debug.Log(armor != null);
-        Debug.Log(inventoryData);*/
-
         switch (type)
         {
             case EquippableItemSO.EquipmentType.armor:
@@ -187,17 +160,66 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
                 book = equipment;
                 break;
         }
+
+        UpdatePlayerStates();
     }
+
     public void SetEquipment(WeaponSO weapon)
     {
-        if (weapon1 == null) weapon1 = weapon;
-        else if (weapon2 == null) weapon2 = weapon;
-        else if (weapon3 == null) weapon3 = weapon;
+        if (this.weapon[0] == null) this.weapon[0] = weapon;
+        else if (this.weapon[1] == null) this.weapon[1] = weapon;
+        else if (this.weapon[2] == null) this.weapon[2] = weapon;
         else
         {
-            inventoryData.AddItem(weapon1, 1);
-            weapon1 = weapon;
+            inventoryData.AddItem(this.weapon[0], 1);
+            this.weapon[0] = weapon;
         }
+
+        UpdatePlayerStates();
+    }
+
+    private void Moving()
+    {
+        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
+        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
+
+        if (movementEnabler && Input.anyKey)
+        {
+
+            int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
+
+            Vector3 movement = new Vector3(
+                Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer,
+                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer,
+                0.0f
+            );
+
+            currentRb.velocity = new Vector2(movement.x, movement.y);
+        }
+    }
+
+    private void Sprint()
+    {
+        if (!sprintEnabler && movementEnabler)
+        {
+            StartCoroutine(delay(enabler => {
+                sprintEnabler = !enabler;
+            }, 2f));
+            StartCoroutine(delay(enabler => {
+                walkSpeedMutiplyerEnabler = !enabler;
+            }, 0.2f));
+        }
+    }
+
+    private void UpdatePlayerStates()
+    {
+        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_walkSpeed : 0);
+        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_maxHealth : 0);
+        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_strength : 0);
+        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_defence : 0);
+        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_critRate : 0);
+        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_critDamage : 0);
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
@@ -205,15 +227,5 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         callback(false);
         yield return new WaitForSeconds(delayTime);
         callback(true);
-    }
-
-    private void UpdatePlayerStates()
-    {
-        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (currentWeapon != null ? currentWeapon.E_walkSpeed : 0);
-        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (currentWeapon != null ? currentWeapon.E_maxHealth : 0);
-        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (currentWeapon != null ? currentWeapon.E_strength : 0);
-        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (currentWeapon != null ? currentWeapon.E_defence : 0);
-        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (currentWeapon != null ? currentWeapon.E_critRate : 0);
-        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (currentWeapon != null ? currentWeapon.E_critDamage : 0);
     }
 }
