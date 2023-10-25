@@ -129,7 +129,8 @@ namespace Inventory
 
             ItemSO item = inventoryItem.item;
             string description = PrepareDescription(inventoryItem);
-            inventoryUI.UpdateDescription(itemIndex, item.Image, item.name, description);
+            inventoryUI.UpdateDescription(itemIndex,item);
+            //inventoryUI.UpdateDescription(itemIndex, item.Image, item.Name, description);
         }
 
         public string PrepareDescription(InventoryItem inventoryItem)

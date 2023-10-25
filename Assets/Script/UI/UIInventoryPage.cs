@@ -156,9 +156,9 @@ namespace Inventory.UI
             ResetDraggedItem();
         }
 
-        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description)
+        public void UpdateDescription(int itemIndex, ItemSO item)
         {
-            itemDescription.SetDescription(itemImage, name, description);
+            itemDescription.SetDescription(item);
             DeselectAllItems();
             listOfUIItems[itemIndex].Select();
         }

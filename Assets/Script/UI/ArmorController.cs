@@ -24,11 +24,14 @@ public class ArmorController : MonoBehaviour
         weapon1.gameObject.SetActive(false);
         weapon2.gameObject.SetActive(false);
         weapon3.gameObject.SetActive(false);
+        
     }
     private void Start()
     {
         player = target.GetComponent<PlayerBehaviour>();
+
     }
+
 
     private void Update()
     {
