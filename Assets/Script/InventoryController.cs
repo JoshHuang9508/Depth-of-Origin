@@ -10,7 +10,7 @@ namespace Inventory
 {
     public class InventoryController : MonoBehaviour
     {
-        [SerializeField] private UIInventoryPage inventoryUI;
+        [SerializeField] private UIInventoryPage inventoryUI; 
 
         [SerializeField] private InventorySO InventoryData;
 
