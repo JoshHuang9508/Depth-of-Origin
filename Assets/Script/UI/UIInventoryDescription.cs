@@ -18,17 +18,59 @@ namespace Inventory.UI
         {
             ResetDescription();
         }
+
         public void ResetDescription()
         {
             itemImage.gameObject.SetActive(false);
-            title.text = "";
-            description.text = "";
+            title.gameObject.SetActive(false);
+            description.gameObject.SetActive(false);
         }
+
         public void SetDescription(ItemSO item)
+        {
+            SetImage(item);
+            SetTitle(item);
+
+            description.gameObject.SetActive(true);
+            description.text = item.Description;
+        }
+
+        public void SetDescription(WeaponSO item)
+        {
+            SetImage(item);
+            SetTitle(item);
+
+            description.gameObject.SetActive(true);
+            description.text = item.Description;
+        }
+
+        public void SetDescription(EdibleItemSO item)
+        {
+            SetImage(item);
+            SetTitle(item);
+
+            description.gameObject.SetActive(true);
+            description.text = item.Description;
+        }
+
+        public void SetDescription(EquippableItemSO item)
+        {
+            SetImage(item);
+            SetTitle(item);
+
+            description.gameObject.SetActive(true);
+            description.text = item.Description;
+        }
+
+        private void SetImage(ItemSO item)
         {
             itemImage.gameObject.SetActive(true);
             itemImage.sprite = item.Image;
+        }
 
+        private void SetTitle(ItemSO item)
+        {
+            title.gameObject.SetActive(true);
             title.text = item.Name;
             switch (item.Rarity)
             {
@@ -51,8 +93,6 @@ namespace Inventory.UI
                     title.outlineColor = new Color(255, 0, 0, 255);
                     break;
             }
-
-            description.text = item.Description;
         }
     }
 }

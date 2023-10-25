@@ -120,7 +120,6 @@ namespace Inventory.UI
         {
             gameObject.SetActive(true);
             Reselection();
-
         }
 
         public void Reselection()
