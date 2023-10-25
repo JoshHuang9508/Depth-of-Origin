@@ -169,8 +169,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
     {
-        Debug.Log(armor != null);
-        Debug.Log(inventoryData);
+        /*Debug.Log(armor != null);
+        Debug.Log(inventoryData);*/
 
         switch (type)
         {
