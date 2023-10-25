@@ -18,7 +18,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     Transform target;
     Damage_Interface damageableObject;
 
-    float health;
+    float currentHealth;
     bool movementEnabler = true;
     bool damageEnabler = true;
     bool attackEnabler = true;
@@ -27,22 +27,14 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         set
         {
-            if (value < health)
+            if (value < currentHealth)
             {
                 //play hit animation
-
-                //health text
-                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-                text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
-                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-
-                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
-                text_Transform.SetParent(canvas.transform);
             }
 
-            health = value;
+            currentHealth = value;
 
-            if (health <= 0)
+            if (currentHealth <= 0)
             {
                 //play dead animation
 
@@ -58,14 +50,14 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
         }
         get
         {
-            return health;
+            return currentHealth;
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        health = enemySO.health;
+        currentHealth = enemySO.health;
         target = GameObject.FindWithTag("Player").transform;
         animator = GetComponentInChildren<Animator>();
         currentRb = GetComponent<Rigidbody2D>();
@@ -78,8 +70,8 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         Moving();
 
-        Debug.Log(target.position);
-        Debug.Log(transform.position);
+        //Debug.Log(target.position);
+        //Debug.Log(transform.position);
     }
 
     void Moving()
@@ -119,23 +111,34 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         if (attackEnabler)
         {
-            Debug.Log("enemy trying to attack");
+            //Debug.Log("enemy trying to attack");
 
             Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
             Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;
 
-            damageableObject.OnHit(enemySO.attackDamage, direction * enemySO.knockbackForce, enemySO.knockbackTime);
+            damageableObject.OnHit(enemySO.attackDamage, false, direction * enemySO.knockbackForce, enemySO.knockbackTime);
             StartCoroutine(delay((enabler) => {
                 attackEnabler = enabler;
             }, enemySO.attackSpeed));
         }
     }
 
-    public void OnHit(float damage, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
         if (damageEnabler)
         {
             Health -= damage;
+
+            //damage text
+            RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+            text_Transform.GetComponent<TextMeshProUGUI>().text = damage.ToString();
+            text_Transform.GetComponent<TextMeshProUGUI>().color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+            text_Transform.GetComponent<TextMeshProUGUI>().outlineWidth = isCrit ? 0.4f : 0f;
+            text_Transform.GetComponent<TextMeshProUGUI>().outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+            text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
+            //knockback
             currentRb.velocity = knockbackForce;
             StartCoroutine(delay(enabler => {
                 damageEnabler = enabler;

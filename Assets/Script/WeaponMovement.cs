@@ -23,8 +23,11 @@ public class WeaponMovement : MonoBehaviour
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
+                bool isCrit = Random.Range(0f, 100f) <= player.critRate ? true : false;
+
                 damageableObject.OnHit(
-                    weapon.weaponDamage * (1 + (0.01f * player.strength)) *¡@(Random.Range(0f, 100f) <= player.critRate ? 1 + (0.01f * player.critDamage) : 1), 
+                    weapon.weaponDamage * (1 + (0.01f * player.strength)) *¡@(isCrit ? 1 + (0.01f * player.critDamage) : 1), 
+                    isCrit,
                     direction * weapon.knockbackForce, 
                     weapon.knockbackTime);
 

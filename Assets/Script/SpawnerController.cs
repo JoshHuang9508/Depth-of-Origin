@@ -22,7 +22,7 @@ public class SpawnerController : MonoBehaviour
         if (collision.CompareTag("Player") && stayMobs <= spawnLimit && spawnEnabler && maxSpawnTimes != 0)
         {
             SpawnMobs();
-            Debug.Log("Trying to spawn mobs");
+            //Debug.Log("Trying to spawn mobs");
         }
     }
 

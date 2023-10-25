@@ -55,15 +55,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             if (value < currentHealth)
             {
                 //play hit animation
-
-                //show damage text
-                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-                text_Transform.GetComponent<TextMeshProUGUI>().text = (Health - value).ToString();
-                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-
-                //camera shake
-                Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
-                text_Transform.SetParent(canvas.transform);
             }
 
             if (value > maxHealth) currentHealth = maxHealth;
@@ -149,9 +140,18 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public int temp = 0;
 
-    public void OnHit(float damage, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
         Health -= damage;
+
+        //damage text
+        RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+        text_Transform.GetComponent<TextMeshProUGUI>().text = damage.ToString();
+        text_Transform.GetComponent<TextMeshProUGUI>().color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+        text_Transform.GetComponent<TextMeshProUGUI>().outlineWidth = isCrit ? 0.4f : 0f;
+        text_Transform.GetComponent<TextMeshProUGUI>().outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+        text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform); 
 
         //camera shake
         CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();

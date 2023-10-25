@@ -28,13 +28,6 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
             if (value < health)
             {
                 //play hit animation
-
-                //show damage text
-                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-                text_Transform.GetComponent<TextMeshProUGUI>().text = (health - value).ToString();
-                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-
-                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
             }
 
             health = value;
@@ -65,11 +58,21 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
         }
     }
 
-    public void OnHit(float damage, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
         if (damageEnabler)
         {
             Health -= damage;
+
+            //damage text
+            RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+            text_Transform.GetComponent<TextMeshProUGUI>().text = damage.ToString();
+            text_Transform.GetComponent<TextMeshProUGUI>().color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+            text_Transform.GetComponent<TextMeshProUGUI>().outlineWidth = isCrit ? 0.4f : 0f;
+            text_Transform.GetComponent<TextMeshProUGUI>().outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+            text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
             StartCoroutine(delay(enabler => {
                 damageEnabler = enabler;
             }, 0.2f));
