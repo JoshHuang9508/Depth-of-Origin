@@ -30,7 +30,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
-    private InventorySO inventoryData;
 
     public KeyCode sprintKey;
 
@@ -41,6 +40,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     [Header("Connect Object")]
     public GameObject damageText;
     public Animator onHitEffect;
+    public InventorySO inventoryData;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
     public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
@@ -168,7 +168,10 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     }
 
     public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
-    { 
+    {
+        Debug.Log(armor != null);
+        Debug.Log(inventoryData);
+
         switch (type)
         {
             case EquippableItemSO.EquipmentType.armor:
