@@ -21,9 +21,7 @@ namespace Inventory
         public void Start()
         {
             PrepareUI();
-            if(initialEnabler)
-                PrepareInventoryData();
-
+            if(initialEnabler) PrepareInventoryData();
         }
 
         private void PrepareInventoryData()
@@ -128,21 +126,7 @@ namespace Inventory
             }
 
             ItemSO item = inventoryItem.item;
-            string description = PrepareDescription(inventoryItem);
-            inventoryUI.UpdateDescription(itemIndex,item);
-            //inventoryUI.UpdateDescription(itemIndex, item.Image, item.Name, description);
-        }
-
-        public string PrepareDescription(InventoryItem inventoryItem)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(inventoryItem.item.Description);
-            sb.AppendLine();
-            for(int i = 0; i < inventoryItem.itemState.Count; i++)
-            {
-                sb.Append($"{inventoryItem.itemState[i].itemParameter.ParameterName} " + $" : {inventoryItem.itemState[i].value} / {inventoryItem.item.DefaultParameterList[i].value}");
-            }
-            return sb.ToString();
+            inventoryUI.UpdateDescription(itemIndex, item);
         }
 
         private void Update()

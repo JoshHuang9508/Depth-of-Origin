@@ -22,7 +22,6 @@ public class SpawnerController : MonoBehaviour
         if (collision.CompareTag("Player") && stayMobs <= spawnLimit && spawnEnabler && maxSpawnTimes != 0)
         {
             SpawnMobs();
-            //Debug.Log("Trying to spawn mobs");
         }
     }
 
@@ -58,7 +57,7 @@ public class SpawnerController : MonoBehaviour
 
         StartCoroutine(delay(enabler =>
         spawnEnabler = enabler,
-        Random.Range(3, 10)));
+        Random.Range(3f, 10f)));
 
         spawnMob.GetComponent<EnemyBehavior>().enemySO = spawnList[randomSpawnIndex];
     }

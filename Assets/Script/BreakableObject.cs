@@ -10,8 +10,8 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
     public float health;
 
     [Header("Looting")]
-    public int lootMinItems;
-    public int lootMaxItems;
+    public int lootMinCoins;
+    public int lootMaxCoins;
     public List<Lootings> lootings;
     public List<GameObject> wreckage;
 
@@ -46,8 +46,7 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
                     Quaternion.identity,
                     GameObject.FindWithTag("Item").transform
                     );
-                ItemDropper.GetComponent<ItemDropper>().DropItems(lootings, lootMinItems, lootMaxItems);
-                ItemDropper.GetComponent<ItemDropper>().DropWrackages(wreckage);
+                ItemDropper.GetComponent<ItemDropper>().Drop(lootings, lootMinCoins, lootMaxCoins, wreckage);
 
                 Destroy(gameObject);
             }
@@ -66,13 +65,17 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
 
             //damage text
             RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-            text_Transform.GetComponent<TextMeshProUGUI>().text = damage.ToString();
-            text_Transform.GetComponent<TextMeshProUGUI>().color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
-            text_Transform.GetComponent<TextMeshProUGUI>().outlineWidth = isCrit ? 0.4f : 0f;
-            text_Transform.GetComponent<TextMeshProUGUI>().outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
             text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
             text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
+            TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+            text_MeshProUGUI.text = damage.ToString();
+            text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+            text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+            text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
+
+
+            //delay
             StartCoroutine(delay(enabler => {
                 damageEnabler = enabler;
             }, 0.2f));

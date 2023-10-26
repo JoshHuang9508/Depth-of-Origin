@@ -41,20 +41,20 @@ public class ArmorController : MonoBehaviour
 
     public void SetImage()
     {
-        if (player.weapon1 != null)
+        if (player.weapon[0] != null)
         {
             weapon1.gameObject.SetActive(true);
-            weapon1.sprite = player.weapon1.Image;
+            weapon1.sprite = player.weapon[0].Image;
         }
-        if (player.weapon2 != null)
+        if (player.weapon[1] != null)
         {
             weapon2.gameObject.SetActive(true);
-            weapon2.sprite = player.weapon2.Image;
+            weapon2.sprite = player.weapon[1].Image;
         }
-        if (player.weapon3 != null)
+        if (player.weapon[2] != null)
         {
             weapon3.gameObject.SetActive(true);
-            weapon3.sprite = player.weapon3.Image;
+            weapon3.sprite = player.weapon[2].Image;
         }
         if (player.armor != null)
         {

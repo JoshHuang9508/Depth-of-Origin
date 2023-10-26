@@ -7,8 +7,8 @@ public class ChestController : MonoBehaviour
 {
     bool isOpen;
     [Header("Looting")]
-    public int lootMinItems;
-    public int lootMaxItems;
+    public int lootMinCoins;
+    public int lootMaxCoins;
     public List<Lootings> lootings;
 
     [Header("Connect Object")]
@@ -40,7 +40,7 @@ public class ChestController : MonoBehaviour
             var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
             ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropItems(lootings, lootMinItems, lootMaxItems);
+            itemDropperController.Drop(lootings, lootMinCoins, lootMaxCoins);
         }
         else if (isOpen)
         {

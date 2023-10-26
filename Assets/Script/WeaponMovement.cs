@@ -26,7 +26,7 @@ public class WeaponMovement : MonoBehaviour
                 bool isCrit = Random.Range(0f, 100f) <= player.critRate ? true : false;
 
                 damageableObject.OnHit(
-                    weapon.weaponDamage * (1 + (0.01f * player.strength)) *¡@(isCrit ? 1 + (0.01f * player.critDamage) : 1), 
+                    weapon.weaponDamage * (1 + (0.01f * player.strength)) * (isCrit ? 1 + (0.01f * player.critDamage) : 1), 
                     isCrit,
                     direction * weapon.knockbackForce, 
                     weapon.knockbackTime);

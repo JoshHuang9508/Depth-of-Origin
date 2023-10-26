@@ -8,10 +8,21 @@ public class ItemDropper : MonoBehaviour
     public GameObject itemModel;
     public GameObject coinModel;
 
-    public void DropItems(List<Lootings> lootings) { }
-    public void DropItems(List<Lootings> lootings, int lootMinItems, int lootMaxItems)
+    public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins, List<GameObject> wreckages)
     {
-        for (int i = 0; i < Random.Range(lootMinItems, lootMaxItems + 1); i++)
+        DropItems(lootings);
+        DropCoins(lootMinCoins, lootMaxCoins);
+        DropWrackages(wreckages);
+    }
+    public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins)
+    {
+        DropItems(lootings);
+        DropCoins(lootMinCoins, lootMaxCoins);
+    }
+
+    private void DropCoins(int lootMinCoins, int lootMaxCoins)
+    {
+        for (int i = 0; i < Random.Range(lootMinCoins, lootMaxCoins + 1); i++)
         {
             var dropItem = Instantiate(
                 coinModel,
@@ -25,10 +36,12 @@ public class ItemDropper : MonoBehaviour
 
             dropItem.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
         }
+    }
 
+    private void DropItems(List<Lootings> lootings)
+    {
         if (lootings.Count == 0)
         {
-            Destroy(gameObject);
             return;
         }
 
@@ -56,15 +69,12 @@ public class ItemDropper : MonoBehaviour
                 dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
             }
         }
-
-        Destroy(gameObject);
     }
 
-    public void DropWrackages(List<GameObject> wreckages) 
+    private void DropWrackages(List<GameObject> wreckages) 
     {
         if (wreckages.Count == 0)
         {
-            Destroy(gameObject);
             return;
         }
 
