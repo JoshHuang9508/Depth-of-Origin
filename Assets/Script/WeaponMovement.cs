@@ -16,10 +16,8 @@ public class WeaponMovement : MonoBehaviour
     {
         Damage_Interface damageableObject = collision.GetComponentInParent<Damage_Interface>();
 
-        if (damageableObject != null)
-        {
-            if (collision.CompareTag("HitBox") || collision.CompareTag("BreakableObject"))
-            {
+        if (damageableObject != null) {
+            if (collision.CompareTag("HitBox") || collision.CompareTag("BreakableObject")) {
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
@@ -35,9 +33,7 @@ public class WeaponMovement : MonoBehaviour
                 CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
                 StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
             }
-        }
-        else
-        {
+        } else {
             //Debug.LogWarning("collision dont have implement IDamageable");
         }
     }
