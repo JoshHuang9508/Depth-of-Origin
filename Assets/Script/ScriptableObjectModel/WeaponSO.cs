@@ -13,6 +13,8 @@ public class WeaponSO : ItemSO, IDestoryableItem, IItemAction
     public float weaponDamage = 1f;
     public float knockbackForce;
     public float knockbackTime;
+
+    [Header("Effect settings")]
     public float E_walkSpeed;
     public float E_maxHealth;
     public float E_strength;

@@ -92,6 +92,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     void Update()
     {
         Moving();
+        UpdatePlayerStates();
 
 
         //sprint
@@ -160,8 +161,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
                 book = equipment;
                 break;
         }
-
-        UpdatePlayerStates();
     }
 
     public void SetEquipment(WeaponSO weapon)
@@ -174,8 +173,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             inventoryData.AddItem(this.weapon[0], 1);
             this.weapon[0] = weapon;
         }
-
-        UpdatePlayerStates();
     }
 
     private void Moving()

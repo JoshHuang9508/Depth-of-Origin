@@ -15,7 +15,7 @@ namespace Inventory.Model
         public bool IsStackable;
         public int MaxStackSize = 1;
         public Rarity Rarity;
-        public ItemType ItemType;
+        
 
         [Header("Reference")]
         public Sprite Image;
@@ -39,11 +39,6 @@ namespace Inventory.Model
     public enum Rarity
     {
         Common, Uncommon, Rare, Exotic, Mythic, Legendary 
-    }
-
-    public enum ItemType
-    {
-        Weapon, EquippableItem, EdibleItem, Coin
     }
 }
 
