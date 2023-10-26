@@ -29,10 +29,10 @@ public class InitialFromItemDropper : MonoBehaviour
                 backgroundLight2D.color = new Color(1, 1, 0);
                 break;
             case Rarity.Rare:
-                backgroundLight2D.color = new Color(0, 1, 1);
+                backgroundLight2D.color = new Color(0, 1, 0);
                 break;
             case Rarity.Exotic:
-                backgroundLight2D.color = new Color(0, 0, 1);
+                backgroundLight2D.color = new Color(0, 1, 1);
                 break;
             case Rarity.Mythic:
                 backgroundLight2D.color = new Color(1, 0, 1);

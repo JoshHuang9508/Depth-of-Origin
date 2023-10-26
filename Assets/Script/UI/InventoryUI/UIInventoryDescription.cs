@@ -87,10 +87,10 @@ namespace Inventory.UI
                     title.outlineColor = new Color(255, 255, 0, 255);
                     break;
                 case Rarity.Rare:
-                    title.outlineColor = new Color(0, 255, 255, 255);
+                    title.outlineColor = new Color(0, 255, 0, 255);
                     break;
                 case Rarity.Exotic:
-                    title.outlineColor = new Color(0, 0, 255, 255);
+                    title.outlineColor = new Color(0, 255, 255, 255);
                     break;
                 case Rarity.Mythic:
                     title.outlineColor = new Color(255, 0, 255, 255);

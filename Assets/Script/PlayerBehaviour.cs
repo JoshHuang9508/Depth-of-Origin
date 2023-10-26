@@ -34,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     [Header("Current Data")]
     public float currentHealth;
     public int currentWeapon = 0;
+    public int coinAmount = 0;
 
     [Header("Connect Object")]
     public GameObject damageText;

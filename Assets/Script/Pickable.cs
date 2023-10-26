@@ -33,10 +33,24 @@ public class Pickable : MonoBehaviour
             int movement_y = (this.transform.position.y - target.transform.position.y <= 0) ? 1 : -1;
             currentRb.velocity = new Vector3(movement_x * 12, movement_y * 12, 0.0f);
             float distance = Vector2.Distance(this.transform.position, target.transform.position);
-            if (distance <= 0.2)
+
+            try
             {
-                inventoryData.AddItem(InventoryItem, Quantity);
-                Destroy(gameObject);
+                if(distance <= 0.2)
+                {
+                    CoinSO coin = (CoinSO)InventoryItem;
+                    target.GetComponent<PlayerBehaviour>().coinAmount += 1;
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+            catch
+            {
+                if (distance <= 0.2)
+                {
+                    inventoryData.AddItem(InventoryItem, Quantity);
+                    Destroy(gameObject);
+                }
             }
         }
     }
