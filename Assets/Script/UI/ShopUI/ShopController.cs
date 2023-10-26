@@ -7,30 +7,20 @@ using UnityEngine;
 
 public class ShopController : MonoBehaviour
 {
-    [SerializeField] private UIShopPage shopUI;
+    [SerializeField] private UIShop shopUI;
     [SerializeField] private InventorySO inventoryData;
-
-    public List<InventoryItem> initialItems = new List<InventoryItem>();
 
     public void Start()
     {
         //prepare UI
         shopUI.InitializeInventoryUI(inventoryData.Size);
+
+        //action setup
         shopUI.OnDescriptionRequested += HandleDescriptionRequest;
         shopUI.OnSwapItems += HandleSwapItems;
         shopUI.OnStartDragging += HandleDragging;
         shopUI.OnItemActionRequested += HandleActionRequest;
-
-
-        //initial items
-        inventoryData.initialize();
         inventoryData.OnInventoryUpdated += UpdateInventoryUI;
-        foreach (InventoryItem item in initialItems)
-        {
-            if (item.IsEmpty)
-                continue;
-            inventoryData.AddItem(item);
-        }
     }
 
     private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
@@ -39,27 +29,6 @@ public class ShopController : MonoBehaviour
         foreach (var item in inventoryState)
         {
             shopUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
-        }
-    }
-
-    private void HandleActionRequest(int itemIndex)
-    {
-        InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-        if (inventoryItem.IsEmpty)
-        {
-            return;
-        }
-
-        IItemAction itemAction = inventoryItem.item as IItemAction;
-        if (itemAction != null)
-        {
-            shopUI.ShowItemAction(itemIndex);
-            shopUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
-        }
-        IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-        if (destoryableItem != null)
-        {
-            shopUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
         }
     }
 
@@ -82,6 +51,27 @@ public class ShopController : MonoBehaviour
         {
             itemAction.PerformAction(gameObject, inventoryItem.itemState);
             if (inventoryData.GetItemAt(itemIndex).IsEmpty) shopUI.Reselection();
+        }
+    }
+
+    private void HandleActionRequest(int itemIndex)
+    {
+        InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+        if (inventoryItem.IsEmpty)
+        {
+            return;
+        }
+
+        IItemAction itemAction = inventoryItem.item as IItemAction;
+        if (itemAction != null)
+        {
+            shopUI.ShowItemAction(itemIndex);
+            shopUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+        }
+        IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
+        if (destoryableItem != null)
+        {
+            shopUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
         }
     }
 

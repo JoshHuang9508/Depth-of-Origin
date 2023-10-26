@@ -24,6 +24,7 @@ public class EquippableItemSO : ItemSO, IItemAction, IDestoryableItem
     public bool PerformAction(GameObject _player, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour player = _player.GetComponent<PlayerBehaviour>();
+
         if (player != null)
         {
             player.SetEquipment(this, equipmentType);

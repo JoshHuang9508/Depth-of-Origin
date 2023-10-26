@@ -8,47 +8,26 @@ using UnityEngine;
 public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
 {
     [Header("Effect settings")]
+    public float E_heal;
     public float E_maxHealth;
     public float E_strength;
     public float E_walkSpeed;
     public float E_defence;
     public float E_critRate;
     public float E_critDamage;
-    public enum EffectType
-    {
-        a, b, c, d
-    }
+    public float effectTime;
 
     public string ActionName => "Consume";
-
-    [SerializeField] private List<ModifierData> modifiersData = new List<ModifierData>();
-
-    [Serializable]
-    public class ModifierData
-    {
-        public EffectType effectType;
-        //public CharacterStatModifierSO statModifier;
-        public float value;
-    }
 
     public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
 
-        if (player == null) return true;
-
-        foreach (ModifierData data in modifiersData)
+        if (player != null)
         {
-            Debug.Log("Use");
-
-            switch (data.effectType)
-            {
-                case EffectType.a:
-                    Debug.Log("a");
-                    break;
-            }
+            player.SetEquipment(this, effectTime);
         }
-        return true;
+        return false;
     }
 
     

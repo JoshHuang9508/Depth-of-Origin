@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 
 namespace Inventory.UI
 {
-    public class UIInventoryDescription : MonoBehaviour
+    public class UIDescriptionPage : MonoBehaviour
     {
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text title;
@@ -55,13 +55,26 @@ namespace Inventory.UI
             try
             {
                 var edibleItem = (EdibleItemSO)item;
-                b = "";
+                b = $"After consumed  :\n" +
+                    $"- HP + {edibleItem.E_heal}\n" +
+                    $"- Max HP + {edibleItem.E_maxHealth}\n" +
+                    $"- Strength + {edibleItem.E_strength}\n" +
+                    $"- Defence + {edibleItem.E_defence}\n" +
+                    $"- Walk SPD + {edibleItem.E_walkSpeed}\n" +
+                    $"- Crit Rate + {edibleItem.E_critRate}%\n" +
+                    $"- Crit DMG + {edibleItem.E_critDamage}%";
             }
             catch { }
             try
             {
                 var equipment = (EquippableItemSO)item;
-                b = "";
+                b = $"When equipped :\n" +
+                    $"- Max HP + {equipment.E_maxHealth}\n" +
+                    $"- Strength + {equipment.E_strength}\n" +
+                    $"- Defence + {equipment.E_defence}\n" +
+                    $"- Walk SPD + {equipment.E_walkSpeed}\n" +
+                    $"- Crit Rate + {equipment.E_critRate}%\n" +
+                    $"- Crit DMG + {equipment.E_critDamage}%"; ;
             }
             catch { }
 

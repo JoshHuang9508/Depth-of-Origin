@@ -10,30 +10,20 @@ namespace Inventory
 {
     public class InventoryController : MonoBehaviour
     {
-        [SerializeField] private UIInventoryPage inventoryUI;
+        [SerializeField] private UIInventory inventoryUI;
         [SerializeField] private InventorySO inventoryData;
-
-        public List<InventoryItem> initialItems = new List<InventoryItem>();
 
         public void Start()
         {
             //prepare UI
             inventoryUI.InitializeInventoryUI(inventoryData.Size);
+
+            //action setup
+            inventoryData.OnInventoryUpdated += UpdateInventoryUI;
             inventoryUI.OnDescriptionRequested += HandleDescriptionRequest;
             inventoryUI.OnSwapItems += HandleSwapItems;
             inventoryUI.OnStartDragging += HandleDragging;
             inventoryUI.OnItemActionRequested += HandleActionRequest;
-
-
-            //initial items
-            inventoryData.initialize();
-            inventoryData.OnInventoryUpdated += UpdateInventoryUI;
-            foreach (InventoryItem item in initialItems)
-            {
-                if (item.IsEmpty)
-                    continue;
-                inventoryData.AddItem(item);
-            }
         }
 
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
@@ -42,27 +32,6 @@ namespace Inventory
             foreach (var item in inventoryState)
             {
                 inventoryUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
-            }
-        }
-
-        private void HandleActionRequest(int itemIndex)
-        {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.IsEmpty)
-            {
-                return;
-            }
-
-            IItemAction itemAction = inventoryItem.item as IItemAction;
-            if (itemAction != null)
-            {
-                inventoryUI.ShowItemAction(itemIndex);
-                inventoryUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
-            }
-            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-            if (destoryableItem != null)
-            {
-                inventoryUI.AddAction("Drop", () => DropItem(itemIndex,inventoryItem.quantity));
             }
         }
 
@@ -85,6 +54,27 @@ namespace Inventory
             {
                 itemAction.PerformAction(gameObject, inventoryItem.itemState);
                 if (inventoryData.GetItemAt(itemIndex).IsEmpty) inventoryUI.Reselection();
+            }
+        }
+
+        private void HandleActionRequest(int itemIndex)
+        {
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            if (inventoryItem.IsEmpty)
+            {
+                return;
+            }
+
+            IItemAction itemAction = inventoryItem.item as IItemAction;
+            if (itemAction != null)
+            {
+                inventoryUI.ShowItemAction(itemIndex);
+                inventoryUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+            }
+            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
+            if (destoryableItem != null)
+            {
+                inventoryUI.AddAction("Drop", () => DropItem(itemIndex,inventoryItem.quantity));
             }
         }
 

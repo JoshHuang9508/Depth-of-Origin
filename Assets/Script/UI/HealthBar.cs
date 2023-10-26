@@ -8,6 +8,8 @@ public class HealthBar : MonoBehaviour
 {
     public Slider slider;
     public TMP_Text healthText;
+    public Gradient gradient;
+    public Image fill;
     PlayerBehaviour player;
 
 
@@ -22,5 +24,6 @@ public class HealthBar : MonoBehaviour
     {
         slider.value = player.currentHealth / player.maxHealth;
         healthText.text = $"{player.currentHealth} / {player.maxHealth}";
+        fill.color = gradient.Evaluate(player.currentHealth / player.maxHealth);
     }
 }

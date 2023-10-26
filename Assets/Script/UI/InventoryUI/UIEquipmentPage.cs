@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ArmorController : MonoBehaviour
+public class UIEquipmentPage : MonoBehaviour
 {
     public Image armor, jewelry, book, weapon1, weapon2, weapon3;
     public GameObject target, statsdisplay;

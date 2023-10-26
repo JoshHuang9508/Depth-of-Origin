@@ -5,49 +5,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIShopPage : MonoBehaviour
+public class UIShop : MonoBehaviour
 {
-
     [SerializeField] private UIInventoryItem itemPrefabs;
-
     [SerializeField] private RectTransform contentPanel;
-
-    [SerializeField] private UIInventoryDescription itemDescription;
-
+    [SerializeField] private UIDescriptionPage itemDescription;
     [SerializeField] private MouseFollower mouseFollower;
-
     [SerializeField] private ItemActionPanel actionPanel;
 
+    private int currentDraggedItemIndex = -1;
+    public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+    public event Action<int, int> OnSwapItems;
     List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
 
-    private int currentDraggedItemIndex = -1;
-
-    public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
-
-    public event Action<int, int> OnSwapItems;
 
     private void Awake()
     {
-        hide();
         mouseFollower.Toggle(false);
         itemDescription.ResetDescription();
+        hide();
     }
+
     public void InitializeInventoryUI(int inventorysize)
     {
         for (int i = 0; i < inventorysize; i++)
         {
             UIInventoryItem uiItem = Instantiate(itemPrefabs, Vector3.zero, Quaternion.identity);
             uiItem.transform.SetParent(contentPanel);
-            listOfUIItems.Add(uiItem);
             uiItem.OnItemClicked += HandleItemSelection;
             uiItem.OnItemBeginDrag += HandleBeginDrag;
             uiItem.OnItemDroppedOn += HandleSwap;
             uiItem.OnItemEndDrag += HandleEndDrag;
             uiItem.OnRightMouseBtnClick += HandleShowItemActions;
-
+            listOfUIItems.Add(uiItem);
         }
     }
+
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
     {
         if (listOfUIItems.Count > itemIndex)
@@ -55,7 +49,6 @@ public class UIShopPage : MonoBehaviour
             listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
         }
     }
-
 
     private void HandleShowItemActions(UIInventoryItem inventoryItemUI)
     {
@@ -83,12 +76,6 @@ public class UIShopPage : MonoBehaviour
         HandleItemSelection(inventoryItemUI);
     }
 
-    private void ResetDraggedItem()
-    {
-        mouseFollower.Toggle(false);
-        currentDraggedItemIndex = -1;
-    }
-
     private void HandleBeginDrag(UIInventoryItem inventoryItemUI)
     {
         int index = listOfUIItems.IndexOf(inventoryItemUI);
@@ -114,11 +101,10 @@ public class UIShopPage : MonoBehaviour
         mouseFollower.SetData(sprite, quantity);
     }
 
-    public void show()
+    private void ResetDraggedItem()
     {
-        gameObject.SetActive(true);
-        Reselection();
-
+        mouseFollower.Toggle(false);
+        currentDraggedItemIndex = -1;
     }
 
     public void Reselection()
@@ -145,6 +131,12 @@ public class UIShopPage : MonoBehaviour
     public void AddAction(string actionName, Action performAction)
     {
         actionPanel.AddButton(actionName, performAction);
+    }
+
+    public void show()
+    {
+        gameObject.SetActive(true);
+        Reselection();
     }
 
     public void hide()

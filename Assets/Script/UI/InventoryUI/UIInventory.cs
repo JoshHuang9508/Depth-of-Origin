@@ -7,11 +7,11 @@ using UnityEngine.UI;
 
 namespace Inventory.UI
 {
-    public class UIInventoryPage : MonoBehaviour
+    public class UIInventory : MonoBehaviour
     {
         [SerializeField] private UIInventoryItem itemPrefabs;
         [SerializeField] private RectTransform contentPanel;
-        [SerializeField] private UIInventoryDescription itemDescription;
+        [SerializeField] private UIDescriptionPage itemDescription;
         [SerializeField] private MouseFollower mouseFollower;
         [SerializeField] private ItemActionPanel actionPanel;
 
@@ -24,9 +24,9 @@ namespace Inventory.UI
 
         private void Awake()
         {
-            hide();
             mouseFollower.Toggle(false);
             itemDescription.ResetDescription();
+            hide();
         }
 
         public void InitializeInventoryUI(int inventorysize)
@@ -35,13 +35,12 @@ namespace Inventory.UI
             {
                 UIInventoryItem uiItem = Instantiate(itemPrefabs, Vector3.zero, Quaternion.identity);
                 uiItem.transform.SetParent(contentPanel);
-                listOfUIItems.Add(uiItem);
                 uiItem.OnItemClicked += HandleItemSelection;
                 uiItem.OnItemBeginDrag += HandleBeginDrag;
                 uiItem.OnItemDroppedOn += HandleSwap;
                 uiItem.OnItemEndDrag += HandleEndDrag;
                 uiItem.OnRightMouseBtnClick += HandleShowItemActions;
-
+                listOfUIItems.Add(uiItem);
             }
         }
 
@@ -164,7 +163,5 @@ namespace Inventory.UI
                 item.Deselect();
             }
         }
-
-        
     }
 }

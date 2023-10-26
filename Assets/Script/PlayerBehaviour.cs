@@ -23,18 +23,21 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     float E_defence;
     float E_critRate;
     float E_critDamage;
-
-    public List<WeaponSO> weapon;
-    public EquippableItemSO armor;
-    public EquippableItemSO jewelry;
-    public EquippableItemSO book;
-
-    public KeyCode sprintKey;
+    
+    public List<InventoryItem> initialItems;
 
     [Header("Current Data")]
     public float currentHealth;
     public int currentWeapon = 0;
     public int coinAmount = 0;
+    public List<WeaponSO> weapon;
+    public EquippableItemSO armor;
+    public EquippableItemSO jewelry;
+    public EquippableItemSO book;
+    public List<EdibleItemSO> effection;
+
+    [Header("Key Settings")]
+    public KeyCode sprintKey;
 
     [Header("Connect Object")]
     public GameObject damageText;
@@ -87,6 +90,15 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         currentRb = GetComponent<Rigidbody2D>();
+
+        //initial items
+        inventoryData.initialize();
+        foreach (InventoryItem item in initialItems)
+        {
+            if (item.IsEmpty)
+                continue;
+            inventoryData.AddItem(item);
+        }
     }
 
     // Update is called once per frame
@@ -95,10 +107,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         Moving();
         UpdatePlayerStates();
 
-
         //sprint
         if (Input.GetKeyDown(sprintKey)) Sprint();
-
 
         //set current weapon
         if (Input.GetKey(KeyCode.Alpha1)) currentWeapon = 0;
@@ -108,7 +118,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
      
     
 
-    public int temp = 0;
+    int onHitCounter = 0;
 
     public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
@@ -138,8 +148,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         
         //delay
         StartCoroutine(delay(enabler => {
-            temp += !enabler ? 1 : -1;
-            if (temp > 0 && enabler) return;
+            onHitCounter += !enabler ? 1 : -1;
+            if (onHitCounter > 0 && enabler) return;
             movementEnabler = enabler;
             animator.enabled = enabler;
         },knockbackTime * (1f - (0.001f * defence))));
@@ -174,6 +184,17 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             inventoryData.AddItem(this.weapon[0], 1);
             this.weapon[0] = weapon;
         }
+    }
+
+    public void SetEquipment(EdibleItemSO edibleItem, float effectTime)
+    {
+        currentHealth += edibleItem.E_heal;
+
+        StartCoroutine(delay(callback =>
+        {
+            if (!callback) effection.Add(edibleItem);
+            else effection.Remove(edibleItem);
+        }, effectTime));
     }
 
     private void Moving()
@@ -218,6 +239,18 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_defence : 0);
         E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_critRate : 0);
         E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_critDamage : 0);
+
+        for(int i = 0; i < effection.Count; i++)
+        {
+            E_walkSpeed += effection[i].E_walkSpeed;
+            E_maxHealth += effection[i].E_maxHealth;
+            E_strength += effection[i].E_strength;
+            E_defence += effection[i].E_defence;
+            E_critRate += effection[i].E_critRate;
+            E_critDamage += effection[i].E_critDamage;
+        }
+
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
