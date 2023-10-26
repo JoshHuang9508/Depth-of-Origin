@@ -11,6 +11,7 @@ public class ArmorController : MonoBehaviour
     public GameObject target, statsdisplay;
     public TMP_Text health, str, movespeed, def, critrate, critdamage;
     PlayerBehaviour player;
+
     private void Awake()
     {
         initial();
@@ -29,7 +30,6 @@ public class ArmorController : MonoBehaviour
     private void Start()
     {
         player = target.GetComponent<PlayerBehaviour>();
-
     }
 
 

@@ -9,25 +9,18 @@ namespace Inventory.UI
 {
     public class UIInventoryPage : MonoBehaviour
     {
-
         [SerializeField] private UIInventoryItem itemPrefabs;
-
         [SerializeField] private RectTransform contentPanel;
-
         [SerializeField] private UIInventoryDescription itemDescription;
-
         [SerializeField] private MouseFollower mouseFollower;
-
         [SerializeField] private ItemActionPanel actionPanel;
 
+        private int currentDraggedItemIndex = -1;
+        public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+        public event Action<int, int> OnSwapItems;
         List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
 
-        private int currentDraggedItemIndex = -1;
-
-        public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
-
-        public event Action<int, int> OnSwapItems;
 
         private void Awake()
         {
@@ -35,6 +28,7 @@ namespace Inventory.UI
             mouseFollower.Toggle(false);
             itemDescription.ResetDescription();
         }
+
         public void InitializeInventoryUI(int inventorysize)
         {
             for (int i = 0; i < inventorysize; i++)
@@ -50,6 +44,7 @@ namespace Inventory.UI
 
             }
         }
+
         public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
         {
             if (listOfUIItems.Count > itemIndex)
@@ -57,7 +52,6 @@ namespace Inventory.UI
                 listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
             }
         }
-
 
         private void HandleShowItemActions(UIInventoryItem inventoryItemUI)
         {
@@ -85,12 +79,6 @@ namespace Inventory.UI
             HandleItemSelection(inventoryItemUI);
         }
 
-        private void ResetDraggedItem()
-        {
-            mouseFollower.Toggle(false);
-            currentDraggedItemIndex = -1;
-        }
-
         private void HandleBeginDrag(UIInventoryItem inventoryItemUI)
         {
             int index = listOfUIItems.IndexOf(inventoryItemUI);
@@ -116,10 +104,10 @@ namespace Inventory.UI
             mouseFollower.SetData(sprite, quantity);
         }
 
-        public void show()
+        private void ResetDraggedItem()
         {
-            gameObject.SetActive(true);
-            Reselection();
+            mouseFollower.Toggle(false);
+            currentDraggedItemIndex = -1;
         }
 
         public void Reselection()
@@ -146,6 +134,12 @@ namespace Inventory.UI
         public void AddAction(string actionName , Action performAction)
         {
             actionPanel.AddButton(actionName, performAction);
+        }
+
+        public void show()
+        {
+            gameObject.SetActive(true);
+            Reselection();
         }
 
         public void hide()

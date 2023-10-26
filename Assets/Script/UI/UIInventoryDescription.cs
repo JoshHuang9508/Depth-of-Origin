@@ -35,33 +35,6 @@ namespace Inventory.UI
             description.text = item.Description;
         }
 
-        public void SetDescription(WeaponSO item)
-        {
-            SetImage(item);
-            SetTitle(item);
-
-            description.gameObject.SetActive(true);
-            description.text = item.Description;
-        }
-
-        public void SetDescription(EdibleItemSO item)
-        {
-            SetImage(item);
-            SetTitle(item);
-
-            description.gameObject.SetActive(true);
-            description.text = item.Description;
-        }
-
-        public void SetDescription(EquippableItemSO item)
-        {
-            SetImage(item);
-            SetTitle(item);
-
-            description.gameObject.SetActive(true);
-            description.text = item.Description;
-        }
-
         private void SetImage(ItemSO item)
         {
             itemImage.gameObject.SetActive(true);
