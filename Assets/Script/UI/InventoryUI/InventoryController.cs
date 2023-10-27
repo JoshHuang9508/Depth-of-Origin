@@ -47,7 +47,18 @@ namespace Inventory
             if (inventoryItem.IsEmpty) return;
 
             IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-            if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, 1);
+            if (destoryableItem != null)
+            {
+                switch (actionSelection)
+                {
+                    case 1:
+                        inventoryData.RemoveItem(itemIndex, inventoryItem.quantity);
+                        break;
+                    case 2:
+                        inventoryData.RemoveItem(itemIndex, 1);
+                        break;
+                }
+            }
 
             IItemAction itemAction = inventoryItem.item as IItemAction;
             if (itemAction != null)

@@ -209,9 +209,9 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
-        if(potions != null) inventoryData.AddItem(potions, 1);
         potions = edibleItem;
         currentPotionAmont = amount;
+        if (potions != null) inventoryData.AddItem(potions, currentPotionAmont);
     }
 
     public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
