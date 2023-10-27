@@ -41,7 +41,7 @@ namespace Inventory
             inventoryUI.Reselection();
         }
 
-        public void PerformAction(int itemIndex)
+        public void PerformAction(int itemIndex, int actionSelection)
         {
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.IsEmpty) return;
@@ -52,7 +52,16 @@ namespace Inventory
             IItemAction itemAction = inventoryItem.item as IItemAction;
             if (itemAction != null)
             {
-                itemAction.PerformAction(gameObject, inventoryItem.itemState);
+                switch (actionSelection)
+                {
+                    case 1:
+                        itemAction.SelectAction(gameObject, inventoryItem.itemState, (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1, 1);
+                        break;
+                    case 2:
+                        itemAction.SelectAction(gameObject, inventoryItem.itemState, (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1, 2);
+                        break;
+                }
+                
                 if (inventoryData.GetItemAt(itemIndex).IsEmpty) inventoryUI.Reselection();
             }
         }
@@ -69,12 +78,21 @@ namespace Inventory
             if (itemAction != null)
             {
                 inventoryUI.ShowItemAction(itemIndex);
-                inventoryUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+
+                if(inventoryItem.item is IEquipable)
+                {
+                    inventoryUI.AddAction(itemAction.SelectAction(1), () => PerformAction(itemIndex, 1));
+                }
+                if(inventoryItem.item is IActionable)
+                {
+                    inventoryUI.AddAction(itemAction.SelectAction(2), () => PerformAction(itemIndex, 2));
+                }
+                
             }
             IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
             if (destoryableItem != null)
             {
-                inventoryUI.AddAction("Drop", () => DropItem(itemIndex,inventoryItem.quantity));
+                inventoryUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
             }
         }
 

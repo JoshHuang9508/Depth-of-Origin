@@ -10,7 +10,7 @@ namespace Inventory.UI
 {
     public class UIInventoryItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
     {
-        [SerializeField] private Image itemImage;
+        [SerializeField] public Image itemImage;
         [SerializeField] private TMP_Text quantityTxt;
 
         [SerializeField] private Image borderImage;
@@ -32,7 +32,11 @@ namespace Inventory.UI
 
         public void Deselect()
         {
-            borderImage.enabled = false;
+            try
+            {
+                borderImage.enabled = false;
+            }
+            catch { }
         }
 
         public void SetData(Sprite sprite, int quantity)

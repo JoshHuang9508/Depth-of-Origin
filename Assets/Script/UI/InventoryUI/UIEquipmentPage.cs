@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIEquipmentPage : MonoBehaviour
 {
-    public Image armor, jewelry, book, weapon1, weapon2, weapon3;
+    public UIInventoryItem armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
     public GameObject target, statsdisplay;
     public TMP_Text health, str, movespeed, def, critrate, critdamage;
     PlayerBehaviour player;
@@ -19,12 +19,7 @@ public class UIEquipmentPage : MonoBehaviour
 
     public void initial()
     {
-        armor.gameObject.SetActive(false);
-        jewelry.gameObject.SetActive(false);
-        book.gameObject.SetActive(false);
-        weapon1.gameObject.SetActive(false);
-        weapon2.gameObject.SetActive(false);
-        weapon3.gameObject.SetActive(false);
+        
         
     }
     private void Start()
@@ -41,36 +36,12 @@ public class UIEquipmentPage : MonoBehaviour
 
     public void SetImage()
     {
-        if (player.weapon[0] != null)
-        {
-            weapon1.gameObject.SetActive(true);
-            weapon1.sprite = player.weapon[0].Image;
-        }
-        if (player.weapon[1] != null)
-        {
-            weapon2.gameObject.SetActive(true);
-            weapon2.sprite = player.weapon[1].Image;
-        }
-        if (player.weapon[2] != null)
-        {
-            weapon3.gameObject.SetActive(true);
-            weapon3.sprite = player.weapon[2].Image;
-        }
-        if (player.armor != null)
-        {
-            armor.gameObject.SetActive(true);
-            armor.sprite = player.armor.Image;
-        }
-        if (player.jewelry != null)
-        {
-            jewelry.gameObject.SetActive(true);
-            jewelry.sprite = player.jewelry.Image;
-        }
-        if (player.book != null)
-        {
-            book.gameObject.SetActive(true);
-            book.sprite = player.book.Image;
-        }
+        meleeWeapon.SetData(player.meleeWeapon != null ? player.meleeWeapon.Image : null, player.meleeWeapon != null ? 1 : 0);
+        rangedWeapon.SetData(player.rangedWeapon != null ? player.rangedWeapon.Image : null, player.rangedWeapon != null ? 1 : 0);
+        potions.SetData(player.potions != null ? player.potions.Image : null, player.potions != null ? player.currentPotionAmont : 0);
+        armor.SetData(player.armor != null ? player.armor.Image : null, player.armor != null ? 1 : 0);
+        jewelry.SetData(player.jewelry != null ? player.jewelry.Image : null, player.jewelry != null ? 1 : 0);
+        book.SetData(player.book != null ? player.book.Image : null, player.book != null ? 1 : 0);
     }
 
     public void GetPlayerStats()

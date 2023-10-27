@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
+public class EdibleItemSO : ItemSO, IActionable, IEquipable, IDestoryableItem, IItemAction
 {
     [Header("Effect settings")]
     public float E_heal;
@@ -17,30 +17,25 @@ public class EdibleItemSO : ItemSO,IItemAction,IDestoryableItem
     public float E_critDamage;
     public float effectTime;
 
-    public string ActionName => "Consume";
-
-    public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
+    public bool PerformAction(GameObject character, int amount, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
 
         if (player != null)
         {
-            player.SetEquipment(this, effectTime);
+            player.SetEquipment(this, amount);
         }
         return false;
     }
 
-    
-}
+    public bool PerformAction2(GameObject character, int amount, List<ItemParameter> itemState = null)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
 
-public interface IDestoryableItem
-{
-
-}
-
-public interface IItemAction
-{
-    public string ActionName { get; }
-    bool PerformAction(GameObject character, List<ItemParameter> itemState);
-
+        if (player != null)
+        {
+            player.SetEffection(this, amount, effectTime);
+        }
+        return false;
+    }
 }

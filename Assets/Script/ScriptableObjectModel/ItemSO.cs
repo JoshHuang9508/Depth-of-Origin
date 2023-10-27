@@ -22,6 +22,34 @@ namespace Inventory.Model
         public List<ItemParameter> DefaultParameterList;
 
         public int ID => GetInstanceID();
+
+        public bool SelectAction(GameObject character, List<ItemParameter> itemState, int amount, int selection)
+        {
+            switch (selection)
+            {
+                case 1:
+                    IEquipable equipable = this as IEquipable;
+                    equipable.PerformAction(character, amount, itemState);
+                    break;
+                case 2:
+                    IActionable actionable = this as IActionable;
+                    actionable.PerformAction2(character, amount, itemState);
+                    break;
+            }
+            return false;
+        }
+
+        public string SelectAction(int selection)
+        {
+            switch (selection)
+            {
+                case 1:
+                    return "Equip";
+                case 2:
+                    return "Consume";
+            }
+            return "";
+        }
     }
 
     [Serializable]
@@ -40,6 +68,29 @@ namespace Inventory.Model
     {
         Common, Uncommon, Rare, Exotic, Mythic, Legendary 
     }
+
+    public interface IDestoryableItem
+    {
+
+    }
+
+    public interface IEquipable
+    {
+        bool PerformAction(GameObject character, int amount, List<ItemParameter> itemState);
+    }
+
+    public interface IActionable
+    {
+        bool PerformAction2(GameObject character, int amount, List<ItemParameter> itemState);
+    }
+
+    public interface IItemAction
+    {
+        bool SelectAction(GameObject character, List<ItemParameter> itemState, int amount, int selection);
+        string SelectAction(int selection);
+    }
 }
+
+
 
 

@@ -42,7 +42,7 @@ public class SummonWeapon : MonoBehaviour
 
     public void Summon()
     {
-        if (summonEnabler && (weapon = player.weapon[player.currentWeapon]))
+        if (summonEnabler && (weapon = player.currentWeapon))
         {
             for (var i = this.transform.childCount - 1; i >= 0; i--)
             {

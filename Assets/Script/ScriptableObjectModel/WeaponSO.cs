@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new weapon", menuName = "Items/Weapon")]
-public class WeaponSO : ItemSO, IDestoryableItem, IItemAction
+public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction
 {
     [Header("Basic Data")]
     public float attackSpeed = 1f;
@@ -13,6 +13,11 @@ public class WeaponSO : ItemSO, IDestoryableItem, IItemAction
     public float weaponDamage = 1f;
     public float knockbackForce;
     public float knockbackTime;
+    public WeaponType weaponType;
+    public enum WeaponType
+    {
+        Melee, Ranged
+    }
 
     [Header("Effect settings")]
     public float E_walkSpeed;
@@ -23,14 +28,13 @@ public class WeaponSO : ItemSO, IDestoryableItem, IItemAction
     public float E_critDamage;
     public GameObject weaponObject;
 
-    public string ActionName => "Equip";
-    public bool PerformAction(GameObject _player, List<ItemParameter> itemState = null)
+    public bool PerformAction(GameObject character, int amount, List<ItemParameter> itemState = null)
     {
-        PlayerBehaviour player = _player.GetComponent<PlayerBehaviour>();
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+
         if (player != null)
         {
-            player.SetEquipment(this);
-            return true;
+            player.SetEquipment(this, weaponType);
         }
         return false;
     }

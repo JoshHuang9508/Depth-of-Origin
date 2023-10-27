@@ -28,9 +28,12 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     [Header("Current Data")]
     public float currentHealth;
-    public int currentWeapon = 0;
+    public WeaponSO currentWeapon;
     public int coinAmount = 0;
-    public List<WeaponSO> weapon;
+    public WeaponSO meleeWeapon;
+    public WeaponSO rangedWeapon;
+    public EdibleItemSO potions;
+    public int currentPotionAmont;
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
@@ -66,6 +69,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             if (currentHealth <= 0)
             {
                 Debug.Log("Player Dead");
+                currentHealth = 0;
+
                 //play dead animation
             }
         }
@@ -83,7 +88,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     SpriteRenderer spriteRenderer;
     Rigidbody2D currentRb;
 
-    // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
@@ -101,7 +105,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         }
     }
 
-    // Update is called once per frame
+    int control = 1;
+
     void Update()
     {
         Moving();
@@ -111,9 +116,20 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         if (Input.GetKeyDown(sprintKey)) Sprint();
 
         //set current weapon
-        if (Input.GetKey(KeyCode.Alpha1)) currentWeapon = 0;
-        if (Input.GetKey(KeyCode.Alpha2)) currentWeapon = 1;
-        if (Input.GetKey(KeyCode.Alpha3)) currentWeapon = 2;
+        if (Input.GetKey(KeyCode.Alpha1)) control = 1;
+        if (Input.GetKey(KeyCode.Alpha2)) control = 2;
+        switch (control)
+        {
+            case 1:
+                currentWeapon = meleeWeapon;
+                break;
+            case 2:
+                currentWeapon = rangedWeapon;
+                break;
+        }
+
+        //use potion
+        if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null) potions.PerformAction2(gameObject, 1);
     }
      
     
@@ -155,6 +171,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         },knockbackTime * (1f - (0.001f * defence))));
     }
 
+
+
     public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
     {
         switch (type)
@@ -174,21 +192,36 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         }
     }
 
-    public void SetEquipment(WeaponSO weapon)
+    public void SetEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
     {
-        if (this.weapon[0] == null) this.weapon[0] = weapon;
-        else if (this.weapon[1] == null) this.weapon[1] = weapon;
-        else if (this.weapon[2] == null) this.weapon[2] = weapon;
-        else
+        switch (type)
         {
-            inventoryData.AddItem(this.weapon[0], 1);
-            this.weapon[0] = weapon;
+            case WeaponSO.WeaponType.Melee:
+                if (meleeWeapon != null) inventoryData.AddItem(meleeWeapon, 1);
+                meleeWeapon = weapon;
+                break;
+            case WeaponSO.WeaponType.Ranged:
+                if (rangedWeapon != null) inventoryData.AddItem(rangedWeapon, 1);
+                rangedWeapon = weapon;
+                break;
         }
     }
 
-    public void SetEquipment(EdibleItemSO edibleItem, float effectTime)
+    public void SetEquipment(EdibleItemSO edibleItem, int amount)
+    {
+        if(potions != null) inventoryData.AddItem(potions, 1);
+        potions = edibleItem;
+        currentPotionAmont = amount;
+    }
+
+    public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
     {
         currentHealth += edibleItem.E_heal;
+        currentPotionAmont -= amount;
+        if (currentPotionAmont <= 0)
+        {
+            potions = null;
+        }
 
         StartCoroutine(delay(callback =>
         {
@@ -196,6 +229,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             else effection.Remove(edibleItem);
         }, effectTime));
     }
+    
+
 
     private void Moving()
     {
@@ -233,12 +268,12 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     private void UpdatePlayerStates()
     {
-        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_walkSpeed : 0);
-        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_maxHealth : 0);
-        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_strength : 0);
-        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_defence : 0);
-        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_critRate : 0);
-        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (weapon[currentWeapon] != null ? weapon[currentWeapon].E_critDamage : 0);
+        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (currentWeapon != null ? currentWeapon.E_walkSpeed : 0);
+        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (currentWeapon != null ? currentWeapon.E_maxHealth : 0);
+        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (currentWeapon != null ? currentWeapon.E_strength : 0);
+        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (currentWeapon != null ? currentWeapon.E_defence : 0);
+        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (currentWeapon != null ? currentWeapon.E_critRate : 0);
+        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (currentWeapon != null ? currentWeapon.E_critDamage : 0);
 
         for(int i = 0; i < effection.Count; i++)
         {
@@ -252,6 +287,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
         if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
+
+
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {

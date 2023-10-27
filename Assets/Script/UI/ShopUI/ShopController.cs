@@ -49,7 +49,7 @@ public class ShopController : MonoBehaviour
         IItemAction itemAction = inventoryItem.item as IItemAction;
         if (itemAction != null)
         {
-            itemAction.PerformAction(gameObject, inventoryItem.itemState);
+            //itemAction.SelectAction(gameObject, inventoryItem.itemState, 1);
             if (inventoryData.GetItemAt(itemIndex).IsEmpty) shopUI.Reselection();
         }
     }
@@ -65,8 +65,8 @@ public class ShopController : MonoBehaviour
         IItemAction itemAction = inventoryItem.item as IItemAction;
         if (itemAction != null)
         {
-            shopUI.ShowItemAction(itemIndex);
-            shopUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+            //shopUI.ShowItemAction(itemIndex);
+            //shopUI.AddAction(itemAction.SelectAction(1), () => PerformAction(itemIndex));
         }
         IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
         if (destoryableItem != null)
