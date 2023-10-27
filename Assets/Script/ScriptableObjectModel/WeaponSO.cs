@@ -28,7 +28,7 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction
     public float E_critDamage;
     public GameObject weaponObject;
 
-    public bool PerformAction(GameObject character, int amount, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
 

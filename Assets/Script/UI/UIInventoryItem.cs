@@ -42,8 +42,9 @@ namespace Inventory.UI
         public void SetData(Sprite sprite, int quantity)
         {
             itemImage.gameObject.SetActive(true);
+            itemImage.color = (sprite == null) ? new Color(255, 255, 255, 0) : new Color(255, 255, 255, 255);
             itemImage.sprite = sprite;
-            quantityTxt.text = quantity + "";
+            quantityTxt.text = (quantity == 0) ? "" : quantity.ToString();
             empty = false;
         }
 

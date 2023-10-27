@@ -21,7 +21,7 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemActio
     public float E_critRate;
     public float E_critDamage;
 
-    public bool PerformAction(GameObject character, int amount, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)
     {
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
 

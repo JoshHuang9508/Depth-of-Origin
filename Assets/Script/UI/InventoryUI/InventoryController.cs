@@ -41,59 +41,58 @@ namespace Inventory
             inventoryUI.Reselection();
         }
 
-        public void PerformAction(int itemIndex, int actionSelection)
+        public void PerformAction(int itemIndex, string actionName)
         {
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.IsEmpty) return;
-
             IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-            if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, 1);
-
             IItemAction itemAction = inventoryItem.item as IItemAction;
-            if (itemAction != null)
+            int amountToUse = 0;
+
+            if (itemAction != null && !inventoryItem.IsEmpty)
             {
-                switch (actionSelection)
+                switch (actionName)
                 {
-                    case 1:
-                        itemAction.SelectAction(gameObject, inventoryItem.itemState, (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1, 1);
+                    case "Equip":
+                        amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
+                        itemAction.SelectAction("Equip", amountToUse, gameObject, inventoryItem.itemState);
+                        if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
                         break;
-                    case 2:
-                        itemAction.SelectAction(gameObject, inventoryItem.itemState, (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1, 2);
+                    case "Consume":
+                        amountToUse = 1;
+                        itemAction.SelectAction("Consume", amountToUse, gameObject, inventoryItem.itemState);
+                        if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
                         break;
                 }
                 
                 if (inventoryData.GetItemAt(itemIndex).IsEmpty) inventoryUI.Reselection();
             }
+            return;
         }
 
         private void HandleActionRequest(int itemIndex)
         {
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.IsEmpty)
-            {
-                return;
-            }
-
+            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
             IItemAction itemAction = inventoryItem.item as IItemAction;
-            if (itemAction != null)
+
+            if (itemAction != null && !inventoryItem.IsEmpty)
             {
                 inventoryUI.ShowItemAction(itemIndex);
 
                 if(inventoryItem.item is IEquipable)
                 {
-                    inventoryUI.AddAction(itemAction.SelectAction(1), () => PerformAction(itemIndex, 1));
+                    inventoryUI.AddAction("Equip", () => PerformAction(itemIndex, "Equip"));
                 }
-                if(inventoryItem.item is IActionable)
+                if(inventoryItem.item is IConsumeable)
                 {
-                    inventoryUI.AddAction(itemAction.SelectAction(2), () => PerformAction(itemIndex, 2));
+                    inventoryUI.AddAction("Consume", () => PerformAction(itemIndex, "Consume"));
                 }
-                
+                if (destoryableItem != null)
+                {
+                    inventoryUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
+                }
             }
-            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-            if (destoryableItem != null)
-            {
-                inventoryUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
-            }
+            return;
         }
 
         private void HandleDragging(int itemIndex)

@@ -23,32 +23,20 @@ namespace Inventory.Model
 
         public int ID => GetInstanceID();
 
-        public bool SelectAction(GameObject character, List<ItemParameter> itemState, int amount, int selection)
+        public bool SelectAction(string actionName, int amount, GameObject character, List<ItemParameter> itemState)
         {
-            switch (selection)
+            switch (actionName)
             {
-                case 1:
+                case "Equip":
                     IEquipable equipable = this as IEquipable;
-                    equipable.PerformAction(character, amount, itemState);
+                    equipable.EquipObject(amount, character, itemState);
                     break;
-                case 2:
-                    IActionable actionable = this as IActionable;
-                    actionable.PerformAction2(character, amount, itemState);
+                case "Consume":
+                    IConsumeable actionable = this as IConsumeable;
+                    actionable.ConsumeObject(amount, character, itemState);
                     break;
             }
             return false;
-        }
-
-        public string SelectAction(int selection)
-        {
-            switch (selection)
-            {
-                case 1:
-                    return "Equip";
-                case 2:
-                    return "Consume";
-            }
-            return "";
         }
     }
 
@@ -76,18 +64,17 @@ namespace Inventory.Model
 
     public interface IEquipable
     {
-        bool PerformAction(GameObject character, int amount, List<ItemParameter> itemState);
+        bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState);
     }
 
-    public interface IActionable
+    public interface IConsumeable
     {
-        bool PerformAction2(GameObject character, int amount, List<ItemParameter> itemState);
+        bool ConsumeObject(int amount, GameObject character, List<ItemParameter> itemState);
     }
 
     public interface IItemAction
     {
-        bool SelectAction(GameObject character, List<ItemParameter> itemState, int amount, int selection);
-        string SelectAction(int selection);
+        bool SelectAction(string actionName, int amount, GameObject character, List<ItemParameter> itemState);
     }
 }
 

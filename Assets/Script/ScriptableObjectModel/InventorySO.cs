@@ -41,9 +41,9 @@ namespace Inventory.Model
                     {
                         quantity -= AddItemToFristFreeSlot(item, 1, itemState);
                     }
-
-                    OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
                 }
+
+                OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
                 return quantity;
             }
 
@@ -77,6 +77,8 @@ namespace Inventory.Model
                     quantity -= newQuantity;
                     AddItemToFristFreeSlot(item, newQuantity);
                 }
+
+                OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
                 return quantity;
             }
         }

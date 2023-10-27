@@ -129,7 +129,16 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         }
 
         //use potion
-        if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null) potions.PerformAction2(gameObject, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null)
+        {
+            potions.ConsumeObject(1, gameObject);
+            currentPotionAmont -= 1;
+
+            if (currentPotionAmont <= 0) potions = null;
+        } 
+
+        //test addItem func
+        if (Input.GetKeyDown(KeyCode.Alpha4)) inventoryData.AddItem(potions, 10);
     }
      
     
@@ -209,7 +218,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
-        if(potions != null) inventoryData.AddItem(potions, 1);
+        Debug.Log(potions != null);
+        if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
         potions = edibleItem;
         currentPotionAmont = amount;
     }
@@ -217,11 +227,6 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
     {
         currentHealth += edibleItem.E_heal;
-        currentPotionAmont -= amount;
-        if (currentPotionAmont <= 0)
-        {
-            potions = null;
-        }
 
         StartCoroutine(delay(callback =>
         {
