@@ -23,6 +23,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     bool damageEnabler = true;
     bool attackEnabler = true;
 
+    bool isCrit;
     public float Health
     {
         set
@@ -30,6 +31,17 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
             if (value < currentHealth)
             {
                 //play hit animation
+
+                //damage text
+                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
+                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+                text_MeshProUGUI.text = (currentHealth - value).ToString();
+                text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+                text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+                text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
             }
 
             currentHealth = value;
@@ -118,23 +130,12 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
         }
     }
 
-    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
     {
         if (damageEnabler)
         {
             Health -= damage;
-
-            //damage text
-            RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-            text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-            text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
-
-            TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-            text_MeshProUGUI.text = damage.ToString();
-            text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
-            text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
-            text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
-
+            isCrit = _isCrit;
 
             //knockback
             currentRb.velocity = knockbackForce;

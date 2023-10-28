@@ -53,6 +53,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public float defence { get { return Basic_defence + E_defence; } }
     public float critRate { get { return Basic_critRate + E_critRate; } }
     public float critDamage { get { return Basic_critDamage + E_critDamage; } }
+
+    bool isCrit;
     public float Health
     {
         set
@@ -60,9 +62,30 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             if (value < currentHealth)
             {
                 //play hit animation
+
+                //damage text
+                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
+                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+                text_MeshProUGUI.text = (currentHealth - value).ToString();
+                text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+                text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
+                text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
             }
 
-            if (value > maxHealth) currentHealth = maxHealth;
+            if (value >= currentHealth)
+            {
+                //damage text
+                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
+                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+                text_MeshProUGUI.text = (value - currentHealth).ToString();
+                text_MeshProUGUI.color = new Color(0, 150, 0, 255);
+            }
 
             currentHealth = value;
 
@@ -145,21 +168,10 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     int onHitCounter = 0;
 
-    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
     {
         Health -= damage;
-
-        //damage text
-        RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-        text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
-
-        TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-        text_MeshProUGUI.text = damage.ToString();
-        text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
-        text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
-        text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
-
+        isCrit = _isCrit;
 
         //camera shake
         CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
@@ -218,7 +230,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
-        Debug.Log(potions != null);
+        //Debug.Log(potions != null);
         if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
         potions = edibleItem;
         currentPotionAmont = amount;
@@ -226,13 +238,16 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
     {
-        currentHealth += edibleItem.E_heal;
-
         StartCoroutine(delay(callback =>
         {
             if (!callback) effection.Add(edibleItem);
             else effection.Remove(edibleItem);
         }, effectTime));
+
+        StartCoroutine(delay(callback =>
+        {
+            if (callback) Health += (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal;
+        }, 0.001f));
     }
     
 
