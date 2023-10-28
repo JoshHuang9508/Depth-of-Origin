@@ -18,6 +18,6 @@ public class CoinCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coinCounterText.text = $"x{player.coinAmount}";
+        coinCounterText.text = $"x{player.currentCoinAmount}";
     }
 }

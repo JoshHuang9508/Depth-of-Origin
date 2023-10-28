@@ -44,6 +44,18 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
                 text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
             }
 
+            if (value >= currentHealth)
+            {
+                //damage text
+                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
+                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+
+                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
+                text_MeshProUGUI.text = (value - currentHealth).ToString();
+                text_MeshProUGUI.color = new Color(0, 150, 0, 255);
+            }
+
             currentHealth = value;
 
             if (currentHealth <= 0)
@@ -64,7 +76,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
             return currentHealth;
         }
     }
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -134,8 +146,8 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         if (damageEnabler)
         {
-            Health -= damage;
             isCrit = _isCrit;
+            Health -= damage;
 
             //knockback
             currentRb.velocity = knockbackForce;
