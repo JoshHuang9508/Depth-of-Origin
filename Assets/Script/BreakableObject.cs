@@ -21,13 +21,12 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
 
     bool damageEnabler = true;
 
-    float currentHealth;
     bool isCrit;
     public float Health
     {
         set
         {
-            if (value < currentHealth)
+            if (value < health)
             {
                 //play hit animation
 
@@ -37,13 +36,13 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
                 text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = (currentHealth - value).ToString();
+                text_MeshProUGUI.text = (health - value).ToString();
                 text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
                 text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
                 text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
             }
 
-            if (value >= currentHealth)
+            if (value >= health)
             {
                 //damage text
                 RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
@@ -51,13 +50,13 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
                 text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = (value - currentHealth).ToString();
+                text_MeshProUGUI.text = (value - health).ToString();
                 text_MeshProUGUI.color = new Color(0, 150, 0, 255);
             }
 
-            currentHealth = value;
+            health = value;
 
-            if (currentHealth <= 0)
+            if (health <= 0)
             {
                 //drop items
                 var ItemDropper = Instantiate(
@@ -76,7 +75,7 @@ public class BreakableObject : MonoBehaviour, Damage_Interface
         }
         get
         {
-            return currentHealth;
+            return health;
         }
     }
 

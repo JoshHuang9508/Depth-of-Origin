@@ -6,6 +6,7 @@ using Inventory.Model;
 using static UnityEditor.Progress;
 using System;
 using Newtonsoft.Json;
+using System.Linq;
 
 public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 {
@@ -186,7 +187,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     }
 
 
-
+    
 
 
     private void Moving()
@@ -226,22 +227,33 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     private void UpdatePlayerStates()
     {
         //update player statistics
-        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (currentWeapon != null ? currentWeapon.E_walkSpeed : 0);
-        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (currentWeapon != null ? currentWeapon.E_maxHealth : 0);
-        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (currentWeapon != null ? currentWeapon.E_strength : 0);
-        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (currentWeapon != null ? currentWeapon.E_defence : 0);
-        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (currentWeapon != null ? currentWeapon.E_critRate : 0);
-        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (currentWeapon != null ? currentWeapon.E_critDamage : 0);
+        string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
+        List<object> items = new List<object>{ armor, jewelry, book, currentWeapon };
+        float[] results = new float[attributes.Length];
 
-        for (int i = 0; i < effectionList.Count; i++)
+        for (int j = 0; j < effectionList.Count; j++)
         {
-            E_walkSpeed += effectionList[i].effectingItem.E_walkSpeed;
-            E_maxHealth += effectionList[i].effectingItem.E_maxHealth;
-            E_strength += effectionList[i].effectingItem.E_strength;
-            E_defence += effectionList[i].effectingItem.E_defence;
-            E_critRate += effectionList[i].effectingItem.E_critRate;
-            E_critDamage += effectionList[i].effectingItem.E_critDamage;
+            items.Add(effectionList[j].effectingItem);
         }
+
+        int i = 0;
+        foreach (var attribute in attributes)
+        {
+            results[i] = 0;
+
+            for(int k = 0; k < items.Count; k++)
+            {
+                if (items[k] != null) results[i] += (float)items[k].GetType().GetField(attribute).GetValue(items[k]);
+            }
+            i++;
+        }
+
+        E_walkSpeed = results[0];
+        E_maxHealth = results[1];
+        E_strength = results[2];
+        E_defence = results[3];
+        E_critRate = results[4];
+        E_critDamage = results[5];
 
 
         //update player health (in order not to overhealing)

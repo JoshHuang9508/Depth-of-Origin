@@ -13,11 +13,13 @@ public class ItemDropper : MonoBehaviour
         DropItems(lootings);
         DropCoins(lootMinCoins, lootMaxCoins);
         DropWrackages(wreckages);
+        Destroy(gameObject);
     }
     public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins)
     {
         DropItems(lootings);
         DropCoins(lootMinCoins, lootMaxCoins);
+        Destroy(gameObject);
     }
 
     private void DropCoins(int lootMinCoins, int lootMaxCoins)

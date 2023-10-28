@@ -6,7 +6,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new weapon", menuName = "Items/Weapon")]
-public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISellable
+public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction, ISellable
 {
     [Header("Basic Data")]
     public float attackSpeed = 1f;
