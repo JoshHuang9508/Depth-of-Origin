@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UDP;
 
 public class ShopController : MonoBehaviour
 {
@@ -38,41 +39,52 @@ public class ShopController : MonoBehaviour
         shopUI.Reselection();
     }
 
-    public void PerformAction(int itemIndex)
+    public void PerformAction(int itemIndex, string actionName)
     {
         InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-        if (inventoryItem.IsEmpty) return;
-
         IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-        if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, 1);
-
         IItemAction itemAction = inventoryItem.item as IItemAction;
-        if (itemAction != null)
+        int amountToUse = 0;
+
+        if (itemAction != null && !inventoryItem.IsEmpty)
         {
-            //itemAction.SelectAction(gameObject, inventoryItem.itemState, 1);
+            switch (actionName)
+            {
+                case "Sell":
+                    amountToUse = 1;
+                    itemAction.SelectAction("Sell", amountToUse, gameObject, inventoryItem.itemState);
+                    if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                    break;
+                case "Consume":
+                    amountToUse = 1;
+                    itemAction.SelectAction("Consume", amountToUse, gameObject, inventoryItem.itemState);
+                    if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                    break;
+            }
+
             if (inventoryData.GetItemAt(itemIndex).IsEmpty) shopUI.Reselection();
         }
+        return;
     }
 
     private void HandleActionRequest(int itemIndex)
     {
         InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-        if (inventoryItem.IsEmpty)
-        {
-            return;
-        }
 
-        IItemAction itemAction = inventoryItem.item as IItemAction;
-        if (itemAction != null)
+        if (!inventoryItem.IsEmpty)
         {
-            //shopUI.ShowItemAction(itemIndex);
-            //shopUI.AddAction(itemAction.SelectAction(1), () => PerformAction(itemIndex));
+            shopUI.ShowItemAction(itemIndex);
+
+            if (inventoryItem.item is ISellable)
+            {
+                shopUI.AddAction("Sell", () => PerformAction(itemIndex, "Sell"));
+            }
+            if (inventoryItem.item is IConsumeable)
+            {
+                shopUI.AddAction("Consume", () => PerformAction(itemIndex, "Consume"));
+            }
         }
-        IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-        if (destoryableItem != null)
-        {
-            shopUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
-        }
+        return;
     }
 
     private void HandleDragging(int itemIndex)

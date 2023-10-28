@@ -21,6 +21,7 @@ namespace Inventory.Model
         public Sprite Image;
         public List<ItemParameter> DefaultParameterList;
 
+
         public int ID => GetInstanceID();
 
         public bool SelectAction(string actionName, int amount, GameObject character, List<ItemParameter> itemState)
@@ -34,6 +35,10 @@ namespace Inventory.Model
                 case "Consume":
                     IConsumeable actionable = this as IConsumeable;
                     actionable.ConsumeObject(amount, character, itemState);
+                    break;
+                case "Sell":
+                    ISellable sellable = this as ISellable;
+                    sellable.SellObject(amount, character, itemState);
                     break;
             }
             return false;
@@ -75,6 +80,11 @@ namespace Inventory.Model
     public interface IItemAction
     {
         bool SelectAction(string actionName, int amount, GameObject character, List<ItemParameter> itemState);
+    }
+
+    public interface ISellable
+    {
+        bool SellObject(int amount, GameObject character, List<ItemParameter>itemstate);
     }
 }
 

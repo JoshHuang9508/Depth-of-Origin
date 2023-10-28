@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemAction
+public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISellable
 {
     [Header("Basic Data")]
     public EquipmentType equipmentType;
@@ -12,6 +12,8 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemActio
     {
         armor, book, jewelry
     }
+
+    public int price;
 
     [Header("Effect settings")]
     public float E_maxHealth;
@@ -28,6 +30,16 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemActio
         if (player != null)
         {
             player.SetEquipment(this, equipmentType);
+        }
+        return false;
+    }
+
+    public bool SellObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        if (player != null)
+        {
+            player.coinAmount += price;
         }
         return false;
     }

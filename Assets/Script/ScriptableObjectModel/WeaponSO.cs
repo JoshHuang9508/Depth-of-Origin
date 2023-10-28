@@ -2,10 +2,11 @@ using Inventory.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new weapon", menuName = "Items/Weapon")]
-public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction
+public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISellable
 {
     [Header("Basic Data")]
     public float attackSpeed = 1f;
@@ -14,6 +15,8 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction
     public float knockbackForce;
     public float knockbackTime;
     public WeaponType weaponType;
+
+    public int price;
     public enum WeaponType
     {
         Melee, Ranged
@@ -35,6 +38,16 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction
         if (player != null)
         {
             player.SetEquipment(this, weaponType);
+        }
+        return false;
+    }
+
+    public bool SellObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        if (player != null)
+        {
+            player.coinAmount += price;
         }
         return false;
     }

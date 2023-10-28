@@ -37,7 +37,7 @@ public class UIShop : MonoBehaviour
             uiItem.OnItemBeginDrag += HandleBeginDrag;
             uiItem.OnItemDroppedOn += HandleSwap;
             uiItem.OnItemEndDrag += HandleEndDrag;
-            uiItem.OnRightMouseBtnClick += HandleShowItemActions;
+
             listOfUIItems.Add(uiItem);
         }
     }
@@ -48,16 +48,6 @@ public class UIShop : MonoBehaviour
         {
             listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
         }
-    }
-
-    private void HandleShowItemActions(UIInventoryItem inventoryItemUI)
-    {
-        int index = listOfUIItems.IndexOf(inventoryItemUI);
-        if (index == -1)
-        {
-            return;
-        }
-        OnItemActionRequested?.Invoke(index);
     }
 
     private void HandleEndDrag(UIInventoryItem inventoryItemUI)
@@ -84,7 +74,7 @@ public class UIShop : MonoBehaviour
         currentDraggedItemIndex = index;
         HandleItemSelection(inventoryItemUI);
         OnStartDragging?.Invoke(index);
-
+        OnItemActionRequested?.Invoke(index);
     }
 
     private void HandleItemSelection(UIInventoryItem inventoryItemUI)
@@ -93,6 +83,7 @@ public class UIShop : MonoBehaviour
         if (index == -1)
             return;
         OnDescriptionRequested?.Invoke(index);
+        OnItemActionRequested?.Invoke(index);
     }
 
     public void CreateDraggedItem(Sprite sprite, int quantity)
@@ -125,7 +116,7 @@ public class UIShop : MonoBehaviour
     public void ShowItemAction(int itemIndex)
     {
         actionPanel.Toggle(true);
-        actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
+        //actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
     }
 
     public void AddAction(string actionName, Action performAction)
