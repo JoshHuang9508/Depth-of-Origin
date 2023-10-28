@@ -1,5 +1,6 @@
 using Inventory.Model;
 using Inventory.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -9,19 +10,46 @@ using UnityEngine.UDP;
 public class ShopController : MonoBehaviour
 {
     [SerializeField] private UIShop shopUI;
+    [SerializeField] private UIShopGoodsPage shopgoodsPageUI;//shop page
     [SerializeField] private InventorySO inventoryData;
+    [SerializeField] private ShopSO shopData;
+    public List<ShopItem> initialItems;
 
     public void Start()
     {
         //prepare UI
         shopUI.InitializeInventoryUI(inventoryData.Size);
+        shopgoodsPageUI.InitializeShopGoodsUI(shopData.Size);
 
-        //action setup
+        //backpack action setup
         shopUI.OnDescriptionRequested += HandleDescriptionRequest;
         shopUI.OnSwapItems += HandleSwapItems;
         shopUI.OnStartDragging += HandleDragging;
         shopUI.OnItemActionRequested += HandleActionRequest;
         inventoryData.OnInventoryUpdated += UpdateInventoryUI;
+
+        //shop goods action setup
+        shopgoodsPageUI.OnDescriptionRequested += HandleDescriptionRequest;
+        shopgoodsPageUI.OnItemActionRequested += HandleActionRequest;
+        shopData.OnShopUpdated += UpdateShopUI;
+
+        //initial
+        shopData.initialize();
+        foreach (ShopItem item in initialItems)
+        {
+            if (item.IsEmpty)
+                continue;
+            shopData.AddItem(item);
+        }
+    }
+
+    private void UpdateShopUI(Dictionary<int, ShopItem> shopState)
+    {
+        shopgoodsPageUI.ResetAllItems();
+        foreach (var item in shopState) 
+        {
+            shopgoodsPageUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
+        }
     }
 
     private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
@@ -31,12 +59,6 @@ public class ShopController : MonoBehaviour
         {
             shopUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
         }
-    }
-
-    private void DropItem(int itemIndex, int quantity)
-    {
-        inventoryData.RemoveItem(itemIndex, quantity);
-        shopUI.Reselection();
     }
 
     public void PerformAction(int itemIndex, string actionName)
@@ -55,10 +77,10 @@ public class ShopController : MonoBehaviour
                     itemAction.SelectAction("Sell", amountToUse, gameObject, inventoryItem.itemState);
                     if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
                     break;
-                case "Consume":
+                case "Buy":
                     amountToUse = 1;
-                    itemAction.SelectAction("Consume", amountToUse, gameObject, inventoryItem.itemState);
-                    if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                    itemAction.SelectAction("Buy", amountToUse, gameObject, inventoryItem.itemState);
+                    if (destoryableItem != null) inventoryData.AddItem(itemIndex, amountToUse); shopData.RemoveItem(itemIndex, amountToUse);
                     break;
             }
 
@@ -69,18 +91,35 @@ public class ShopController : MonoBehaviour
 
     private void HandleActionRequest(int itemIndex)
     {
-        InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-
-        if (!inventoryItem.IsEmpty)
+        try
         {
-            shopUI.ShowItemAction(itemIndex);
-
-            if (inventoryItem.item is ISellable)
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            if (!inventoryItem.IsEmpty)
             {
-                shopUI.AddAction("Sell", () => PerformAction(itemIndex, "Sell"));
+                shopUI.ShowItemAction(itemIndex);
+
+                if (inventoryItem.item is ISellable)
+                {
+                    shopUI.AddAction("Sell", () => PerformAction(itemIndex, "Sell"));
+                }
             }
+            return;
         }
-        return;
+        catch
+        {
+            ShopItem shopItem = shopData.GetItemAt(itemIndex);
+            if (!shopItem.IsEmpty)
+            {
+                shopgoodsPageUI.ShowItemAction(itemIndex);
+
+                if(shopItem.item is IBuyable)
+                {
+                    shopgoodsPageUI.AddAction("Buy", () => PerformAction(itemIndex, "Buy"));
+                }
+            }
+            return;
+        }
+        
     }
 
     private void HandleDragging(int itemIndex)
@@ -98,15 +137,30 @@ public class ShopController : MonoBehaviour
 
     private void HandleDescriptionRequest(int itemIndex)
     {
-        InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-        if (inventoryItem.IsEmpty)
+        try
         {
-            shopUI.Reselection();
-            return;
-        }
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            if (inventoryItem.IsEmpty)
+            {
+                shopUI.Reselection();
+                return;
+            }
 
-        ItemSO item = inventoryItem.item;
-        shopUI.UpdateDescription(itemIndex, item);
+            ItemSO item = inventoryItem.item;
+            shopUI.UpdateDescription(itemIndex, item);
+        }
+        catch
+        {
+            ShopItem shopItem = shopData.GetItemAt(itemIndex);
+            if (shopItem.IsEmpty)
+            {
+                shopgoodsPageUI.Reselection();
+                return;
+            }
+            ItemSO item = shopItem.item;
+            shopgoodsPageUI.UpdateDescription(itemIndex, item);
+        }
+        
     }
 
     private void Update()
@@ -124,4 +178,6 @@ public class ShopController : MonoBehaviour
             else shopUI.hide();
         }
     }
+
 }
+

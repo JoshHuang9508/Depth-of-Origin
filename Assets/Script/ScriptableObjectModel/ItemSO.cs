@@ -9,7 +9,7 @@ namespace Inventory.Model
     {
         [Header("Describtion")]
         public string Name;
-        public string Description;
+        [TextArea]public string Description;
 
         [Header("State")]
         public bool IsStackable;
@@ -39,6 +39,10 @@ namespace Inventory.Model
                 case "Sell":
                     ISellable sellable = this as ISellable;
                     sellable.SellObject(amount, character, itemState);
+                    break;
+                case "Buy":
+                    IBuyable buyable = this as IBuyable;
+                    buyable.BuyObject(amount, character, itemState);
                     break;
             }
             return false;
@@ -84,7 +88,12 @@ namespace Inventory.Model
 
     public interface ISellable
     {
-        bool SellObject(int amount, GameObject character, List<ItemParameter>itemstate);
+        bool SellObject(int amount, GameObject character, List<ItemParameter> itemstate);
+    }
+
+    public interface IBuyable
+    {
+        bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate);
     }
 }
 

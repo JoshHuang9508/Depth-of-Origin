@@ -6,7 +6,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new weapon", menuName = "Items/Weapon")]
-public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISellable
+public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction, ISellable, IBuyable
 {
     [Header("Basic Data")]
     public float attackSpeed = 1f;
@@ -48,6 +48,16 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISella
         if (player != null)
         {
             player.currentCoinAmount += price;
+        }
+        return false;
+    }
+
+    public bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        if (player != null)
+        {
+            player.currentCoinAmount -= price;
         }
         return false;
     }
