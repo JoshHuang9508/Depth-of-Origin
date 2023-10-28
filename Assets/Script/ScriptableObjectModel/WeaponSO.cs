@@ -47,7 +47,7 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISella
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
         if (player != null)
         {
-            player.coinAmount += price;
+            player.currentCoinAmount += price;
         }
         return false;
     }

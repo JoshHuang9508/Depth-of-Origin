@@ -39,7 +39,7 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemActio
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
         if (player != null)
         {
-            player.coinAmount += price;
+            player.currentCoinAmount += price;
         }
         return false;
     }

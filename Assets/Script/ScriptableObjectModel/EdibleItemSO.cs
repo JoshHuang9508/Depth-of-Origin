@@ -49,7 +49,7 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
         PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
         if (player != null)
         {
-            player.coinAmount += price;
+            player.currentCoinAmount += price;
         }
         return false;
     }

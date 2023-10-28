@@ -79,10 +79,6 @@ public class ShopController : MonoBehaviour
             {
                 shopUI.AddAction("Sell", () => PerformAction(itemIndex, "Sell"));
             }
-            if (inventoryItem.item is IConsumeable)
-            {
-                shopUI.AddAction("Consume", () => PerformAction(itemIndex, "Consume"));
-            }
         }
         return;
     }

@@ -39,7 +39,6 @@ namespace Inventory.UI
                 uiItem.OnItemBeginDrag += HandleBeginDrag;
                 uiItem.OnItemDroppedOn += HandleSwap;
                 uiItem.OnItemEndDrag += HandleEndDrag;
-                uiItem.OnRightMouseBtnClick += HandleShowItemActions;
                 listOfUIItems.Add(uiItem);
             }
         }
@@ -52,15 +51,7 @@ namespace Inventory.UI
             }
         }
 
-        private void HandleShowItemActions(UIInventoryItem inventoryItemUI)
-        {
-            int index = listOfUIItems.IndexOf(inventoryItemUI);
-            if(index == -1)
-            {
-                return;
-            }
-            OnItemActionRequested?.Invoke(index);
-        }
+
 
         private void HandleEndDrag(UIInventoryItem inventoryItemUI)
         {
@@ -95,6 +86,7 @@ namespace Inventory.UI
             if (index == -1)
                 return;
             OnDescriptionRequested?.Invoke(index);
+            OnItemActionRequested?.Invoke(index);
         }
 
         public void CreateDraggedItem(Sprite sprite, int quantity)
@@ -127,7 +119,7 @@ namespace Inventory.UI
         public void ShowItemAction(int itemIndex)
         {
             actionPanel.Toggle(true);
-            actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
+            //actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
         }
 
         public void AddAction(string actionName , Action performAction)
