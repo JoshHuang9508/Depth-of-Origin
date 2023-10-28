@@ -13,26 +13,59 @@ MonoBehaviour:
   m_Name: Player Inventory
   m_EditorClassIdentifier: 
   inventoryItems:
-  - quantity: 91
-    item: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+  - quantity: 1
+    item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
     itemState: []
   - quantity: 1
-    item: {fileID: 11400000, guid: fa0e73a73e5ce7c4989c905ce2a98fbe, type: 2}
-    itemState: []
-  - quantity: 0
-    item: {fileID: 0}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
+    item: {fileID: 11400000, guid: 539f2cd7aeed65e47b1f0ada9b076cb2, type: 2}
     itemState: []
   - quantity: 1
     item: {fileID: 11400000, guid: 7e94ca6d069a18b40b1fdffec1bdc2e2, type: 2}
     itemState: []
   - quantity: 1
-    item: {fileID: 11400000, guid: 539f2cd7aeed65e47b1f0ada9b076cb2, type: 2}
+    item: {fileID: 11400000, guid: e0ab08acde3e3804f8befd795b29a60f, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 4
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 30
+    item: {fileID: 11400000, guid: 112a72f8b1ead8740aba124c90d06df5, type: 2}
+    itemState: []
+  - quantity: 1
+    item: {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
+    itemState: []
+  - quantity: 1
+    item: {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 10
+    item: {fileID: 11400000, guid: fda507ba55772364abb1308a8341a5c1, type: 2}
+    itemState: []
+  - quantity: 1
+    item: {fileID: 11400000, guid: 5b5f50c878ef8534cb64b95879b45461, type: 2}
     itemState: []
   - quantity: 0
     item: {fileID: 0}
@@ -40,37 +73,7 @@ MonoBehaviour:
   - quantity: 0
     item: {fileID: 0}
     itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
-  - quantity: 1
-    item: {fileID: 11400000, guid: 46ed99b35e4875746aa70592e94686a6, type: 2}
-    itemState: []
   - quantity: 0
     item: {fileID: 0}
     itemState: []
-  - quantity: 0
-    item: {fileID: 0}
-    itemState: []
-  - quantity: 0
-    item: {fileID: 0}
-    itemState: []
-  <Size>k__BackingField: 20
+  <Size>k__BackingField: 21

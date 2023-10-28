@@ -42,12 +42,12 @@ public class ChestController : MonoBehaviour
             ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
             itemDropperController.Drop(lootings, lootMinCoins, lootMaxCoins);
         }
-        else if (isOpen)
+        /*else if (isOpen)
         {
             //Debug.Log("Closed a chest");
 
             isOpen = false;
             animator.SetTrigger("Close");
-        }
+        }*/
     }
 }

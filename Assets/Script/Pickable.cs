@@ -39,7 +39,7 @@ public class Pickable : MonoBehaviour
                 if(distance <= 0.2)
                 {
                     CoinSO coin = (CoinSO)InventoryItem;
-                    target.GetComponent<PlayerBehaviour>().coinAmount += 1;
+                    target.GetComponent<PlayerBehaviour>().currentCoinAmount += 1;
                     Destroy(gameObject);
                     return;
                 }

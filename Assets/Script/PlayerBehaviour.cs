@@ -28,8 +28,9 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     [Header("Current Data")]
     public float currentHealth;
+    public int currentCoinAmount = 0;
     public WeaponSO currentWeapon;
-    public int coinAmount = 0;
+    public int weaponControl = 1;
     public WeaponSO meleeWeapon;
     public WeaponSO rangedWeapon;
     public EdibleItemSO potions;
@@ -37,7 +38,21 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
-    public List<EdibleItemSO> effection;
+    public int onHitCounter = 0;
+    public List<EffectionList> effectionList = new List<EffectionList>();
+
+    [Serializable]
+    public class EffectionList
+    {
+        public EdibleItemSO effectingItem;
+        public float effectingTime;
+
+        public EffectionList(EdibleItemSO item, float time)
+        {
+            this.effectingItem = item;
+            this.effectingTime = time;
+        }
+    }
 
     [Header("Key Settings")]
     public KeyCode sprintKey;
@@ -70,9 +85,18 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
                 text_MeshProUGUI.text = (currentHealth - value).ToString();
-                text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
+                text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(150, 0, 0, 255);
                 text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
                 text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
+
+
+                //camera shake
+                CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
+                StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
+
+
+                //scence effect
+                onHitEffect.SetTrigger("OnHit");
             }
 
             if (value >= currentHealth)
@@ -85,6 +109,10 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
                 text_MeshProUGUI.text = (value - currentHealth).ToString();
                 text_MeshProUGUI.color = new Color(0, 150, 0, 255);
+
+
+                //scence effect
+                onHitEffect.SetTrigger("Heal");
             }
 
             currentHealth = value;
@@ -103,6 +131,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         }
     }
 
+
+
     bool movementEnabler = true;
     bool sprintEnabler = false;
     bool walkSpeedMutiplyerEnabler = false;
@@ -110,6 +140,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     Animator animator;
     SpriteRenderer spriteRenderer;
     Rigidbody2D currentRb;
+
+
 
     void Start()
     {
@@ -127,9 +159,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             inventoryData.AddItem(item);
         }
     }
-
-    int control = 1;
-
+    
     void Update()
     {
         Moving();
@@ -139,17 +169,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         if (Input.GetKeyDown(sprintKey)) Sprint();
 
         //set current weapon
-        if (Input.GetKey(KeyCode.Alpha1)) control = 1;
-        if (Input.GetKey(KeyCode.Alpha2)) control = 2;
-        switch (control)
-        {
-            case 1:
-                currentWeapon = meleeWeapon;
-                break;
-            case 2:
-                currentWeapon = rangedWeapon;
-                break;
-        }
+        if (Input.GetKey(KeyCode.Alpha1)) weaponControl = 1;
+        if (Input.GetKey(KeyCode.Alpha2)) weaponControl = 2;
 
         //use potion
         if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null)
@@ -161,27 +182,108 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         } 
 
         //test addItem func
-        if (Input.GetKeyDown(KeyCode.Alpha4)) inventoryData.AddItem(potions, 10);
+        if (Input.GetKeyDown(KeyCode.Alpha4) && potions != null) inventoryData.AddItem(potions, 10);
     }
-     
-    
 
-    int onHitCounter = 0;
+
+
+
+
+    private void Moving()
+    {
+        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
+        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
+
+        if (movementEnabler && Input.anyKey)
+        {
+
+            int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
+
+            Vector3 movement = new Vector3(
+                Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer,
+                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer,
+                0.0f
+            );
+
+            currentRb.velocity = new Vector2(movement.x, movement.y);
+        }
+    }
+
+    private void Sprint()
+    {
+        if (!sprintEnabler && movementEnabler)
+        {
+            StartCoroutine(delay(enabler => {
+                sprintEnabler = !enabler;
+            }, 2f));
+            StartCoroutine(delay(enabler => {
+                walkSpeedMutiplyerEnabler = !enabler;
+            }, 0.2f));
+        }
+    }
+
+    private void UpdatePlayerStates()
+    {
+        //update player statistics
+        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (currentWeapon != null ? currentWeapon.E_walkSpeed : 0);
+        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (currentWeapon != null ? currentWeapon.E_maxHealth : 0);
+        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (currentWeapon != null ? currentWeapon.E_strength : 0);
+        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (currentWeapon != null ? currentWeapon.E_defence : 0);
+        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (currentWeapon != null ? currentWeapon.E_critRate : 0);
+        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (currentWeapon != null ? currentWeapon.E_critDamage : 0);
+
+        for (int i = 0; i < effectionList.Count; i++)
+        {
+            E_walkSpeed += effectionList[i].effectingItem.E_walkSpeed;
+            E_maxHealth += effectionList[i].effectingItem.E_maxHealth;
+            E_strength += effectionList[i].effectingItem.E_strength;
+            E_defence += effectionList[i].effectingItem.E_defence;
+            E_critRate += effectionList[i].effectingItem.E_critRate;
+            E_critDamage += effectionList[i].effectingItem.E_critDamage;
+        }
+
+
+        //update player health (in order not to overhealing)
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+
+
+        //update effection list
+        int indexOfEffectionList = -1;
+        foreach (EffectionList effectingItem in effectionList)
+        {
+            effectingItem.effectingTime -= Time.deltaTime;
+            if (effectingItem.effectingTime <= 0)
+            {
+                indexOfEffectionList = effectionList.IndexOf(effectingItem);
+            }
+        }
+        effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
+
+
+        //update on used weapon
+        switch (weaponControl)
+        {
+            case 1:
+                currentWeapon = meleeWeapon;
+                break;
+            case 2:
+                currentWeapon = rangedWeapon;
+                break;
+        }
+    }
+
+
+
+
 
     public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        Health -= damage;
         isCrit = _isCrit;
-
-        //camera shake
-        CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
-        StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
-        onHitEffect.SetTrigger("Active");
-
+        Health -= damage;
 
         //knockback
         currentRb.velocity = knockbackForce;
-
         
         //delay
         StartCoroutine(delay(enabler => {
@@ -191,6 +293,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
             animator.enabled = enabler;
         },knockbackTime * (1f - (0.001f * defence))));
     }
+
+
 
 
 
@@ -238,75 +342,34 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
     public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
     {
-        StartCoroutine(delay(callback =>
+        int indexOfEffectionList = 0;
+        bool isEffectionExist = false;
+
+        foreach (EffectionList effectingItem in effectionList)
         {
-            if (!callback) effection.Add(edibleItem);
-            else effection.Remove(edibleItem);
-        }, effectTime));
+            if (edibleItem.ID == effectingItem.effectingItem.ID)
+            {
+                indexOfEffectionList = effectionList.IndexOf(effectingItem);
+                isEffectionExist = true;
+            }
+        }
+
+        if (isEffectionExist)
+        {
+            effectionList[indexOfEffectionList].effectingTime = effectTime;
+        }
+        else
+        {
+            effectionList.Add(new EffectionList(edibleItem, effectTime));
+        }
 
         StartCoroutine(delay(callback =>
         {
-            if (callback) Health += (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal;
+            if (callback && edibleItem.E_heal != 0) Health += (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal;
         }, 0.001f));
     }
-    
 
 
-    private void Moving()
-    {
-        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
-        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
-        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
-
-        if (movementEnabler && Input.anyKey)
-        {
-
-            int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
-
-            Vector3 movement = new Vector3(
-                Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer,
-                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer,
-                0.0f
-            );
-
-            currentRb.velocity = new Vector2(movement.x, movement.y);
-        }
-    }
-
-    private void Sprint()
-    {
-        if (!sprintEnabler && movementEnabler)
-        {
-            StartCoroutine(delay(enabler => {
-                sprintEnabler = !enabler;
-            }, 2f));
-            StartCoroutine(delay(enabler => {
-                walkSpeedMutiplyerEnabler = !enabler;
-            }, 0.2f));
-        }
-    }
-
-    private void UpdatePlayerStates()
-    {
-        E_walkSpeed = (armor != null ? armor.E_walkSpeed : 0) + (jewelry != null ? jewelry.E_walkSpeed : 0) + (book != null ? book.E_walkSpeed : 0) + (currentWeapon != null ? currentWeapon.E_walkSpeed : 0);
-        E_maxHealth = (armor != null ? armor.E_maxHealth : 0) + (jewelry != null ? jewelry.E_maxHealth : 0) + (book != null ? book.E_maxHealth : 0) + (currentWeapon != null ? currentWeapon.E_maxHealth : 0);
-        E_strength = (armor != null ? armor.E_strength : 0) + (jewelry != null ? jewelry.E_strength : 0) + (book != null ? book.E_strength : 0) + (currentWeapon != null ? currentWeapon.E_strength : 0);
-        E_defence = (armor != null ? armor.E_defence : 0) + (jewelry != null ? jewelry.E_defence : 0) + (book != null ? book.E_defence : 0) + (currentWeapon != null ? currentWeapon.E_defence : 0);
-        E_critRate = (armor != null ? armor.E_critRate : 0) + (jewelry != null ? jewelry.E_critRate : 0) + (book != null ? book.E_critRate : 0) + (currentWeapon != null ? currentWeapon.E_critRate : 0);
-        E_critDamage = (armor != null ? armor.E_critDamage : 0) + (jewelry != null ? jewelry.E_critDamage : 0) + (book != null ? book.E_critDamage : 0) + (currentWeapon != null ? currentWeapon.E_critDamage : 0);
-
-        for(int i = 0; i < effection.Count; i++)
-        {
-            E_walkSpeed += effection[i].E_walkSpeed;
-            E_maxHealth += effection[i].E_maxHealth;
-            E_strength += effection[i].E_strength;
-            E_defence += effection[i].E_defence;
-            E_critRate += effection[i].E_critRate;
-            E_critDamage += effection[i].E_critDamage;
-        }
-
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
-    }
 
 
 

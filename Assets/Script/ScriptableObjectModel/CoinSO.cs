@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "new coin", menuName = "Items/Coin")]
 public class CoinSO : ItemSO
 {
 
