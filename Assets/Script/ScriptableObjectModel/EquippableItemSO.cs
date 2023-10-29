@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemAction,ISellable
+public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemAction, ISellable, IBuyable
 {
     [Header("Basic Data")]
     public EquipmentType equipmentType;
@@ -40,6 +40,16 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemActio
         if (player != null)
         {
             player.currentCoinAmount += price;
+        }
+        return false;
+    }
+
+    public bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        if (player != null)
+        {
+            player.currentCoinAmount -= price;
         }
         return false;
     }

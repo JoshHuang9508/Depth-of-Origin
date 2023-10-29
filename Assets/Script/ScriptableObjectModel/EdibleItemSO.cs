@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, IItemAction,ISellable
+public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, IItemAction, ISellable, IBuyable
 {
     public int price;
 
@@ -50,6 +50,16 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
         if (player != null)
         {
             player.currentCoinAmount += price;
+        }
+        return false;
+    }
+
+    public bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        if (player != null)
+        {
+            player.currentCoinAmount -= price;
         }
         return false;
     }

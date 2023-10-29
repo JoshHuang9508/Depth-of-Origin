@@ -146,6 +146,20 @@ namespace Inventory.Model
                 OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
             }
         }
+        public void AddItem(int itemIndex, int amount)
+        {
+            if (inventoryItems.Count > itemIndex)
+            {
+                if (inventoryItems[itemIndex].IsEmpty) return;
+
+                int temp = inventoryItems[itemIndex].quantity + amount;
+
+                inventoryItems[itemIndex] = temp <= 0 ? InventoryItem.GetEmptyItem() : inventoryItems[itemIndex].ChangeQuantity(temp);
+
+                OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
+            }
+        }
+
     }
 
     [Serializable]
