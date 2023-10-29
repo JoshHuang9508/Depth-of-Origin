@@ -39,7 +39,7 @@ public class SummonWeapon : MonoBehaviour
         }
 
 
-        if (player.currentWeapon == null && (weapon = null))
+        if (player.currentWeapon == null)
         {
             spriteRenderer.sprite = null;
         }

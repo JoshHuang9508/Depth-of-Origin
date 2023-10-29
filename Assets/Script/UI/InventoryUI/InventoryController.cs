@@ -11,6 +11,7 @@ namespace Inventory
     public class InventoryController : MonoBehaviour
     {
         [SerializeField] private UIInventory inventoryUI;
+
         [SerializeField] private InventorySO inventoryData;
 
         public void Start()
@@ -69,30 +70,31 @@ namespace Inventory
             return;
         }
 
-        private void HandleActionRequest(int itemIndex)
+        private void HandleActionRequest(int itemIndex, string type)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-            IItemAction itemAction = inventoryItem.item as IItemAction;
-
-            if (itemAction != null && !inventoryItem.IsEmpty)
+            switch (type)
             {
-                inventoryUI.ShowItemAction(itemIndex);
+                case "Backpack":
+                    InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+                    if (!inventoryItem.IsEmpty)
+                    {
+                        inventoryUI.ShowItemAction();
 
-                if(inventoryItem.item is IEquipable)
-                {
-                    inventoryUI.AddAction("Equip", () => PerformAction(itemIndex, "Equip"));
-                }
-                if(inventoryItem.item is IConsumeable)
-                {
-                    inventoryUI.AddAction("Consume", () => PerformAction(itemIndex, "Consume"));
-                }
-                if (destoryableItem != null)
-                {
-                    inventoryUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
-                }
+                        if (inventoryItem.item is IEquipable)
+                        {
+                            inventoryUI.AddAction("Equip", () => PerformAction(itemIndex, "Equip"));
+                        }
+                        if (inventoryItem.item is IConsumeable)
+                        {
+                            inventoryUI.AddAction("Consume", () => PerformAction(itemIndex, "Consume"));
+                        }
+                        if (inventoryItem.item is IDestoryableItem)
+                        {
+                            inventoryUI.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
+                        }
+                    }
+                    break;
             }
-            return;
         }
 
         private void HandleDragging(int itemIndex)
@@ -108,17 +110,20 @@ namespace Inventory
             inventoryData.SwapItems(itemIndex_1, itemIndex_2);
         }
 
-        private void HandleDescriptionRequest(int itemIndex)
+        private void HandleDescriptionRequest(int itemIndex, string type)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.IsEmpty)
+            switch (type)
             {
-                inventoryUI.Reselection();
-                return;
+                case "Backpack":
+                    InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+                    if (inventoryItem.IsEmpty)
+                    {
+                        inventoryUI.Reselection();
+                        return;
+                    }
+                    inventoryUI.UpdateDescription(itemIndex, inventoryItem.item);
+                    break;
             }
-
-            ItemSO item = inventoryItem.item;
-            inventoryUI.UpdateDescription(itemIndex, item);
         }
 
         private void Update()
@@ -127,13 +132,13 @@ namespace Inventory
             {
                 if (inventoryUI.isActiveAndEnabled == false)
                 {
-                    inventoryUI.show();
+                    inventoryUI.gameObject.SetActive(true);
                     foreach (var item in inventoryData.GetCurrentInventoryState())
                     {
                         inventoryUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
                     }
                 }
-                else inventoryUI.hide();
+                else inventoryUI.gameObject.SetActive(false);
             }
         }
     }

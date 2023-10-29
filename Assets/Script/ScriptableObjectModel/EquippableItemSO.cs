@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, IItemAction, ISellable, IBuyable
+public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable
 {
     [Header("Basic Data")]
     public EquipmentType equipmentType;

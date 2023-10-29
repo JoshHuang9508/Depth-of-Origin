@@ -12,8 +12,26 @@ public class UIShopGoodsPage : MonoBehaviour
     [SerializeField] private UIDescriptionPage itemDescription;
     [SerializeField] private ItemActionPanel actionPanel;
 
-    public event Action<int> OnDescriptionRequested, OnItemActionRequested;
+    public event Action<int, string> OnDescriptionRequested, OnItemActionRequested;
+
     List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
+
+
+    private void OnEnable()
+    {
+        Reselection();
+    }
+
+    private void OnDisable()
+    {
+        actionPanel.Toggle(false);
+    }
+
+    private void Awake()
+    {
+        itemDescription.ResetDescription();
+        gameObject.SetActive(false);
+    }
 
     public void InitializeShopGoodsUI(int goodssize)
     {
@@ -31,8 +49,8 @@ public class UIShopGoodsPage : MonoBehaviour
         int index = listOfUIItems.IndexOf(inventoryItemUI);
         if (index == -1)
             return;
-        OnDescriptionRequested?.Invoke(index);
-        OnItemActionRequested?.Invoke(index);
+        OnDescriptionRequested?.Invoke(index, "Shop");
+        OnItemActionRequested?.Invoke(index, "Shop");
     }
 
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
@@ -41,6 +59,13 @@ public class UIShopGoodsPage : MonoBehaviour
         {
             listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
         }
+    }
+
+    public void UpdateDescription(int itemIndex, ItemSO item)
+    {
+        itemDescription.SetDescription(item);
+        DeselectAllItems();
+        listOfUIItems[itemIndex].Select();
     }
 
     public void Reselection()
@@ -58,23 +83,16 @@ public class UIShopGoodsPage : MonoBehaviour
         actionPanel.Toggle(false);
     }
 
-    public void UpdateDescription(int itemIndex, ItemSO item)
-    {
-        itemDescription.SetDescription(item);
-        DeselectAllItems();
-        listOfUIItems[itemIndex].Select();
-    }
-
     public void AddAction(string actionName, Action performAction)
     {
         actionPanel.AddButton(actionName, performAction);
     }
 
-    public void ShowItemAction(int itemIndex)
+    public void ShowItemAction()
     {
         actionPanel.Toggle(true);
-        //actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
     }
+
     public void ResetAllItems()
     {
         foreach (var item in listOfUIItems)
@@ -83,9 +101,4 @@ public class UIShopGoodsPage : MonoBehaviour
             item.Deselect();
         }
     }
-
-
-
-
-
 }

@@ -16,17 +16,30 @@ namespace Inventory.UI
         [SerializeField] private ItemActionPanel actionPanel;
 
         private int currentDraggedItemIndex = -1;
-        public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+
+        public event Action<int, string> OnDescriptionRequested, OnItemActionRequested;
+        public event Action<int> OnStartDragging;
         public event Action<int, int> OnSwapItems;
+
         List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
 
+        private void OnEnable()
+        {
+            Reselection();
+        }
+
+        private void OnDisable()
+        {
+            actionPanel.Toggle(false);
+            ResetDraggedItem();
+        }
 
         private void Awake()
         {
             mouseFollower.Toggle(false);
             itemDescription.ResetDescription();
-            hide();
+            gameObject.SetActive(false);
         }
 
         public void InitializeInventoryUI(int inventorysize)
@@ -51,7 +64,12 @@ namespace Inventory.UI
             }
         }
 
-
+        public void UpdateDescription(int itemIndex, ItemSO item)
+        {
+            itemDescription.SetDescription(item);
+            DeselectAllItems();
+            listOfUIItems[itemIndex].Select();
+        }
 
         private void HandleEndDrag(UIInventoryItem inventoryItemUI)
         {
@@ -85,8 +103,8 @@ namespace Inventory.UI
             int index = listOfUIItems.IndexOf(inventoryItemUI);
             if (index == -1)
                 return;
-            OnDescriptionRequested?.Invoke(index);
-            OnItemActionRequested?.Invoke(index);
+            OnDescriptionRequested?.Invoke(index, "Backpack");
+            OnItemActionRequested?.Invoke(index, "Backpack");
         }
 
         public void CreateDraggedItem(Sprite sprite, int quantity)
@@ -116,35 +134,14 @@ namespace Inventory.UI
             actionPanel.Toggle(false);
         }
 
-        public void ShowItemAction(int itemIndex)
+        public void ShowItemAction()
         {
             actionPanel.Toggle(true);
-            //actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
         }
 
         public void AddAction(string actionName , Action performAction)
         {
             actionPanel.AddButton(actionName, performAction);
-        }
-
-        public void show()
-        {
-            gameObject.SetActive(true);
-            Reselection();
-        }
-
-        public void hide()
-        {
-            actionPanel.Toggle(false);
-            gameObject.SetActive(false);
-            ResetDraggedItem();
-        }
-
-        public void UpdateDescription(int itemIndex, ItemSO item)
-        {
-            itemDescription.SetDescription(item);
-            DeselectAllItems();
-            listOfUIItems[itemIndex].Select();
         }
 
         public void ResetAllItems()

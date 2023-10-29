@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Inventory.Model
 {
-    public abstract class ItemSO : ScriptableObject
+    public abstract class ItemSO : ScriptableObject, IItemAction
     {
         [Header("Describtion")]
         public string Name;

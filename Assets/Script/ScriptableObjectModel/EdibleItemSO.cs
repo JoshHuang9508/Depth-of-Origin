@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, IItemAction, ISellable, IBuyable
+public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable
 {
     public int price;
 

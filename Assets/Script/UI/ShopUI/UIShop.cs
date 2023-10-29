@@ -14,17 +14,30 @@ public class UIShop : MonoBehaviour
     [SerializeField] private ItemActionPanel actionPanel;
 
     private int currentDraggedItemIndex = -1;
-    public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+
+    public event Action<int, string> OnDescriptionRequested, OnItemActionRequested;
+    public event Action<int> OnStartDragging;
     public event Action<int, int> OnSwapItems;
+
     List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
 
+    private void OnEnable()
+    {
+        Reselection();
+    }
+
+    private void OnDisable()
+    {
+        actionPanel.Toggle(false);
+        ResetDraggedItem();
+    }
 
     private void Awake()
     {
         mouseFollower.Toggle(false);
         itemDescription.ResetDescription();
-        hide();
+        gameObject.SetActive(false);
     }
 
     public void InitializeInventoryUI(int inventorysize)
@@ -48,6 +61,13 @@ public class UIShop : MonoBehaviour
         {
             listOfUIItems[itemIndex].SetData(itemImage, itemQuantity);
         }
+    }
+
+    public void UpdateDescription(int itemIndex, ItemSO item)
+    {
+        itemDescription.SetDescription(item);
+        DeselectAllItems();
+        listOfUIItems[itemIndex].Select();
     }
 
     private void HandleEndDrag(UIInventoryItem inventoryItemUI)
@@ -74,7 +94,7 @@ public class UIShop : MonoBehaviour
         currentDraggedItemIndex = index;
         HandleItemSelection(inventoryItemUI);
         OnStartDragging?.Invoke(index);
-        OnItemActionRequested?.Invoke(index);
+        OnItemActionRequested?.Invoke(index, "Backpack");
     }
 
     private void HandleItemSelection(UIInventoryItem inventoryItemUI)
@@ -82,8 +102,8 @@ public class UIShop : MonoBehaviour
         int index = listOfUIItems.IndexOf(inventoryItemUI);
         if (index == -1)
             return;
-        OnDescriptionRequested?.Invoke(index);
-        OnItemActionRequested?.Invoke(index);
+        OnDescriptionRequested?.Invoke(index, "Backpack");
+        OnItemActionRequested?.Invoke(index, "Backpack");
     }
 
     public void CreateDraggedItem(Sprite sprite, int quantity)
@@ -113,35 +133,14 @@ public class UIShop : MonoBehaviour
         actionPanel.Toggle(false);
     }
 
-    public void ShowItemAction(int itemIndex)
+    public void ShowItemAction()
     {
         actionPanel.Toggle(true);
-        //actionPanel.transform.position = listOfUIItems[itemIndex].transform.position;
     }
 
     public void AddAction(string actionName, Action performAction)
     {
         actionPanel.AddButton(actionName, performAction);
-    }
-
-    public void show()
-    {
-        gameObject.SetActive(true);
-        Reselection();
-    }
-
-    public void hide()
-    {
-        actionPanel.Toggle(false);
-        gameObject.SetActive(false);
-        ResetDraggedItem();
-    }
-
-    public void UpdateDescription(int itemIndex, ItemSO item)
-    {
-        itemDescription.SetDescription(item);
-        DeselectAllItems();
-        listOfUIItems[itemIndex].Select();
     }
 
     public void ResetAllItems()

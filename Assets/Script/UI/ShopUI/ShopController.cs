@@ -11,9 +11,12 @@ public class ShopController : MonoBehaviour
 {
     [SerializeField] private UIShop shopUI;
     [SerializeField] private UIShopGoodsPage shopgoodsPageUI;//shop page
+
     [SerializeField] private InventorySO inventoryData;
     [SerializeField] private ShopSO shopData;
+
     public List<ShopItem> initialItems;
+
 
     public void Start()
     {
@@ -89,37 +92,36 @@ public class ShopController : MonoBehaviour
         return;
     }
 
-    private void HandleActionRequest(int itemIndex)
+    private void HandleActionRequest(int itemIndex, string type)
     {
-        try
+        switch (type)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (!inventoryItem.IsEmpty)
-            {
-                shopUI.ShowItemAction(itemIndex);
-
-                if (inventoryItem.item is ISellable)
+            case "Backpack":
+                InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+                if (!inventoryItem.IsEmpty)
                 {
-                    shopUI.AddAction("Sell", () => PerformAction(itemIndex, "Sell"));
-                }
-            }
-            return;
-        }
-        catch
-        {
-            ShopItem shopItem = shopData.GetItemAt(itemIndex);
-            if (!shopItem.IsEmpty)
-            {
-                shopgoodsPageUI.ShowItemAction(itemIndex);
+                    shopUI.ShowItemAction();
 
-                if(shopItem.item is IBuyable)
-                {
-                    shopgoodsPageUI.AddAction("Buy", () => PerformAction(itemIndex, "Buy"));
+                    if (inventoryItem.item is ISellable)
+                    {
+                        shopUI.AddAction("Sell", () => PerformAction(itemIndex, "Sell"));
+                    }
                 }
-            }
-            return;
+                break;
+
+            case "Shop":
+                ShopItem shopItem = shopData.GetItemAt(itemIndex);
+                if (!shopItem.IsEmpty)
+                {
+                    shopgoodsPageUI.ShowItemAction();
+
+                    if (shopItem.item is IBuyable)
+                    {
+                        shopgoodsPageUI.AddAction("Buy", () => PerformAction(itemIndex, "Buy"));
+                    }
+                }
+                break;
         }
-        
     }
 
     private void HandleDragging(int itemIndex)
@@ -135,32 +137,30 @@ public class ShopController : MonoBehaviour
         inventoryData.SwapItems(itemIndex_1, itemIndex_2);
     }
 
-    private void HandleDescriptionRequest(int itemIndex)
+    private void HandleDescriptionRequest(int itemIndex, string type)
     {
-        try
+        switch (type)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.IsEmpty)
-            {
-                shopUI.Reselection();
-                return;
-            }
+            case "Backpack":
+                InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+                if (inventoryItem.IsEmpty)
+                {
+                    shopUI.Reselection();
+                    return;
+                }
+                shopUI.UpdateDescription(itemIndex, inventoryItem.item);
+                break;
 
-            ItemSO item = inventoryItem.item;
-            shopUI.UpdateDescription(itemIndex, item);
+            case "Shop":
+                ShopItem shopItem = shopData.GetItemAt(itemIndex);
+                if (shopItem.IsEmpty)
+                {
+                    shopgoodsPageUI.Reselection();
+                    return;
+                }
+                shopgoodsPageUI.UpdateDescription(itemIndex, shopItem.item);
+                break;
         }
-        catch
-        {
-            ShopItem shopItem = shopData.GetItemAt(itemIndex);
-            if (shopItem.IsEmpty)
-            {
-                shopgoodsPageUI.Reselection();
-                return;
-            }
-            ItemSO item = shopItem.item;
-            shopgoodsPageUI.UpdateDescription(itemIndex, item);
-        }
-        
     }
 
     private void Update()
@@ -169,13 +169,13 @@ public class ShopController : MonoBehaviour
         {
             if (shopUI.isActiveAndEnabled == false)
             {
-                shopUI.show();
+                shopUI.gameObject.SetActive(true);
                 foreach (var item in inventoryData.GetCurrentInventoryState())
                 {
                     shopUI.UpdateData(item.Key, item.Value.item.Image, item.Value.quantity);
                 }
             }
-            else shopUI.hide();
+            else shopUI.gameObject.SetActive(false);
         }
     }
 

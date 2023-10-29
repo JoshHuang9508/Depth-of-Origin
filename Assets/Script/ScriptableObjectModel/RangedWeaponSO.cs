@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new ranged weapon", menuName = "Items/Weapon/Ranged Weapon")]
 public class RangedWeaponSO : WeaponSO, IEquipable, IDestoryableItem, IItemAction, ISellable
 {
-    [Header("projectile Object Settings")]
+    [Header("Projectile Object Settings")]
     public GameObject projectileObject;
     public float flySpeed;
 }
