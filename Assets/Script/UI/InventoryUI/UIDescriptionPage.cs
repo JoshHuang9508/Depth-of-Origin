@@ -10,14 +10,15 @@ namespace Inventory.UI
 {
     public class UIDescriptionPage : MonoBehaviour
     {
+        [Header("Settings")]
+        [SerializeField] public InventoryType inventoryType;
+
+        [Header("Connect Object")]
+        [SerializeField] public ItemActionPanel actionPanel;
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text title;
         [SerializeField] private TMP_Text description;
 
-        private void Awake()
-        {
-            ResetDescription();
-        }
 
         public void ResetDescription()
         {
@@ -25,8 +26,6 @@ namespace Inventory.UI
             title.gameObject.SetActive(false);
             description.gameObject.SetActive(false);
         }
-
-        string b;
 
         public void SetDescription(ItemSO item)
         {
@@ -60,10 +59,12 @@ namespace Inventory.UI
 
 
             description.gameObject.SetActive(true);
+            string descriptionText= "";
             try
             {
                 var weapon = (WeaponSO)item;
-                b = $"- Damage : {weapon.weaponDamage}\n" +
+                descriptionText =
+                    $"- Damage : {weapon.weaponDamage}\n" +
                     $"- ATK Speed : {weapon.attackSpeed}x\n" +
                     $"- ATK CD : {weapon.attackCooldown}s\n" +
                     $"- Knockback : {weapon.knockbackForce}\n" +
@@ -75,37 +76,39 @@ namespace Inventory.UI
                     (weapon.E_defence == 0 ? "" : $"- Defence + {weapon.E_defence}\n" ) +
                     (weapon.E_walkSpeed == 0 ? "" : $"- Walk SPD + {weapon.E_walkSpeed}\n" ) +
                     (weapon.E_critRate == 0 ? "" : $"- Crit Rate + {weapon.E_critRate}%\n" ) +
-                    (weapon.E_critDamage == 0 ? "" : $"- Crit DMG + {weapon.E_critDamage}%" );
+                    (weapon.E_critDamage == 0 ? "" : $"- Crit DMG + {weapon.E_critDamage}%\n" );
             }
             catch { }
             try
             {
                 var edibleItem = (EdibleItemSO)item;
-                b = $"After consumed  :\n" +
+                descriptionText =
+                    $"After consumed  :\n" +
                     (edibleItem.E_heal == 0 ? "" : $"- HP + {edibleItem.E_heal}\n" ) +
                     (edibleItem.E_maxHealth == 0 ? "" : $"- Max HP + {edibleItem.E_maxHealth}\n" ) +
                     (edibleItem.E_strength == 0 ? "" : $"- Strength + {edibleItem.E_strength}\n" ) +
                     (edibleItem.E_defence == 0 ? "" : $"- Defence + {edibleItem.E_defence}\n" ) +
                     (edibleItem.E_walkSpeed == 0 ? "" : $"- Walk SPD + {edibleItem.E_walkSpeed}\n" ) +
                     (edibleItem.E_critRate == 0 ? "" : $"- Crit Rate + {edibleItem.E_critRate}%\n" ) +
-                    (edibleItem.E_critDamage == 0 ? "" : $"- Crit DMG + {edibleItem.E_critDamage}%" ) +
-                    (edibleItem.effectTime <= 0.5 ? "" : $"- Effect Time : {edibleItem.effectTime}s");
+                    (edibleItem.E_critDamage == 0 ? "" : $"- Crit DMG + {edibleItem.E_critDamage}\n%" ) +
+                    (edibleItem.effectTime <= 0.5 ? "" : $"- Effect Time : {edibleItem.effectTime}\ns");
             }
             catch { }
             try
             {
                 var equipment = (EquippableItemSO)item;
-                b = $"When equipped :\n" +
+                descriptionText =
+                    $"When equipped :\n" +
                     (equipment.E_maxHealth == 0 ? "" : $"- Max HP + {equipment.E_maxHealth}\n" ) +
                     (equipment.E_strength == 0 ? "" : $"- Strength + {equipment.E_strength}\n" ) +
                     (equipment.E_defence == 0 ? "" : $"- Defence + {equipment.E_defence}\n" ) +
                     (equipment.E_walkSpeed == 0 ? "" : $"- Walk SPD + {equipment.E_walkSpeed}\n" ) +
                     (equipment.E_critRate == 0 ? "" : $"- Crit Rate + {equipment.E_critRate}%\n" ) +
-                    (equipment.E_critDamage == 0 ? "" : $"- Crit DMG + {equipment.E_critDamage}%" ) ;
+                    (equipment.E_critDamage == 0 ? "" : $"- Crit DMG + {equipment.E_critDamage}\n%" ) ;
             }
             catch { }
 
-            description.text = item.Description + $"\n\n{b}";
+            description.text = item.Description + $"\n\n{descriptionText}";
         }
     }
 }

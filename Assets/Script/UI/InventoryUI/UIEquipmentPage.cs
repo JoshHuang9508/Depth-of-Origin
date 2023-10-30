@@ -7,21 +7,14 @@ using UnityEngine.UI;
 
 public class UIEquipmentPage : MonoBehaviour
 {
+    [Header("Connect Object")]
     public UIItemSlot armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
     public GameObject target, statsdisplay;
     public TMP_Text health, str, movespeed, def, critrate, critdamage;
+
     PlayerBehaviour player;
 
-    private void Awake()
-    {
-        initial();
-    }
 
-    public void initial()
-    {
-        
-        
-    }
     private void Start()
     {
         player = target.GetComponent<PlayerBehaviour>();

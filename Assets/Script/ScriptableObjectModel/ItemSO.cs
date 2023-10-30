@@ -15,6 +15,7 @@ namespace Inventory.Model
         public bool IsStackable;
         public int MaxStackSize = 1;
         public Rarity Rarity;
+        public int sellPrice, buyPrice;
         
 
         [Header("Reference")]
@@ -44,6 +45,26 @@ namespace Inventory.Model
                     IBuyable buyable = this as IBuyable;
                     buyable.BuyObject(amount, character, itemState);
                     break;
+            }
+            return false;
+        }
+
+        public bool SellObject(int amount, GameObject character, List<ItemParameter> itemstate)
+        {
+            PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+            if (player != null)
+            {
+                player.currentCoinAmount += sellPrice;
+            }
+            return false;
+        }
+
+        public bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate)
+        {
+            PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+            if (player != null)
+            {
+                player.currentCoinAmount -= buyPrice;
             }
             return false;
         }

@@ -7,8 +7,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
 public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable
 {
-    public int price;
-
     [Header("Effect settings")]
     public float E_heal;
     public float E_maxHealth;
@@ -40,26 +38,6 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
         if (player != null)
         {
             player.SetEffection(this, amount, effectTime);
-        }
-        return false;
-    }
-
-    public bool SellObject(int amount, GameObject character, List<ItemParameter> itemstate)
-    {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
-        if (player != null)
-        {
-            player.currentCoinAmount += price;
-        }
-        return false;
-    }
-
-    public bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate)
-    {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
-        if (player != null)
-        {
-            player.currentCoinAmount -= price;
         }
         return false;
     }

@@ -9,160 +9,150 @@ namespace Inventory.UI
 {
     public class UIInventory : MonoBehaviour
     {
-        [Header("Inventory Data")]
-        [SerializeField] private InventorySO inventoryData;
-
         [Header("Pages")]
-        [SerializeField] public UIDescriptionPage descriptionPage;
-        [SerializeField] public UIBackpackPage backpackPage;
+        [SerializeField] public List<GameObject> contentPages;
+        [SerializeField] public List<UIDescriptionPage> descriptionPages = new List<UIDescriptionPage>();
+        [SerializeField] public List<UIBackpackPage> backpackPages = new List<UIBackpackPage>();
         [SerializeField] public MouseFollower mouseFollower;
-        [SerializeField] public ItemActionPanel actionPanel;
 
-
-        private void OnEnable()
-        {
-            UpdateBackpack(inventoryData.GetCurrentInventoryState());
-            ClearDescription();
-        }
 
         private void OnDisable()
         {
-            actionPanel.Toggle(false);
+            ClearDescription(InventoryType.All);
             mouseFollower.Toggle(false);
         }
 
         private void Awake()
         {
-            inventoryData = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData;
+            foreach(GameObject contentPage in contentPages)
+            {
+                if (contentPage.GetComponent<UIBackpackPage>()) backpackPages.Add(contentPage.GetComponent<UIBackpackPage>());
+                if (contentPage.GetComponent<UIDescriptionPage>()) descriptionPages.Add(contentPage.GetComponent<UIDescriptionPage>());
+            }
 
-            mouseFollower.Toggle(false);
-            descriptionPage.ResetDescription();
+            foreach(UIDescriptionPage descriptionPage in descriptionPages)
+            {
+                descriptionPage.ResetDescription();
+            }
             gameObject.SetActive(false);
-
-            inventoryData.OnInventoryUpdated += UpdateBackpack;
-
-            backpackPage.InitializeBackpackSlot(inventoryData.Size);
         }
 
 
 
 
 
-        private void UpdateBackpack(Dictionary<int, InventoryItem> inventoryState)
+        public void SetInventoryContent(InventorySO inventoryData, InventoryType inventoryType)
         {
-            ResetAllItems();
-            foreach (var item in inventoryState)
+            foreach(UIBackpackPage backpackPage in backpackPages)
             {
-                if (backpackPage.listOfItemSlots.Count > item.Key)
+                if(backpackPage.inventoryType == inventoryType || backpackPage.inventoryType == InventoryType.All)
                 {
-                    backpackPage.listOfItemSlots[item.Key].SetData(item.Value.item.Image, item.Value.quantity);
+                    backpackPage.inventoryData = inventoryData;
+                    backpackPage.UpdateBackpack(inventoryData.GetCurrentInventoryState());
+                }
+            }
+            
+        }
+
+        public void SetDescription(ItemSO item, InventoryType inventoryType)
+        {
+            foreach(UIDescriptionPage descriptionPage in descriptionPages)
+            {
+                if(descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                {
+                    descriptionPage.SetDescription(item);
                 }
             }
         }
 
-        public void UpdateDescription(int itemIndex, ItemSO item)
+        public void ClearDescription(InventoryType inventoryType)
         {
-            descriptionPage.SetDescription(item);
-            Deselect();
-            backpackPage.listOfItemSlots[itemIndex].Select();
-        }
-
-
-
-
-
-        public void SetDescription(int itemIndex, string type)
-        {
-            switch (type)
+            foreach (UIDescriptionPage descriptionPage in descriptionPages)
             {
-                case "Backpack":
-                    InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-                    if (inventoryItem.IsEmpty)
-                    {
-                        ClearDescription();
-                        return;
-                    }
-                    UpdateDescription(itemIndex, inventoryItem.item);
-                    break;
+                if (descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                {
+                    descriptionPage.ResetDescription();
+                    descriptionPage.actionPanel.Toggle(false);
+                }
             }
         }
 
-        public void SetActionBotton(int itemIndex, string type)
+        public void SetActionBotton(InventorySO inventoryData, int itemIndex, InventoryType inventoryType)
         {
-            switch (type)
+            foreach (UIDescriptionPage descriptionPage in descriptionPages)
             {
-                case "Backpack":
+                if (descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                {
                     InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+                    descriptionPage.actionPanel.Toggle(true);
+
                     if (!inventoryItem.IsEmpty)
                     {
-                        actionPanel.Toggle(true);
-
-                        if (inventoryItem.item is IEquipable)
+                        switch (inventoryType)
                         {
-                            actionPanel.AddButton("Equip", () => PerformAction(itemIndex, "Equip"));
-                        }
-                        if (inventoryItem.item is IConsumeable)
-                        {
-                            actionPanel.AddButton("Consume", () => PerformAction(itemIndex, "Consume"));
-                        }
-                        if (inventoryItem.item is IDestoryableItem)
-                        {
-                            actionPanel.AddButton("Drop", () => DropItem(itemIndex, inventoryItem.quantity));
+                            case InventoryType.BackpackInventory:
+                                if (inventoryItem.item is IEquipable) descriptionPage.actionPanel.AddButton("Equip", () => PerformAction(inventoryData, itemIndex, "Equip", inventoryType));
+                                if (inventoryItem.item is IConsumeable) descriptionPage.actionPanel.AddButton("Consume", () => PerformAction(inventoryData, itemIndex, "Consume", inventoryType));
+                                if (inventoryItem.item is IDestoryableItem) descriptionPage.actionPanel.AddButton("Drop", () => PerformAction(inventoryData, itemIndex, "Drop", inventoryType));
+                                break;
+                            case InventoryType.BackpackShop:
+                                if (inventoryItem.item is ISellable) descriptionPage.actionPanel.AddButton("Sell", () => PerformAction(inventoryData, itemIndex, "Sell", inventoryType));
+                                break;
+                            case InventoryType.ShopGoods:
+                                if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton("Buy", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
+                                break;
                         }
                     }
-                    break;
-            }
-        }
-
-        public void PerformAction(int itemIndex, string actionName)
-        {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-            IItemAction itemAction = inventoryItem.item as IItemAction;
-            int amountToUse = 0;
-
-            if (itemAction != null && !inventoryItem.IsEmpty)
-            {
-                switch (actionName)
-                {
-                    case "Equip":
-                        amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
-                        itemAction.SelectAction("Equip", amountToUse, gameObject, inventoryItem.itemState);
-                        if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
-                        break;
-                    case "Consume":
-                        amountToUse = 1;
-                        itemAction.SelectAction("Consume", amountToUse, gameObject, inventoryItem.itemState);
-                        if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
-                        break;
                 }
-
-                if (inventoryData.GetItemAt(itemIndex).IsEmpty) ClearDescription();
             }
-            return;
         }
 
-        public void ClearDescription()
+        public void PerformAction(InventorySO inventoryData, int itemIndex, string actionName, InventoryType inventoryType)
         {
-            descriptionPage.ResetDescription();
-            Deselect();
-        }
-
-        public void Deselect()
-        {
-            foreach (UIItemSlot item in backpackPage.listOfItemSlots)
+            foreach (UIDescriptionPage descriptionPage in descriptionPages)
             {
-                item.Deselect();
-            }
-            actionPanel.Toggle(false);
-        }
+                if (descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                {
+                    InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+                    IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
+                    IItemAction itemAction = inventoryItem.item as IItemAction;
+                    int amountToUse = 0;
 
-        public void ResetAllItems()
-        {
-            foreach(var item in backpackPage.listOfItemSlots)
-            {
-                item.ResetData();
-                item.Deselect();
+                    if (itemAction != null && !inventoryItem.IsEmpty)
+                    {
+                        switch (actionName)
+                        {
+                            case "Equip":
+                                amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
+                                itemAction.SelectAction("Equip", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                                break;
+                            case "Consume":
+                                amountToUse = 1;
+                                itemAction.SelectAction("Consume", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                                break;
+                            case "Drop":
+                                amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
+                                inventoryData.RemoveItem(itemIndex, amountToUse);
+                                ClearDescription(inventoryType);
+                                break;
+                            case "Sell":
+                                amountToUse = 1;
+                                itemAction.SelectAction("Sell", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                                break;
+                            case "Buy":
+                                amountToUse = 1;
+                                if (GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().currentCoinAmount < inventoryItem.item.buyPrice) return;
+                                itemAction.SelectAction("Buy", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                if (destoryableItem != null) GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
+                                break;
+                        }
+
+                        if (inventoryData.GetItemAt(itemIndex).IsEmpty) ClearDescription(inventoryType);
+                    }
+                }
             }
         }
 
@@ -172,10 +162,14 @@ namespace Inventory.UI
             mouseFollower.SetData(sprite, quantity);
         }
 
-        private void DropItem(int itemIndex, int quantity)
+        public void DeletDraggedItem()
         {
-            inventoryData.RemoveItem(itemIndex, quantity);
-            ClearDescription();
+            mouseFollower.Toggle(false);
         }
+    }
+
+    public enum InventoryType
+    {
+        BackpackInventory, BackpackShop, ShopGoods, All
     }
 }

@@ -62,8 +62,8 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     [Header("Connect Object")]
     public GameObject damageText;
     public Animator onHitEffect;
-    public InventorySO inventoryData;
-    public UIInventory inventoryUI;
+    public InventorySO inventoryData, shopData;
+    public UIInventory inventoryUI, shopUI;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
     public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
@@ -190,14 +190,13 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
         //UI
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Debug.Log(!inventoryUI.enabled);
-            Debug.Log(inventoryUI.enabled);
-            inventoryUI.enabled = !inventoryUI.enabled;
+            inventoryUI.SetInventoryContent(inventoryData, InventoryType.BackpackInventory);
+            inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
         }
     }
 
 
-    
+
 
 
     private void Moving()

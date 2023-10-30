@@ -8,7 +8,12 @@ using UnityEngine;
 
 public class UIBackpackPage : MonoBehaviour
 {
-    [SerializeField] private InventorySO inventoryData;
+    [Header("Settings")]
+    [SerializeField] public InventoryType inventoryType;
+    [SerializeField] public bool isDragable;
+
+    [Header("Connect Object")]
+    [SerializeField] public InventorySO inventoryData;
     [SerializeField] private UIInventory inventoryUI;
     [SerializeField] private UIItemSlot itemSlot;
     [SerializeField] private RectTransform contentPanel;
@@ -20,30 +25,54 @@ public class UIBackpackPage : MonoBehaviour
 
     private void Start()
     {
-        inventoryData = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData;
         inventoryUI = GetComponentInParent<UIInventory>();
+
+        InitializeBackpackSlot(inventoryData.Size);
+        UpdateBackpack(inventoryData.GetCurrentInventoryState());
     }
 
     public void InitializeBackpackSlot(int inventorySize)
     {
         for (int i = 0; i < inventorySize; i++)
         {
-            UIItemSlot _itemSlot = Instantiate(itemSlot, Vector3.zero, Quaternion.identity);
-            _itemSlot.transform.SetParent(contentPanel);
+            UIItemSlot _itemSlot = Instantiate(itemSlot, Vector3.zero, Quaternion.identity, contentPanel);
             _itemSlot.OnItemClicked += HandleItemSelection;
             _itemSlot.OnItemBeginDrag += HandleBeginDrag;
             _itemSlot.OnItemEndDrag += HandleEndDrag;
             _itemSlot.OnItemDroppedOn += HandleSwap;
             listOfItemSlots.Add(_itemSlot);
         }
+
+        inventoryData.OnInventoryUpdated += UpdateBackpack;
     }
+
+
+
+
+
+    public void UpdateBackpack(Dictionary<int, InventoryItem> inventoryState)
+    {
+        ResetAllItems();
+
+        foreach (var item in inventoryState)
+        {
+            if (listOfItemSlots.Count > item.Key)
+            {
+                listOfItemSlots[item.Key].SetData(item.Value.item.Image, item.Value.quantity);
+            }
+        }
+    }
+
+
+
+
 
     public void HandleBeginDrag(UIItemSlot inventoryItemUI)
     {
         int index = listOfItemSlots.IndexOf(inventoryItemUI);
         InventoryItem inventoryItem = inventoryData.GetItemAt(index);
 
-        if (index != -1 && !inventoryItem.IsEmpty)
+        if (index != -1 && !inventoryItem.IsEmpty && isDragable)
         {
             HandleItemSelection(inventoryItemUI);
             currentDraggedItemIndex = index;
@@ -53,15 +82,16 @@ public class UIBackpackPage : MonoBehaviour
 
     public void HandleEndDrag(UIItemSlot inventoryItemUI)
     {
-        inventoryUI.mouseFollower.Toggle(false);
+        inventoryUI.DeletDraggedItem();
         currentDraggedItemIndex = -1;
     }
 
     public void HandleSwap(UIItemSlot inventoryItemUI)
     {
         int index = listOfItemSlots.IndexOf(inventoryItemUI);
+        InventoryItem inventoryItem = inventoryData.GetItemAt(index);
 
-        if (index != -1)
+        if (index != -1 && !inventoryItem.IsEmpty && isDragable)
         {
             inventoryData.SwapItems(currentDraggedItemIndex, index);
             HandleItemSelection(inventoryItemUI);
@@ -71,11 +101,41 @@ public class UIBackpackPage : MonoBehaviour
     public void HandleItemSelection(UIItemSlot inventoryItemUI)
     {
         int index = listOfItemSlots.IndexOf(inventoryItemUI);
+        InventoryItem inventoryItem = inventoryData.GetItemAt(index);
 
-        if (index != -1)
+        if (index != -1 && !inventoryItem.IsEmpty)
         {
-            inventoryUI.SetDescription(index, "Backpack");
-            inventoryUI.SetActionBotton(index, "Backpack");
+            Deselect();
+            listOfItemSlots[index].Select();
+
+            inventoryUI.SetDescription(inventoryItem.item, inventoryType);
+            inventoryUI.SetActionBotton(inventoryData, index, inventoryType);
+        }
+        else
+        {
+            Deselect();
+        }
+    }
+
+
+
+
+
+    public void Deselect()
+    {
+        foreach (UIItemSlot item in listOfItemSlots)
+        {
+            item.Deselect();
+        }
+        inventoryUI.ClearDescription(inventoryType);
+    }
+
+    public void ResetAllItems()
+    {
+        foreach (UIItemSlot item in listOfItemSlots)
+        {
+            item.ResetData();
+            item.Deselect();
         }
     }
 }

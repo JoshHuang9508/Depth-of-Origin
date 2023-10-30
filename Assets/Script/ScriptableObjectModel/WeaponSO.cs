@@ -15,7 +15,6 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyabl
     public float knockbackTime;
     public WeaponType weaponType;
 
-    public int price;
     public enum WeaponType
     {
         Melee, Ranged
@@ -37,26 +36,6 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyabl
         if (player != null)
         {
             player.SetEquipment(this, weaponType);
-        }
-        return false;
-    }
-
-    public bool SellObject(int amount, GameObject character, List<ItemParameter> itemstate)
-    {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
-        if (player != null)
-        {
-            player.currentCoinAmount += price;
-        }
-        return false;
-    }
-
-    public bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate)
-    {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
-        if (player != null)
-        {
-            player.currentCoinAmount -= price;
         }
         return false;
     }

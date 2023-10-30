@@ -42,6 +42,7 @@ public class SummonWeapon : MonoBehaviour
         if (player.currentWeapon == null)
         {
             spriteRenderer.sprite = null;
+            weapon = null;
         }
         else if (player.currentWeapon is WeaponSO && (summonEnabler ? weapon = player.currentWeapon : true))
         {

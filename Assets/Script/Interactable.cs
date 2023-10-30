@@ -10,7 +10,7 @@ public class Interactable : MonoBehaviour
 
     public KeyCode interactKey;
 
-    public UnityEvent interactAction;
+    public UnityEvent interactAction, leaveRangeAction;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +44,7 @@ public class Interactable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isInRange = false;
+            leaveRangeAction.Invoke();
             //Debug.Log("Player leave range");
         }
     }
