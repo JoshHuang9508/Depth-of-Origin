@@ -6,12 +6,12 @@ using UnityEngine;
 public class MouseFollower : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
-    [SerializeField] private UIInventoryItem item;
+    [SerializeField] private UIItemSlot item;
 
     private void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
-        item = GetComponentInChildren<UIInventoryItem>();
+        item = GetComponentInChildren<UIItemSlot>();
     }
 
     public void SetData(Sprite sprite,int quantity)

@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class UIShopGoodsPage : MonoBehaviour
 {
-    [SerializeField] private UIInventoryItem itemPrefabs;
+    [SerializeField] private UIItemSlot itemPrefabs;
     [SerializeField] private RectTransform contentPanel;
     [SerializeField] private UIDescriptionPage itemDescription;
     [SerializeField] private ItemActionPanel actionPanel;
 
     public event Action<int, string> OnDescriptionRequested, OnItemActionRequested;
 
-    List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
+    List<UIItemSlot> listOfUIItems = new List<UIItemSlot>();
 
 
     private void OnEnable()
@@ -37,14 +37,14 @@ public class UIShopGoodsPage : MonoBehaviour
     {
         for (int i = 0; i < goodssize; i++)
         {
-            UIInventoryItem uiItem = Instantiate(itemPrefabs, Vector3.zero, Quaternion.identity);
+            UIItemSlot uiItem = Instantiate(itemPrefabs, Vector3.zero, Quaternion.identity);
             uiItem.transform.SetParent(contentPanel);
             uiItem.OnItemClicked += HandleItemSelection;
             listOfUIItems.Add(uiItem);
         }
     }
 
-    private void HandleItemSelection(UIInventoryItem inventoryItemUI)
+    private void HandleItemSelection(UIItemSlot inventoryItemUI)
     {
         int index = listOfUIItems.IndexOf(inventoryItemUI);
         if (index == -1)
@@ -76,7 +76,7 @@ public class UIShopGoodsPage : MonoBehaviour
 
     private void DeselectAllItems()
     {
-        foreach (UIInventoryItem item in listOfUIItems)
+        foreach (UIItemSlot item in listOfUIItems)
         {
             item.Deselect();
         }

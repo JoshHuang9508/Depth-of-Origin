@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class UIShop : MonoBehaviour
 {
-    [SerializeField] private UIInventoryItem itemPrefabs;
+    [SerializeField] private UIItemSlot itemPrefabs;
     [SerializeField] private RectTransform contentPanel;
     [SerializeField] private UIDescriptionPage itemDescription;
     [SerializeField] private MouseFollower mouseFollower;
@@ -19,7 +19,7 @@ public class UIShop : MonoBehaviour
     public event Action<int> OnStartDragging;
     public event Action<int, int> OnSwapItems;
 
-    List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
+    List<UIItemSlot> listOfUIItems = new List<UIItemSlot>();
 
 
     private void OnEnable()
@@ -44,7 +44,7 @@ public class UIShop : MonoBehaviour
     {
         for (int i = 0; i < inventorysize; i++)
         {
-            UIInventoryItem uiItem = Instantiate(itemPrefabs, Vector3.zero, Quaternion.identity);
+            UIItemSlot uiItem = Instantiate(itemPrefabs, Vector3.zero, Quaternion.identity);
             uiItem.transform.SetParent(contentPanel);
             uiItem.OnItemClicked += HandleItemSelection;
             uiItem.OnItemBeginDrag += HandleBeginDrag;
@@ -70,12 +70,12 @@ public class UIShop : MonoBehaviour
         listOfUIItems[itemIndex].Select();
     }
 
-    private void HandleEndDrag(UIInventoryItem inventoryItemUI)
+    private void HandleEndDrag(UIItemSlot inventoryItemUI)
     {
         ResetDraggedItem();
     }
 
-    private void HandleSwap(UIInventoryItem inventoryItemUI)
+    private void HandleSwap(UIItemSlot inventoryItemUI)
     {
         int index = listOfUIItems.IndexOf(inventoryItemUI);
         if (index == -1)
@@ -86,7 +86,7 @@ public class UIShop : MonoBehaviour
         HandleItemSelection(inventoryItemUI);
     }
 
-    private void HandleBeginDrag(UIInventoryItem inventoryItemUI)
+    private void HandleBeginDrag(UIItemSlot inventoryItemUI)
     {
         int index = listOfUIItems.IndexOf(inventoryItemUI);
         if (index == -1)
@@ -97,7 +97,7 @@ public class UIShop : MonoBehaviour
         OnItemActionRequested?.Invoke(index, "Backpack");
     }
 
-    private void HandleItemSelection(UIInventoryItem inventoryItemUI)
+    private void HandleItemSelection(UIItemSlot inventoryItemUI)
     {
         int index = listOfUIItems.IndexOf(inventoryItemUI);
         if (index == -1)
@@ -126,7 +126,7 @@ public class UIShop : MonoBehaviour
 
     private void DeselectAllItems()
     {
-        foreach (UIInventoryItem item in listOfUIItems)
+        foreach (UIItemSlot item in listOfUIItems)
         {
             item.Deselect();
         }

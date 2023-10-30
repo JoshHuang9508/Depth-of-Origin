@@ -30,8 +30,34 @@ namespace Inventory.UI
 
         public void SetDescription(ItemSO item)
         {
-            SetImage(item);
-            SetTitle(item);
+            itemImage.gameObject.SetActive(true);
+            itemImage.sprite = item.Image;
+            
+
+            title.gameObject.SetActive(true);
+            title.text = item.Name;
+            switch (item.Rarity)
+            {
+                case Rarity.Common:
+                    title.outlineColor = new Color(255, 255, 255, 255);
+                    break;
+                case Rarity.Uncommon:
+                    title.outlineColor = new Color(255, 255, 0, 255);
+                    break;
+                case Rarity.Rare:
+                    title.outlineColor = new Color(0, 255, 0, 255);
+                    break;
+                case Rarity.Exotic:
+                    title.outlineColor = new Color(0, 255, 255, 255);
+                    break;
+                case Rarity.Mythic:
+                    title.outlineColor = new Color(255, 0, 255, 255);
+                    break;
+                case Rarity.Legendary:
+                    title.outlineColor = new Color(255, 0, 0, 255);
+                    break;
+            }
+
 
             description.gameObject.SetActive(true);
             try
@@ -80,39 +106,6 @@ namespace Inventory.UI
             catch { }
 
             description.text = item.Description + $"\n\n{b}";
-        }
-
-        private void SetImage(ItemSO item)
-        {
-            itemImage.gameObject.SetActive(true);
-            itemImage.sprite = item.Image;
-        }
-
-        private void SetTitle(ItemSO item)
-        {
-            title.gameObject.SetActive(true);
-            title.text = item.Name;
-            switch (item.Rarity)
-            {
-                case Rarity.Common:
-                    title.outlineColor = new Color(255, 255, 255, 255);
-                    break;
-                case Rarity.Uncommon:
-                    title.outlineColor = new Color(255, 255, 0, 255);
-                    break;
-                case Rarity.Rare:
-                    title.outlineColor = new Color(0, 255, 0, 255);
-                    break;
-                case Rarity.Exotic:
-                    title.outlineColor = new Color(0, 255, 255, 255);
-                    break;
-                case Rarity.Mythic:
-                    title.outlineColor = new Color(255, 0, 255, 255);
-                    break;
-                case Rarity.Legendary:
-                    title.outlineColor = new Color(255, 0, 0, 255);
-                    break;
-            }
         }
     }
 }

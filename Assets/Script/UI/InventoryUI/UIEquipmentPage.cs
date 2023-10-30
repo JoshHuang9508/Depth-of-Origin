@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIEquipmentPage : MonoBehaviour
 {
-    public UIInventoryItem armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
+    public UIItemSlot armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
     public GameObject target, statsdisplay;
     public TMP_Text health, str, movespeed, def, critrate, critdamage;
     PlayerBehaviour player;

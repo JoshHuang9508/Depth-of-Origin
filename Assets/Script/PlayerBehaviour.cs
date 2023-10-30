@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Inventory.Model;
+using Inventory.UI;
 using static UnityEditor.Progress;
 using System;
 using Newtonsoft.Json;
@@ -62,6 +63,7 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
     public GameObject damageText;
     public Animator onHitEffect;
     public InventorySO inventoryData;
+    public UIInventory inventoryUI;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
     public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
@@ -184,6 +186,14 @@ public class PlayerBehaviour : MonoBehaviour, Damage_Interface
 
         //test addItem func
         if (Input.GetKeyDown(KeyCode.Alpha4) && potions != null) inventoryData.AddItem(potions, 10);
+
+        //UI
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log(!inventoryUI.enabled);
+            Debug.Log(inventoryUI.enabled);
+            inventoryUI.enabled = !inventoryUI.enabled;
+        }
     }
 
 
