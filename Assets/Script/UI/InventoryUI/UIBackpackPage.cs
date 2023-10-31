@@ -63,10 +63,6 @@ public class UIBackpackPage : MonoBehaviour
         }
     }
 
-
-
-
-
     public void HandleBeginDrag(UIItemSlot inventoryItemUI)
     {
         int index = listOfItemSlots.IndexOf(inventoryItemUI);

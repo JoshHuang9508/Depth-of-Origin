@@ -10,15 +10,20 @@ public class ItemDropper : MonoBehaviour
 
     public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins, List<GameObject> wreckages)
     {
-        DropItems(lootings);
+        DropItems(lootings, null);
         DropCoins(lootMinCoins, lootMaxCoins);
         DropWrackages(wreckages);
         Destroy(gameObject);
     }
     public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins)
     {
-        DropItems(lootings);
+        DropItems(lootings, null);
         DropCoins(lootMinCoins, lootMaxCoins);
+        Destroy(gameObject);
+    }
+    public void Drop(ItemSO item)
+    {
+        DropItems(null, item);
         Destroy(gameObject);
     }
 
@@ -40,8 +45,18 @@ public class ItemDropper : MonoBehaviour
         }
     }
 
-    private void DropItems(List<Lootings> lootings)
+    private void DropItems(List<Lootings> lootings, ItemSO lootng)
     {
+
+        if (lootng != null)
+        {
+            Debug.Log(lootng.name);
+            lootings = new List<Lootings>() { new Lootings(lootng, 100f)};
+            Debug.Log(lootings[0].lootings);
+        }
+
+        Debug.Log(lootings.Count == 0);
+
         if (lootings.Count == 0)
         {
             return;
@@ -100,8 +115,14 @@ public class ItemDropper : MonoBehaviour
 }
 
 [System.Serializable]
-public struct Lootings
+public class Lootings
 {
     public ItemSO lootings;
     public float chances;
+
+    public Lootings(ItemSO item, float chance)
+    {
+        lootings = item;
+        chances = chance;
+    }
 }

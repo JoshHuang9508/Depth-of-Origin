@@ -13,7 +13,10 @@ namespace Inventory.UI
         [SerializeField] public List<GameObject> contentPages;
         [SerializeField] public List<UIDescriptionPage> descriptionPages = new List<UIDescriptionPage>();
         [SerializeField] public List<UIBackpackPage> backpackPages = new List<UIBackpackPage>();
+
+        [Header("Connect Object")]
         [SerializeField] public MouseFollower mouseFollower;
+        [SerializeField] public GameObject itemDropper;
 
 
         private void OnDisable()
@@ -116,6 +119,7 @@ namespace Inventory.UI
                     InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
                     IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
                     IItemAction itemAction = inventoryItem.item as IItemAction;
+                    GameObject player = GameObject.FindWithTag("Player");
                     int amountToUse = 0;
 
                     if (itemAction != null && !inventoryItem.IsEmpty)
@@ -124,29 +128,38 @@ namespace Inventory.UI
                         {
                             case "Equip":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
-                                itemAction.SelectAction("Equip", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                itemAction.SelectAction("Equip", amountToUse, player, inventoryItem.itemState);
                                 if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
                                 break;
                             case "Consume":
                                 amountToUse = 1;
-                                itemAction.SelectAction("Consume", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                itemAction.SelectAction("Consume", amountToUse, player, inventoryItem.itemState);
                                 if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
                                 break;
                             case "Drop":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
+
+                                for(int i = 0; i < amountToUse; i++)
+                                {
+                                    var ItemDropper = Instantiate(itemDropper, new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+                                    ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
+                                    ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
+                                    itemDropperController.Drop(inventoryItem.item);
+                                }
+
                                 inventoryData.RemoveItem(itemIndex, amountToUse);
                                 ClearDescription(inventoryType);
                                 break;
                             case "Sell":
                                 amountToUse = 1;
-                                itemAction.SelectAction("Sell", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
+                                itemAction.SelectAction("Sell", amountToUse, player, inventoryItem.itemState);
                                 if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
                                 break;
                             case "Buy":
                                 amountToUse = 1;
                                 if (GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().currentCoinAmount < inventoryItem.item.buyPrice) return;
-                                itemAction.SelectAction("Buy", amountToUse, GameObject.FindWithTag("Player"), inventoryItem.itemState);
-                                if (destoryableItem != null) GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
+                                itemAction.SelectAction("Buy", amountToUse, player, inventoryItem.itemState);
+                                if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
                                 break;
                         }
 

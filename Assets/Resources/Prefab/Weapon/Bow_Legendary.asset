@@ -17,15 +17,16 @@ MonoBehaviour:
   IsStackable: 0
   MaxStackSize: 1
   Rarity: 5
+  sellPrice: 0
+  buyPrice: 0
   Image: {fileID: 21300000, guid: 9d447732954d7044e84749cbe971fb7a, type: 3}
   DefaultParameterList: []
   attackSpeed: 1
-  attackCooldown: 0.2
+  attackCooldown: 1
   weaponDamage: 250
   knockbackForce: 50
   knockbackTime: 0.5
   weaponType: 1
-  price: 0
   E_walkSpeed: 3
   E_maxHealth: 200
   E_strength: 50
