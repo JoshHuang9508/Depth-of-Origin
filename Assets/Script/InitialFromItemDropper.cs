@@ -41,6 +41,8 @@ public class InitialFromItemDropper : MonoBehaviour
                 backgroundLight2D.color = new Color(1, 0, 0);
                 break;
         }
+
+        backgroundLightObject.transform.position = spriteRenderer.bounds.center;
     }
 
     // Update is called once per frame

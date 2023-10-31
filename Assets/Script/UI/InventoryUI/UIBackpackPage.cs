@@ -87,7 +87,7 @@ public class UIBackpackPage : MonoBehaviour
         int index = listOfItemSlots.IndexOf(inventoryItemUI);
         InventoryItem inventoryItem = inventoryData.GetItemAt(index);
 
-        if (index != -1 && !inventoryItem.IsEmpty && isDragable)
+        if (index != -1 && isDragable)
         {
             inventoryData.SwapItems(currentDraggedItemIndex, index);
             HandleItemSelection(inventoryItemUI);

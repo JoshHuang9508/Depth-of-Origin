@@ -90,8 +90,8 @@ namespace Inventory.UI
                     (edibleItem.E_defence == 0 ? "" : $"- Defence + {edibleItem.E_defence}\n" ) +
                     (edibleItem.E_walkSpeed == 0 ? "" : $"- Walk SPD + {edibleItem.E_walkSpeed}\n" ) +
                     (edibleItem.E_critRate == 0 ? "" : $"- Crit Rate + {edibleItem.E_critRate}%\n" ) +
-                    (edibleItem.E_critDamage == 0 ? "" : $"- Crit DMG + {edibleItem.E_critDamage}\n%" ) +
-                    (edibleItem.effectTime <= 0.5 ? "" : $"- Effect Time : {edibleItem.effectTime}\ns");
+                    (edibleItem.E_critDamage == 0 ? "" : $"- Crit DMG + {edibleItem.E_critDamage}%\n" ) +
+                    (edibleItem.effectTime <= 0.5 ? "" : $"- Effect Time : {edibleItem.effectTime}s\n");
             }
             catch { }
             try
@@ -104,7 +104,7 @@ namespace Inventory.UI
                     (equipment.E_defence == 0 ? "" : $"- Defence + {equipment.E_defence}\n" ) +
                     (equipment.E_walkSpeed == 0 ? "" : $"- Walk SPD + {equipment.E_walkSpeed}\n" ) +
                     (equipment.E_critRate == 0 ? "" : $"- Crit Rate + {equipment.E_critRate}%\n" ) +
-                    (equipment.E_critDamage == 0 ? "" : $"- Crit DMG + {equipment.E_critDamage}\n%" ) ;
+                    (equipment.E_critDamage == 0 ? "" : $"- Crit DMG + {equipment.E_critDamage}%\n" ) ;
             }
             catch { }
 
