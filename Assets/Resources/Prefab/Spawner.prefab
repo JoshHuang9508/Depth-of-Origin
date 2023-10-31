@@ -84,6 +84,8 @@ MonoBehaviour:
   spawnLimit: 4
   spawnRange: 10
   maxSpawnTimes: -1
+  spawnGapMin: 3
+  spawnGapMax: 10
   targetLayer:
     serializedVersion: 2
     m_Bits: 8

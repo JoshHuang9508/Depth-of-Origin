@@ -8,6 +8,8 @@ public class SpawnerController : MonoBehaviour
     public int spawnLimit;
     public float spawnRange;
     public int maxSpawnTimes;
+    public float spawnGapMin;
+    public float spawnGapMax;
     public LayerMask targetLayer;
     public List<EnemySO> spawnList;
 
@@ -76,7 +78,7 @@ public class SpawnerController : MonoBehaviour
         //spawn delay
         StartCoroutine(delay(enabler =>
         spawnEnabler = playerStayed ? false : enabler,
-        Random.Range(3f, 10f)));
+        Random.Range(spawnGapMin, spawnGapMax)));
     }
 
     private bool DetectBlankAreas(Vector2 areaCenter, Vector2 areaSize, float cellSize)
@@ -98,7 +100,7 @@ public class SpawnerController : MonoBehaviour
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {
         callback(false);
-        yield return new WaitForSeconds(delayTime);
+        yield return new WaitForSeconds(0.1f);
         callback(true);
     }
 }
