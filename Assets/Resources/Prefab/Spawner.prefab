@@ -68,7 +68,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 10
+  m_Radius: 12
 --- !u!114 &2733243644986615339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,13 +82,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnLimit: 4
-  spawnRange: 10
+  spawnRange: 12
   maxSpawnTimes: -1
-  spawnGapMin: 3
-  spawnGapMax: 10
+  spawnGapMin: 0.1
+  spawnGapMax: 0.1
   targetLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 264
   spawnList:
   - {fileID: 11400000, guid: 647874ec2cace5945b1dfb487daf102d, type: 2}
   spawnTimes: 0

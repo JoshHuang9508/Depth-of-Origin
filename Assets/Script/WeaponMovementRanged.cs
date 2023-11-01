@@ -37,10 +37,6 @@ public class WeaponMovementRanged : MonoBehaviour
                 DisableItem();
             }
         }
-        else
-        {
-            //Debug.LogWarning("collision dont have implement IDamageable");
-        }
 
         if (collision.CompareTag("Wall"))
         {

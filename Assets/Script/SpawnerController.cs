@@ -93,8 +93,8 @@ public class SpawnerController : MonoBehaviour
                 if (colliders.Length == 0) return true;
                 foreach (Collider2D collider in colliders)
                 {
-                    Debug.Log(collider.tag);
-                    if (collider.CompareTag("Water")) return true;
+                    //Debug.Log(collider.tag);
+                    if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject")) return true;
                 }
             }
         }
