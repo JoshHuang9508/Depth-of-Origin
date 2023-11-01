@@ -23,7 +23,7 @@ public class InitialFromItemDropper : MonoBehaviour
         switch (InventoryItem.Rarity)
         {
             case Rarity.Common:
-                backgroundLight2D.color = new Color(1, 1, 1);
+                backgroundLight2D.color = new Color(0.8f, 0.8f, 0.8f);
                 break;
             case Rarity.Uncommon:
                 backgroundLight2D.color = new Color(1, 1, 0);
@@ -35,10 +35,10 @@ public class InitialFromItemDropper : MonoBehaviour
                 backgroundLight2D.color = new Color(0, 1, 1);
                 break;
             case Rarity.Mythic:
-                backgroundLight2D.color = new Color(1, 0, 1);
+                backgroundLight2D.color = new Color(2, 0, 2);
                 break;
             case Rarity.Legendary:
-                backgroundLight2D.color = new Color(1, 0, 0);
+                backgroundLight2D.color = new Color(2, 0, 0);
                 break;
         }
 

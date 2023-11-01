@@ -21,7 +21,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if(spawnEnabler == true && stayMobs < spawnLimit && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1))
+        if(spawnEnabler == true && (stayMobs < spawnLimit || spawnLimit == -1) && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1))
         {
             SpawnMobs();
         }
@@ -88,19 +88,24 @@ public class SpawnerController : MonoBehaviour
             for (float y = areaCenter.y - areaSize.y / 2; y < areaCenter.y + areaSize.y / 2; y += cellSize)
             {
                 Vector2 cellPosition = new Vector2(x, y);
-                Collider2D colliders = Physics2D.OverlapBox(cellPosition, new Vector2(cellSize, cellSize), 0f, targetLayer);
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(cellPosition, new Vector2(cellSize, cellSize), 0f, targetLayer);
 
-                if (colliders == null) return true;
-                if (colliders.CompareTag("Water")) return true;
+                if (colliders.Length == 0) return true;
+                foreach (Collider2D collider in colliders)
+                {
+                    Debug.Log(collider.tag);
+                    if (collider.CompareTag("Water")) return true;
+                }
             }
         }
+
         return false;
     }
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {
         callback(false);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(delayTime);
         callback(true);
     }
 }
