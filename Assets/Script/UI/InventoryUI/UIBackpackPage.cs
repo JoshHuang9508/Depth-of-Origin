@@ -131,7 +131,7 @@ public class UIBackpackPage : MonoBehaviour
         foreach (UIItemSlot item in listOfItemSlots)
         {
             item.ResetData();
-            item.Deselect();
+            //item.Deselect();
         }
     }
 }
