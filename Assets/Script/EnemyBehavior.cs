@@ -6,7 +6,7 @@ using static Unity.Collections.AllocatorManager;
 
 public class EnemyBehavior : MonoBehaviour, Damage_Interface
 {
-    public EnemySO enemySO;
+    public EnemySO enemy;
 
     [Header("Connect Object")]
     public GameObject damageText;
@@ -17,6 +17,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     Rigidbody2D currentRb;
     Transform target;
     Damage_Interface damageableObject;
+    Vector2 currentPos, characterPos, diraction;
 
     float currentHealth;
     bool movementEnabler = true;
@@ -66,7 +67,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.Drop(enemySO.lootings, enemySO.lootMinItems, enemySO.lootMaxItems, enemySO.wreckage);
+                itemDropperController.Drop(enemy.lootings, enemy.lootMinItems, enemy.lootMaxItems, enemy.wreckage);
 
                 Destroy(gameObject);
             }
@@ -80,7 +81,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = enemySO.health;
+        currentHealth = enemy.health;
         target = GameObject.FindWithTag("Player").transform;
         animator = GetComponentInChildren<Animator>();
         currentRb = GetComponent<Rigidbody2D>();
@@ -91,22 +92,26 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     // Update is called once per frame
     void Update()
     {
+        currentPos = transform.position;
+        characterPos = target.transform.position;
+        diraction = (characterPos - currentPos).normalized;
+
         Moving();
     }
 
     void Moving()
     {
-        if (Vector3.Distance(target.position, this.transform.position) <= enemySO.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemySO.attackField && movementEnabler && attackEnabler)
+        if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemy.attackField && movementEnabler && attackEnabler)
         {
             float movement_x = (this.transform.position.x - target.position.x <= 0) ? 1 : -1;
             float movement_y = (this.transform.position.y - target.position.y <= 0) ? 1 : -1;
-            currentRb.velocity = new Vector3(movement_x * enemySO.moveSpeed, movement_y * enemySO.moveSpeed, 0.0f);
+            currentRb.velocity = new Vector3(movement_x * enemy.moveSpeed, movement_y * enemy.moveSpeed, 0.0f);
 
             //play animation
             animator.SetBool("ismove", true);
             animator.SetBool("ischase", true);
         }
-        else if (Vector3.Distance(target.position, this.transform.position) > enemySO.chaseField && movementEnabler && attackEnabler)
+        else if (Vector3.Distance(target.position, this.transform.position) > enemy.chaseField && movementEnabler && attackEnabler)
         {
             currentRb.velocity = new Vector2(0.0f, 0.0f);
 
@@ -114,7 +119,7 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
             animator.SetBool("ismove", false);
             animator.SetBool("ischase", false);
         }
-        else if (Vector3.Distance(target.position, this.transform.position) < enemySO.attackField && movementEnabler && attackEnabler)
+        else if (Vector3.Distance(target.position, this.transform.position) < enemy.attackField && movementEnabler && attackEnabler)
         {
             currentRb.velocity = new Vector2(0.0f, 0.0f);
             Attacking();
@@ -131,14 +136,11 @@ public class EnemyBehavior : MonoBehaviour, Damage_Interface
     {
         if (attackEnabler)
         {
-            Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
-            Vector2 direction = (Vector2)(target.gameObject.transform.position - parentPos).normalized;
-
-            damageableObject.OnHit(enemySO.attackDamage, false, direction * enemySO.knockbackForce, enemySO.knockbackTime);
+            damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
             StartCoroutine(delay((enabler) => {
                 attackEnabler = enabler;
-            }, enemySO.attackSpeed));
+            }, enemy.attackSpeed));
         }
     }
 

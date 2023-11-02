@@ -72,7 +72,7 @@ public class SpawnerController : MonoBehaviour
             Quaternion.identity,
             GameObject.FindWithTag("Entity").transform
             );
-        spawnMob.GetComponent<EnemyBehavior>().enemySO = spawnList[randomSpawnIndex];
+        spawnMob.GetComponent<EnemyBehavior>().enemy = spawnList[randomSpawnIndex];
         spawnTimes++;
 
         //spawn delay

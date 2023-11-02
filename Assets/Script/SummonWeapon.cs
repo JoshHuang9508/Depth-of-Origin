@@ -69,30 +69,41 @@ public class SummonWeapon : MonoBehaviour
             }
 
             summonEnabler = false;
-            GameObject weaponSummoned;
 
             switch (weapon.weaponType)
             {
                 case WeaponSO.WeaponType.Melee:
-                    weaponSummoned = Instantiate(weapon.weaponObject, new Vector3(
+                    GameObject meleeWeaponSummoned = Instantiate(weapon.weaponObject, new Vector3(
                         transform.position.x, transform.position.y, transform.position.z), 
                         new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), 
                         this.transform);
-                    weaponSummoned.GetComponent<WeaponMovementMelee>().weapon = weapon;
-                    weaponSummoned.GetComponent<WeaponMovementMelee>().WeaponSwing(isflip);
+                    meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().weapon = weapon;
+                    meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().isflip = isflip;
                     transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
                     break;
                 case WeaponSO.WeaponType.Ranged:
                     RangedWeaponSO rangedWeapon = weapon as RangedWeaponSO;
-                    weaponSummoned = Instantiate(rangedWeapon.projectileObject, new Vector3(
+
+                    GameObject rangedWeaponSummoned = Instantiate(rangedWeapon.projectileObject, new Vector3(
                         transform.position.x, transform.position.y, transform.position.z), 
                         Quaternion.Euler(0, 0, startAngle - 90), 
                         GameObject.FindWithTag("Item").transform);
-                    weaponSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
-                    weaponSummoned.GetComponent<WeaponMovementRanged>().ProjectileFly(Quaternion.Euler(0, 0, startAngle));
+                    switch (rangedWeapon.projectileType)
+                    {
+                        case RangedWeaponSO.ProjectileType.Straight:
+                            rangedWeaponSummoned.AddComponent<ProjectileMovement_Straight>();
+                            break;
+                        case RangedWeaponSO.ProjectileType.Split:
+                            rangedWeaponSummoned.AddComponent<ProjectileMovement_Split>();
+                            break;
+                        case RangedWeaponSO.ProjectileType.Unlimited:
+                            rangedWeaponSummoned.AddComponent<ProjectileMovement_Unlimited>();
+                            break;
+                    }
+                    rangedWeaponSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
+                    rangedWeaponSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
                     break;
             }
-            //**need consider about far distant weapon**
         }
     }
 

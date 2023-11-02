@@ -14,6 +14,8 @@ public class EnemySO : ScriptableObject
     public float health;
     public float moveSpeed;
     public Difficulty difficulty = Difficulty.Easy;
+    public GameObject projectile;
+    public float projectileFlySpeed;
 
     [Header("Attacking")]
     public AttackType attackType;

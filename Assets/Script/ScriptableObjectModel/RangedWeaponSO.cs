@@ -11,4 +11,10 @@ public class RangedWeaponSO : WeaponSO, IEquipable, IDestoryableItem, IItemActio
     [Header("Projectile Object Settings")]
     public GameObject projectileObject;
     public float flySpeed;
+    public ProjectileType projectileType;
+
+    public enum ProjectileType
+    {
+        Straight, Split, Unlimited
+    }
 }

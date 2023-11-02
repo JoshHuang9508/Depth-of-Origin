@@ -17,8 +17,10 @@ MonoBehaviour:
   health: 100
   moveSpeed: 3
   difficulty: 0
+  projectile: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
+  projectileFlySpeed: 15
   attackType: 0
-  attackSpeed: 1.5
+  attackSpeed: 0.2
   attackDamage: 5
   chaseField: 10
   attackField: 0.8

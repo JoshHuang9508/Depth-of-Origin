@@ -5056,3 +5056,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
+  startAngle: {x: 0, y: 0, z: 0, w: 0}
+  isflip: 0
+  spriteRenderer: {fileID: 0}
+  summonWeapon: {fileID: 0}
+  player: {fileID: 0}
