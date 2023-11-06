@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using Inventory.Model;
 
-public class BreakableObject : MonoBehaviour, Damage_Interface
+public class BreakableObject : MonoBehaviour, Damageable
 {
     [Header("Basic Data")]
     public float health;

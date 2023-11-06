@@ -8,7 +8,7 @@ public class MeleeMovement_0Deg : WeaponMovementMelee
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Damage_Interface damageableObject = collision.GetComponentInParent<Damage_Interface>();
+        Damageable damageableObject = collision.GetComponentInParent<Damageable>();
 
         if (damageableObject != null)
         {

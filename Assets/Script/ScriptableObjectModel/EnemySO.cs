@@ -13,6 +13,7 @@ public class EnemySO : ScriptableObject
     public string Name;
     public float health;
     public float moveSpeed;
+    public float defence;
     public Difficulty difficulty = Difficulty.Easy;
     public GameObject projectile;
     public float projectileFlySpeed;

@@ -27,13 +27,13 @@ MonoBehaviour:
   knockbackForce: 50
   knockbackTime: 0.5
   weaponType: 1
-  E_walkSpeed: 3
-  E_maxHealth: 200
-  E_strength: 50
-  E_defence: 0
-  E_critRate: 50
-  E_critDamage: 90
+  E_walkSpeed: 2
+  E_maxHealth: 1200
+  E_strength: 250
+  E_defence: 100
+  E_critRate: 30
+  E_critDamage: 60
   weaponObject: {fileID: 0}
   projectileObject: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
   flySpeed: 20
-  projectileType: 2
+  projectileType: 1
