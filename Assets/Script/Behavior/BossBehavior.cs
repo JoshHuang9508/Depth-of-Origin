@@ -76,7 +76,9 @@ public class BossBehavior : MonoBehaviour, Damageable
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.Drop(enemy.lootings, enemy.lootMinItems, enemy.lootMaxItems, enemy.wreckage);
+                itemDropperController.DropItems(enemy.lootings);
+                itemDropperController.DropCoins(enemy.lootMinItems, enemy.lootMaxItems);
+                itemDropperController.DropWrackages(enemy.wreckage);
 
                 Destroy(gameObject);
             }
@@ -85,13 +87,15 @@ public class BossBehavior : MonoBehaviour, Damageable
 
     void Start()
     {
-        enemy.attackType = AttackType.Sniper;
-        currentHealth = enemy.health;
         target = GameObject.FindWithTag("Player").transform;
         animator = GetComponentInChildren<Animator>();
         currentRb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         damageableObject = target.GetComponentInParent<Damageable>();
+
+        currentRb.bodyType = RigidbodyType2D.Static;
+        enemy.attackType = AttackType.Sniper;
+        currentHealth = enemy.health;
 
         StartCoroutine(delay(callback => {
             behaviorEnabler = callback;

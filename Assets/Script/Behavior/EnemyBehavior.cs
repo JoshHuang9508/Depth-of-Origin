@@ -67,7 +67,9 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                 ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                 ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.Drop(enemy.lootings, enemy.lootMinItems, enemy.lootMaxItems, enemy.wreckage);
+                itemDropperController.DropItems(enemy.lootings);
+                itemDropperController.DropCoins(enemy.lootMinItems, enemy.lootMaxItems);
+                itemDropperController.DropWrackages(enemy.wreckage);
 
                 Destroy(gameObject);
             }

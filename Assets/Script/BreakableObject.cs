@@ -69,7 +69,9 @@ public class BreakableObject : MonoBehaviour, Damageable
                     GameObject.FindWithTag("Item").transform
                     );
 
-                ItemDropper.GetComponent<ItemDropper>().Drop(lootings, lootMinCoins, lootMaxCoins, wreckage);
+                ItemDropper.GetComponent<ItemDropper>().DropItems(lootings);
+                ItemDropper.GetComponent<ItemDropper>().DropCoins(lootMinCoins, lootMaxCoins);
+                ItemDropper.GetComponent<ItemDropper>().DropWrackages(wreckage);
                 Destroy(gameObject);
             }
         }

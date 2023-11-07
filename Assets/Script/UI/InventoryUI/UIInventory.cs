@@ -144,7 +144,7 @@ namespace Inventory.UI
                                     var ItemDropper = Instantiate(itemDropper, new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
                                     ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
                                     ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                                    itemDropperController.Drop(inventoryItem.item);
+                                    itemDropperController.DropItems(null, inventoryItem.item);
                                 }
 
                                 inventoryData.RemoveItem(itemIndex, amountToUse);

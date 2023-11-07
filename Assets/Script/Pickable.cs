@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Pickable : MonoBehaviour
 {
-    [field: SerializeField] public ItemSO InventoryItem { get; set; }
+    [field: SerializeField] public ItemSO inventoryItem { get; set; }
     [field: SerializeField] private InventorySO inventoryData;
 
     [SerializeField] public int Quantity { get; set; } = 1;
@@ -34,23 +34,21 @@ public class Pickable : MonoBehaviour
             currentRb.velocity = new Vector3(movement_x * 12, movement_y * 12, 0.0f);
             float distance = Vector2.Distance(this.transform.position, target.transform.position);
 
-            try
+            if(distance <= 0.2)
             {
-                if(distance <= 0.2)
+                if(inventoryItem is CoinSO)
                 {
-                    CoinSO coin = (CoinSO)InventoryItem;
                     target.GetComponent<PlayerBehaviour>().currentCoinAmount += 1;
-                    Destroy(gameObject);
-                    return;
                 }
-            }
-            catch
-            {
-                if (distance <= 0.2)
+                else if(inventoryItem is KeySO)
                 {
-                    inventoryData.AddItem(InventoryItem, Quantity);
-                    Destroy(gameObject);
+                    target.GetComponent<PlayerBehaviour>().keyList.Add(new PlayerBehaviour.KeyList((KeySO)inventoryItem, 1));
                 }
+                else
+                {
+                    inventoryData.AddItem(inventoryItem, Quantity);
+                }
+                Destroy(gameObject);
             }
         }
     }
