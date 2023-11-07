@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    [Header("Spawn Settings")]
+    [Header("Settings")]
     public int spawnLimit;
     public float spawnRange;
     public int maxSpawnTimes;
@@ -70,8 +70,7 @@ public class SpawnerController : MonoBehaviour
             spawnList[randomSpawnIndex].EnemyObject,
             spawnPosition,
             Quaternion.identity,
-            GameObject.FindWithTag("Entity").transform
-            );
+            GameObject.FindWithTag("Entity").transform);
         spawnMob.GetComponent<EnemyBehavior>().enemy = spawnList[randomSpawnIndex];
         spawnTimes++;
 

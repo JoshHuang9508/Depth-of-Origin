@@ -65,6 +65,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public Animator onHitEffect;
     public InventorySO inventoryData, shopData;
     public UIInventory inventoryUI, shopUI;
+    public SummonWeapon summonWeapon;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
     public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
@@ -194,6 +195,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             inventoryUI.SetInventoryContent(inventoryData, InventoryType.BackpackInventory);
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
         }
+
+        if (Input.GetKey(KeyCode.Mouse0)) summonWeapon.Summon();
     }
 
 
@@ -204,7 +207,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
         animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
-        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0 ? true : false;
+        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0;
 
         if (movementEnabler && Input.anyKey)
         {

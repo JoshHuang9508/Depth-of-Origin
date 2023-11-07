@@ -20,6 +20,9 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyabl
         Melee, Ranged
     }
 
+    [Header("Prefab")]
+    public GameObject weaponObject;
+
     [Header("Effect settings")]
     public float E_walkSpeed;
     public float E_maxHealth;
@@ -27,7 +30,6 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyabl
     public float E_defence;
     public float E_critRate;
     public float E_critDamage;
-    public GameObject weaponObject;
 
     public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)
     {

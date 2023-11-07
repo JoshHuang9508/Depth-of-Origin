@@ -15,13 +15,10 @@ public class ProjectileMovement_Enemy : WeaponMovementRanged
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        trail = GetComponentInChildren<TrailRenderer>();
         objectRigidbody = GetComponent<Rigidbody2D>();
-        objectCollider = GetComponent<Collider2D>();
-        spriteLight = GetComponentInChildren<Light2D>();
 
         ProjectileFly(startAngle);
+        StartCoroutine(DestroyCooldown());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -41,34 +38,28 @@ public class ProjectileMovement_Enemy : WeaponMovementRanged
                     direction * enemy.knockbackForce,
                     enemy.knockbackTime);
 
-                DisableItem();
+                Destroy(gameObject);
             }
         }
 
         if (collision.CompareTag("Wall") || collision.CompareTag("BreakableObject") || collision.CompareTag("Object"))
         {
-            DisableItem();
+            Destroy(gameObject);
         }
     }
 
     public void ProjectileFly(Quaternion angle)
     {
         Vector3 angleVec3 = angle.eulerAngles;
-        objectRigidbody.velocity = new Vector3(enemy.projectileFlySpeed * Mathf.Cos(angleVec3.z * Mathf.Deg2Rad), enemy.projectileFlySpeed * Mathf.Sin(angleVec3.z * Mathf.Deg2Rad), 0);
-        StartCoroutine(Cooldown());
+        objectRigidbody.velocity = new Vector3(
+            enemy.projectileFlySpeed * Mathf.Cos(angleVec3.z * Mathf.Deg2Rad),
+            enemy.projectileFlySpeed * Mathf.Sin(angleVec3.z * Mathf.Deg2Rad),
+            0);
     }
 
-    private IEnumerator Cooldown()
+    private IEnumerator DestroyCooldown()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(10f);
         Destroy(gameObject);
-    }
-
-    private void DisableItem()
-    {
-        spriteRenderer.enabled = false;
-        objectCollider.enabled = false;
-        trail.emitting = false;
-        spriteLight.enabled = false;
     }
 }

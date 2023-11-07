@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class BossColumnController : MonoBehaviour
 {
-    [SerializeField] public System.Action shieldBreak;
-    [SerializeField] public static int totalCoulumnAmount = 6;
+    [Header("Settings")]
+    public int totalColumnAmount;
+
+    [Header("Status")]
+    [SerializeField] public static int currentCoulumnAmount;
+
+    public Action shieldBreak;
 
     public void Reset()
     {
-        totalCoulumnAmount = 6;
+        currentCoulumnAmount = totalColumnAmount;
+    }
+
+    private void Start()
+    {
+        Reset();
     }
 
     private void OnDisable()
     {
-        totalCoulumnAmount--;
-        if(totalCoulumnAmount <= 0)
+        currentCoulumnAmount--;
+        if(currentCoulumnAmount <= 0)
         {
             shieldBreak.Invoke();
         }

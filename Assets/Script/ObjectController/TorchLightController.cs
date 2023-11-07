@@ -6,18 +6,26 @@ using UnityEngine.Rendering.Universal;
 public class TorchLightController : MonoBehaviour
 {
     Light2D torchLight;
+    Animator animator;
 
-    // Start is called before the first frame update
+    public bool extinguished = false;
+
     void Start()
     {
         torchLight = GetComponent<Light2D>();
-        StartCoroutine(torchLightShining());
+        animator = GetComponentInParent<Animator>();
+        if(!extinguished) StartCoroutine(torchLightShining());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LightTorch()
     {
-        
+        extinguished = false;
+        if (!extinguished) StartCoroutine(torchLightShining());
+    }
+
+    private void Update()
+    {
+        animator.SetBool("Extinguished", extinguished);
     }
 
     private IEnumerator torchLightShining()

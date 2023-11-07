@@ -73,42 +73,66 @@ public class SummonWeapon : MonoBehaviour
             switch (weapon.weaponType)
             {
                 case WeaponSO.WeaponType.Melee:
-                    GameObject meleeWeaponSummoned = Instantiate(weapon.weaponObject, new Vector3(
-                        transform.position.x, transform.position.y, transform.position.z), 
-                        new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), 
+                    //MeleeWeaponSO meleeWeaponSO = weapon as MeleeWeaponSO;
+
+                    var meleeWeaponSummoned = Instantiate(
+                        weapon.weaponObject,
+                        transform.position, 
+                        Quaternion.identity, 
                         this.transform);
+
                     meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().weapon = weapon;
                     meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().isflip = isflip;
+
                     transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
+
+                    StartCoroutine(Cooldown(weapon.attackCooldown));
                     break;
+
                 case WeaponSO.WeaponType.Ranged:
                     RangedWeaponSO rangedWeapon = weapon as RangedWeaponSO;
 
-                    GameObject rangedWeaponSummoned = Instantiate(rangedWeapon.projectileObject, new Vector3(
-                        transform.position.x, transform.position.y, transform.position.z), 
-                        Quaternion.Euler(0, 0, startAngle - 90), 
-                        GameObject.FindWithTag("Item").transform);
                     switch (rangedWeapon.projectileType)
                     {
                         case RangedWeaponSO.ProjectileType.Straight:
-                            rangedWeaponSummoned.AddComponent<ProjectileMovement_Straight>();
+                            var arrowSummoned = Instantiate(
+                                rangedWeapon.projectileObject,
+                                transform.position,
+                                Quaternion.Euler(0, 0, startAngle - 90),
+                                GameObject.FindWithTag("Item").transform);
+
+                            arrowSummoned.AddComponent<ProjectileMovement_Player>();
+                            arrowSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
+                            arrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
+
+                            StartCoroutine(Cooldown(weapon.attackCooldown));
                             break;
+
                         case RangedWeaponSO.ProjectileType.Split:
-                            rangedWeaponSummoned.AddComponent<ProjectileMovement_Split>();
-                            break;
-                        case RangedWeaponSO.ProjectileType.Unlimited:
-                            rangedWeaponSummoned.AddComponent<ProjectileMovement_Unlimited>();
+                            for (int i = -60; i <= 60; i += 30)
+                            {
+                                var splitArrowSummoned = Instantiate(
+                                    rangedWeapon.projectileObject,
+                                    transform.position,
+                                    Quaternion.Euler(0, 0, startAngle + i - 90),
+                                    GameObject.FindWithTag("Item").transform);
+
+                                splitArrowSummoned.AddComponent<ProjectileMovement_Player>();
+                                splitArrowSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
+                                splitArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
+                            }
+
+                            StartCoroutine(Cooldown(weapon.attackCooldown));
                             break;
                     }
-                    rangedWeaponSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
-                    rangedWeaponSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
                     break;
             }
         }
     }
 
-    public void CooldownOver()
+    private IEnumerator Cooldown(float cooldownTime)
     {
+        yield return new WaitForSeconds(cooldownTime);
         summonEnabler = true;
     }
 }

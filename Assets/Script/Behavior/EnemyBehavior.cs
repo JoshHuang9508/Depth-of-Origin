@@ -136,11 +136,26 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         if (attackEnabler && movementEnabler)
         {
-            damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
+            switch (enemy.attackType)
+            {
+                case AttackType.Sniper:
+                    float startAngle = Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg;
 
-            StartCoroutine(delay((enabler) => {
-                attackEnabler = enabler;
-            }, enemy.attackSpeed));
+                    enemy.Attack_Ranged(startAngle, transform.position);
+
+                    StartCoroutine(delay((enabler) => {
+                        attackEnabler = enabler;
+                    }, enemy.attackSpeed));
+                    break;
+
+                case AttackType.Melee:
+                    damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
+
+                    StartCoroutine(delay((enabler) => {
+                        attackEnabler = enabler;
+                    }, enemy.attackSpeed));
+                    break;
+            }
         }
     }
 

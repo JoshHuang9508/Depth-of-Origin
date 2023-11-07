@@ -85,12 +85,17 @@ public class BossBehavior : MonoBehaviour, Damageable
 
     void Start()
     {
+        enemy.attackType = AttackType.Sniper;
         currentHealth = enemy.health;
         target = GameObject.FindWithTag("Player").transform;
         animator = GetComponentInChildren<Animator>();
         currentRb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         damageableObject = target.GetComponentInParent<Damageable>();
+
+        StartCoroutine(delay(callback => {
+            behaviorEnabler = callback;
+        }, 5f));
 
         BuildColumns();
     }
@@ -106,6 +111,7 @@ public class BossBehavior : MonoBehaviour, Damageable
             behaviorType = 2;
             behaviorEnabler = true;
             enemy.attackSpeed = 1;
+            enemy.attackType = AttackType.Melee;
         }
 
         Moving();
@@ -185,27 +191,19 @@ public class BossBehavior : MonoBehaviour, Damageable
     {
         if (attackEnabler && movementEnabler)
         {
-            switch (behaviorType)
+            switch (enemy.attackType)
             {
-                case 1:
+                case AttackType.Sniper:
                     float startAngle = Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg;
 
-                    for (int i = -180; i <= 180; i += 18)
-                    {
-                        GameObject projectileSummoned = Instantiate(enemy.projectile, new Vector3(
-                            transform.position.x, transform.position.y, transform.position.z),
-                            Quaternion.Euler(0, 0, startAngle - 90 + i),
-                            GameObject.FindWithTag("Item").transform);
-                        projectileSummoned.AddComponent<ProjectileMovement_Enemy>();
-                        projectileSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
-                        projectileSummoned.GetComponent<ProjectileMovement_Enemy>().enemy = enemy;
-                    }
+                    enemy.Attack_Ranged(startAngle, transform.position);
 
                     StartCoroutine(delay((enabler) => {
                         attackEnabler = enabler;
                     }, enemy.attackSpeed));
                     break;
-                case 2:
+
+                case AttackType.Melee:
                     damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                     StartCoroutine(delay((enabler) => {
@@ -246,9 +244,4 @@ public class BossBehavior : MonoBehaviour, Damageable
         yield return new WaitForSeconds(delayTime);
         callback(true);
     }
-}
-
-public class ShieldBreak : UnityEvent
-{
-    
 }

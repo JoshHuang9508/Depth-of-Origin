@@ -5,7 +5,6 @@ using Inventory.Model;
 
 public class ChestController : MonoBehaviour
 {
-    bool isOpen;
     [Header("Looting")]
     public int lootMinCoins;
     public int lootMaxCoins;
@@ -14,18 +13,14 @@ public class ChestController : MonoBehaviour
     [Header("Connect Object")]
     public GameObject itemDropper;
 
+    [Header("Status")]
+    public bool isOpen;
+
     Animator animator;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void OpenChest()

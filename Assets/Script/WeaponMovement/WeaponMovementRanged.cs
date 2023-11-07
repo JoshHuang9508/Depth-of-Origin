@@ -15,13 +15,4 @@ public class WeaponMovementRanged : MonoBehaviour
     public Collider2D objectCollider;
     public Rigidbody2D objectRigidbody;
     public SpriteRenderer spriteRenderer;
-
-
-    private IEnumerator Cooldown()
-    {
-        yield return new WaitForSeconds(rangedWeapon.attackCooldown);
-        summonWeapon.CooldownOver();
-        yield return new WaitForSeconds(10);
-        Destroy(gameObject);
-    }
 }

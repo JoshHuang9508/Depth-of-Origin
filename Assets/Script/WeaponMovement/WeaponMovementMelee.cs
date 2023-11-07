@@ -13,12 +13,4 @@ public class WeaponMovementMelee : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public SummonWeapon summonWeapon;
     public PlayerBehaviour player;
-
-    private IEnumerator Cooldown()
-    {
-        yield return new WaitForSeconds(weapon.attackCooldown);
-        summonWeapon.CooldownOver();
-        yield return new WaitForSeconds(5);
-        Destroy(gameObject);
-    }
 }
