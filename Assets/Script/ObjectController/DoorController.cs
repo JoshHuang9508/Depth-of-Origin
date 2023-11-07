@@ -26,23 +26,37 @@ public class DoorController : MonoBehaviour
 
     public void OpenDoor()
     {
-        bool haveKey = false;
-
-        if (requiredKeys)
-        {
-            foreach (var key in player.keyList)
-            {
-                if (key.key.Name == keyName) haveKey = true;
-            }
-        }
-        else haveKey = true;
-
-        if (!isOpen && haveKey)
+        if (!isOpen && haveKey())
         {
             isOpen = true;
             interactable.enabled = false;
             BoxCollider2D.enabled = false;
             animator.SetTrigger("Open");
         }
+    }
+
+    private bool haveKey()
+    {
+        bool haveKey = false;
+        int indexOfKeyList = -1;
+
+        if (requiredKeys)
+        {
+            foreach (var key in player.keyList)
+            {
+                if (key.key.Name == keyName)
+                {
+                    haveKey = true;
+                    indexOfKeyList = player.keyList.IndexOf(key);
+                }
+            }
+            if (haveKey)
+            {
+                player.keyList[indexOfKeyList].quantity--;
+            }
+        }
+        else haveKey = true;
+
+        return haveKey;
     }
 }

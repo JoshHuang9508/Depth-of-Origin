@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Inventory.Model;
 
-public class ChestController : MonoBehaviour
+public class ChestController : MonoBehaviour, KeyRequired
 {
     [Header("Setting")]
     public bool requiredKeys;
@@ -33,18 +33,7 @@ public class ChestController : MonoBehaviour
 
     public void OpenChest()
     {
-        bool haveKey = false;
-
-        if (requiredKeys)
-        {
-            foreach (var key in player.keyList)
-            {
-                if (key.key.Name == keyName) haveKey = true;
-            }
-        }
-        else haveKey = true;
-
-        if (!isOpen && haveKey)
+        if (!isOpen && haveKey())
         {
             isOpen = true;
             interactable.enabled = false;
@@ -56,5 +45,30 @@ public class ChestController : MonoBehaviour
             itemDropperController.DropCoins(lootMinCoins, lootMaxCoins);
             itemDropperController.DropItems(lootings);
         }
+    }
+
+    public bool haveKey()
+    {
+        bool haveKey = false;
+        int indexOfKeyList = -1;
+
+        if (requiredKeys)
+        {
+            foreach (var key in player.keyList)
+            {
+                if (key.key.Name == keyName)
+                {
+                    haveKey = true;
+                    indexOfKeyList = player.keyList.IndexOf(key);
+                }
+            }
+            if (haveKey)
+            {
+                player.keyList[indexOfKeyList].quantity--;
+            }
+        }
+        else haveKey = true;
+
+        return haveKey;
     }
 }
