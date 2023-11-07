@@ -76,7 +76,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     [Header("Connect Object")]
     public GameObject damageText;
-    public Animator onHitEffect;
+    public Animator sceneEffect;
     public InventorySO inventoryData, shopData;
     public UIInventory inventoryUI, shopUI;
     public SummonWeapon summonWeapon;
@@ -115,7 +115,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
                 //scence effect
-                onHitEffect.SetTrigger("OnHit");
+                sceneEffect.SetTrigger("OnHit");
             }
 
             if (value >= currentHealth)
@@ -131,7 +131,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
                 //scence effect
-                onHitEffect.SetTrigger("Heal");
+                sceneEffect.SetTrigger("Heal");
             }
 
             currentHealth = value;
@@ -340,11 +340,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
 
             //delay
-            StartCoroutine(delay(enabler => {
-                onHitCounter += !enabler ? 1 : -1;
-                if (onHitCounter > 0 && enabler) return;
-                movementEnabler = enabler;
-                animator.enabled = enabler;
+            StartCoroutine(delay(callback => {
+                onHitCounter += !callback ? 1 : -1;
+                if (onHitCounter > 0 && callback) return;
+                movementEnabler = callback;
+                animator.SetBool("isHit", !callback);
             }, knockbackTime / (1f + (0.001f * defence))));
         }
     }

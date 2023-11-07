@@ -30,7 +30,7 @@ public class DoorController : MonoBehaviour
         if (!isOpen && haveKey())
         {
             isOpen = true;
-            interactable.enabled = canReopen ? true : false;
+            interactable.enabled = false;
             BoxCollider2D.enabled = false;
             animator.SetTrigger("Open");
         }
@@ -41,7 +41,7 @@ public class DoorController : MonoBehaviour
         if (isOpen && canReopen)
         {
             isOpen = false;
-            interactable.enabled = canReopen ? true : false;
+            interactable.enabled = true;
             BoxCollider2D.enabled = true;
             animator.SetTrigger("Close");
         }
