@@ -6,32 +6,42 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    int loadType = 1;
-    public int SceneNum;
+    [Header("Setting")]
+    public LoadType loadType = LoadType.Scene;
+    public int SceneNum = 0;
     public Vector3 transferPos;
-    public Animator transition;
+    public static bool inAction = false;
 
-    public void LoadScene()
+    public enum LoadType
     {
-        loadType = 1;
-        StartCoroutine(Load_delay());
+        Scene, Chunk
     }
 
-    public void LoadChunk()
+    [Header("Connect Object")]
+    public Animator transition;
+    
+
+    private void Start()
     {
-        loadType = 2;
+        transition = GameObject.FindWithTag("Transition").GetComponent<Animator>();
+    }
+
+    public void Load()
+    {
+        if (inAction) return;
         StartCoroutine(Load_delay());
     }
 
     private IEnumerator Load_delay()
     {
         transition.SetTrigger("Start");
+        inAction = true;
 
         yield return new WaitForSeconds(1.5f);
 
         switch (loadType)
         {
-            case 1:
+            case LoadType.Scene:
                 AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneNum, LoadSceneMode.Additive);
                 asyncLoad.allowSceneActivation = false;
 
@@ -54,15 +64,15 @@ public class SceneLoader : MonoBehaviour
                 {
                     SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
                     SceneManager.SetActiveScene(sceneToLoad);
-                    transition.SetTrigger("End");
                 }
                 break;
 
-            case 2:
-                GameObject.FindWithTag("Player").transform.position = transferPos;
-                GameObject.FindWithTag("CameraHold").transform.position = transferPos;
-                transition.SetTrigger("End");
+            case LoadType.Chunk:
                 break;
         }
+        GameObject.FindWithTag("Player").transform.position = transferPos;
+        GameObject.FindWithTag("CameraHold").transform.position = transferPos;
+        transition.SetTrigger("End");
+        inAction = false;
     }
 }

@@ -12,6 +12,7 @@ public class BossSummonerContorller : MonoBehaviour
 
     [Header("Status")]
     public static int currentActionTimes;
+    public bool isActived = false;
 
     private void Start()
     {
@@ -28,7 +29,10 @@ public class BossSummonerContorller : MonoBehaviour
 
     public void OnInteraction()
     {
+        if (isActived) return;
+
         currentActionTimes++;
+        isActived = true;
         if (currentActionTimes >= neededActionTimes)
         {
             var bossSummoned = Instantiate(

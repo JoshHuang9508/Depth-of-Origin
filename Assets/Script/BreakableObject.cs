@@ -36,7 +36,7 @@ public class BreakableObject : MonoBehaviour, Damageable
                 text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = (health - value).ToString();
+                text_MeshProUGUI.text = Mathf.RoundToInt(health - value).ToString();
                 text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
                 text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
                 text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
@@ -50,7 +50,7 @@ public class BreakableObject : MonoBehaviour, Damageable
                 text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = (value - health).ToString();
+                text_MeshProUGUI.text = Mathf.RoundToInt(value - health).ToString();
                 text_MeshProUGUI.color = new Color(0, 150, 0, 255);
             }
 
@@ -69,7 +69,9 @@ public class BreakableObject : MonoBehaviour, Damageable
                     GameObject.FindWithTag("Item").transform
                     );
 
-                ItemDropper.GetComponent<ItemDropper>().Drop(lootings, lootMinCoins, lootMaxCoins, wreckage);
+                ItemDropper.GetComponent<ItemDropper>().DropItems(lootings);
+                ItemDropper.GetComponent<ItemDropper>().DropCoins(lootMinCoins, lootMaxCoins);
+                ItemDropper.GetComponent<ItemDropper>().DropWrackages(wreckage);
                 Destroy(gameObject);
             }
         }

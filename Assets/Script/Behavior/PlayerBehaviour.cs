@@ -43,6 +43,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public EquippableItemSO book;
     public int onHitCounter = 0;
     public List<EffectionList> effectionList = new List<EffectionList>();
+    public List<KeyList> keyList = new List<KeyList>();
 
     [Serializable]
     public class EffectionList
@@ -54,6 +55,19 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         {
             this.effectingItem = item;
             this.effectingTime = time;
+        }
+    }
+
+    [Serializable]
+    public class KeyList
+    {
+        public KeySO key;
+        public int quantity;
+
+        public KeyList(KeySO item, int amont)
+        {
+            this.key = item;
+            this.quantity = amont;
         }
     }
 
@@ -285,6 +299,18 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             }
         }
         effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
+
+
+        //update effection list
+        int indexOfKeyList = -1;
+        foreach (KeyList key in keyList)
+        {
+            if (key.quantity <= 0)
+            {
+                indexOfKeyList = keyList.IndexOf(key);
+            }
+        }
+        keyList.Remove(indexOfKeyList != -1 ? keyList[indexOfKeyList] : null);
 
 
         //update on used weapon

@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e63bcffa245fca43a04995d5eac67c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <InventoryItem>k__BackingField: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+  <inventoryItem>k__BackingField: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
 --- !u!61 &748226932810341533
 BoxCollider2D:
