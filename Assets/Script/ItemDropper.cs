@@ -8,26 +8,14 @@ public class ItemDropper : MonoBehaviour
     public GameObject itemModel;
     public GameObject coinModel;
 
-    public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins, List<GameObject> wreckages)
+    private void Start()
     {
-        DropItems(lootings, null);
-        DropCoins(lootMinCoins, lootMaxCoins);
-        DropWrackages(wreckages);
-        Destroy(gameObject);
-    }
-    public void Drop(List<Lootings> lootings, int lootMinCoins, int lootMaxCoins)
-    {
-        DropItems(lootings, null);
-        DropCoins(lootMinCoins, lootMaxCoins);
-        Destroy(gameObject);
-    }
-    public void Drop(ItemSO item)
-    {
-        DropItems(null, item);
-        Destroy(gameObject);
+        StartCoroutine(delay(callback =>{
+            if (callback) Destroy(gameObject);
+        }, 0.2f));
     }
 
-    private void DropCoins(int lootMinCoins, int lootMaxCoins)
+    public void DropCoins(int lootMinCoins, int lootMaxCoins)
     {
         for (int i = 0; i < Random.Range(lootMinCoins, lootMaxCoins + 1); i++)
         {
@@ -45,7 +33,7 @@ public class ItemDropper : MonoBehaviour
         }
     }
 
-    private void DropItems(List<Lootings> lootings, ItemSO lootng)
+    public void DropItems(List<Lootings> lootings = null, ItemSO lootng = null)
     {
 
         if (lootng != null)
@@ -77,7 +65,7 @@ public class ItemDropper : MonoBehaviour
                 );
 
                 Pickable dropItemPickable = dropItem.GetComponent<Pickable>();
-                dropItemPickable.InventoryItem = _dropItem.lootings;
+                dropItemPickable.inventoryItem = _dropItem.lootings;
 
                 InitialFromItemDropper dropItemInitial = dropItem.GetComponent<InitialFromItemDropper>();
                 dropItemInitial.InventoryItem = _dropItem.lootings;
@@ -88,7 +76,7 @@ public class ItemDropper : MonoBehaviour
         }
     }
 
-    private void DropWrackages(List<GameObject> wreckages) 
+    public void DropWrackages(List<GameObject> wreckages) 
     {
         if (wreckages.Count == 0)
         {
@@ -112,6 +100,12 @@ public class ItemDropper : MonoBehaviour
         }
     }
 
+    private IEnumerator delay(System.Action<bool> callback, float delayTime)
+    {
+        callback(false);
+        yield return new WaitForSeconds(delayTime);
+        callback(true);
+    }
 }
 
 [System.Serializable]
