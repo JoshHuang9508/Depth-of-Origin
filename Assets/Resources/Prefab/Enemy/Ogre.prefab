@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3169847585305320648}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -0.4086709}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -183,7 +183,7 @@ Transform:
   m_GameObject: {fileID: 4019345525713264864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1775596, y: -1.7657781, z: 0.4086709}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -277,6 +277,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySO: {fileID: 11400000, guid: cdbeb42b6357a714cad704cfa184574a, type: 2}
+  enemy: {fileID: 0}
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  currentRb: {fileID: 0}
+  target: {fileID: 0}
+  currentPos: {x: 0, y: 0}
+  characterPos: {x: 0, y: 0}
+  diraction: {x: 0, y: 0}
+  currentHealth: 0
+  movementEnabler: 1
+  damageEnabler: 1
+  attackEnabler: 1

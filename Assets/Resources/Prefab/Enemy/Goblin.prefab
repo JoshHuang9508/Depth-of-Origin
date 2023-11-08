@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5450193511802556017}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0.0041956995}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -123,9 +123,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySO: {fileID: 11400000, guid: b1c49a8d8fe29d64087e20767834086c, type: 2}
+  enemy: {fileID: 0}
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  currentRb: {fileID: 0}
+  target: {fileID: 0}
+  currentPos: {x: 0, y: 0}
+  characterPos: {x: 0, y: 0}
+  diraction: {x: 0, y: 0}
+  currentHealth: 0
+  movementEnabler: 1
+  damageEnabler: 1
+  attackEnabler: 1
 --- !u!1 &8621909097956164669
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 8621909097956164669}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.45, z: -0.0041956995}
+  m_LocalPosition: {x: 0, y: 0.5, z: -0.0041956995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

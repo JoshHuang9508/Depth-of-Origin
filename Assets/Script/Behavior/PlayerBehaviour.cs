@@ -76,7 +76,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     [Header("Connect Object")]
     public GameObject damageText;
-    public Animator sceneEffect;
+    public Animator onHitEffect;
     public InventorySO inventoryData, shopData;
     public UIInventory inventoryUI, shopUI;
     public SummonWeapon summonWeapon;
@@ -115,7 +115,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
                 //scence effect
-                sceneEffect.SetTrigger("OnHit");
+                onHitEffect.SetTrigger("OnHit");
             }
 
             if (value >= currentHealth)
@@ -131,7 +131,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
                 //scence effect
-                sceneEffect.SetTrigger("Heal");
+                onHitEffect.SetTrigger("Heal");
             }
 
             currentHealth = value;
@@ -210,6 +210,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
         }
 
+        //use weapon
         if (Input.GetKey(KeyCode.Mouse0)) summonWeapon.Summon();
     }
 
@@ -225,7 +226,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
         if (movementEnabler && Input.anyKey)
         {
-
             int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
 
             Vector3 movement = new Vector3(

@@ -34,7 +34,7 @@ public class Pickable : MonoBehaviour
             currentRb.velocity = new Vector3(movement_x * 12, movement_y * 12, 0.0f);
             float distance = Vector2.Distance(this.transform.position, target.transform.position);
 
-            if(distance <= 0.2)
+            if(distance <= 0.8)
             {
                 if(inventoryItem is CoinSO)
                 {
