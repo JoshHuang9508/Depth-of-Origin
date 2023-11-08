@@ -43,7 +43,6 @@ public class Interactable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("Player in range");
-            if (isdiable) return;
             RectTransform text_Transform = Instantiate(interactDialog).GetComponent<RectTransform>();
             text_Transform.gameObject.SetActive(true);
             text_Transform.transform.position = new Vector3(960, 200, 0);
@@ -73,12 +72,6 @@ public class Interactable : MonoBehaviour
     }
     private void OnDisable()
     {
-        isdiable = true;
         Destroy(temp.gameObject);
-    }
-
-    private void OnEnable()
-    {
-        isdiable = false;
     }
 }
