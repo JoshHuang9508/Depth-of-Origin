@@ -10,6 +10,7 @@ public class Interactable : MonoBehaviour
     [Header("Setting")]
     public KeyCode interactKey;
     public UnityEvent interactAction, leaveRangeAction;
+    public bool isdiable;
 
     [Header("Status")]
     public bool isInRange;
@@ -42,7 +43,7 @@ public class Interactable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("Player in range");
-
+            if (isdiable) return;
             RectTransform text_Transform = Instantiate(interactDialog).GetComponent<RectTransform>();
             text_Transform.gameObject.SetActive(true);
             text_Transform.transform.position = new Vector3(960, 200, 0);
@@ -61,10 +62,23 @@ public class Interactable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("Player leave range");
-
-            Destroy(temp.gameObject);
+            try
+            {
+                Destroy(temp.gameObject);
+            }
+            catch { }
             isInRange = false;
             leaveRangeAction.Invoke();
         }
+    }
+    private void OnDisable()
+    {
+        isdiable = true;
+        Destroy(temp.gameObject);
+    }
+
+    private void OnEnable()
+    {
+        isdiable = false;
     }
 }
