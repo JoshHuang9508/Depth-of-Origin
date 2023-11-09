@@ -38,29 +38,13 @@ public class SummonWeapon : MonoBehaviour
             isflip = false;
         }
 
-
-        if (player.currentWeapon == null)
-        {
-            spriteRenderer.sprite = null;
-            weapon = null;
-        }
-        else if (player.currentWeapon is WeaponSO && (summonEnabler ? weapon = player.currentWeapon : true))
-        {
-            switch (weapon.weaponType)
-            {
-                case WeaponSO.WeaponType.Melee:
-                    spriteRenderer.sprite = null;
-                    break;
-                case WeaponSO.WeaponType.Ranged:
-                    spriteRenderer.sprite = weapon.Image;
-                    transform.rotation = Quaternion.Euler(0, 0, startAngle);
-                    break;
-            }
-        }
+        UpdateCurrentWeapon();
     }
 
     public void Summon()
     {
+        UpdateCurrentWeapon();
+
         if (summonEnabler && weapon != null)
         {
             for (var i = this.transform.childCount - 1; i >= 0; i--)
@@ -125,6 +109,28 @@ public class SummonWeapon : MonoBehaviour
                             StartCoroutine(Cooldown(weapon.attackCooldown));
                             break;
                     }
+                    break;
+            }
+        }
+    }
+
+    private void UpdateCurrentWeapon()
+    {
+        if (player.currentWeapon == null)
+        {
+            spriteRenderer.sprite = null;
+            weapon = null;
+        }
+        else if (player.currentWeapon is WeaponSO && (summonEnabler ? weapon = player.currentWeapon : true))
+        {
+            switch (weapon.weaponType)
+            {
+                case WeaponSO.WeaponType.Melee:
+                    spriteRenderer.sprite = null;
+                    break;
+                case WeaponSO.WeaponType.Ranged:
+                    spriteRenderer.sprite = weapon.Image;
+                    transform.rotation = Quaternion.Euler(0, 0, startAngle);
                     break;
             }
         }
