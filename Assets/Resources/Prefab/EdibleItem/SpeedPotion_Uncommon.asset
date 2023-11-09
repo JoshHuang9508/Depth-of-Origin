@@ -17,9 +17,9 @@ MonoBehaviour:
   IsStackable: 1
   MaxStackSize: 10
   Rarity: 1
-  sellPrice: 0
-  buyPrice: 0
-  Image: {fileID: -8485995304713028149, guid: b2f9abfc7009743449fd618eff2ad5c4, type: 3}
+  sellPrice: 150
+  buyPrice: 180
+  Image: {fileID: 238123427065737258, guid: b2f9abfc7009743449fd618eff2ad5c4, type: 3}
   DefaultParameterList: []
   E_heal: 0
   E_maxHealth: 0

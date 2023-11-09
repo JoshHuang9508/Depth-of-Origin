@@ -17,15 +17,15 @@ MonoBehaviour:
   IsStackable: 1
   MaxStackSize: 10
   Rarity: 4
-  sellPrice: 0
-  buyPrice: 0
-  Image: {fileID: -2664913161173207641, guid: b2f9abfc7009743449fd618eff2ad5c4, type: 3}
+  sellPrice: 800
+  buyPrice: 900
+  Image: {fileID: 291749442672614921, guid: b2f9abfc7009743449fd618eff2ad5c4, type: 3}
   DefaultParameterList: []
   E_heal: 0
   E_maxHealth: 0
   E_strength: 0
   E_walkSpeed: 0
-  E_defence: 20
+  E_defence: 250
   E_critRate: 0
   E_critDamage: 0
-  effectTime: 30
+  effectTime: 180

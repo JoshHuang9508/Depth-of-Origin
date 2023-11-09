@@ -23,14 +23,14 @@ MonoBehaviour:
   DefaultParameterList: []
   attackSpeed: 1.5
   attackCooldown: 0.2
-  weaponDamage: 550
+  weaponDamage: 450
   knockbackForce: 50
   knockbackTime: 0.8
   weaponType: 0
+  weaponObject: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}
   E_walkSpeed: 0
   E_maxHealth: 150
-  E_strength: 10
+  E_strength: 50
   E_defence: 0
   E_critRate: 40
   E_critDamage: 50
-  weaponObject: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}

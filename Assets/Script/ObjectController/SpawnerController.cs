@@ -5,11 +5,12 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [Header("Settings")]
-    public int spawnLimit;
+    public int spawnLimit = 4;
+    public float minSpawnDistance = 15;
     public float spawnRange;
-    public int maxSpawnTimes;
-    public float spawnGapMin;
-    public float spawnGapMax;
+    public int maxSpawnTimes = -1;
+    public float spawnGapMin = 3;
+    public float spawnGapMax = 10;
     public LayerMask targetLayer;
     public List<EnemySO> spawnList;
 
@@ -62,7 +63,7 @@ public class SpawnerController : MonoBehaviour
                 transform.position.z);
 
         //detect spawn position
-        if (DetectBlankAreas(spawnPosition, new Vector2(2f, 2f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPosition) < 10) return;
+        if (DetectBlankAreas(spawnPosition, new Vector2(2f, 2f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPosition) < minSpawnDistance) return;
         
         //spawn mobs
         int randomSpawnIndex = Random.Range(0, spawnList.Count);
@@ -93,7 +94,7 @@ public class SpawnerController : MonoBehaviour
                 foreach (Collider2D collider in colliders)
                 {
                     //Debug.Log(collider.tag);
-                    if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject")) return true;
+                    if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject") || collider.CompareTag("Wall")) return true;
                 }
             }
         }
