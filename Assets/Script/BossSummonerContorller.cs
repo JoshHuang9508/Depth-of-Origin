@@ -14,8 +14,12 @@ public class BossSummonerContorller : MonoBehaviour
     public static int currentActionTimes;
     public bool isActived = false;
 
+    Interactable interactable;
+
     private void Start()
     {
+        interactable = GetComponent<Interactable>();
+
         currentActionTimes = 0;
     }
 
@@ -33,6 +37,8 @@ public class BossSummonerContorller : MonoBehaviour
 
         currentActionTimes++;
         isActived = true;
+        interactable.enabled = false;
+
         if (currentActionTimes >= neededActionTimes)
         {
             var bossSummoned = Instantiate(

@@ -224,9 +224,12 @@ public class BossBehavior : MonoBehaviour, Damageable
         StartCoroutine(delay((callback) =>
         {
             shield.SetActive(behaviorType == 1 ? callback : false);
-            behaviorEnabler = callback;
             if (callback == true && behaviorType == 1) BuildColumns();
         }, 60));
+
+        StartCoroutine(delay(callback => {
+            behaviorEnabler = callback;
+        }, 65f));
     }
 
     public void BuildColumns()

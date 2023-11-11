@@ -33,7 +33,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public float currentHealth;
     public int currentCoinAmount = 0;
     public WeaponSO currentWeapon;
-    public int weaponControl = 1;
+    public int weaponControl = 0;
     public WeaponSO meleeWeapon;
     public WeaponSO rangedWeapon;
     public EdibleItemSO potions;
@@ -188,8 +188,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         if (Input.GetKeyDown(sprintKey)) Sprint();
 
         //set current weapon
-        if (Input.GetKey(KeyCode.Alpha1)) weaponControl = 1;
-        if (Input.GetKey(KeyCode.Alpha2)) weaponControl = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) weaponControl = weaponControl != 1 ? 1 : 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) weaponControl = weaponControl != 2 ? 2 : 0;
 
         //use potion
         if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null)
@@ -316,6 +316,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         //update on used weapon
         switch (weaponControl)
         {
+            case 0:
+                currentWeapon = null;
+                break;
             case 1:
                 currentWeapon = meleeWeapon;
                 break;

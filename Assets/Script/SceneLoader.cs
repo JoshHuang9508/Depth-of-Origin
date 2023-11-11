@@ -42,36 +42,40 @@ public class SceneLoader : MonoBehaviour
         switch (loadType)
         {
             case LoadType.Scene:
-                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneNum, LoadSceneMode.Additive);
-                asyncLoad.allowSceneActivation = false;
+                //AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneNum, LoadSceneMode.Additive);
+                //asyncLoad.allowSceneActivation = false;
 
-                while (asyncLoad.progress < 0.9f)
-                {
-                    Debug.Log("Loading scene " + " [][] Progress: " + asyncLoad.progress);
-                    yield return null;
-                }
+                //while (asyncLoad.progress < 0.9f)
+                //{
+                //    Debug.Log("Loading scene " + " [][] Progress: " + asyncLoad.progress);
+                //    yield return null;
+                //}
 
-                asyncLoad.allowSceneActivation = true;
+                //asyncLoad.allowSceneActivation = true;
 
-                while (!asyncLoad.isDone)
-                {
-                    yield return null;
-                }
+                //while (!asyncLoad.isDone)
+                //{
+                //    yield return null;
+                //}
 
-                Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(SceneNum);
+                //Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(SceneNum);
 
-                if (sceneToLoad.IsValid())
-                {
-                    SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-                    SceneManager.SetActiveScene(sceneToLoad);
-                }
+                //if (sceneToLoad.IsValid())
+                //{
+                //    SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+                //    SceneManager.SetActiveScene(sceneToLoad);
+                //    yield return new WaitForSeconds(0.2f);
+                //}
+                SceneManager.LoadScene(SceneNum, LoadSceneMode.Single);
+                GameObject.FindWithTag("Player").transform.position = GameObject.FindWithTag("Respawn").transform.position;
+                GameObject.FindWithTag("CameraHold").transform.position = GameObject.FindWithTag("Respawn").transform.position;
                 break;
 
             case LoadType.Chunk:
+                GameObject.FindWithTag("Player").transform.position = transferPos;
+                GameObject.FindWithTag("CameraHold").transform.position = transferPos;
                 break;
         }
-        GameObject.FindWithTag("Player").transform.position = transferPos;
-        GameObject.FindWithTag("CameraHold").transform.position = transferPos;
         transition.SetTrigger("End");
         inAction = false;
     }

@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9c444e14829424b83f23f97d49931c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactable: 1
   interactKey: 101
   interactAction:
     m_PersistentCalls:
@@ -221,6 +222,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  enterRangeAction:
+    m_PersistentCalls:
+      m_Calls: []
   leaveRangeAction:
     m_PersistentCalls:
       m_Calls:
@@ -236,8 +240,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isdiable: 0
   isInRange: 0
+  isEnable: 0
   interactDialog: {fileID: 1424550860853803207, guid: d28b66e9e1d46d746ac11b926bc5a58a, type: 3}
   temp: {fileID: 0}
 --- !u!114 &8306560759883220146

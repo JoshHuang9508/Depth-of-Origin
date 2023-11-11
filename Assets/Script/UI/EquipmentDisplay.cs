@@ -31,6 +31,10 @@ public class EquipmentDisplay : MonoBehaviour
 
         switch (player.weaponControl)
         {
+            case 0:
+                meleeWeaponBorder.color = new Color(190, 0, 0, 0);
+                rangedWeaponBorder.color = new Color(190, 0, 0, 0);
+                break;
             case 1:
                 meleeWeaponBorder.color = new Color(190, 0, 0, 255);
                 rangedWeaponBorder.color = new Color(190, 0, 0, 0);
