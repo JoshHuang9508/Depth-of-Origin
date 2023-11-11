@@ -6,10 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    [Header("Setting")]
     public LoadType loadType = LoadType.Scene;
+
+    [Header("Scene Loader Setting")]
     public int SceneNum = 0;
-    public Vector3 transferPos;
+
+    [Header("Chunk Loader Setting")]
+    public SceneLoader transformPos;
+
+    [Header("Status")]
     public static bool inAction = false;
 
     public enum LoadType
@@ -69,14 +74,22 @@ public class SceneLoader : MonoBehaviour
                 SceneManager.LoadScene(SceneNum, LoadSceneMode.Single);
                 GameObject.FindWithTag("Player").transform.position = GameObject.FindWithTag("Respawn").transform.position;
                 GameObject.FindWithTag("CameraHold").transform.position = GameObject.FindWithTag("Respawn").transform.position;
+                transition.SetTrigger("End");
+
+                inAction = false;
+
                 break;
 
             case LoadType.Chunk:
-                GameObject.FindWithTag("Player").transform.position = transferPos;
-                GameObject.FindWithTag("CameraHold").transform.position = transferPos;
+                GameObject.FindWithTag("Player").transform.position = transformPos.gameObject.transform.position;
+                GameObject.FindWithTag("CameraHold").transform.position = transformPos.gameObject.transform.position;
+                transition.SetTrigger("End");
+
+                yield return new WaitForSeconds(0.5f);
+                inAction = false;
+
                 break;
         }
-        transition.SetTrigger("End");
-        inAction = false;
+        
     }
 }

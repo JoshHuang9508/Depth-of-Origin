@@ -30,7 +30,14 @@ public class Interactable : MonoBehaviour
         {
             if (Input.GetKeyDown(interactKey))
             {
-                interactAction.Invoke();
+                try
+                {
+                    interactAction.Invoke();
+                }
+                catch
+                {
+                    Debug.LogWarning("Unexpecting problem, please check if something went wrong!!");
+                }
             }
         }
     }
@@ -45,10 +52,13 @@ public class Interactable : MonoBehaviour
 
             if (this.enabled && interactable)
             {
-                RectTransform text_Transform = Instantiate(interactDialog).GetComponent<RectTransform>();
+                RectTransform text_Transform = Instantiate(
+                    interactDialog,
+                    new Vector3(960, 200, 0),
+                    Quaternion.identity,
+                    GameObject.Find("ScreenUI").transform
+                    ).GetComponent<RectTransform>();
                 text_Transform.gameObject.SetActive(true);
-                text_Transform.transform.position = new Vector3(960, 200, 0);
-                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
 
                 TMP_Text text = text_Transform.GetComponentInChildren<TMP_Text>();
                 text.text = $"Press {interactKey} to interact";

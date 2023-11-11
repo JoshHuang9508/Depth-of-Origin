@@ -15,6 +15,7 @@ MonoBehaviour:
   Name: Anime Sword
   Description: An FAAAT sword
   IsStackable: 0
+  isStorable: 1
   MaxStackSize: 1
   Rarity: 5
   sellPrice: 12000
@@ -22,13 +23,13 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: f1840c10c6c4a81478d2776ebae6ee07, type: 3}
   DefaultParameterList: []
   attackSpeed: 1.5
-  attackCooldown: 0.2
+  attackCooldown: 0.4
   weaponDamage: 450
   knockbackForce: 50
   knockbackTime: 0.8
   weaponType: 0
   weaponObject: {fileID: 6740076035439635677, guid: b4aca5ef74d0af149b1aedf3db601ebd, type: 3}
-  E_walkSpeed: 0
+  E_walkSpeed: -0.5
   E_maxHealth: 150
   E_strength: 50
   E_defence: 0

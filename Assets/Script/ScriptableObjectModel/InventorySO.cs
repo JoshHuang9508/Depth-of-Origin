@@ -11,7 +11,7 @@ namespace Inventory.Model
     {
         public event Action<Dictionary<int, InventoryItem>> OnInventoryUpdated;
 
-        [SerializeField] private List<InventoryItem> inventoryItems;
+        [SerializeField] public List<InventoryItem> inventoryItems;
         [field: SerializeField] public int Size { get; private set; } = 10;
         
 
@@ -102,8 +102,23 @@ namespace Inventory.Model
             return 0;
         }
 
-        private bool IsInventoryFull()
+        public bool IsInventoryFull()
             => inventoryItems.Where(item => item.IsEmpty).Any() == false;
+
+        public bool IsCertainItemFull(int itemID)
+        {
+            foreach (InventoryItem item in inventoryItems)
+            {
+                if (item.item.ID == itemID)
+                {
+                    if(item.quantity < item.item.MaxStackSize)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
         public Dictionary<int, InventoryItem> GetCurrentInventoryState()
         {

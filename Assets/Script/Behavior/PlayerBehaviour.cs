@@ -212,6 +212,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
         //use weapon
         if (Input.GetKey(KeyCode.Mouse0)) summonWeapon.Summon();
+
+        //test inventoryData.isInventoryFull()
+
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            Debug.Log($"Is Inventory Full? {inventoryData.IsInventoryFull()}");
+            Debug.Log($"Is Inventory Items[0]Full? {inventoryData.inventoryItems[0].IsEmpty}");
+        }
     }
 
 

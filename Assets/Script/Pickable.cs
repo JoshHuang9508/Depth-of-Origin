@@ -6,35 +6,42 @@ using UnityEngine.Rendering.Universal;
 
 public class Pickable : MonoBehaviour
 {
-    [field: SerializeField] public ItemSO inventoryItem { get; set; }
-    [field: SerializeField] private InventorySO inventoryData;
+    [Header("Setting")]
+    public ItemSO inventoryItem;
+    public int quantity = 1;
+    public float pickupDistance;
 
-    [SerializeField] public int Quantity { get; set; } = 1;
+    [Header("Status")]
+    public bool pickEnabler = false;
+    public bool isInventoryFull;
+    public bool storable;
 
-    bool pickEnabler = false;
-    bool inRange = false;
+    [Header("Connect Object")]
+    public InventorySO inventoryData;
+
     Rigidbody2D currentRb;
-    Collider2D target;
+    GameObject target;
     
 
-    // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(pickup_delay());
         currentRb = GetComponent<Rigidbody2D>();
+        target = GameObject.FindWithTag("Player");
+
+        StartCoroutine(pickup_delay());
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (inRange && pickEnabler)
-        {
-            int movement_x = (this.transform.position.x - target.transform.position.x <= 0) ? 1 : -1;
-            int movement_y = (this.transform.position.y - target.transform.position.y <= 0) ? 1 : -1;
-            currentRb.velocity = new Vector3(movement_x * 12, movement_y * 12, 0.0f);
-            float distance = Vector2.Distance(this.transform.position, target.transform.position);
+        storable = inventoryItem.isStorable;
 
-            if(distance <= 0.8)
+        isInventoryFull = inventoryData.IsInventoryFull() && inventoryData.IsCertainItemFull(inventoryItem.ID);
+
+        if ((storable ? !isInventoryFull : true) && pickEnabler && Vector2.Distance(target.transform.position, this.transform.position) < pickupDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 50 * Time.deltaTime);
+
+            if(Vector2.Distance(this.transform.position, target.transform.position) <= 0.8)
             {
                 if(inventoryItem is CoinSO)
                 {
@@ -46,27 +53,10 @@ public class Pickable : MonoBehaviour
                 }
                 else
                 {
-                    inventoryData.AddItem(inventoryItem, Quantity);
+                    inventoryData.AddItem(inventoryItem, quantity);
                 }
                 Destroy(gameObject);
             }
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            inRange = true;
-            target = collision;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            inRange = false;
         }
     }
 

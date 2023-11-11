@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 426642393597225478}
   - component: {fileID: 4761230341904665527}
   - component: {fileID: 5719081065965911578}
-  - component: {fileID: 7677041903192944058}
   - component: {fileID: 1186347542212776823}
   - component: {fileID: 7013522492033240929}
   - component: {fileID: 4543098755390288642}
@@ -112,42 +111,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!58 &7677041903192944058
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3998415391066531494}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 4
 --- !u!50 &1186347542212776823
 Rigidbody2D:
   serializedVersion: 4
@@ -239,7 +202,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e63bcffa245fca43a04995d5eac67c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <inventoryItem>k__BackingField: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+  inventoryItem: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+  quantity: 1
+  pickupDistance: 10000
+  pickEnabler: 0
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
 --- !u!61 &748226932810341533
 BoxCollider2D:
@@ -261,10 +227,10 @@ BoxCollider2D:
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 4294967295

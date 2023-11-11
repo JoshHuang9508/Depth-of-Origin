@@ -15,6 +15,7 @@ MonoBehaviour:
   Name: The Bow
   Description: 
   IsStackable: 0
+  isStorable: 1
   MaxStackSize: 1
   Rarity: 0
   sellPrice: 0
@@ -27,13 +28,13 @@ MonoBehaviour:
   knockbackForce: 20
   knockbackTime: 0.2
   weaponType: 1
+  weaponObject: {fileID: 0}
   E_walkSpeed: 1
   E_maxHealth: 0
   E_strength: 0
   E_defence: 0
   E_critRate: 25
   E_critDamage: 40
-  weaponObject: {fileID: 0}
   projectileObject: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
   flySpeed: 15
   projectileType: 0

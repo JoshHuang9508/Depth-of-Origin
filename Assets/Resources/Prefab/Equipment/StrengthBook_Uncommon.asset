@@ -15,8 +15,11 @@ MonoBehaviour:
   Name: Strength Book
   Description: 
   IsStackable: 0
+  isStorable: 1
   MaxStackSize: 1
   Rarity: 1
+  sellPrice: 0
+  buyPrice: 0
   Image: {fileID: 1932116897343216958, guid: 4e953e85f19c2c247a96ae675632fb1b, type: 3}
   DefaultParameterList: []
   equipmentType: 1

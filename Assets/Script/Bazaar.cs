@@ -12,9 +12,16 @@ public class Bazaar : MonoBehaviour
     public List<InventoryItem> shopGoodsList = new List<InventoryItem>();
 
 
-    public void Start()
+    private void Update()
     {
-        
+        try
+        {
+            shopUI = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().shopUI;
+        }
+        catch
+        {
+
+        }
     }
 
     public void OpenShop()

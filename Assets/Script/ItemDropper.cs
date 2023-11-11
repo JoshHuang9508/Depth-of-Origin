@@ -43,8 +43,6 @@ public class ItemDropper : MonoBehaviour
             Debug.Log(lootings[0].lootings);
         }
 
-        Debug.Log(lootings.Count == 0);
-
         if (lootings.Count == 0)
         {
             return;
