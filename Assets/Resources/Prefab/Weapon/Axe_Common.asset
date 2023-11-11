@@ -15,6 +15,7 @@ MonoBehaviour:
   Name: Axe
   Description: 
   IsStackable: 0
+  isStorable: 1
   MaxStackSize: 1
   Rarity: 0
   sellPrice: 0
@@ -27,10 +28,10 @@ MonoBehaviour:
   knockbackForce: 10
   knockbackTime: 0.4
   weaponType: 0
+  weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}
   E_walkSpeed: 0
   E_maxHealth: 0
   E_strength: 0
   E_defence: 0
   E_critRate: 0
   E_critDamage: 0
-  weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}

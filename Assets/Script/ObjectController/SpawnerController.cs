@@ -63,7 +63,7 @@ public class SpawnerController : MonoBehaviour
                 transform.position.z);
 
         //detect spawn position
-        if (DetectBlankAreas(spawnPosition, new Vector2(2f, 2f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPosition) < minSpawnDistance) return;
+        if (DetectBlankAreas(spawnPosition, new Vector2(1f, 1f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPosition) < minSpawnDistance) return;
         
         //spawn mobs
         int randomSpawnIndex = Random.Range(0, spawnList.Count);

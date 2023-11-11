@@ -73,7 +73,7 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0.5
+  m_PointLightInnerRadius: 0.8
   m_PointLightOuterRadius: 3.5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c82e43b35629b840a79f862fc541cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  extinguished: 0
 --- !u!1 &7639605266877218686
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ namespace Inventory.Model
 
         [Header("State")]
         public bool IsStackable;
+        public bool isStorable = true;
         public int MaxStackSize = 1;
         public Rarity Rarity;
         public int sellPrice, buyPrice;

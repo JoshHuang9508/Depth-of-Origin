@@ -15,8 +15,11 @@ MonoBehaviour:
   Name: Double Axe
   Description: 
   IsStackable: 0
+  isStorable: 1
   MaxStackSize: 1
   Rarity: 4
+  sellPrice: 0
+  buyPrice: 0
   Image: {fileID: 21300000, guid: 85b785ab014598c40b5ae2d423367ee4, type: 3}
   DefaultParameterList: []
   attackSpeed: 1.6
@@ -24,10 +27,11 @@ MonoBehaviour:
   weaponDamage: 68
   knockbackForce: 40
   knockbackTime: 0.8
+  weaponType: 0
+  weaponObject: {fileID: 6740076035439635677, guid: b89b9cb154ba65e47aea34bf9c5efc90, type: 3}
   E_walkSpeed: 0
   E_maxHealth: 0
   E_strength: 0
   E_defence: 0
   E_critRate: 0
   E_critDamage: 0
-  weaponObject: {fileID: 6740076035439635677, guid: b89b9cb154ba65e47aea34bf9c5efc90, type: 3}

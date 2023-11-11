@@ -105,9 +105,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemy.attackField && movementEnabler && attackEnabler)
         {
-            float movement_x = (this.transform.position.x - target.position.x <= 0) ? 1 : -1;
-            float movement_y = (this.transform.position.y - target.position.y <= 0) ? 1 : -1;
-            currentRb.velocity = new Vector3(movement_x * enemy.moveSpeed, movement_y * enemy.moveSpeed, 0.0f);
+            currentRb.MovePosition(currentPos + diraction * enemy.moveSpeed * Time.deltaTime);
 
             //play animation
             animator.SetBool("ismove", true);

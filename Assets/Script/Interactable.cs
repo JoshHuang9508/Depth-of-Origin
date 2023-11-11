@@ -8,51 +8,63 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 public class Interactable : MonoBehaviour
 {
     [Header("Setting")]
+    public bool interactable;
     public KeyCode interactKey;
-    public UnityEvent interactAction, leaveRangeAction;
+    public UnityEvent interactAction, enterRangeAction, leaveRangeAction;
 
     [Header("Status")]
     public bool isInRange;
-    public bool isEnable;
 
     [Header("Connect Object")]
     public GameObject interactDialog;
     public RectTransform temp;
 
-    // Start is called before the first frame update
     void Start()
     {
         interactDialog.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (isInRange)
+        if (isInRange && this.enabled && interactable)
         {
-            
             if (Input.GetKeyDown(interactKey))
             {
-                interactAction.Invoke();
+                try
+                {
+                    interactAction.Invoke();
+                }
+                catch
+                {
+                    Debug.LogWarning("Unexpecting problem, please check if something went wrong!!");
+                }
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && isEnable)
+        if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("Player in range");
-            RectTransform text_Transform = Instantiate(interactDialog).GetComponent<RectTransform>();
-            text_Transform.gameObject.SetActive(true);
-            text_Transform.transform.position = new Vector3(960, 200, 0);
-            text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
-
-            TMP_Text text = text_Transform.GetComponentInChildren<TMP_Text>();
-            text.text = $"Press {interactKey} to interact";
-
-            temp = text_Transform;
             isInRange = true;
+            enterRangeAction.Invoke();
+
+            if (this.enabled && interactable)
+            {
+                RectTransform text_Transform = Instantiate(
+                    interactDialog,
+                    new Vector3(960, 200, 0),
+                    Quaternion.identity,
+                    GameObject.Find("ScreenUI").transform
+                    ).GetComponent<RectTransform>();
+                text_Transform.gameObject.SetActive(true);
+
+                TMP_Text text = text_Transform.GetComponentInChildren<TMP_Text>();
+                text.text = $"Press {interactKey} to interact";
+
+                temp = text_Transform;
+            }
         }
     }
 
@@ -61,24 +73,28 @@ public class Interactable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             //Debug.Log("Player leave range");
+            isInRange = false;
+            leaveRangeAction.Invoke();
+
             try
             {
                 Destroy(temp.gameObject);
             }
             catch { }
-            isInRange = false;
-            leaveRangeAction.Invoke();
         }
     }
 
     private void OnDisable()
     {
-        Destroy(temp.gameObject);
-        isEnable = false;
+        try
+        {
+            Destroy(temp.gameObject);
+        }
+        catch { }
     }
 
     private void OnEnable()
     {
-        isEnable = true;
+
     }
 }
