@@ -43,9 +43,12 @@ public class BossBehavior : MonoBehaviour, Damageable
                 //play hit animation
 
                 //damage text
-                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+                RectTransform text_Transform = Instantiate(
+                    damageText,
+                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Quaternion.identity,
+                    GameObject.Find("ScreenUI").transform
+                    ).GetComponent<RectTransform>();
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
                 text_MeshProUGUI.text = Mathf.RoundToInt(currentHealth - value).ToString();
@@ -57,9 +60,12 @@ public class BossBehavior : MonoBehaviour, Damageable
             if (value >= currentHealth)
             {
                 //damage text
-                RectTransform text_Transform = Instantiate(damageText).GetComponent<RectTransform>();
-                text_Transform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-                text_Transform.SetParent(GameObject.FindFirstObjectByType<Canvas>().transform);
+                RectTransform text_Transform = Instantiate(
+                    damageText,
+                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Quaternion.identity,
+                    GameObject.Find("ScreenUI").transform
+                    ).GetComponent<RectTransform>();
 
                 TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
                 text_MeshProUGUI.text = Mathf.RoundToInt(value - currentHealth).ToString();
