@@ -6,13 +6,15 @@ using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
 using TMPro;
 using System;
+using UnityEngine.Video;
 
 public class MainMenuController : MonoBehaviour
 {
     [Header("GameLogo Settings")]
-    public Image gamelogo,test;
-    public GameObject mainmenu;
-    public float fadeInDuration = 3.0f, fadeOutDuration = 5.0f;
+    public GameObject mainmenu,logopanel;
+    public Image backgroundImage;
+    public VideoPlayer videoplayer;
+    public float fadeInDuration = 0.5f, fadeOutDuration = 5.0f;
 
     [Header("Volume Settings")]
     public TMP_Text volumeValueText;
@@ -55,12 +57,32 @@ public class MainMenuController : MonoBehaviour
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
+        logopanel.SetActive(true);
         mainmenu.SetActive(false);
-        Color imagecolor = gamelogo.color;
-        imagecolor.a = 0f;
-        test.color = imagecolor;
-        gamelogo.color = imagecolor;
-        StartCoroutine(FadeIn());
+        StartCoroutine(OpenMainMenu());
+    }
+
+    IEnumerator OpenMainMenu()
+    {
+        yield return new WaitForSeconds(4f);
+        logopanel.SetActive(false);
+        mainmenu.SetActive(true);
+        StartCoroutine(MainMenuFadeIn());
+    }
+
+    IEnumerator MainMenuFadeIn()
+    {
+        float elapsedTime = 0f;
+        Color imageColor = backgroundImage.color;
+
+        while (elapsedTime < fadeInDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            imageColor.a = Mathf.Clamp01(elapsedTime / fadeInDuration);
+            backgroundImage.color = imageColor;
+            yield return null;
+        }
+
     }
 
     public void SetResolution(int ResolutionIndex)
@@ -69,62 +91,7 @@ public class MainMenuController : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    IEnumerator FadeIn()
-    {
-        float elapsedTime = 0f;
-        Color imagecolor = test.color;
-        while (elapsedTime < fadeInDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            imagecolor.a = Mathf.Clamp01(elapsedTime/fadeInDuration);
-            test.color = imagecolor;
-            yield return null;
-        }
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(FadeOut());
-    }
-    IEnumerator FadeIn1()
-    {
-        float elapsedTime = 0f;
-        Color imagecolor = gamelogo.color;
-        while (elapsedTime < fadeInDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            imagecolor.a = Mathf.Clamp01(elapsedTime / fadeInDuration);
-            gamelogo.color = imagecolor;
-            yield return null;
-        }
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(FadeOut1());
-    }
 
-    IEnumerator FadeOut()
-    {
-        float elapsedTime = 0f;
-        Color imagecolor = gamelogo.color;
-        while (elapsedTime < fadeInDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            imagecolor.a = 1f - Mathf.Clamp01(elapsedTime / fadeInDuration);
-            test.color = imagecolor;
-            yield return null;
-        }
-        //mainmenu.SetActive(true);
-        StartCoroutine(FadeIn1());
-    }
-    IEnumerator FadeOut1()
-    {
-        float elapsedTime = 0f;
-        Color imagecolor = test.color;
-        while (elapsedTime < fadeInDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            imagecolor.a = 1f - Mathf.Clamp01(elapsedTime / fadeInDuration);
-            gamelogo.color = imagecolor;
-            yield return null;
-        }
-        mainmenu.SetActive(true);
-    }
 
     public void NewGameYesClicked()
     {
