@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194b6416e2c41514984d0126cd02fd2e, type: 3}
   m_Name: Necromancer
   m_EditorClassIdentifier: 
-  Name: Chort
+  Name: Necromancer
   health: 50
   moveSpeed: 5
   defence: 0
   difficulty: 0
-  projectile: {fileID: 0}
-  projectileFlySpeed: 0
+  projectile: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
+  projectileFlySpeed: 15
   EnemyObject: {fileID: 91700730297484186, guid: c1378c4a575f7c842a03692f500bbc76, type: 3}
-  attackType: 0
+  attackType: 1
   shootingType: 0
   attackSpeed: 1
   attackDamage: 2
