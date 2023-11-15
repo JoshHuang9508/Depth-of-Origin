@@ -10,8 +10,7 @@ public class BreakableObject : MonoBehaviour, Damageable
     public float health;
 
     [Header("Looting")]
-    public int lootMinCoins;
-    public int lootMaxCoins;
+    public List<Coins> coins;
     public List<Lootings> lootings;
     public List<GameObject> wreckage;
 
@@ -33,7 +32,7 @@ public class BreakableObject : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -50,7 +49,7 @@ public class BreakableObject : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -65,19 +64,15 @@ public class BreakableObject : MonoBehaviour, Damageable
             if (health <= 0)
             {
                 //drop items
-                var ItemDropper = Instantiate(
+                ItemDropper ItemDropper = Instantiate(
                     itemDropper,
-                    new Vector3(
-                        transform.position.x,
-                        transform.position.y + 0.5f,
-                        transform.position.z),
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
                     Quaternion.identity,
                     GameObject.FindWithTag("Item").transform
-                    );
-
-                ItemDropper.GetComponent<ItemDropper>().DropItems(lootings);
-                ItemDropper.GetComponent<ItemDropper>().DropCoins(lootMinCoins, lootMaxCoins);
-                ItemDropper.GetComponent<ItemDropper>().DropWrackages(wreckage);
+                    ).GetComponent<ItemDropper>();
+                ItemDropper.DropItems(lootings);
+                ItemDropper.DropCoins(coins);
+                ItemDropper.DropWrackages(wreckage);
                 Destroy(gameObject);
             }
         }

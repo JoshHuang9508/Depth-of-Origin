@@ -64,15 +64,20 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         public KeySO key;
         public int quantity;
 
-        public KeyList(KeySO item, int amont)
+        public KeyList(KeySO item, int amount)
         {
             this.key = item;
-            this.quantity = amont;
+            this.quantity = amount;
         }
     }
 
     [Header("Key Settings")]
     public KeyCode sprintKey;
+    public KeyCode backpackKey;
+    public KeyCode usePotionKey;
+    public KeyCode useWeaponKey;
+    public KeyCode meleeWeaponKey;
+    public KeyCode rangedWeaponKey;
 
     [Header("Connect Object")]
     public GameObject damageText;
@@ -80,6 +85,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public InventorySO inventoryData, shopData;
     public UIInventory inventoryUI, shopUI;
     public SummonWeapon summonWeapon;
+    public GameObject itemDropper;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
     public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
@@ -95,12 +101,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         {
             if (value < currentHealth)
             {
-                //play hit animation
-
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -126,7 +130,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -146,8 +150,45 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             {
                 Debug.Log("Player Dead");
                 currentHealth = 0;
+                currentCoinAmount = 0;
+                currentRb.bodyType = RigidbodyType2D.Static;
+                behaviourEnabler = false;
 
-                //play dead animation
+                //drop item
+                List<Lootings> lootings = new();
+                List<int> indexOfInvetoryItem = new();
+
+                foreach (InventoryItem inventoryItem in inventoryData.inventoryItems)
+                {
+                    if(UnityEngine.Random.Range(0, 100) >= 50)
+                    {
+                        lootings.Add(new Lootings(inventoryItem.item, 100, inventoryItem.quantity));
+                        indexOfInvetoryItem.Add(inventoryData.inventoryItems.IndexOf(inventoryItem));
+                    }
+                }
+                foreach(int indexNum in indexOfInvetoryItem)
+                {
+                    Debug.Log(indexNum);
+                    if (indexNum <= inventoryData.inventoryItems.Count)
+                    {
+                        inventoryData.RemoveItem(indexNum, -1);
+                    }
+                }
+                ItemDropper ItemDropper = Instantiate(
+                    itemDropper,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity,
+                    GameObject.FindWithTag("Item").transform
+                    ).GetComponent<ItemDropper>();
+                ItemDropper.DropItems(lootings);
+
+
+                //disable player object
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform child = transform.GetChild(i);
+                    child.gameObject.SetActive(false);
+                }
             }
         }
         get
@@ -156,11 +197,12 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
-
-    bool damageEnabler = true;
-    bool movementEnabler = true;
-    bool sprintEnabler = false;
-    bool walkSpeedMutiplyerEnabler = false;
+    [Header("Status")]
+    public bool behaviourEnabler = true;
+    public bool damageEnabler = true;
+    public bool movementEnabler = true;
+    public bool sprintEnabler = true;
+    public bool walkSpeedMutiplyerEnabler = false;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
@@ -179,14 +221,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         inventoryData.initialize();
         foreach (InventoryItem item in initialItems)
         {
-            if (item.IsEmpty)
-                continue;
+            if (item.IsEmpty) continue;
             inventoryData.AddItem(item);
         }
     }
     
     void Update()
     {
+        if(behaviourEnabler == false) return;
+
         Moving();
         UpdatePlayerStates();
 
@@ -194,11 +237,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         if (Input.GetKeyDown(sprintKey)) Sprint();
 
         //set current weapon
-        if (Input.GetKeyDown(KeyCode.Alpha1)) weaponControl = weaponControl != 1 ? 1 : 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) weaponControl = weaponControl != 2 ? 2 : 0;
+        if (Input.GetKeyDown(meleeWeaponKey)) weaponControl = weaponControl != 1 ? 1 : 0;
+        if (Input.GetKeyDown(rangedWeaponKey)) weaponControl = weaponControl != 2 ? 2 : 0;
 
         //use potion
-        if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null)
+        if (Input.GetKeyDown(usePotionKey) && potions != null)
         {
             potions.ConsumeObject(1, gameObject);
             currentPotionAmont -= 1;
@@ -206,26 +249,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             if (currentPotionAmont <= 0) potions = null;
         } 
 
-        //test addItem func
-        if (Input.GetKeyDown(KeyCode.Alpha4) && potions != null) inventoryData.AddItem(potions, 10);
-
         //UI
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(backpackKey))
         {
             inventoryUI.SetInventoryContent(inventoryData, InventoryType.BackpackInventory);
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
         }
 
         //use weapon
-        if (Input.GetKey(KeyCode.Mouse0)) summonWeapon.Summon();
-
-        //test inventoryData.isInventoryFull()
-
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            Debug.Log($"Is Inventory Full? {inventoryData.IsInventoryFull()}");
-            Debug.Log($"Is Inventory Items[0]Full? {inventoryData.inventoryItems[0].IsEmpty}");
-        }
+        if (Input.GetKey(useWeaponKey)) summonWeapon.Summon();
     }
 
 
@@ -236,16 +268,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
         animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
-        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0;
+        spriteRenderer.flipX = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 ? Input.GetAxis("Horizontal") < 0 : spriteRenderer.flipX;
 
         if (movementEnabler && Input.anyKey)
         {
             int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
 
-            Vector3 movement = new Vector3(
+            Vector2 movement = new Vector3(
                 Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer,
-                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer,
-                0.0f
+                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer
             );
 
             currentRb.velocity = new Vector2(movement.x, movement.y);
@@ -254,10 +285,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void Sprint()
     {
-        if (!sprintEnabler && movementEnabler)
+        if (sprintEnabler && movementEnabler)
         {
             StartCoroutine(delay(enabler => {
-                sprintEnabler = !enabler;
+                sprintEnabler = enabler;
             }, 2f));
             StartCoroutine(delay(enabler => {
                 walkSpeedMutiplyerEnabler = !enabler;
@@ -348,7 +379,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (damageEnabler)
+        if (damageEnabler && behaviourEnabler)
         {
             isCrit = _isCrit;
             Health -= damage / (1 +(0.001f * defence));
@@ -358,7 +389,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
             //delay
             StartCoroutine(delay(callback => {
-                onHitCounter += !callback ? 1 : -1;
+                onHitCounter += callback ? -1 : 1;
                 if (onHitCounter > 0 && callback) return;
                 movementEnabler = callback;
                 animator.SetBool("isHit", !callback);
@@ -412,7 +443,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         currentPotionAmont = amount;
     }
 
-    public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
+    public void SetEffection(EdibleItemSO edibleItem, float effectTime)
     {
         int indexOfEffectionList = 0;
         bool isEffectionExist = false;

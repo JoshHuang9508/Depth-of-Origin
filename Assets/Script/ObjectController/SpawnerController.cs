@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Setting")]
     public int spawnLimit = 4;
     public float minSpawnDistance = 15;
     public float spawnRange;
@@ -14,7 +14,7 @@ public class SpawnerController : MonoBehaviour
     public LayerMask targetLayer;
     public List<EnemySO> spawnList;
 
-    [Header("Read Only Value")]
+    [Header("Status")]
     public int spawnTimes;
     public int stayMobs;
     public bool spawnEnabler = true;
@@ -22,7 +22,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if(spawnEnabler == true && (stayMobs < spawnLimit || spawnLimit == -1) && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1))
+        if(spawnEnabler && (stayMobs < spawnLimit || spawnLimit == -1) && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1) && GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().behaviourEnabler)
         {
             SpawnMobs();
         }
@@ -93,7 +93,6 @@ public class SpawnerController : MonoBehaviour
                 if (colliders.Length == 0) return true;
                 foreach (Collider2D collider in colliders)
                 {
-                    //Debug.Log(collider.tag);
                     if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject") || collider.CompareTag("Wall")) return true;
                 }
             }

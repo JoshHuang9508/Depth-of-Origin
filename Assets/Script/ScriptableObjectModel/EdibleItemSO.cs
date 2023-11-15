@@ -37,7 +37,7 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
 
         if (player != null)
         {
-            player.SetEffection(this, amount, effectTime);
+            player.SetEffection(this, effectTime);
         }
         return false;
     }

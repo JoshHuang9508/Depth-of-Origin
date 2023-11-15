@@ -65,7 +65,14 @@ namespace Inventory.Model
             PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
             if (player != null)
             {
-                player.currentCoinAmount -= buyPrice;
+                if(player.currentCoinAmount < buyPrice)
+                {
+                    Debug.Log("You don't have enough money!");
+                }
+                else
+                {
+                    player.currentCoinAmount -= buyPrice;
+                }
             }
             return false;
         }

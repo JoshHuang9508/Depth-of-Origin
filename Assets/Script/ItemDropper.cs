@@ -6,7 +6,6 @@ using Inventory.Model;
 public class ItemDropper : MonoBehaviour
 {
     public GameObject itemModel;
-    public GameObject coinModel;
 
     private void Start()
     {
@@ -15,44 +14,81 @@ public class ItemDropper : MonoBehaviour
         }, 0.2f));
     }
 
-    public void DropCoins(int lootMinCoins, int lootMaxCoins)
+    public void DropCoins(List<Coins> coins = null)
     {
-        for (int i = 0; i < Random.Range(lootMinCoins, lootMaxCoins + 1); i++)
+        if (coins.Count == 0)
         {
-            var dropItem = Instantiate(
-                coinModel,
-                new Vector3(
-                    transform.position.x,
-                    transform.position.y,
-                    transform.position.z),
-                Quaternion.identity,
-                transform.parent
-                );
+            return;
+        }
 
-            dropItem.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
+        foreach (Coins coin in coins)
+        {
+            for(int i = 0; i < coin.amount; i++)
+            {
+                var dropCoin = Instantiate(
+                    itemModel,
+                    new Vector3(
+                        transform.position.x,
+                        transform.position.y,
+                        transform.position.z),
+                    Quaternion.identity,
+                    transform.parent
+                    );
+
+                Pickable dropItemPickable = dropCoin.GetComponent<Pickable>();
+                dropItemPickable.inventoryItem = coin.coins;
+                dropItemPickable.pickupDistance = 100;
+
+                InitialFromItemDropper dropItemInitial = dropCoin.GetComponent<InitialFromItemDropper>();
+                dropItemInitial.InventoryItem = coin.coins;
+
+                Rigidbody2D dropItemRb = dropCoin.GetComponent<Rigidbody2D>();
+                dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
+            }
         }
     }
 
-    public void DropItems(List<Lootings> lootings = null, ItemSO lootng = null)
+    public void DropItems(List<Lootings> lootings)
     {
-
-        if (lootng != null)
-        {
-            Debug.Log(lootng.name);
-            lootings = new List<Lootings>() { new Lootings(lootng, 100f)};
-            Debug.Log(lootings[0].lootings);
-        }
-
         if (lootings.Count == 0)
         {
             return;
         }
 
-        foreach (Lootings _dropItem in lootings)
+        foreach (Lootings looting in lootings)
         {
-            if(Random.Range(0, 100) < _dropItem.chances)
+            if(Random.Range(0, 100) < looting.chances)
             {
-                var dropItem = Instantiate(
+                for(int i = 0; i < looting.quantity; i++)
+                {
+                    var dropItem = Instantiate(
+                        itemModel,
+                        new Vector3(
+                            transform.position.x,
+                            transform.position.y,
+                            transform.position.z),
+                        Quaternion.identity,
+                        transform.parent
+                        );
+
+                    Pickable dropItemPickable = dropItem.GetComponent<Pickable>();
+                    dropItemPickable.inventoryItem = looting.lootings;
+
+                    InitialFromItemDropper dropItemInitial = dropItem.GetComponent<InitialFromItemDropper>();
+                    dropItemInitial.InventoryItem = looting.lootings;
+
+                    Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
+                    dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
+                }
+            }
+        }
+    }
+
+    public void DropItems(ItemSO looting, int quantity = 1)
+    {
+        for (int i = 0; i < quantity; i++)
+        {
+            var dropItem = Instantiate(
                 itemModel,
                 new Vector3(
                     transform.position.x,
@@ -62,15 +98,14 @@ public class ItemDropper : MonoBehaviour
                 transform.parent
                 );
 
-                Pickable dropItemPickable = dropItem.GetComponent<Pickable>();
-                dropItemPickable.inventoryItem = _dropItem.lootings;
+            Pickable dropItemPickable = dropItem.GetComponent<Pickable>();
+            dropItemPickable.inventoryItem = looting;
 
-                InitialFromItemDropper dropItemInitial = dropItem.GetComponent<InitialFromItemDropper>();
-                dropItemInitial.InventoryItem = _dropItem.lootings;
+            InitialFromItemDropper dropItemInitial = dropItem.GetComponent<InitialFromItemDropper>();
+            dropItemInitial.InventoryItem = looting;
 
-                Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
-                dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
-            }
+            Rigidbody2D dropItemRb = dropItem.GetComponent<Rigidbody2D>();
+            dropItemRb.velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
         }
     }
 
@@ -111,10 +146,25 @@ public class Lootings
 {
     public ItemSO lootings;
     public float chances;
+    public int quantity;
 
-    public Lootings(ItemSO item, float chance)
+    public Lootings(ItemSO item, float chance, int num = 1)
     {
         lootings = item;
         chances = chance;
+        quantity = num;
+    }
+}
+
+[System.Serializable]
+public class Coins
+{
+    public CoinSO coins;
+    public int amount;
+
+    public Coins(CoinSO coin, int num)
+    {
+        coins = coin;
+        amount = num;
     }
 }

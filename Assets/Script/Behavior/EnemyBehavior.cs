@@ -18,7 +18,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public Rigidbody2D currentRb;
     public Transform target;
     public Damageable damageableObject;
-    public Vector2 currentPos, characterPos, diraction;
+    public Vector2 currentPos, targetPos, diraction;
     public float currentHealth;
     public bool movementEnabler = true;
     public bool damageEnabler = true;
@@ -38,7 +38,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -55,7 +55,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -72,12 +72,15 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 //play dead animation
 
                 //drop items
-                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-                ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-                ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(enemy.lootings);
-                itemDropperController.DropCoins(enemy.lootMinItems, enemy.lootMaxItems);
-                itemDropperController.DropWrackages(enemy.wreckage);
+                ItemDropper ItemDropper = Instantiate(
+                    itemDropper,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity,
+                    GameObject.FindWithTag("Item").transform
+                    ).GetComponent<ItemDropper>();
+                ItemDropper.DropItems(enemy.lootings);
+                ItemDropper.DropCoins(enemy.coins);
+                ItemDropper.DropWrackages(enemy.wreckage);
 
                 Destroy(gameObject);
             }
@@ -103,8 +106,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     void Update()
     {
         currentPos = transform.position;
-        characterPos = target.transform.position;
-        diraction = (characterPos - currentPos).normalized;
+        targetPos = target.transform.position;
+        diraction = (targetPos - currentPos).normalized;
 
         Moving();
     }
@@ -113,8 +116,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         switch (enemy.attackType)
         {
-            case AttackType.Melee:
-                if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemy.attackField && movementEnabler && attackEnabler)
+            case EnemySO.AttackType.Melee:
+                if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && Vector3.Distance(targetPos, currentPos) >= enemy.attackField && movementEnabler && attackEnabler)
                 {
                     currentRb.MovePosition(currentPos + diraction * enemy.moveSpeed * Time.deltaTime);
 
@@ -122,17 +125,17 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true);
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) > enemy.chaseField && movementEnabler && attackEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField && movementEnabler && attackEnabler)
                 {
-                    currentRb.velocity = new Vector2(0.0f, 0.0f);
+                    currentRb.velocity = Vector2.zero;
 
                     //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) < enemy.attackField && movementEnabler && attackEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) < enemy.attackField && movementEnabler && attackEnabler)
                 {
-                    currentRb.velocity = new Vector2(0.0f, 0.0f);
+                    currentRb.velocity = Vector2.zero;
                     Attacking();
 
                     //play animation
@@ -140,16 +143,18 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     animator.SetBool("ischase", true);
                 }
                 break;
-            case AttackType.Sniper:
-                if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && movementEnabler)
+
+            case EnemySO.AttackType.Sniper:
+                if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && movementEnabler)
                 {
                     currentRb.MovePosition(currentPos - diraction * enemy.moveSpeed * Time.deltaTime);
                     Attacking();
+
                     //play animation
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true); 
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) > enemy.chaseField && movementEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField && movementEnabler)
                 {
                     currentRb.velocity = Vector2.zero;
 
@@ -161,7 +166,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
         
 
-        spriteRenderer.flipX = (this.transform.position.x - target.position.x) > 0.2 ? true : false;
+        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2 ? true : false;
     }
 
     void Attacking()
@@ -170,7 +175,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         {
             switch (enemy.attackType)
             {
-                case AttackType.Sniper:
+                case EnemySO.AttackType.Sniper:
                     float startAngle = Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg;
 
                     enemy.Attack_Ranged(startAngle, transform.position + new Vector3(0,0.5f,0));
@@ -180,7 +185,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     }, enemy.attackSpeed));
                     break;
 
-                case AttackType.Melee:
+                case EnemySO.AttackType.Melee:
                     damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                     StartCoroutine(delay((enabler) => {
@@ -201,7 +206,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
-
 
             //delay
             StartCoroutine(delay(enabler => {

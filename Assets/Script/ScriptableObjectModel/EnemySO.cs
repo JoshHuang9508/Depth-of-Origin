@@ -14,15 +14,26 @@ public class EnemySO : ScriptableObject
     public float moveSpeed;
     public float defence;
     public Difficulty difficulty = Difficulty.Easy;
-    public GameObject projectile;
-    public float projectileFlySpeed;
+
+    public enum Difficulty
+    {
+        Easy, Normal, Hard, Difficult, Extreme
+    }
 
     [Header("Prefab")]
     public GameObject EnemyObject;
 
-    [Header("Attacking")]
-    public AttackType attackType;
+    [Header("Projectile Object Settings")]
+    public GameObject projectile;
+    public float projectileFlySpeed;
     public ShootingType shootingType;
+
+    public enum ShootingType
+    {
+        Single, Split, AllAngle
+    }
+
+    [Header("Attacking")]
     public float attackSpeed;
     public float attackDamage;
     public float chaseField;
@@ -30,11 +41,15 @@ public class EnemySO : ScriptableObject
     public float knockbackForce;
     public float knockbackTime;
     public float knockbackSpeed;
+    public AttackType attackType;
+
+    public enum AttackType
+    {
+        Melee, Sniper
+    }
 
     [Header("Looting")]
-    public int lootMinItems;
-    public int lootMaxItems;
-
+    public List<Coins> coins;
     public List<Lootings> lootings;
     public List<GameObject> wreckage;
 
@@ -85,19 +100,4 @@ public class EnemySO : ScriptableObject
                 break;
         }
     }
-}
-
-public enum AttackType
-{
-    Melee, Sniper
-}
-
-public enum ShootingType
-{
-    Single, Split, AllAngle
-}
-
-public enum Difficulty
-{
-    Easy, Normal, Hard, Difficult, Extreme
 }

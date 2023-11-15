@@ -18,7 +18,6 @@ public class BossHealthBar : MonoBehaviour
         try
         {
             bossObject = GameObject.FindWithTag("Boss").GetComponent<BossBehavior>();
-            Debug.Log("Detectiong");
         }
         catch
         {

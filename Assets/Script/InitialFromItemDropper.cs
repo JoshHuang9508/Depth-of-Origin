@@ -13,13 +13,50 @@ public class InitialFromItemDropper : MonoBehaviour
     public GameObject backgroundLightObject;
     public Light2D spriteLight2D;
     public Light2D backgroundLight2D;
+    public Animator animator;
 
-    // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer.sprite = InventoryItem.Image;
-        spriteLight2D.lightCookieSprite = InventoryItem.Image;
+        if(InventoryItem is CoinSO)
+        {
+            if(((CoinSO)InventoryItem).runtimeAnimatorController != null)
+            {
+                animator.runtimeAnimatorController = ((CoinSO)InventoryItem).runtimeAnimatorController;
+            }
+            SetSpriteImage();
+            SetSpriteLight();
+        }
+        else if(InventoryItem is KeySO)
+        {
+            SetSpriteImage();
+            SetSpriteLight();
+            SetBackgroundLight();
+        }
+        else
+        {
+            SetSpriteImage();
+            SetSpriteLight();
+            SetBackgroundLight();
+        }
+    }
 
+    private void Update()
+    {
+        SetSpriteLight();
+    }
+
+    private void SetSpriteImage()
+    {
+        spriteRenderer.sprite = InventoryItem.Image;
+    }
+
+    private void SetSpriteLight()
+    {
+        spriteLight2D.lightCookieSprite = InventoryItem.Image;
+    }
+
+    private void SetBackgroundLight()
+    {
         switch (InventoryItem.Rarity)
         {
             case Rarity.Common:
@@ -43,11 +80,5 @@ public class InitialFromItemDropper : MonoBehaviour
         }
 
         backgroundLightObject.transform.position = spriteRenderer.bounds.center;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

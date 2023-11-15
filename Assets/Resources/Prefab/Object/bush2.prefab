@@ -136,8 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
-  lootMinCoins: 2
-  lootMaxCoins: 4
+  coins:
+  - coins: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+    amount: 3
   lootings: []
   wreckage: []
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}

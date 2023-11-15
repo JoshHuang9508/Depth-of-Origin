@@ -24,7 +24,7 @@ public class BossBehavior : MonoBehaviour, Damageable
     public Rigidbody2D currentRb;
     public Transform target;
     public Damageable damageableObject;
-    public Vector2 currentPos, characterPos, diraction;
+    public Vector2 currentPos, targetPos, diraction;
     int behaviorType = 1;
     public float currentHealth;
     public bool movementEnabler = true;
@@ -45,7 +45,7 @@ public class BossBehavior : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -62,7 +62,7 @@ public class BossBehavior : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -79,12 +79,15 @@ public class BossBehavior : MonoBehaviour, Damageable
                 //play dead animation
 
                 //drop items
-                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-                ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-                ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(enemy.lootings);
-                itemDropperController.DropCoins(enemy.lootMinItems, enemy.lootMaxItems);
-                itemDropperController.DropWrackages(enemy.wreckage);
+                ItemDropper ItemDropper = Instantiate(
+                    itemDropper,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity,
+                    GameObject.FindWithTag("Item").transform
+                    ).GetComponent<ItemDropper>();
+                ItemDropper.DropItems(enemy.lootings);
+                ItemDropper.DropCoins(enemy.coins);
+                ItemDropper.DropWrackages(enemy.wreckage);
 
                 Destroy(gameObject);
             }
@@ -100,7 +103,7 @@ public class BossBehavior : MonoBehaviour, Damageable
         damageableObject = target.GetComponentInParent<Damageable>();
 
         currentRb.bodyType = RigidbodyType2D.Static;
-        enemy.attackType = AttackType.Sniper;
+        enemy.attackType = EnemySO.AttackType.Sniper;
         currentHealth = enemy.health;
 
         StartCoroutine(delay(callback => {
@@ -112,16 +115,16 @@ public class BossBehavior : MonoBehaviour, Damageable
 
     private void Update()
     {
-        characterPos = target.transform.position;
+        targetPos = target.position;
         currentPos = transform.position;
-        diraction = (characterPos - currentPos).normalized;
+        diraction = (targetPos - currentPos).normalized;
 
         if(currentHealth <= enemy.health * 0.5)
         {
             behaviorType = 2;
             behaviorEnabler = true;
             enemy.attackSpeed = 1;
-            enemy.attackType = AttackType.Melee;
+            enemy.attackType = EnemySO.AttackType.Melee;
         }
 
         Moving();
@@ -142,27 +145,25 @@ public class BossBehavior : MonoBehaviour, Damageable
                 break;
             case 2:
                 currentRb.bodyType = RigidbodyType2D.Dynamic;
-                if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemy.attackField && movementEnabler && attackEnabler)
+                if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && Vector3.Distance(targetPos, currentPos) >= enemy.attackField && movementEnabler && attackEnabler)
                 {
-                    float movement_x = (this.transform.position.x - target.position.x <= 0) ? 1 : -1;
-                    float movement_y = (this.transform.position.y - target.position.y <= 0) ? 1 : -1;
-                    currentRb.velocity = new Vector3(movement_x * enemy.moveSpeed, movement_y * enemy.moveSpeed, 0.0f);
+                    currentRb.MovePosition(currentPos + diraction * enemy.moveSpeed * Time.deltaTime);
 
                     //play animation
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true);
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) > enemy.chaseField && movementEnabler && attackEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField && movementEnabler && attackEnabler)
                 {
-                    currentRb.velocity = new Vector2(0.0f, 0.0f);
+                    currentRb.velocity = Vector2.zero;
 
                     //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) < enemy.attackField && movementEnabler && attackEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) < enemy.attackField && movementEnabler && attackEnabler)
                 {
-                    currentRb.velocity = new Vector2(0.0f, 0.0f);
+                    currentRb.velocity = Vector2.zero;
                     Attacking();
 
                     //play animation
@@ -172,7 +173,7 @@ public class BossBehavior : MonoBehaviour, Damageable
                 break;
         }
 
-        spriteRenderer.flipX = (this.transform.position.x - target.position.x) > 0.2 ? true : false;
+        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2 ? true : false;
     }
 
     public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
@@ -184,7 +185,6 @@ public class BossBehavior : MonoBehaviour, Damageable
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
-
 
             //delay
             StartCoroutine(delay(enabler => {
@@ -203,7 +203,7 @@ public class BossBehavior : MonoBehaviour, Damageable
         {
             switch (enemy.attackType)
             {
-                case AttackType.Sniper:
+                case EnemySO.AttackType.Sniper:
                     float startAngle = Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg;
 
                     enemy.Attack_Ranged(startAngle, transform.position);
@@ -213,7 +213,7 @@ public class BossBehavior : MonoBehaviour, Damageable
                     }, enemy.attackSpeed));
                     break;
 
-                case AttackType.Melee:
+                case EnemySO.AttackType.Melee:
                     damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                     StartCoroutine(delay((enabler) => {
@@ -229,8 +229,8 @@ public class BossBehavior : MonoBehaviour, Damageable
     {
         StartCoroutine(delay((callback) =>
         {
-            shield.SetActive(behaviorType == 1 ? callback : false);
-            if (callback == true && behaviorType == 1) BuildColumns();
+            shield.SetActive(callback && behaviorType == 1);
+            if (callback && behaviorType == 1)  BuildColumns();
         }, 60));
 
         StartCoroutine(delay(callback => {
@@ -242,12 +242,13 @@ public class BossBehavior : MonoBehaviour, Damageable
     {
         for(int i = 0; i < 6; i++)
         {
-            GameObject columnSummoned = Instantiate(column, new Vector3(
+            BossColumnController columnSummoned = Instantiate(column, new Vector3(
                 positionList[i].x, positionList[i].y, 0),
                 Quaternion.identity,
-                GameObject.FindWithTag("Object").transform);
-            columnSummoned.GetComponent<BossColumnController>().shieldBreak += RemoveShield;
-            columnSummoned.GetComponent<BossColumnController>().Reset();
+                GameObject.FindWithTag("Object").transform
+                ).GetComponent<BossColumnController>();
+            columnSummoned.shieldBreak += RemoveShield;
+            columnSummoned.Reset();
         }
     }
 
