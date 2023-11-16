@@ -23,7 +23,6 @@ public class BossSummonerContorller : MonoBehaviour
         currentActionTimes = 0;
     }
 
-    float time = 0;
     private void Update()
     {
         if (currentActionTimes >= neededActionTimes)

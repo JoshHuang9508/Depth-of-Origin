@@ -315,9 +315,13 @@ MonoBehaviour:
   diraction: {x: 0, y: 0}
   currentHealth: 0
   movementEnabler: 1
-  damageEnabler: 1
+  movementDisableTimer: 0
   attackEnabler: 1
-  DodgeEnabler: 1
+  attackDisableTimer: 0
+  damageEnabler: 1
+  damageDisableTimer: 0
+  dodgeEnabler: 1
+  dodgeDisableTimer: 0
   behaviourEnabler: 1
 --- !u!1 &6542578947097696725
 GameObject:

@@ -11,7 +11,6 @@ public class SummonWeapon : MonoBehaviour
 
     bool isflip;
     float startAngle;
-    bool summonEnabler = true;
 
     Vector2 mousePos;
     Vector2 currentPos;
@@ -45,72 +44,63 @@ public class SummonWeapon : MonoBehaviour
     {
         UpdateCurrentWeapon();
 
-        if (summonEnabler && weapon != null)
+        if (weapon == null) return;
+
+        for (var i = this.transform.childCount - 1; i >= 0; i--)
         {
-            for (var i = this.transform.childCount - 1; i >= 0; i--)
-            {
-                Object.Destroy(this.transform.GetChild(i).gameObject);
-            }
+            Object.Destroy(this.transform.GetChild(i).gameObject);
+        }
 
-            summonEnabler = false;
+        switch (weapon.weaponType)
+        {
+            case WeaponSO.WeaponType.Melee:
+                //MeleeWeaponSO meleeWeaponSO = weapon as MeleeWeaponSO;
 
-            switch (weapon.weaponType)
-            {
-                case WeaponSO.WeaponType.Melee:
-                    //MeleeWeaponSO meleeWeaponSO = weapon as MeleeWeaponSO;
+                var meleeWeaponSummoned = Instantiate(
+                    weapon.weaponObject,
+                    transform.position, 
+                    Quaternion.identity, 
+                    this.transform);
 
-                    var meleeWeaponSummoned = Instantiate(
-                        weapon.weaponObject,
-                        transform.position, 
-                        Quaternion.identity, 
-                        this.transform);
+                meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().weapon = weapon;
+                meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().isflip = isflip;
 
-                    meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().weapon = weapon;
-                    meleeWeaponSummoned.GetComponent<WeaponMovementMelee>().isflip = isflip;
+                transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
+                break;
 
-                    transform.rotation = Quaternion.Euler(0, 0, startAngle - 90);
+            case WeaponSO.WeaponType.Ranged:
+                RangedWeaponSO rangedWeapon = weapon as RangedWeaponSO;
 
-                    StartCoroutine(Cooldown(weapon.attackCooldown));
-                    break;
+                switch (rangedWeapon.projectileType)
+                {
+                    case RangedWeaponSO.ProjectileType.Straight:
+                        var arrowSummoned = Instantiate(
+                            rangedWeapon.projectileObject,
+                            transform.position,
+                            Quaternion.Euler(0, 0, startAngle - 90),
+                            GameObject.FindWithTag("Item").transform);
 
-                case WeaponSO.WeaponType.Ranged:
-                    RangedWeaponSO rangedWeapon = weapon as RangedWeaponSO;
+                        arrowSummoned.AddComponent<ProjectileMovement_Player>();
+                        arrowSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
+                        arrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
+                        break;
 
-                    switch (rangedWeapon.projectileType)
-                    {
-                        case RangedWeaponSO.ProjectileType.Straight:
-                            var arrowSummoned = Instantiate(
+                    case RangedWeaponSO.ProjectileType.Split:
+                        for (int i = -60 + (120 / (rangedWeapon.splitAmount + 1)); i < 60; i += 120 / (rangedWeapon.splitAmount + 1))
+                        {
+                            var splitArrowSummoned = Instantiate(
                                 rangedWeapon.projectileObject,
                                 transform.position,
-                                Quaternion.Euler(0, 0, startAngle - 90),
+                                Quaternion.Euler(0, 0, startAngle + i - 90),
                                 GameObject.FindWithTag("Item").transform);
 
-                            arrowSummoned.AddComponent<ProjectileMovement_Player>();
-                            arrowSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
-                            arrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
-
-                            StartCoroutine(Cooldown(weapon.attackCooldown));
-                            break;
-
-                        case RangedWeaponSO.ProjectileType.Split:
-                            for (int i = -60; i <= 60; i += 30)
-                            {
-                                var splitArrowSummoned = Instantiate(
-                                    rangedWeapon.projectileObject,
-                                    transform.position,
-                                    Quaternion.Euler(0, 0, startAngle + i - 90),
-                                    GameObject.FindWithTag("Item").transform);
-
-                                splitArrowSummoned.AddComponent<ProjectileMovement_Player>();
-                                splitArrowSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
-                                splitArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
-                            }
-
-                            StartCoroutine(Cooldown(weapon.attackCooldown));
-                            break;
-                    }
-                    break;
-            }
+                            splitArrowSummoned.AddComponent<ProjectileMovement_Player>();
+                            splitArrowSummoned.GetComponent<WeaponMovementRanged>().rangedWeapon = rangedWeapon;
+                            splitArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
+                        }
+                        break;
+                }
+                break;
         }
     }
 
@@ -121,8 +111,10 @@ public class SummonWeapon : MonoBehaviour
             spriteRenderer.sprite = null;
             weapon = null;
         }
-        else if (player.currentWeapon is WeaponSO && (summonEnabler ? weapon = player.currentWeapon : true))
+        else if (player.currentWeapon is WeaponSO)
         {
+            weapon = player.currentWeapon;
+
             switch (weapon.weaponType)
             {
                 case WeaponSO.WeaponType.Melee:
@@ -134,11 +126,5 @@ public class SummonWeapon : MonoBehaviour
                     break;
             }
         }
-    }
-
-    private IEnumerator Cooldown(float cooldownTime)
-    {
-        yield return new WaitForSeconds(cooldownTime);
-        summonEnabler = true;
     }
 }

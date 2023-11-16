@@ -32,8 +32,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [Header("Current Data")]
     public float currentHealth;
     public int currentCoinAmount = 0;
-    public WeaponSO currentWeapon;
     public int weaponControl = 0;
+    public WeaponSO currentWeapon;
     public WeaponSO meleeWeapon;
     public WeaponSO rangedWeapon;
     public EdibleItemSO potions;
@@ -41,21 +41,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
-    public int onHitCounter = 0;
-    public List<EffectionList> effectionList = new List<EffectionList>();
-    public List<KeyList> keyList = new List<KeyList>();
+    public List<EffectionList> effectionList = new();
+    public List<KeyList> keyList = new();
 
     [Serializable]
     public class EffectionList
     {
         public EdibleItemSO effectingItem;
         public float effectingTime;
-
-        public EffectionList(EdibleItemSO item, float time)
-        {
-            this.effectingItem = item;
-            this.effectingTime = time;
-        }
     }
 
     [Serializable]
@@ -63,12 +56,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         public KeySO key;
         public int quantity;
-
-        public KeyList(KeySO item, int amount)
-        {
-            this.key = item;
-            this.quantity = amount;
-        }
     }
 
     [Header("Key Settings")]
@@ -149,11 +136,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             if (currentHealth <= 0)
             {
                 Debug.Log("Player Dead");
-                currentHealth = 0;
                 currentCoinAmount = 0;
                 currentRb.bodyType = RigidbodyType2D.Static;
+                damageDisableTimer += 1000000;
                 behaviourEnabler = false;
-                damageEnabler = false;
 
                 //drop item
                 List<Lootings> lootings = new();
@@ -200,13 +186,20 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     [Header("Status")]
     public bool behaviourEnabler = true;
-    public bool damageEnabler = true;
     public bool movementEnabler = true;
+    public float movementDisableTimer = 0;
+    public bool attackEnabler = true;
+    public float attackDisableTimer = 0;
+    public bool damageEnabler = true;
+    public float damageDisableTimer = 0;
     public bool sprintEnabler = true;
+    public float sprintDisableTimer = 0;
     public bool walkSpeedMutiplyerEnabler = false;
+    public float walkSpeedMutiplyerDisableTimer = 0;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
+    Collider2D currentCollider;
     Rigidbody2D currentRb;
 
 
@@ -216,6 +209,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         currentHealth = maxHealth;
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        currentCollider = GetComponent<Collider2D>();
         currentRb = GetComponent<Rigidbody2D>();
 
         //initial items
@@ -258,7 +252,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
 
         //use weapon
-        if (Input.GetKey(useWeaponKey)) summonWeapon.Summon();
+        if (Input.GetKey(useWeaponKey) && attackEnabler)
+        {
+            currentWeapon = GetCurrentWeapon();
+            if(currentWeapon != null)
+            {
+                attackDisableTimer += currentWeapon.attackCooldown;
+                summonWeapon.Summon();
+            }
+        }
     }
 
 
@@ -267,6 +269,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void Moving()
     {
+        animator.SetBool("isHit", !movementEnabler);
         animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
         animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
         spriteRenderer.flipX = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 ? Input.GetAxis("Horizontal") < 0 : spriteRenderer.flipX;
@@ -288,18 +291,18 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         if (sprintEnabler && movementEnabler)
         {
-            StartCoroutine(delay(enabler => {
-                sprintEnabler = enabler;
-            }, 2f));
-            StartCoroutine(delay(enabler => {
-                walkSpeedMutiplyerEnabler = !enabler;
-                damageEnabler = enabler;
-            }, 0.2f));
+            sprintDisableTimer += 2f;
+            walkSpeedMutiplyerDisableTimer += 0.2f;
+            damageDisableTimer += 0.2f;
         }
     }
 
     private void UpdatePlayerStates()
     {
+        //update current weapon
+        GetCurrentWeapon();
+
+
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
         List<object> items = new List<object>{ armor, jewelry, book, currentWeapon };
@@ -330,10 +333,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_critDamage = results[5];
 
 
-        //update player health (in order not to overhealing)
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
-
-
         //update effection list
         int indexOfEffectionList = -1;
         foreach (EffectionList effectingItem in effectionList)
@@ -347,7 +346,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
 
 
-        //update effection list
+        //update key list
         int indexOfKeyList = -1;
         foreach (KeyList key in keyList)
         {
@@ -359,19 +358,35 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         keyList.Remove(indexOfKeyList != -1 ? keyList[indexOfKeyList] : null);
 
 
-        //update on used weapon
+        //update timer
+        movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
+        attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
+        damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
+        sprintDisableTimer = Mathf.Max(0, sprintDisableTimer - Time.deltaTime);
+        walkSpeedMutiplyerDisableTimer = Mathf.Max(0, walkSpeedMutiplyerDisableTimer - Time.deltaTime);
+
+        movementEnabler = movementDisableTimer <= 0;
+        attackEnabler = attackDisableTimer <= 0;
+        damageEnabler = damageDisableTimer <= 0;
+        sprintEnabler = sprintDisableTimer <= 0;
+        walkSpeedMutiplyerEnabler = !(walkSpeedMutiplyerDisableTimer <= 0);
+    }
+
+    public WeaponSO GetCurrentWeapon()
+    {
         switch (weaponControl)
         {
             case 0:
-                currentWeapon = null;
+                currentWeapon = attackEnabler ? null : currentWeapon;
                 break;
             case 1:
-                currentWeapon = meleeWeapon;
+                currentWeapon = attackEnabler ? meleeWeapon : currentWeapon;
                 break;
             case 2:
-                currentWeapon = rangedWeapon;
+                currentWeapon = attackEnabler ? rangedWeapon : currentWeapon;
                 break;
         }
+        return currentWeapon;
     }
 
 
@@ -383,18 +398,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         if (damageEnabler)
         {
             isCrit = _isCrit;
-            Health -= damage / (1 +(0.001f * defence));
+            Health = Mathf.Max(0, Health - damage / (1 +(0.001f * defence)));
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
 
             //delay
-            StartCoroutine(delay(callback => {
-                onHitCounter += callback ? -1 : 1;
-                if (onHitCounter > 0 && callback) return;
-                behaviourEnabler = callback;
-                animator.SetBool("isHit", !callback);
-            }, knockbackTime / (1f + (0.001f * defence))));
+            movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
         }
     }
 
@@ -438,7 +448,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
-        //Debug.Log(potions != null);
         if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
         potions = edibleItem;
         currentPotionAmont = amount;
@@ -464,23 +473,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
         else
         {
-            effectionList.Add(new EffectionList(edibleItem, effectTime));
+            effectionList.Add(new EffectionList {effectingItem = edibleItem , effectingTime = effectTime});
         }
 
-        StartCoroutine(delay(callback =>
-        {
-            if (callback && edibleItem.E_heal != 0) Health += (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal;
-        }, 0.001f));
-    }
-
-
-
-
-
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
-    {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
+        if (edibleItem.E_heal != 0) Health = Mathf.Max(Health + (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal, maxHealth);
     }
 }

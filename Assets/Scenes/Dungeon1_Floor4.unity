@@ -39297,11 +39297,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Basic_walkSpeed: 6
-  Basic_maxHealth: 20000
-  Basic_strength: 10000
-  Basic_defence: 10000
-  Basic_critRate: 5
-  Basic_critDamage: 50
+  Basic_maxHealth: 2000
+  Basic_strength: 500
+  Basic_defence: 600
+  Basic_critRate: 20
+  Basic_critDamage: 80
   initialItems:
   - quantity: 1
     item: {fileID: 11400000, guid: b7568d11ef00aad41b8201831c65a4a5, type: 2}
@@ -39368,10 +39368,16 @@ MonoBehaviour:
   summonWeapon: {fileID: 1805669547}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
   behaviourEnabler: 1
-  damageEnabler: 1
   movementEnabler: 1
+  movementDisableTimer: 0
+  attackEnabler: 1
+  attackDisableTimer: 0
+  damageEnabler: 1
+  damageDisableTimer: 0
   sprintEnabler: 1
+  sprintDisableTimer: 0
   walkSpeedMutiplyerEnabler: 0
+  walkSpeedMutiplyerDisableTimer: 0
 --- !u!50 &1394907552
 Rigidbody2D:
   serializedVersion: 4
@@ -39384,7 +39390,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0

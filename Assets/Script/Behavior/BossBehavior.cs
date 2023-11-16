@@ -27,8 +27,6 @@ public class BossBehavior : MonoBehaviour
 
         column.GetComponent<BossColumnController>().shieldBreak += RemoveShield;
 
-        enemyBehavior.movementEnabler = false;
-
         StartCoroutine(delay(callback => {
             enemyBehavior.behaviourEnabler = callback;
         }, 5f));
@@ -36,18 +34,18 @@ public class BossBehavior : MonoBehaviour
         BuildColumns();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
-            behaviorType = 2;
             StartCoroutine(delay(callback =>
             {
                 shield.SetActive(!callback);
                 if (callback)
                 {
-                    enemyBehavior.movementEnabler = true;
-                    enemyBehavior.attackEnabler = true;
+                    enemyBehavior.movementDisableTimer = 0;
+                    enemyBehavior.behaviourEnabler = true;
+                    behaviorType = 2;
                 }
             }, 3f));
         }
@@ -55,6 +53,7 @@ public class BossBehavior : MonoBehaviour
         switch (behaviorType)
         {
             case 1:
+                enemyBehavior.movementDisableTimer += enemyBehavior.movementDisableTimer < 5 ? 1000 : 0;
                 currentRb.bodyType = RigidbodyType2D.Static;
                 enemy.attackType = EnemySO.AttackType.Sniper;
                 enemy.attackField = 100;
@@ -71,7 +70,6 @@ public class BossBehavior : MonoBehaviour
                 enemy.attackSpeed = 1;
                 enemy.attackDamage = 2000;
                 break;
-
         }
     }
 
@@ -84,8 +82,7 @@ public class BossBehavior : MonoBehaviour
         }, 60));
 
         StartCoroutine(delay(callback => {
-            enemyBehavior.movementEnabler = callback;
-            enemyBehavior.attackEnabler = callback;
+            enemyBehavior.behaviourEnabler = callback;
         }, 65f));
     }
 

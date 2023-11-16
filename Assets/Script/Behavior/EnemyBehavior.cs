@@ -19,9 +19,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
     [Header("Status")]
     public bool movementEnabler = true;
-    public bool damageEnabler = true;
+    public float movementDisableTimer = 0;
     public bool attackEnabler = true;
-    public bool DodgeEnabler = true;
+    public float attackDisableTimer = 0;
+    public bool damageEnabler = true;
+    public float damageDisableTimer = 0;
+    public bool dodgeEnabler = true;
+    public float dodgeDisableTimer = 0;
     public bool behaviourEnabler = true;
 
     bool isCrit;
@@ -105,10 +109,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         damageableObject = target.GetComponentInParent<Damageable>();
 
-        if (enemy.isBoss)
-        {
-            gameObject.tag = "Boss";
-        }
+        if (enemy.isBoss) gameObject.tag = "Boss";
     }
 
     void Update()
@@ -121,17 +122,16 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
         Moving();
         Attacking();
+        UpdateTimer();
     }
 
-    void Moving()
+    private void Moving()
     {
         switch (enemy.attackType)
         {
             case EnemySO.AttackType.Melee:
 
                 if (!movementEnabler) return;
-
-                attackEnabler = Vector3.Distance(targetPos, currentPos) < enemy.attackField;
 
                 if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && Vector3.Distance(targetPos, currentPos) >= enemy.attackField)
                 {
@@ -162,8 +162,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
             case EnemySO.AttackType.Sniper:
 
                 if (!movementEnabler) return;
-
-                attackEnabler = !(Vector3.Distance(targetPos, currentPos) > enemy.attackField);
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -196,30 +194,32 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
     }
 
-    void Attacking()
+    private void Attacking()
     {
-        if (attackEnabler)
+        if (!attackEnabler) return;
+
+        switch (enemy.attackType)
         {
-            switch (enemy.attackType)
-            {
-                case EnemySO.AttackType.Sniper:
-                    float startAngle = Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg;
+            case EnemySO.AttackType.Melee:
 
-                    enemy.Attack_Ranged(startAngle, transform.position + new Vector3(0,0.5f,0));
-
-                    StartCoroutine(delay((enabler) => {
-                        behaviourEnabler = enabler;
-                    }, enemy.attackSpeed));
-                    break;
-
-                case EnemySO.AttackType.Melee:
+                if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
+                {
                     damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
-                    StartCoroutine(delay((enabler) => {
-                        behaviourEnabler = enabler;
-                    }, enemy.attackSpeed));
-                    break;
-            }
+                    attackDisableTimer += enemy.attackSpeed;
+                    movementDisableTimer += enemy.attackSpeed;
+                }
+                break;
+
+            case EnemySO.AttackType.Sniper:
+
+                if (!(Vector3.Distance(targetPos, currentPos) > enemy.attackField))
+                {
+                    enemy.Attack_Ranged(Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg, transform.position + new Vector3(0, 0.5f, 0));
+
+                    attackDisableTimer += enemy.attackSpeed;
+                }
+                break;
         }
     }
 
@@ -235,19 +235,22 @@ public class EnemyBehavior : MonoBehaviour, Damageable
             currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
 
             //delay
-            StartCoroutine(delay(enabler => {
-                damageEnabler = enabler;
-            }, 0.2f)) ;
-            StartCoroutine(delay(enabler => {
-                behaviourEnabler = enabler;
-            }, knockbackTime / (1 + (0.001f * enemy.defence))));
+            damageDisableTimer += 0.2f;
+            movementDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
+            attackDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
         }
     }
 
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
+    private void UpdateTimer()
     {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
+        movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
+        attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
+        damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
+        dodgeDisableTimer = Mathf.Max(0, dodgeDisableTimer - Time.deltaTime);
+
+        movementEnabler = movementDisableTimer <= 0;
+        attackEnabler = attackDisableTimer <= 0;
+        damageEnabler = damageDisableTimer <= 0;
+        dodgeEnabler = dodgeDisableTimer <= 0;
     }
 }

@@ -47,7 +47,7 @@ public class Pickable : MonoBehaviour
                 }
                 else if(inventoryItem is KeySO)
                 {
-                    target.keyList.Add(new PlayerBehaviour.KeyList((KeySO)inventoryItem, 1));
+                    target.keyList.Add(new PlayerBehaviour.KeyList {key = (KeySO)inventoryItem, quantity = 1});
                 }
                 else
                 {
