@@ -6,7 +6,7 @@ using TMPro;
 
 public class BossHealthBar : MonoBehaviour
 {
-    public BossBehavior bossObject;
+    public EnemyBehavior boss;
     public Slider slider;
     public TMP_Text healthText, bossName;
     public Gradient gradient;
@@ -17,21 +17,21 @@ public class BossHealthBar : MonoBehaviour
     {
         try
         {
-            bossObject = GameObject.FindWithTag("Boss").GetComponent<BossBehavior>();
+            boss = GameObject.FindWithTag("Boss").GetComponent<EnemyBehavior>();
         }
         catch
         {
 
         }
 
-        if(bossObject != null)
+        if(boss != null)
         {
             setVisiable(true);
 
-            bossName.text = bossObject.enemy.Name;
-            slider.value = bossObject.currentHealth / bossObject.enemy.health;
-            healthText.text = $"{Mathf.RoundToInt(bossObject.currentHealth)} / {bossObject.enemy.health}";
-            fill.color = gradient.Evaluate(bossObject.currentHealth / bossObject.enemy.health);
+            bossName.text = boss.enemy.Name;
+            slider.value = boss.currentHealth / boss.enemy.health;
+            healthText.text = $"{Mathf.RoundToInt(boss.currentHealth)} / {boss.enemy.health}";
+            fill.color = gradient.Evaluate(boss.currentHealth / boss.enemy.health);
         }
         else
         {

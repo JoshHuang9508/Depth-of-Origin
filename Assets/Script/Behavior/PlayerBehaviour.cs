@@ -153,6 +153,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 currentCoinAmount = 0;
                 currentRb.bodyType = RigidbodyType2D.Static;
                 behaviourEnabler = false;
+                damageEnabler = false;
 
                 //drop item
                 List<Lootings> lootings = new();
@@ -228,7 +229,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     
     void Update()
     {
-        if(behaviourEnabler == false) return;
+        if(!behaviourEnabler) return;
 
         Moving();
         UpdatePlayerStates();
@@ -379,7 +380,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (damageEnabler && behaviourEnabler)
+        if (damageEnabler)
         {
             isCrit = _isCrit;
             Health -= damage / (1 +(0.001f * defence));
@@ -391,7 +392,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             StartCoroutine(delay(callback => {
                 onHitCounter += callback ? -1 : 1;
                 if (onHitCounter > 0 && callback) return;
-                movementEnabler = callback;
+                behaviourEnabler = callback;
                 animator.SetBool("isHit", !callback);
             }, knockbackTime / (1f + (0.001f * defence))));
         }

@@ -28,11 +28,7 @@ public class BossSummonerContorller : MonoBehaviour
     {
         if (currentActionTimes >= neededActionTimes)
         {
-            time += Time.deltaTime;
-            if(time >= 0.5f)
-            {
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
     }
 

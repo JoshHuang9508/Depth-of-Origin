@@ -13,6 +13,7 @@ public class EnemySO : ScriptableObject
     public float health;
     public float moveSpeed;
     public float defence;
+    public bool isBoss;
     public Difficulty difficulty = Difficulty.Easy;
 
     public enum Difficulty
