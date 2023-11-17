@@ -132,9 +132,9 @@ GameObject:
   - component: {fileID: 30614549}
   - component: {fileID: 30614548}
   - component: {fileID: 30614547}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Water
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 59868054}
   - component: {fileID: 59868053}
   - component: {fileID: 59868052}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Walls
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -16564,9 +16564,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1019271321}
   - component: {fileID: 1019271322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Object_Grid
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16609,9 +16609,9 @@ GameObject:
   - component: {fileID: 1024559025}
   - component: {fileID: 1024559027}
   - component: {fileID: 1024559026}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

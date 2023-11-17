@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Inventory.Model;
 
-public class ChestController : MonoBehaviour, KeyRequired
+public class ChestController : MonoBehaviour
 {
     [Header("Setting")]
     public bool requiredKeys;
@@ -13,8 +13,7 @@ public class ChestController : MonoBehaviour, KeyRequired
     public bool isOpen;
 
     [Header("Looting")]
-    public int lootMinCoins;
-    public int lootMaxCoins;
+    public List<Coins> coins;
     public List<Lootings> lootings;
 
     [Header("Connect Object")]
@@ -42,7 +41,7 @@ public class ChestController : MonoBehaviour, KeyRequired
             var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
             ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
             ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropCoins(lootMinCoins, lootMaxCoins);
+            itemDropperController.DropCoins(coins);
             itemDropperController.DropItems(lootings);
         }
     }

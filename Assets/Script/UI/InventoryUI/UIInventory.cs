@@ -138,15 +138,13 @@ namespace Inventory.UI
                                 break;
                             case "Drop":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
-
-                                for(int i = 0; i < amountToUse; i++)
-                                {
-                                    var ItemDropper = Instantiate(itemDropper, new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-                                    ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-                                    ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                                    itemDropperController.DropItems(null, inventoryItem.item);
-                                }
-
+                                ItemDropper ItemDropper = Instantiate(
+                                    itemDropper,
+                                    new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z),
+                                    new Quaternion(0.0f, 0.0f, 0.0f, 0.0f),
+                                    GameObject.FindWithTag("Item").transform
+                                    ).GetComponent<ItemDropper>();
+                                ItemDropper.DropItems(inventoryItem.item, amountToUse);
                                 inventoryData.RemoveItem(itemIndex, amountToUse);
                                 ClearDescription(inventoryType);
                                 break;
@@ -157,7 +155,6 @@ namespace Inventory.UI
                                 break;
                             case "Buy":
                                 amountToUse = 1;
-                                if (GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().currentCoinAmount < inventoryItem.item.buyPrice) return;
                                 itemAction.SelectAction("Buy", amountToUse, player, inventoryItem.itemState);
                                 if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
                                 break;

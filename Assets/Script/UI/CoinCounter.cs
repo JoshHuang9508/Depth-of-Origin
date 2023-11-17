@@ -5,17 +5,16 @@ using TMPro;
 
 public class CoinCounter : MonoBehaviour
 {
-    PlayerBehaviour player;
+    [Header("Connect Object")]
     public TMP_Text coinCounterText;
 
-
-    // Start is called before the first frame update
+    PlayerBehaviour player;
+    
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         coinCounterText.text = $"x{player.currentCoinAmount}";

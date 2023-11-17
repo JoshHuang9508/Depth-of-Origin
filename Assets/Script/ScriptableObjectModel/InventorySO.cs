@@ -154,7 +154,7 @@ namespace Inventory.Model
             {
                 if (inventoryItems[itemIndex].IsEmpty) return;
 
-                int temp = inventoryItems[itemIndex].quantity - amount;
+                int temp = (amount == -1 ) ? 0 : inventoryItems[itemIndex].quantity - amount;
 
                 inventoryItems[itemIndex] = temp <= 0 ? InventoryItem.GetEmptyItem() : inventoryItems[itemIndex].ChangeQuantity(temp);
 

@@ -37,7 +37,7 @@ public class NPCBehaviour : MonoBehaviour
 
     private void Stop()
     {
-        moveVec = new Vector3(0, 0, 0);
+        moveVec = Vector3.zero;
     }
 
     private IEnumerator MoveRoutine()

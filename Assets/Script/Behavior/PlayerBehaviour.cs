@@ -32,8 +32,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [Header("Current Data")]
     public float currentHealth;
     public int currentCoinAmount = 0;
-    public WeaponSO currentWeapon;
     public int weaponControl = 0;
+    public WeaponSO currentWeapon;
     public WeaponSO meleeWeapon;
     public WeaponSO rangedWeapon;
     public EdibleItemSO potions;
@@ -41,21 +41,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
-    public int onHitCounter = 0;
-    public List<EffectionList> effectionList = new List<EffectionList>();
-    public List<KeyList> keyList = new List<KeyList>();
+    public List<EffectionList> effectionList = new();
+    public List<KeyList> keyList = new();
 
     [Serializable]
     public class EffectionList
     {
         public EdibleItemSO effectingItem;
         public float effectingTime;
-
-        public EffectionList(EdibleItemSO item, float time)
-        {
-            this.effectingItem = item;
-            this.effectingTime = time;
-        }
     }
 
     [Serializable]
@@ -63,16 +56,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         public KeySO key;
         public int quantity;
-
-        public KeyList(KeySO item, int amont)
-        {
-            this.key = item;
-            this.quantity = amont;
-        }
     }
 
     [Header("Key Settings")]
     public KeyCode sprintKey;
+    public KeyCode backpackKey;
+    public KeyCode usePotionKey;
+    public KeyCode useWeaponKey;
+    public KeyCode meleeWeaponKey;
+    public KeyCode rangedWeaponKey;
 
     [Header("Connect Object")]
     public GameObject damageText, pauseMenu;
@@ -80,6 +72,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public InventorySO inventoryData, shopData;
     public UIInventory inventoryUI, shopUI;
     public SummonWeapon summonWeapon;
+    public GameObject itemDropper;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
     public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
@@ -95,12 +88,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         {
             if (value < currentHealth)
             {
-                //play hit animation
-
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -126,7 +117,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -145,9 +136,46 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             if (currentHealth <= 0)
             {
                 Debug.Log("Player Dead");
-                currentHealth = 0;
+                currentCoinAmount = 0;
+                currentRb.bodyType = RigidbodyType2D.Static;
+                damageDisableTimer += 1000000;
+                behaviourEnabler = false;
 
-                //play dead animation
+                //drop item
+                List<Lootings> lootings = new();
+                List<int> indexOfInvetoryItem = new();
+
+                foreach (InventoryItem inventoryItem in inventoryData.inventoryItems)
+                {
+                    if(UnityEngine.Random.Range(0, 100) >= 50)
+                    {
+                        lootings.Add(new Lootings(inventoryItem.item, 100, inventoryItem.quantity));
+                        indexOfInvetoryItem.Add(inventoryData.inventoryItems.IndexOf(inventoryItem));
+                    }
+                }
+                foreach(int indexNum in indexOfInvetoryItem)
+                {
+                    Debug.Log(indexNum);
+                    if (indexNum <= inventoryData.inventoryItems.Count)
+                    {
+                        inventoryData.RemoveItem(indexNum, -1);
+                    }
+                }
+                ItemDropper ItemDropper = Instantiate(
+                    itemDropper,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity,
+                    GameObject.FindWithTag("Item").transform
+                    ).GetComponent<ItemDropper>();
+                ItemDropper.DropItems(lootings);
+
+
+                //disable player object
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform child = transform.GetChild(i);
+                    child.gameObject.SetActive(false);
+                }
             }
         }
         get
@@ -156,14 +184,22 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
-
-    bool damageEnabler = true;
-    bool movementEnabler = true;
-    bool sprintEnabler = false;
-    bool walkSpeedMutiplyerEnabler = false;
+    [Header("Status")]
+    public bool behaviourEnabler = true;
+    public bool movementEnabler = true;
+    public float movementDisableTimer = 0;
+    public bool attackEnabler = true;
+    public float attackDisableTimer = 0;
+    public bool damageEnabler = true;
+    public float damageDisableTimer = 0;
+    public bool sprintEnabler = true;
+    public float sprintDisableTimer = 0;
+    public bool walkSpeedMutiplyerEnabler = false;
+    public float walkSpeedMutiplyerDisableTimer = 0;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
+    Collider2D currentCollider;
     Rigidbody2D currentRb;
 
 
@@ -173,20 +209,22 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         currentHealth = maxHealth;
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        currentCollider = GetComponent<Collider2D>();
         currentRb = GetComponent<Rigidbody2D>();
 
         //initial items
         inventoryData.initialize();
         foreach (InventoryItem item in initialItems)
         {
-            if (item.IsEmpty)
-                continue;
+            if (item.IsEmpty) continue;
             inventoryData.AddItem(item);
         }
     }
     
     void Update()
     {
+        if(!behaviourEnabler) return;
+
         Moving();
         UpdatePlayerStates();
 
@@ -194,11 +232,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         if (Input.GetKeyDown(sprintKey)) Sprint();
 
         //set current weapon
-        if (Input.GetKeyDown(KeyCode.Alpha1)) weaponControl = weaponControl != 1 ? 1 : 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) weaponControl = weaponControl != 2 ? 2 : 0;
+        if (Input.GetKeyDown(meleeWeaponKey)) weaponControl = weaponControl != 1 ? 1 : 0;
+        if (Input.GetKeyDown(rangedWeaponKey)) weaponControl = weaponControl != 2 ? 2 : 0;
 
         //use potion
-        if (Input.GetKeyDown(KeyCode.Alpha3) && potions != null)
+        if (Input.GetKeyDown(usePotionKey) && potions != null)
         {
             potions.ConsumeObject(1, gameObject);
             currentPotionAmont -= 1;
@@ -206,25 +244,22 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             if (currentPotionAmont <= 0) potions = null;
         } 
 
-        //test addItem func
-        if (Input.GetKeyDown(KeyCode.Alpha4) && potions != null) inventoryData.AddItem(potions, 10);
-
         //UI
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(backpackKey))
         {
             inventoryUI.SetInventoryContent(inventoryData, InventoryType.BackpackInventory);
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
         }
 
         //use weapon
-        if (Input.GetKey(KeyCode.Mouse0)) summonWeapon.Summon();
-
-        //test inventoryData.isInventoryFull()
-
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (Input.GetKey(useWeaponKey) && attackEnabler)
         {
-            Debug.Log($"Is Inventory Full? {inventoryData.IsInventoryFull()}");
-            Debug.Log($"Is Inventory Items[0]Full? {inventoryData.inventoryItems[0].IsEmpty}");
+            currentWeapon = GetCurrentWeapon();
+            if(currentWeapon != null)
+            {
+                attackDisableTimer += currentWeapon.attackCooldown;
+                summonWeapon.Summon();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) pauseMenu.SetActive(!pauseMenu.gameObject.activeInHierarchy);
@@ -236,18 +271,18 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void Moving()
     {
+        animator.SetBool("isHit", !movementEnabler);
         animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
         animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
-        spriteRenderer.flipX = Input.GetAxis("Horizontal") < 0;
+        spriteRenderer.flipX = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 ? Input.GetAxis("Horizontal") < 0 : spriteRenderer.flipX;
 
         if (movementEnabler && Input.anyKey)
         {
             int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
 
-            Vector3 movement = new Vector3(
+            Vector2 movement = new Vector3(
                 Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer,
-                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer,
-                0.0f
+                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer
             );
 
             currentRb.velocity = new Vector2(movement.x, movement.y);
@@ -256,20 +291,20 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void Sprint()
     {
-        if (!sprintEnabler && movementEnabler)
+        if (sprintEnabler && movementEnabler)
         {
-            StartCoroutine(delay(enabler => {
-                sprintEnabler = !enabler;
-            }, 2f));
-            StartCoroutine(delay(enabler => {
-                walkSpeedMutiplyerEnabler = !enabler;
-                damageEnabler = enabler;
-            }, 0.2f));
+            sprintDisableTimer += 2f;
+            walkSpeedMutiplyerDisableTimer += 0.2f;
+            damageDisableTimer += 0.2f;
         }
     }
 
     private void UpdatePlayerStates()
     {
+        //update current weapon
+        GetCurrentWeapon();
+
+
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
         List<object> items = new List<object>{ armor, jewelry, book, currentWeapon };
@@ -300,10 +335,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_critDamage = results[5];
 
 
-        //update player health (in order not to overhealing)
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
-
-
         //update effection list
         int indexOfEffectionList = -1;
         foreach (EffectionList effectingItem in effectionList)
@@ -317,7 +348,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
 
 
-        //update effection list
+        //update key list
         int indexOfKeyList = -1;
         foreach (KeyList key in keyList)
         {
@@ -329,19 +360,35 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         keyList.Remove(indexOfKeyList != -1 ? keyList[indexOfKeyList] : null);
 
 
-        //update on used weapon
+        //update timer
+        movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
+        attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
+        damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
+        sprintDisableTimer = Mathf.Max(0, sprintDisableTimer - Time.deltaTime);
+        walkSpeedMutiplyerDisableTimer = Mathf.Max(0, walkSpeedMutiplyerDisableTimer - Time.deltaTime);
+
+        movementEnabler = movementDisableTimer <= 0;
+        attackEnabler = attackDisableTimer <= 0;
+        damageEnabler = damageDisableTimer <= 0;
+        sprintEnabler = sprintDisableTimer <= 0;
+        walkSpeedMutiplyerEnabler = !(walkSpeedMutiplyerDisableTimer <= 0);
+    }
+
+    public WeaponSO GetCurrentWeapon()
+    {
         switch (weaponControl)
         {
             case 0:
-                currentWeapon = null;
+                currentWeapon = attackEnabler ? null : currentWeapon;
                 break;
             case 1:
-                currentWeapon = meleeWeapon;
+                currentWeapon = attackEnabler ? meleeWeapon : currentWeapon;
                 break;
             case 2:
-                currentWeapon = rangedWeapon;
+                currentWeapon = attackEnabler ? rangedWeapon : currentWeapon;
                 break;
         }
+        return currentWeapon;
     }
 
 
@@ -353,18 +400,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         if (damageEnabler)
         {
             isCrit = _isCrit;
-            Health -= damage / (1 +(0.001f * defence));
+            Health = Mathf.Max(0, Health - damage / (1 +(0.001f * defence)));
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
 
             //delay
-            StartCoroutine(delay(callback => {
-                onHitCounter += !callback ? 1 : -1;
-                if (onHitCounter > 0 && callback) return;
-                movementEnabler = callback;
-                animator.SetBool("isHit", !callback);
-            }, knockbackTime / (1f + (0.001f * defence))));
+            movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
         }
     }
 
@@ -408,13 +450,12 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
-        //Debug.Log(potions != null);
         if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
         potions = edibleItem;
         currentPotionAmont = amount;
     }
 
-    public void SetEffection(EdibleItemSO edibleItem, int amount, float effectTime)
+    public void SetEffection(EdibleItemSO edibleItem, float effectTime)
     {
         int indexOfEffectionList = 0;
         bool isEffectionExist = false;
@@ -434,23 +475,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
         else
         {
-            effectionList.Add(new EffectionList(edibleItem, effectTime));
+            effectionList.Add(new EffectionList {effectingItem = edibleItem , effectingTime = effectTime});
         }
 
-        StartCoroutine(delay(callback =>
-        {
-            if (callback && edibleItem.E_heal != 0) Health += (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal;
-        }, 0.001f));
-    }
-
-
-
-
-
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
-    {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
+        if (edibleItem.E_heal != 0) Health = Mathf.Max(Health + (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal, maxHealth);
     }
 }

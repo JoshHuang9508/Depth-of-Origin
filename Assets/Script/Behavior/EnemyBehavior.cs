@@ -12,19 +12,21 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public GameObject damageText;
     public GameObject itemDropper;
 
-    [Header("Read Only Value")]
-    public SpriteRenderer spriteRenderer;
-    public Animator animator;
-    public Rigidbody2D currentRb;
+    [Header("Current Data")]
     public Transform target;
-    public Damageable damageableObject;
-    public Vector2 currentPos, characterPos, diraction;
+    public Vector2 currentPos, targetPos, diraction;
     public float currentHealth;
-    public bool movementEnabler = true;
-    public bool damageEnabler = true;
-    public bool attackEnabler = true;
-    public bool DodgeEnabler = true;
 
+    [Header("Status")]
+    public bool movementEnabler = true;
+    public float movementDisableTimer = 0;
+    public bool attackEnabler = true;
+    public float attackDisableTimer = 0;
+    public bool damageEnabler = true;
+    public float damageDisableTimer = 0;
+    public bool dodgeEnabler = true;
+    public float dodgeDisableTimer = 0;
+    public bool behaviourEnabler = true;
 
     bool isCrit;
     public float Health
@@ -38,7 +40,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -55,7 +57,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 //damage text
                 RectTransform text_Transform = Instantiate(
                     damageText,
-                    transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position),
+                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
                     Quaternion.identity,
                     GameObject.Find("ScreenUI").transform
                     ).GetComponent<RectTransform>();
@@ -72,12 +74,15 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 //play dead animation
 
                 //drop items
-                var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-                ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-                ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-                itemDropperController.DropItems(enemy.lootings);
-                itemDropperController.DropCoins(enemy.lootMinItems, enemy.lootMaxItems);
-                itemDropperController.DropWrackages(enemy.wreckage);
+                ItemDropper ItemDropper = Instantiate(
+                    itemDropper,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity,
+                    GameObject.FindWithTag("Item").transform
+                    ).GetComponent<ItemDropper>();
+                ItemDropper.DropItems(enemy.lootings);
+                ItemDropper.DropCoins(enemy.coins);
+                ItemDropper.DropWrackages(enemy.wreckage);
 
                 Destroy(gameObject);
             }
@@ -87,8 +92,14 @@ public class EnemyBehavior : MonoBehaviour, Damageable
             return currentHealth;
         }
     }
-    
-    // Start is called before the first frame update
+
+    SpriteRenderer spriteRenderer;
+    Animator animator;
+    Rigidbody2D currentRb;
+    Damageable damageableObject;
+
+
+
     void Start()
     {
         currentHealth = enemy.health;
@@ -97,59 +108,48 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         currentRb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         damageableObject = target.GetComponentInParent<Damageable>();
+
+        if (enemy.isBoss) gameObject.tag = "Boss";
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (!behaviourEnabler) return;
+
         currentPos = transform.position;
-        characterPos = target.transform.position;
-        diraction = (characterPos - currentPos).normalized;
+        targetPos = target.transform.position;
+        diraction = (targetPos - currentPos).normalized;
 
         Moving();
+        Attacking();
+        UpdateTimer();
     }
 
-    void Moving()
+    private void Moving()
     {
         switch (enemy.attackType)
         {
-            case AttackType.Melee:
-                if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && Vector3.Distance(target.position, this.transform.position) >= enemy.attackField && movementEnabler && attackEnabler)
+            case EnemySO.AttackType.Melee:
+
+                if (!movementEnabler) return;
+
+                if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && Vector3.Distance(targetPos, currentPos) >= enemy.attackField)
                 {
-                    currentRb.MovePosition(currentPos + diraction * enemy.moveSpeed * Time.deltaTime);
+                    currentRb.MovePosition(currentPos + enemy.moveSpeed * Time.deltaTime * diraction); 
 
                     //play animation
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true);
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) > enemy.chaseField && movementEnabler && attackEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField)
                 {
-                    currentRb.velocity = new Vector2(0.0f, 0.0f);
+                    currentRb.velocity = Vector2.zero;
 
                     //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
-                else if (Vector3.Distance(target.position, this.transform.position) < enemy.attackField && movementEnabler && attackEnabler)
-                {
-                    currentRb.velocity = new Vector2(0.0f, 0.0f);
-                    Attacking();
-
-                    //play animation
-                    animator.SetBool("ismove", false);
-                    animator.SetBool("ischase", true);
-                }
-                break;
-            case AttackType.Sniper:
-                if (Vector3.Distance(target.position, this.transform.position) <= enemy.chaseField && movementEnabler)
-                {
-                    currentRb.MovePosition(currentPos - diraction * enemy.moveSpeed * Time.deltaTime);
-                    Attacking();
-                    //play animation
-                    animator.SetBool("ismove", true);
-                    animator.SetBool("ischase", true); 
-                }
-                else if (Vector3.Distance(target.position, this.transform.position) > enemy.chaseField && movementEnabler)
+                else if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
                 {
                     currentRb.velocity = Vector2.zero;
 
@@ -158,36 +158,68 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     animator.SetBool("ischase", true);
                 }
                 break;
+
+            case EnemySO.AttackType.Sniper:
+
+                if (!movementEnabler) return;
+
+                if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
+                {
+                    currentRb.MovePosition(currentPos - enemy.moveSpeed * Time.deltaTime * diraction);
+
+                    //play animation
+                    animator.SetBool("ismove", true);
+                    animator.SetBool("ischase", true); 
+                }
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField && Vector3.Distance(targetPos, currentPos) < enemy.attackField)
+                {
+                    currentRb.velocity = Vector2.zero;
+
+                    //play animation
+                    animator.SetBool("ismove", false);
+                    animator.SetBool("ischase", true);
+                }
+                else if(Vector3.Distance(targetPos, currentPos) > enemy.attackField)
+                {
+                    currentRb.velocity = Vector2.zero;
+
+                    //play animation
+                    animator.SetBool("ismove", false);
+                    animator.SetBool("ischase", false);
+                }
+                break;
         }
         
 
-        spriteRenderer.flipX = (this.transform.position.x - target.position.x) > 0.2 ? true : false;
+        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
     }
 
-    void Attacking()
+    private void Attacking()
     {
-        if (attackEnabler && movementEnabler)
+        if (!attackEnabler) return;
+
+        switch (enemy.attackType)
         {
-            switch (enemy.attackType)
-            {
-                case AttackType.Sniper:
-                    float startAngle = Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg;
+            case EnemySO.AttackType.Melee:
 
-                    enemy.Attack_Ranged(startAngle, transform.position + new Vector3(0,0.5f,0));
-
-                    StartCoroutine(delay((enabler) => {
-                        attackEnabler = enabler;
-                    }, enemy.attackSpeed));
-                    break;
-
-                case AttackType.Melee:
+                if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
+                {
                     damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
-                    StartCoroutine(delay((enabler) => {
-                        attackEnabler = enabler;
-                    }, enemy.attackSpeed));
-                    break;
-            }
+                    attackDisableTimer += enemy.attackSpeed;
+                    movementDisableTimer += enemy.attackSpeed;
+                }
+                break;
+
+            case EnemySO.AttackType.Sniper:
+
+                if (!(Vector3.Distance(targetPos, currentPos) > enemy.attackField))
+                {
+                    enemy.Attack_Ranged(Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg, transform.position + new Vector3(0, 0.5f, 0));
+
+                    attackDisableTimer += enemy.attackSpeed;
+                }
+                break;
         }
     }
 
@@ -202,22 +234,23 @@ public class EnemyBehavior : MonoBehaviour, Damageable
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
 
-
             //delay
-            StartCoroutine(delay(enabler => {
-                damageEnabler = enabler;
-            }, 0.2f)) ;
-            StartCoroutine(delay(enabler => {
-                movementEnabler = enabler;
-                animator.enabled = enabler;
-            }, knockbackTime / (1 + (0.001f * enemy.defence))));
+            damageDisableTimer += 0.2f;
+            movementDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
+            attackDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
         }
     }
 
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
+    private void UpdateTimer()
     {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
+        movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
+        attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
+        damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
+        dodgeDisableTimer = Mathf.Max(0, dodgeDisableTimer - Time.deltaTime);
+
+        movementEnabler = movementDisableTimer <= 0;
+        attackEnabler = attackDisableTimer <= 0;
+        damageEnabler = damageDisableTimer <= 0;
+        dodgeEnabler = dodgeDisableTimer <= 0;
     }
 }

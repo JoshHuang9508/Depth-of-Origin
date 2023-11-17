@@ -17,6 +17,11 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(target == null)
+        {
+            return;
+        }
+
         try
         {
             mapBounds = GameObject.FindWithTag("WorldEdge").GetComponent<Collider2D>();

@@ -14,7 +14,6 @@ public class FloorSpikeController : MonoBehaviour
     public bool isActive = false;
 
     Animator animator;
-    Collider2D collider;
 
     private void Update()
     {
@@ -41,13 +40,12 @@ public class FloorSpikeController : MonoBehaviour
 
     private void Start()
     {
-        collider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
 
-        Activiting();
+        Active();
     }
 
-    private void Activiting()
+    private void Active()
     {
         StartCoroutine(delay(callback =>
         {
@@ -56,7 +54,7 @@ public class FloorSpikeController : MonoBehaviour
 
             if (callback == true) StartCoroutine(delay(callback =>
             {
-                if (callback == true) Activiting();
+                if (callback == true) Active();
             }, activeTime));
         }, inactiveTime));
     }

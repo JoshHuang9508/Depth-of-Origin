@@ -10,7 +10,7 @@ public class BossColumnController : MonoBehaviour
     public int totalColumnAmount;
 
     [Header("Status")]
-    [SerializeField] public static int currentCoulumnAmount;
+    public static int currentCoulumnAmount;
 
     public Action shieldBreak;
 

@@ -19,14 +19,12 @@ public class Pickable : MonoBehaviour
     [Header("Connect Object")]
     public InventorySO inventoryData;
 
-    Rigidbody2D currentRb;
-    GameObject target;
+    PlayerBehaviour target;
     
 
     void Start()
     {
-        currentRb = GetComponent<Rigidbody2D>();
-        target = GameObject.FindWithTag("Player");
+        target = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
         StartCoroutine(pickup_delay());
     }
@@ -37,7 +35,7 @@ public class Pickable : MonoBehaviour
 
         isInventoryFull = inventoryData.IsInventoryFull() && inventoryData.IsCertainItemFull(inventoryItem.ID);
 
-        if ((storable ? !isInventoryFull : true) && pickEnabler && Vector2.Distance(target.transform.position, this.transform.position) < pickupDistance)
+        if (target.behaviourEnabler && (storable ? !isInventoryFull : true) && pickEnabler && Vector2.Distance(target.transform.position, this.transform.position) < pickupDistance)
         {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 50 * Time.deltaTime);
 
@@ -45,11 +43,11 @@ public class Pickable : MonoBehaviour
             {
                 if(inventoryItem is CoinSO)
                 {
-                    target.GetComponent<PlayerBehaviour>().currentCoinAmount += 1;
+                    target.currentCoinAmount += ((CoinSO)inventoryItem).coinAmount;
                 }
                 else if(inventoryItem is KeySO)
                 {
-                    target.GetComponent<PlayerBehaviour>().keyList.Add(new PlayerBehaviour.KeyList((KeySO)inventoryItem, 1));
+                    target.keyList.Add(new PlayerBehaviour.KeyList {key = (KeySO)inventoryItem, quantity = 1});
                 }
                 else
                 {

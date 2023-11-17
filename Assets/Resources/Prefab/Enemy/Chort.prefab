@@ -126,17 +126,20 @@ MonoBehaviour:
   enemy: {fileID: 0}
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  currentRb: {fileID: 0}
   target: {fileID: 0}
   currentPos: {x: 0, y: 0}
-  characterPos: {x: 0, y: 0}
+  targetPos: {x: 0, y: 0}
   diraction: {x: 0, y: 0}
   currentHealth: 0
   movementEnabler: 1
-  damageEnabler: 1
+  movementDisableTimer: 0
   attackEnabler: 1
+  attackDisableTimer: 0
+  damageEnabler: 1
+  damageDisableTimer: 0
+  dodgeEnabler: 1
+  dodgeDisableTimer: 0
+  behaviourEnabler: 1
 --- !u!1 &5286208831638387633
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Setting")]
+    public bool autoSpawn = true;
     public int spawnLimit = 4;
     public float minSpawnDistance = 15;
     public float spawnRange;
@@ -14,7 +15,7 @@ public class SpawnerController : MonoBehaviour
     public LayerMask targetLayer;
     public List<EnemySO> spawnList;
 
-    [Header("Read Only Value")]
+    [Header("Status")]
     public int spawnTimes;
     public int stayMobs;
     public bool spawnEnabler = true;
@@ -22,7 +23,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if(spawnEnabler == true && (stayMobs < spawnLimit || spawnLimit == -1) && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1))
+        if(autoSpawn)
         {
             SpawnMobs();
         }
@@ -52,33 +53,45 @@ public class SpawnerController : MonoBehaviour
         }
     }
 
-    private void SpawnMobs()
+    public void SpawnMobs()
     {
-        //random spawn position
-        float spawnX = Random.Range(-1 * spawnRange, spawnRange);
-        float spawnY = Random.Range(-1 * Mathf.Sqrt((spawnRange * spawnRange) - (spawnX * spawnX)), Mathf.Sqrt((spawnRange * spawnRange) - (spawnX * spawnX)));
-        Vector3 spawnPosition = new Vector3(
-                transform.position.x + spawnX,
-                transform.position.y + spawnY,
-                transform.position.z);
+        //detect spawn restrict
+        if(spawnEnabler && (stayMobs < spawnLimit || spawnLimit == -1) && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1) &&
+            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().behaviourEnabler)
+        {
+            //spawn delay
+            StartCoroutine(delay(enabler =>
+            spawnEnabler = playerStayed ? false : enabler,
+            Random.Range(spawnGapMin, spawnGapMax)));
 
-        //detect spawn position
-        if (DetectBlankAreas(spawnPosition, new Vector2(1f, 1f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPosition) < minSpawnDistance) return;
-        
-        //spawn mobs
-        int randomSpawnIndex = Random.Range(0, spawnList.Count);
-        var spawnMob = Instantiate(
-            spawnList[randomSpawnIndex].EnemyObject,
-            spawnPosition,
-            Quaternion.identity,
-            GameObject.FindWithTag("Entity").transform);
-        spawnMob.GetComponent<EnemyBehavior>().enemy = spawnList[randomSpawnIndex];
-        spawnTimes++;
+            Vector3 spawnPos = Vector3.zero;
 
-        //spawn delay
-        StartCoroutine(delay(enabler =>
-        spawnEnabler = playerStayed ? false : enabler,
-        Random.Range(spawnGapMin, spawnGapMax)));
+            //detect spawn position
+            while ((DetectBlankAreas(spawnPos, new Vector2(1f, 1f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPos) < minSpawnDistance || spawnPos == Vector3.zero) && !spawnEnabler)
+            {
+                //random spawn position
+                float spawnX = Random.Range(-1 * spawnRange, spawnRange);
+                float spawnY = Random.Range(-1 * Mathf.Sqrt((spawnRange * spawnRange) - (spawnX * spawnX)), Mathf.Sqrt((spawnRange * spawnRange) - (spawnX * spawnX)));
+                spawnPos = new Vector3(
+                        transform.position.x + spawnX,
+                        transform.position.y + spawnY,
+                        transform.position.z);
+            }
+
+            //spawn mobs
+            int randomSpawnIndex = Random.Range(0, spawnList.Count);
+            var spawnMob = Instantiate(
+                spawnList[randomSpawnIndex].EnemyObject,
+                spawnPos,
+                Quaternion.identity,
+                GameObject.FindWithTag("Entity").transform);
+            spawnMob.GetComponent<EnemyBehavior>().enemy = spawnList[randomSpawnIndex];
+            spawnTimes++;
+        }
+        else
+        {
+            return;
+        }
     }
 
     private bool DetectBlankAreas(Vector2 areaCenter, Vector2 areaSize, float cellSize)
@@ -93,7 +106,6 @@ public class SpawnerController : MonoBehaviour
                 if (colliders.Length == 0) return true;
                 foreach (Collider2D collider in colliders)
                 {
-                    //Debug.Log(collider.tag);
                     if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject") || collider.CompareTag("Wall")) return true;
                 }
             }
@@ -101,6 +113,8 @@ public class SpawnerController : MonoBehaviour
 
         return false;
     }
+
+    
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {

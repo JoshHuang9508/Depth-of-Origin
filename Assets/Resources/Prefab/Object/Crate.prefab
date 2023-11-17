@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3027661421850618480}
   - component: {fileID: 4925476841127222390}
   m_Layer: 0
-  m_Name: Crate
+  m_Name: crate
   m_TagString: BreakableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,8 +145,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
-  lootMinCoins: 1
-  lootMaxCoins: 4
+  coins:
+  - coins: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+    amount: 3
   lootings: []
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
