@@ -75,7 +75,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public KeyCode sprintKey;
 
     [Header("Connect Object")]
-    public GameObject damageText;
+    public GameObject damageText, pauseMenu;
     public Animator onHitEffect;
     public InventorySO inventoryData, shopData;
     public UIInventory inventoryUI, shopUI;
@@ -226,6 +226,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             Debug.Log($"Is Inventory Full? {inventoryData.IsInventoryFull()}");
             Debug.Log($"Is Inventory Items[0]Full? {inventoryData.inventoryItems[0].IsEmpty}");
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) pauseMenu.SetActive(!pauseMenu.gameObject.activeInHierarchy);
     }
 
 
