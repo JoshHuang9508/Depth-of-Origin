@@ -77,8 +77,8 @@ public class MainMenuController : MonoBehaviour
 
         while (elapsedTime < fadeInDuration)
         {
-            elapsedTime += Time.deltaTime;
-            imageColor.a = Mathf.Clamp01(elapsedTime / fadeInDuration);
+            elapsedTime += Time.deltaTime * 2;
+            imageColor.a = elapsedTime / fadeInDuration;
             backgroundImage.color = imageColor;
             yield return null;
         }
