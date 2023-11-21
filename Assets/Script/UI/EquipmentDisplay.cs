@@ -45,4 +45,6 @@ public class EquipmentDisplay : MonoBehaviour
                 break;
         }
     }
+
+
 }

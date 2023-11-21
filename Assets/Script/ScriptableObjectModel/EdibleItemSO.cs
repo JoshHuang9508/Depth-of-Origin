@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable
+public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
 {
     [Header("Effect settings")]
     public float E_heal;
@@ -38,6 +38,17 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
         if (player != null)
         {
             player.SetEffection(this, effectTime);
+        }
+        return false;
+    }
+
+    public bool UnequipObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+
+        if (player != null)
+        {
+            player.UnEquipment(this, amount);
         }
         return false;
     }

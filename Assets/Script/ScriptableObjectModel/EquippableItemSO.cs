@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable
+public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
 {
     [Header("Basic Data")]
     public EquipmentType equipmentType;
@@ -29,6 +29,17 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable,
         if (player != null)
         {
             player.SetEquipment(this, equipmentType);
+        }
+        return false;
+    }
+
+    public bool UnequipObject(int amont, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+
+        if (player != null)
+        {
+            player.UnEquipment(this, equipmentType);
         }
         return false;
     }

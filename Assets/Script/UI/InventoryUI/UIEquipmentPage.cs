@@ -1,3 +1,4 @@
+using Inventory.Model;
 using Inventory.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,14 @@ using UnityEngine.UI;
 
 public class UIEquipmentPage : MonoBehaviour
 {
+
+    [Header("Settings")]
+    [SerializeField] public UIInventory inventoryUI;
+    [SerializeField] public InventoryType inventoryType;
+    [SerializeField] public InventorySO equipmentData;
+
+    public List<UIItemSlot> listOfItemSlots = new List<UIItemSlot>();
+
     [Header("Connect Object")]
     public UIItemSlot armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
     public GameObject target, statsdisplay;
@@ -14,18 +23,22 @@ public class UIEquipmentPage : MonoBehaviour
 
     PlayerBehaviour player;
 
-
     private void Start()
     {
         player = target.GetComponent<PlayerBehaviour>();
     }
 
 
+
     private void Update()
     {
         SetImage();
         GetPlayerStats();
+        
     }
+
+
+
 
     public void SetImage()
     {
