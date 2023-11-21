@@ -5,11 +5,6 @@ using UnityEngine.Rendering.Universal;
 
 public class ProjectileMovement_Player : WeaponMovementRanged
 {
-    [Header("Read Only Value")]
-    public Animator animator;
-    public TrailRenderer trail;
-    public Light2D spriteLight;
-
     private void Start()
     {
         objectRigidbody = GetComponent<Rigidbody2D>();
@@ -30,7 +25,7 @@ public class ProjectileMovement_Player : WeaponMovementRanged
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
-                bool isCrit = Random.Range(0f, 100f) <= player.critRate ? true : false;
+                bool isCrit = Random.Range(0f, 100f) <= player.critRate;
 
                 damageableObject.OnHit(
                     rangedWeapon.weaponDamage * (1 + (0.01f * player.strength)) * (isCrit ? 1 + (0.01f * player.critDamage) : 1),

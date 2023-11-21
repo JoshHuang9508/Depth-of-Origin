@@ -4,23 +4,23 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoaderController : MonoBehaviour
 {
-    public LoadType loadType = LoadType.Scene;
+    [SerializeField] LoadType loadType = LoadType.Scene;
+
+    enum LoadType
+    {
+        Scene, Chunk
+    }
 
     [Header("Scene Loader Setting")]
     public int SceneNum = 0;
 
     [Header("Chunk Loader Setting")]
-    public SceneLoader transformPos;
+    public SceneLoaderController transformPos;
 
     [Header("Status")]
     public static bool inAction = false;
-
-    public enum LoadType
-    {
-        Scene, Chunk
-    }
 
     [Header("Connect Object")]
     public Animator transition;

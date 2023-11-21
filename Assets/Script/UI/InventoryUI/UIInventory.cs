@@ -11,8 +11,14 @@ namespace Inventory.UI
     {
         [Header("Pages")]
         [SerializeField] public List<GameObject> contentPages;
+<<<<<<< HEAD
         [SerializeField] public List<UIDescriptionPage> descriptionPages = new List<UIDescriptionPage>();
         [SerializeField] public List<UIBackpackPage> backpackPages = new List<UIBackpackPage>();
+        [SerializeField] public List<UIEquipmentPage> equipmentPages = new List<UIEquipmentPage>();
+=======
+        [SerializeField] public List<UIDescriptionPage> descriptionPages = new();
+        [SerializeField] public List<UIItemSlotsPage> backpackPages = new();
+>>>>>>> origin/main
 
         [Header("Connect Object")]
         [SerializeField] public MouseFollower mouseFollower;
@@ -21,15 +27,20 @@ namespace Inventory.UI
 
         private void OnDisable()
         {
-            ClearDescription(InventoryType.All);
+            ClearDescription(ActionType.All);
             mouseFollower.Toggle(false);
         }
 
         private void Awake()
         {
+            for(int i = 0; i < transform.childCount; i++)
+            {
+                contentPages.Add(transform.GetChild(i).gameObject);
+            }
+
             foreach(GameObject contentPage in contentPages)
             {
-                if (contentPage.GetComponent<UIBackpackPage>()) backpackPages.Add(contentPage.GetComponent<UIBackpackPage>());
+                if (contentPage.GetComponent<UIItemSlotsPage>()) backpackPages.Add(contentPage.GetComponent<UIItemSlotsPage>());
                 if (contentPage.GetComponent<UIDescriptionPage>()) descriptionPages.Add(contentPage.GetComponent<UIDescriptionPage>());
             }
 
@@ -44,11 +55,11 @@ namespace Inventory.UI
 
 
 
-        public void SetInventoryContent(InventorySO inventoryData, InventoryType inventoryType)
+        public void SetInventoryContent(InventorySO inventoryData, ActionType inventoryType)
         {
-            foreach(UIBackpackPage backpackPage in backpackPages)
+            foreach(UIItemSlotsPage backpackPage in backpackPages)
             {
-                if(backpackPage.inventoryType == inventoryType || backpackPage.inventoryType == InventoryType.All)
+                if(backpackPage.actionType == inventoryType || backpackPage.actionType == ActionType.All)
                 {
                     backpackPage.inventoryData = inventoryData;
                     backpackPage.UpdateBackpack(inventoryData.GetCurrentInventoryState());
@@ -57,22 +68,22 @@ namespace Inventory.UI
             
         }
 
-        public void SetDescription(ItemSO item, InventoryType inventoryType)
+        public void SetDescription(ItemSO item, ActionType inventoryType)
         {
             foreach(UIDescriptionPage descriptionPage in descriptionPages)
             {
-                if(descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                if(descriptionPage.actionType == inventoryType || descriptionPage.actionType == ActionType.All)
                 {
                     descriptionPage.SetDescription(item);
                 }
             }
         }
 
-        public void ClearDescription(InventoryType inventoryType)
+        public void ClearDescription(ActionType inventoryType)
         {
             foreach (UIDescriptionPage descriptionPage in descriptionPages)
             {
-                if (descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                if (descriptionPage.actionType == inventoryType || descriptionPage.actionType == ActionType.All)
                 {
                     descriptionPage.ResetDescription();
                     descriptionPage.actionPanel.Toggle(false);
@@ -80,11 +91,11 @@ namespace Inventory.UI
             }
         }
 
-        public void SetActionBotton(InventorySO inventoryData, int itemIndex, InventoryType inventoryType)
+        public void SetActionBotton(InventorySO inventoryData, int itemIndex, ActionType inventoryType)
         {
             foreach (UIDescriptionPage descriptionPage in descriptionPages)
             {
-                if (descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                if (descriptionPage.actionType == inventoryType || descriptionPage.actionType == ActionType.All)
                 {
                     InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
                     descriptionPage.actionPanel.Toggle(true);
@@ -93,16 +104,19 @@ namespace Inventory.UI
                     {
                         switch (inventoryType)
                         {
-                            case InventoryType.BackpackInventory:
+                            case ActionType.BackpackInventory:
                                 if (inventoryItem.item is IEquipable) descriptionPage.actionPanel.AddButton("Equip", () => PerformAction(inventoryData, itemIndex, "Equip", inventoryType));
                                 if (inventoryItem.item is IConsumeable) descriptionPage.actionPanel.AddButton("Consume", () => PerformAction(inventoryData, itemIndex, "Consume", inventoryType));
                                 if (inventoryItem.item is IDestoryableItem) descriptionPage.actionPanel.AddButton("Drop", () => PerformAction(inventoryData, itemIndex, "Drop", inventoryType));
                                 break;
-                            case InventoryType.BackpackShop:
+                            case ActionType.BackpackShop:
                                 if (inventoryItem.item is ISellable) descriptionPage.actionPanel.AddButton("Sell", () => PerformAction(inventoryData, itemIndex, "Sell", inventoryType));
                                 break;
-                            case InventoryType.ShopGoods:
+                            case ActionType.ShopGoods:
                                 if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton("Buy", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
+                                break;
+                            case InventoryType.BackpackEquipment:
+                                if (inventoryItem.item is IUnequipable) descriptionPage.actionPanel.AddButton("Unequip", () => PerformAction(inventoryData, itemIndex, "Unequip", inventoryType));
                                 break;
                         }
                     }
@@ -110,11 +124,11 @@ namespace Inventory.UI
             }
         }
 
-        public void PerformAction(InventorySO inventoryData, int itemIndex, string actionName, InventoryType inventoryType)
+        public void PerformAction(InventorySO inventoryData, int itemIndex, string actionName, ActionType inventoryType)
         {
             foreach (UIDescriptionPage descriptionPage in descriptionPages)
             {
-                if (descriptionPage.inventoryType == inventoryType || descriptionPage.inventoryType == InventoryType.All)
+                if (descriptionPage.actionType == inventoryType || descriptionPage.actionType == ActionType.All)
                 {
                     InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
                     IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
@@ -158,6 +172,11 @@ namespace Inventory.UI
                                 itemAction.SelectAction("Buy", amountToUse, player, inventoryItem.itemState);
                                 if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
                                 break;
+                            case "Unequip":
+                                amountToUse = 1;
+                                itemAction.SelectAction("Unequip", amountToUse, player, inventoryItem.itemState);
+                                if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
+                                break;
                         }
 
                         if (inventoryData.GetItemAt(itemIndex).IsEmpty) ClearDescription(inventoryType);
@@ -178,8 +197,8 @@ namespace Inventory.UI
         }
     }
 
-    public enum InventoryType
+    public enum ActionType
     {
-        BackpackInventory, BackpackShop, ShopGoods, All
+        BackpackInventory, BackpackEquipment, BackpackShop, ShopGoods, All
     }
 }

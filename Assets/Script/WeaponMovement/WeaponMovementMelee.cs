@@ -7,10 +7,10 @@ public class WeaponMovementMelee : MonoBehaviour
     [Header("Object Settings")]
     public WeaponSO weapon;
 
-    [Header("Read Only Value")]
-    public Quaternion startAngle;
+    [Header("Status")]
     public bool isflip;
-    public SpriteRenderer spriteRenderer;
-    public SummonWeapon summonWeapon;
+
     public PlayerBehaviour player;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
 }

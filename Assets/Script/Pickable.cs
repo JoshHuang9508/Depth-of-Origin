@@ -6,8 +6,10 @@ using UnityEngine.Rendering.Universal;
 
 public class Pickable : MonoBehaviour
 {
-    [Header("Setting")]
+    [Header("Item Object")]
     public ItemSO inventoryItem;
+
+    [Header("Setting")]
     public int quantity = 1;
     public float pickupDistance;
 

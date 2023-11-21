@@ -16,12 +16,22 @@ public class Interactable : MonoBehaviour
     public bool isInRange;
 
     [Header("Connect Object")]
-    public GameObject interactDialog;
-    public RectTransform temp;
+    public GameObject interactDialogObject;
+
+    TMP_Text interactDialogText;
+    GameObject interactDialog;
 
     void Start()
     {
+        interactDialog = Instantiate(
+            interactDialogObject,
+            transform.position + new Vector3(0, 1.5f, 0),
+            Quaternion.identity,
+            transform
+            );
+
         interactDialog.SetActive(false);
+        interactDialogText = interactDialog.GetComponentInChildren<TMP_Text>();
     }
 
     void Update()
@@ -50,20 +60,10 @@ public class Interactable : MonoBehaviour
             isInRange = true;
             enterRangeAction.Invoke();
 
-            if (this.enabled && interactable)
+            if (enabled && interactable)
             {
-                RectTransform text_Transform = Instantiate(
-                    interactDialog,
-                    new Vector3(960, 200, 0),
-                    Quaternion.identity,
-                    GameObject.Find("ScreenUI").transform
-                    ).GetComponent<RectTransform>();
-                text_Transform.gameObject.SetActive(true);
-
-                TMP_Text text = text_Transform.GetComponentInChildren<TMP_Text>();
-                text.text = $"Press {interactKey} to interact";
-
-                temp = text_Transform;
+                interactDialog.SetActive(true);
+                interactDialogText.text = $"Press {interactKey} to interact";
             }
         }
     }
@@ -76,21 +76,15 @@ public class Interactable : MonoBehaviour
             isInRange = false;
             leaveRangeAction.Invoke();
 
-            try
-            {
-                Destroy(temp.gameObject);
-            }
-            catch { }
+            //if(currentDialogObject != null) Destroy(currentDialogObject.gameObject);
+            interactDialog.SetActive(false);
         }
     }
 
     private void OnDisable()
     {
-        try
-        {
-            Destroy(temp.gameObject);
-        }
-        catch { }
+        //if (currentDialogObject != null) Destroy(currentDialogObject.gameObject);
+        interactDialog.SetActive(false);
     }
 
     private void OnEnable()

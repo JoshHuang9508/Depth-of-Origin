@@ -46,6 +46,10 @@ namespace Inventory.Model
                     IBuyable buyable = this as IBuyable;
                     buyable.BuyObject(amount, character, itemState);
                     break;
+                case "Unequip":
+                    IUnequipable unequipable = this as IUnequipable;
+                    unequipable.UnequipObject(amount, character, itemState);
+                    break;
             }
             return false;
         }
@@ -123,6 +127,11 @@ namespace Inventory.Model
     public interface IBuyable
     {
         bool BuyObject(int amount, GameObject character, List<ItemParameter> itemstate);
+    }
+
+    public interface IUnequipable
+    {
+        bool UnequipObject(int amount, GameObject character, List<ItemParameter> itemstate);
     }
 }
 

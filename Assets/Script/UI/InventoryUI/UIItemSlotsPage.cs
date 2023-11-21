@@ -6,19 +6,19 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class UIBackpackPage : MonoBehaviour
+public class UIItemSlotsPage : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] public InventoryType inventoryType;
-    [SerializeField] public bool isDragable;
+    public ActionType actionType;
+    public bool isDragable;
 
     [Header("Connect Object")]
-    [SerializeField] public InventorySO inventoryData;
+    public InventorySO inventoryData;
     [SerializeField] private UIInventory inventoryUI;
     [SerializeField] private UIItemSlot itemSlot;
     [SerializeField] private RectTransform contentPanel;
 
-    public List<UIItemSlot> listOfItemSlots = new List<UIItemSlot>();
+    public List<UIItemSlot> listOfItemSlots = new();
 
     int currentDraggedItemIndex = -1;
 
@@ -27,11 +27,11 @@ public class UIBackpackPage : MonoBehaviour
     {
         inventoryUI = GetComponentInParent<UIInventory>();
 
-        InitializeBackpackSlot(inventoryData.Size);
+        InitializeSlot(inventoryData.Size);
         UpdateBackpack(inventoryData.GetCurrentInventoryState());
     }
 
-    public void InitializeBackpackSlot(int inventorySize)
+    public void InitializeSlot(int inventorySize)
     {
         for (int i = 0; i < inventorySize; i++)
         {
@@ -85,7 +85,6 @@ public class UIBackpackPage : MonoBehaviour
     public void HandleSwap(UIItemSlot inventoryItemUI)
     {
         int index = listOfItemSlots.IndexOf(inventoryItemUI);
-        InventoryItem inventoryItem = inventoryData.GetItemAt(index);
 
         if (index != -1 && isDragable)
         {
@@ -104,8 +103,8 @@ public class UIBackpackPage : MonoBehaviour
             Deselect();
             listOfItemSlots[index].Select();
 
-            inventoryUI.SetDescription(inventoryItem.item, inventoryType);
-            inventoryUI.SetActionBotton(inventoryData, index, inventoryType);
+            inventoryUI.SetDescription(inventoryItem.item, actionType);
+            inventoryUI.SetActionBotton(inventoryData, index, actionType);
         }
         else
         {
@@ -123,7 +122,7 @@ public class UIBackpackPage : MonoBehaviour
         {
             item.Deselect();
         }
-        inventoryUI.ClearDescription(inventoryType);
+        inventoryUI.ClearDescription(actionType);
     }
 
     public void ResetAllItems()
@@ -131,7 +130,6 @@ public class UIBackpackPage : MonoBehaviour
         foreach (UIItemSlot item in listOfItemSlots)
         {
             item.ResetData();
-            //item.Deselect();
         }
     }
 }

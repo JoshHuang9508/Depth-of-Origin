@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneController : MonoBehaviour
+public class effectdisplay : MonoBehaviour
 {
+
+    PlayerBehaviour player;
+
+    [SerializeField] private GameObject effect;
     void Start()
     {
-        Debug.Log("Start");
+        
     }
 
+    
     void Update()
     {
         
     }
 
-    private void OnEnable()
-    {
-        Debug.Log("OnEnable");
-        
-    }
 }

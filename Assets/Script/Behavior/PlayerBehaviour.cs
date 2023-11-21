@@ -4,11 +4,7 @@ using TMPro;
 using UnityEngine;
 using Inventory.Model;
 using Inventory.UI;
-using static UnityEditor.Progress;
 using System;
-using Newtonsoft.Json;
-using System.Linq;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerBehaviour : MonoBehaviour, Damageable
 {
@@ -19,14 +15,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public float Basic_defence;
     public float Basic_critRate;
     public float Basic_critDamage;
-
-    float E_walkSpeed;
-    float E_maxHealth;
-    float E_strength;
-    float E_defence;
-    float E_critRate;
-    float E_critDamage;
-    
     public List<InventoryItem> initialItems;
 
     [Header("Current Data")]
@@ -58,6 +46,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         public int quantity;
     }
 
+    [Header("Current Effect")]
+    public float E_walkSpeed;
+    public float E_maxHealth;
+    public float E_strength;
+    public float E_defence;
+    public float E_critRate;
+    public float E_critDamage;
+
     [Header("Key Settings")]
     public KeyCode sprintKey;
     public KeyCode backpackKey;
@@ -67,11 +63,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public KeyCode rangedWeaponKey;
 
     [Header("Connect Object")]
-    public GameObject damageText, pauseMenu;
     public Animator onHitEffect;
-    public InventorySO inventoryData, shopData;
+    public InventorySO inventoryData, shopData, equipmentData;
     public UIInventory inventoryUI, shopUI;
     public SummonWeapon summonWeapon;
+    public GameObject damageText;
     public GameObject itemDropper;
 
     public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
@@ -81,56 +77,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public float critRate { get { return Basic_critRate + E_critRate; } }
     public float critDamage { get { return Basic_critDamage + E_critDamage; } }
 
-    bool isCrit;
     public float Health
     {
+        get
+        {
+            return currentHealth;
+        }
         set
         {
-            if (value < currentHealth)
-            {
-                //damage text
-                RectTransform text_Transform = Instantiate(
-                    damageText,
-                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
-                    Quaternion.identity,
-                    GameObject.Find("ScreenUI").transform
-                    ).GetComponent<RectTransform>();
-
-                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = Mathf.RoundToInt(currentHealth - value).ToString();
-                text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(150, 0, 0, 255);
-                text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
-                text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
-
-
-                //camera shake
-                CameraShake cameraShake = GameObject.FindWithTag("MainCamera").GetComponent<CameraShake>();
-                StartCoroutine(cameraShake.Shake(0.1f, 0.2f));
-
-
-                //scence effect
-                onHitEffect.SetTrigger("OnHit");
-            }
-
-            if (value >= currentHealth)
-            {
-                //damage text
-                RectTransform text_Transform = Instantiate(
-                    damageText,
-                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
-                    Quaternion.identity,
-                    GameObject.Find("ScreenUI").transform
-                    ).GetComponent<RectTransform>();
-
-                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = Mathf.RoundToInt(value - currentHealth).ToString();
-                text_MeshProUGUI.color = new Color(0, 150, 0, 255);
-
-
-                //scence effect
-                onHitEffect.SetTrigger("Heal");
-            }
-
             currentHealth = value;
 
             if (currentHealth <= 0)
@@ -138,8 +92,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 Debug.Log("Player Dead");
                 currentCoinAmount = 0;
                 currentRb.bodyType = RigidbodyType2D.Static;
-                damageDisableTimer += 1000000;
+                damageEnabler = false;
                 behaviourEnabler = false;
+                shopUI.gameObject.SetActive(false);
+                inventoryUI.gameObject.SetActive(false);
 
                 //drop item
                 List<Lootings> lootings = new();
@@ -178,10 +134,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 }
             }
         }
-        get
-        {
-            return currentHealth;
-        }
     }
 
     [Header("Status")]
@@ -199,7 +151,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     Animator animator;
     SpriteRenderer spriteRenderer;
-    Collider2D currentCollider;
     Rigidbody2D currentRb;
 
 
@@ -209,7 +160,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         currentHealth = maxHealth;
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        currentCollider = GetComponent<Collider2D>();
         currentRb = GetComponent<Rigidbody2D>();
 
         //initial items
@@ -227,6 +177,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
         Moving();
         UpdatePlayerStates();
+        UpdateTimer();
+        UpdateEffectionList();
+        UpdateKeyList();
+        UpdateCurrentWeapon();
 
         //sprint
         if (Input.GetKeyDown(sprintKey)) Sprint();
@@ -247,22 +201,21 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         //UI
         if (Input.GetKeyDown(backpackKey))
         {
-            inventoryUI.SetInventoryContent(inventoryData, InventoryType.BackpackInventory);
+            inventoryUI.SetInventoryContent(inventoryData, ActionType.BackpackInventory);
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
+            Time.timeScale = inventoryUI.gameObject.activeInHierarchy ? 0 : 1;
         }
 
         //use weapon
         if (Input.GetKey(useWeaponKey) && attackEnabler)
         {
-            currentWeapon = GetCurrentWeapon();
+            currentWeapon = UpdateCurrentWeapon();
             if(currentWeapon != null)
             {
                 attackDisableTimer += currentWeapon.attackCooldown;
                 summonWeapon.Summon();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape)) pauseMenu.SetActive(!pauseMenu.gameObject.activeInHierarchy);
     }
 
 
@@ -299,15 +252,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
-    private void UpdatePlayerStates()
+
+
+
+
+    public bool UpdatePlayerStates()
     {
-        //update current weapon
-        GetCurrentWeapon();
-
-
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
-        List<object> items = new List<object>{ armor, jewelry, book, currentWeapon };
+        List<object> items = new(){ armor, jewelry, book, currentWeapon };
         float[] results = new float[attributes.Length];
 
         for (int j = 0; j < effectionList.Count; j++)
@@ -334,32 +287,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_critRate = results[4];
         E_critDamage = results[5];
 
+        return true;
+    }
 
-        //update effection list
-        int indexOfEffectionList = -1;
-        foreach (EffectionList effectingItem in effectionList)
-        {
-            effectingItem.effectingTime -= Time.deltaTime;
-            if (effectingItem.effectingTime <= 0)
-            {
-                indexOfEffectionList = effectionList.IndexOf(effectingItem);
-            }
-        }
-        effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
-
-
-        //update key list
-        int indexOfKeyList = -1;
-        foreach (KeyList key in keyList)
-        {
-            if (key.quantity <= 0)
-            {
-                indexOfKeyList = keyList.IndexOf(key);
-            }
-        }
-        keyList.Remove(indexOfKeyList != -1 ? keyList[indexOfKeyList] : null);
-
-
+    public bool UpdateTimer()
+    {
         //update timer
         movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
         attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
@@ -372,10 +304,44 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         damageEnabler = damageDisableTimer <= 0;
         sprintEnabler = sprintDisableTimer <= 0;
         walkSpeedMutiplyerEnabler = !(walkSpeedMutiplyerDisableTimer <= 0);
+
+        return true;
     }
 
-    public WeaponSO GetCurrentWeapon()
+    public List<KeyList> UpdateKeyList()
     {
+        //update key list
+        int indexOfKeyList = -1;
+        foreach (KeyList key in keyList)
+        {
+            if (key.quantity <= 0)
+            {
+                indexOfKeyList = keyList.IndexOf(key);
+            }
+        }
+        keyList.Remove(indexOfKeyList != -1 ? keyList[indexOfKeyList] : null);
+        return keyList;
+    }
+
+    public List<EffectionList> UpdateEffectionList()
+    {
+        //update effection list
+        int indexOfEffectionList = -1;
+        foreach (EffectionList effectingItem in effectionList)
+        {
+            effectingItem.effectingTime -= Time.deltaTime;
+            if (effectingItem.effectingTime <= 0)
+            {
+                indexOfEffectionList = effectionList.IndexOf(effectingItem);
+            }
+        }
+        effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
+        return effectionList;
+    }
+
+    public WeaponSO UpdateCurrentWeapon()
+    {
+        //update current weapon
         switch (weaponControl)
         {
             case 0:
@@ -395,18 +361,25 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
 
-    public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (damageEnabler)
+        if (UpdateTimer() && damageEnabler)
         {
-            isCrit = _isCrit;
-            Health = Mathf.Max(0, Health - damage / (1 +(0.001f * defence)));
+            Health -= damage / (1 +(0.001f * defence));
+            InstantiateDamageText(damage / (1 + (0.001f * defence)), "PlayerHit");
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
 
             //delay
             movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
+
+            //camera shake
+            CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
+            StartCoroutine(camera.Shake(0.1f, 0.2f));
+
+            //scene effect
+            onHitEffect.SetTrigger("OnHit");
         }
     }
 
@@ -433,6 +406,25 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
+    public void UnEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
+    {
+        switch (type)
+        {
+            case EquippableItemSO.EquipmentType.armor:
+                if (armor != null) inventoryData.AddItem(armor, 1);
+                armor = null;
+                break;
+            case EquippableItemSO.EquipmentType.jewelry:
+                if (jewelry != null) inventoryData.AddItem(jewelry, 1);
+                jewelry = null;
+                break;
+            case EquippableItemSO.EquipmentType.book:
+                if (book != null) inventoryData.AddItem(book, 1);
+                book = null;
+                break;
+        }
+    }
+
     public void SetEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
     {
         switch (type)
@@ -447,12 +439,33 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 break;
         }
     }
+    public void UnEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
+    {
+        switch (type)
+        {
+            case WeaponSO.WeaponType.Melee:
+                if (meleeWeapon != null) inventoryData.AddItem(meleeWeapon, 1);
+                meleeWeapon = null;
+                break;
+            case WeaponSO.WeaponType.Ranged:
+                if (rangedWeapon != null) inventoryData.AddItem(rangedWeapon, 1);
+                rangedWeapon = null;
+                break;
+        }
+    }
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
         if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
         potions = edibleItem;
         currentPotionAmont = amount;
+    }
+
+    public void UnEquipment(EdibleItemSO edibleItem, int amount)
+    {
+        if (potions != null) inventoryData.AddItem(potions, currentPotionAmont);
+        potions = null;
+        currentPotionAmont = 0;
     }
 
     public void SetEffection(EdibleItemSO edibleItem, float effectTime)
@@ -478,6 +491,19 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             effectionList.Add(new EffectionList {effectingItem = edibleItem , effectingTime = effectTime});
         }
 
-        if (edibleItem.E_heal != 0) Health = Mathf.Max(Health + (edibleItem.E_heal + currentHealth) > maxHealth ? maxHealth - currentHealth : edibleItem.E_heal, maxHealth);
+        if (edibleItem.E_heal != 0) Health += Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
+        InstantiateDamageText(Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal), "Heal");
+    }
+
+    private void InstantiateDamageText(float value, string type)
+    {
+        var damageTextInstantiated = Instantiate(
+            damageText,
+            Camera.main.WorldToScreenPoint(gameObject.transform.position),
+            Quaternion.identity,
+            GameObject.Find("ScreenUI").transform
+            ).GetComponent<DamageText>();
+
+        damageTextInstantiated.SetContent(value, type);
     }
 }

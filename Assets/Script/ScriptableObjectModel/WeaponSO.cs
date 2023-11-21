@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable
+public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
 {
     [Header("Basic Data")]
     public float attackSpeed = 1f;
@@ -38,6 +38,17 @@ public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyabl
         if (player != null)
         {
             player.SetEquipment(this, weaponType);
+        }
+        return false;
+    }
+
+    public bool UnequipObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+
+        if (player != null)
+        {
+            player.UnEquipment(this, weaponType);
         }
         return false;
     }

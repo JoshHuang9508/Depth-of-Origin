@@ -15,11 +15,6 @@ public class DontDestoryOnLoad : MonoBehaviour
         DontDestroyOnLoad(instance);
     }
 
-    void Update()
-    {
-                
-    }
-
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
