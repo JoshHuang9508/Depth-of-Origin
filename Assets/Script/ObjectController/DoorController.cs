@@ -27,7 +27,7 @@ public class DoorController : MonoBehaviour
 
     public void OpenDoor()
     {
-        if (!isOpen && haveKey())
+        if (!isOpen && HaveKey())
         {
             isOpen = true;
             interactable.enabled = false;
@@ -47,7 +47,7 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    private bool haveKey()
+    private bool HaveKey()
     {
         bool haveKey = false;
         int indexOfKeyList = -1;

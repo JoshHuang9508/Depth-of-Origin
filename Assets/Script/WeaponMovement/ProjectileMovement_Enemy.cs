@@ -8,11 +8,6 @@ public class ProjectileMovement_Enemy : WeaponMovementRanged
     [Header("Connect Object")]
     public EnemySO enemy;
 
-    [Header("Read Only Value")]
-    public Animator animator;
-    public TrailRenderer trail;
-    public Light2D spriteLight;
-
     private void Start()
     {
         objectRigidbody = GetComponent<Rigidbody2D>();

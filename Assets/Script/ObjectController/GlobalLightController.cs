@@ -5,10 +5,12 @@ using UnityEngine.Rendering.Universal;
 
 public class GlobalLightController : MonoBehaviour
 {
-    public Light2D globalLight;
+    [Header("Setting")]
     public Gradient gradient;
     public float dayTime, nightTime;
     public float gap;
+
+    Light2D globalLight;
 
     void Start()
     {

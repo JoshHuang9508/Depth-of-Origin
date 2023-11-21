@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
+using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyBehavior : MonoBehaviour, Damageable
 {
@@ -28,45 +29,14 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public float dodgeDisableTimer = 0;
     public bool behaviourEnabler = true;
 
-    bool isCrit;
     public float Health
     {
+        get
+        {
+            return currentHealth;
+        }
         set
         {
-            if (value < currentHealth)
-            {
-                //play hit animation
-
-                //damage text
-                RectTransform text_Transform = Instantiate(
-                    damageText,
-                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
-                    Quaternion.identity,
-                    GameObject.Find("ScreenUI").transform
-                    ).GetComponent<RectTransform>();
-
-                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = Mathf.RoundToInt(currentHealth - value).ToString();
-                text_MeshProUGUI.color = isCrit ? new Color(255, 255, 0, 255) : new Color(255, 255, 255, 255);
-                text_MeshProUGUI.outlineColor = isCrit ? new Color(255, 0, 0, 255) : new Color(255, 255, 255, 0);
-                text_MeshProUGUI.outlineWidth = isCrit ? 0.4f : 0f;
-            }
-
-            if (value >= currentHealth)
-            {
-                //damage text
-                RectTransform text_Transform = Instantiate(
-                    damageText,
-                    Camera.main.WorldToScreenPoint(gameObject.transform.position),
-                    Quaternion.identity,
-                    GameObject.Find("ScreenUI").transform
-                    ).GetComponent<RectTransform>();
-
-                TextMeshProUGUI text_MeshProUGUI = text_Transform.GetComponent<TextMeshProUGUI>();
-                text_MeshProUGUI.text = Mathf.RoundToInt(value - currentHealth).ToString();
-                text_MeshProUGUI.color = new Color(0, 150, 0, 255);
-            }
-
             currentHealth = value;
 
             if (currentHealth <= 0)
@@ -86,10 +56,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
                 Destroy(gameObject);
             }
-        }
-        get
-        {
-            return currentHealth;
         }
     }
 
@@ -127,6 +93,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
     private void Moving()
     {
+        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
+
         switch (enemy.attackType)
         {
             case EnemySO.AttackType.Melee:
@@ -135,25 +103,18 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
                 if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && Vector3.Distance(targetPos, currentPos) >= enemy.attackField)
                 {
-                    currentRb.MovePosition(currentPos + enemy.moveSpeed * Time.deltaTime * diraction); 
+                    currentRb.MovePosition(currentPos + enemy.moveSpeed * Time.deltaTime * diraction);
 
-                    //play animation
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true);
                 }
                 else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField)
                 {
-                    currentRb.velocity = Vector2.zero;
-
-                    //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
                 else if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
                 {
-                    currentRb.velocity = Vector2.zero;
-
-                    //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", true);
                 }
@@ -167,31 +128,25 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 {
                     currentRb.MovePosition(currentPos - enemy.moveSpeed * Time.deltaTime * diraction);
 
-                    //play animation
                     animator.SetBool("ismove", true);
-                    animator.SetBool("ischase", true); 
+                    animator.SetBool("ischase", true);
                 }
                 else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField && Vector3.Distance(targetPos, currentPos) < enemy.attackField)
                 {
                     currentRb.velocity = Vector2.zero;
 
-                    //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", true);
                 }
-                else if(Vector3.Distance(targetPos, currentPos) > enemy.attackField)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.attackField)
                 {
                     currentRb.velocity = Vector2.zero;
 
-                    //play animation
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
                 break;
         }
-        
-
-        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
     }
 
     private void Attacking()
@@ -213,7 +168,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
             case EnemySO.AttackType.Sniper:
 
-                if (!(Vector3.Distance(targetPos, currentPos) > enemy.attackField))
+                if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
                 {
                     enemy.Attack_Ranged(Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg, transform.position + new Vector3(0, 0.5f, 0));
 
@@ -224,12 +179,12 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     }
 
 
-    public void OnHit(float damage, bool _isCrit, Vector2 knockbackForce, float knockbackTime)
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (damageEnabler)
+        if (UpdateTimer() && damageEnabler)
         {
-            isCrit = _isCrit;
             Health -= damage / (1 + (0.001f * enemy.defence));
+            InstantiateDamageText(damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
@@ -241,7 +196,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
     }
 
-    private void UpdateTimer()
+    private bool UpdateTimer()
     {
         movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
         attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
@@ -252,5 +207,19 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         attackEnabler = attackDisableTimer <= 0;
         damageEnabler = damageDisableTimer <= 0;
         dodgeEnabler = dodgeDisableTimer <= 0;
+
+        return true;
+    }
+
+    private void InstantiateDamageText(float value, string type)
+    {
+        var damageTextInstantiated = Instantiate(
+            damageText,
+            Camera.main.WorldToScreenPoint(gameObject.transform.position),
+            Quaternion.identity,
+            GameObject.Find("ScreenUI").transform
+            ).GetComponent<DamageText>();
+
+            damageTextInstantiated.SetContent(value, type);
     }
 }

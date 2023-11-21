@@ -32,7 +32,7 @@ public class ChestController : MonoBehaviour
 
     public void OpenChest()
     {
-        if (!isOpen && haveKey())
+        if (!isOpen && HaveKey())
         {
             isOpen = true;
             interactable.enabled = false;
@@ -46,7 +46,7 @@ public class ChestController : MonoBehaviour
         }
     }
 
-    public bool haveKey()
+    public bool HaveKey()
     {
         bool haveKey = false;
         int indexOfKeyList = -1;

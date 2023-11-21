@@ -8,6 +8,7 @@ public class TorchLightController : MonoBehaviour
     Light2D torchLight;
     Animator animator;
 
+    [Header("Status")]
     public bool extinguished = false;
 
     void Start()

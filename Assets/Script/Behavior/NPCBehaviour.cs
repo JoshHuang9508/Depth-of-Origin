@@ -1,13 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
-public class NPCBehaviour : MonoBehaviour
+public class NPCBehaviour : MonoBehaviour, Damageable
 {
-    public Vector3 moveVec;
-    public Rigidbody2D currentRb;
-    public SpriteRenderer spriteRenderer;
-    public Animator animator;
+    [Header("Setting")]
+    public float walkSpeed;
+
+    [Header("State")]
+    public bool movementEnabler = true;
+    public float movementDisableTimer = 0;
+    public bool isMoving;
+    public float timeElapse;
+    public Vector3 currentPos, targetPos, diraction;
+
+    Rigidbody2D currentRb;
+    SpriteRenderer spriteRenderer;
+    Animator animator;
+    
 
     void Start()
     {
@@ -15,37 +26,86 @@ public class NPCBehaviour : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
 
-        StartCoroutine(MoveRoutine());
+        currentPos = transform.position;
+        targetPos = currentPos;
     }
 
     void Update()
     {
-        currentRb.velocity = moveVec;
+        currentPos = transform.position;
+        diraction = (targetPos - currentPos).normalized;
 
-        animator.SetFloat("Horizontal", moveVec.x);
-        animator.SetFloat("Vertical", moveVec.y);
-        spriteRenderer.flipX = moveVec.x < 0;
+        timeElapse += Time.deltaTime;
+
+        Moving();
+        UpdateTimer();
     }
 
-    private void Move()
+    private void Moving()
     {
-        int horizontalVec = Random.Range(-3, 3);
-        int verticalVec = Random.Range(-3, 3);
+        animator.SetBool("isHit", !movementEnabler);
+        spriteRenderer.flipX = Mathf.Abs(targetPos.x - currentPos.x) > 0.2 ? targetPos.x - currentPos.x < 0 : spriteRenderer.flipX;
 
-        moveVec = new Vector3(horizontalVec, verticalVec, 0);
+        if (!movementEnabler) return;
+
+        if (timeElapse >= Random.Range(3f, 5f) && !isMoving)
+        {
+            SetTargetPos();
+            timeElapse = 0;
+        }
+        if (!DetectTargetPos(currentPos, targetPos))
+        {
+            currentRb.MovePosition(transform.position + walkSpeed * Time.deltaTime * diraction);
+
+            if (timeElapse >= Random.Range(1f, 3f) && isMoving)
+            {
+                targetPos = currentPos;
+                timeElapse = 0;
+            }
+
+            isMoving = true;
+            animator.SetBool("ismove", true);
+        }
+        else
+        {
+            isMoving = false;
+            animator.SetBool("ismove", false);
+        }
     }
 
-    private void Stop()
+    private void SetTargetPos()
     {
-        moveVec = Vector3.zero;
+        Vector3 newPosOffset = new(Random.Range(-3, 3), Random.Range(-3, 3), 0);
+
+        targetPos = currentPos + newPosOffset;
     }
 
-    private IEnumerator MoveRoutine()
+    private bool DetectTargetPos(Vector3 currentPos, Vector3 targetPos)
     {
-        yield return new WaitForSeconds(Random.Range(3f, 5f));
-        Move();
-        yield return new WaitForSeconds(Random.Range(0.5f, 2f));
-        Stop();
-        StartCoroutine(MoveRoutine());
+        if(currentPos.x > targetPos.x - 0.2 &&
+            currentPos.x < targetPos.x + 0.2 &&
+            currentPos.y > targetPos.y - 0.2 &&
+            currentPos.y < targetPos.y + 0.2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
+    {
+        currentRb.velocity = knockbackForce;
+
+        movementDisableTimer = movementDisableTimer > knockbackTime ? movementDisableTimer : knockbackTime;
+    }
+
+    private void UpdateTimer()
+    {
+        movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
+
+        movementEnabler = movementDisableTimer <= 0;
     }
 }

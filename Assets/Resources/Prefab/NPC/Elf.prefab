@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 7898212324065246657}
   - component: {fileID: 1611369558164191641}
   - component: {fileID: 7629684207400392404}
+  - component: {fileID: 1576033482591271821}
   m_Layer: 0
   m_Name: elf
-  m_TagString: Untagged
+  m_TagString: HitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +108,52 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &1576033482591271821
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853811350344478777}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.000823617, y: -0.3442281}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1.75}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.4942987, y: 0.9321264}
+  m_EdgeRadius: 0
 --- !u!1 &6979859853840038935
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,10 +265,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfbf24b3418344dca0ea5e11fa43d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveVec: {x: 0, y: 0, z: 0}
-  currentRb: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 0}
+  walkSpeed: 3
+  movementEnabler: 1
+  movementDisableTimer: 0
+  isMoving: 0
+  timeElapse: 0
+  currentPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  diraction: {x: 0, y: 0, z: 0}
 --- !u!210 &2389553474108140035
 SortingGroup:
   m_ObjectHideFlags: 0
