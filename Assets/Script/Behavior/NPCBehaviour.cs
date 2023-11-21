@@ -53,6 +53,7 @@ public class NPCBehaviour : MonoBehaviour, Damageable
             SetTargetPos();
             timeElapse = 0;
         }
+
         if (!DetectTargetPos(currentPos, targetPos))
         {
             currentRb.MovePosition(transform.position + walkSpeed * Time.deltaTime * diraction);

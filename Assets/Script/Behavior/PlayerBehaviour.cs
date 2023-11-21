@@ -89,29 +89,28 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
             if (currentHealth <= 0)
             {
-                Debug.Log("Player Dead");
+                //disable player object
+                currentHealth = 0;
                 currentCoinAmount = 0;
                 currentRb.bodyType = RigidbodyType2D.Static;
-                damageEnabler = false;
                 behaviourEnabler = false;
                 shopUI.gameObject.SetActive(false);
                 inventoryUI.gameObject.SetActive(false);
 
                 //drop item
-                List<Lootings> lootings = new();
+                List<Lootings> dropList = new();
                 List<int> indexOfInvetoryItem = new();
 
                 foreach (InventoryItem inventoryItem in inventoryData.inventoryItems)
                 {
                     if(UnityEngine.Random.Range(0, 100) >= 50)
                     {
-                        lootings.Add(new Lootings(inventoryItem.item, 100, inventoryItem.quantity));
+                        dropList.Add(new Lootings(inventoryItem.item, 100, inventoryItem.quantity));
                         indexOfInvetoryItem.Add(inventoryData.inventoryItems.IndexOf(inventoryItem));
                     }
                 }
                 foreach(int indexNum in indexOfInvetoryItem)
                 {
-                    Debug.Log(indexNum);
                     if (indexNum <= inventoryData.inventoryItems.Count)
                     {
                         inventoryData.RemoveItem(indexNum, -1);
@@ -123,7 +122,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                     Quaternion.identity,
                     GameObject.FindWithTag("Item").transform
                     ).GetComponent<ItemDropper>();
-                ItemDropper.DropItems(lootings);
+                ItemDropper.DropItems(dropList);
 
 
                 //disable player object
@@ -252,12 +251,36 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
+    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
+    {
+        if (UpdateTimer() && damageEnabler && behaviourEnabler)
+        {
+            Health -= damage / (1 + (0.001f * defence));
+            InstantiateDamageText(damage / (1 + (0.001f * defence)), "PlayerHit");
+
+            //knockback
+            currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
+
+            //delay
+            movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
+
+            //camera shake
+            CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
+            StartCoroutine(camera.Shake(0.1f, 0.2f));
+
+            //scene effect
+            onHitEffect.SetTrigger("OnHit");
+        }
+    }
+
 
 
 
 
     public bool UpdatePlayerStates()
     {
+        float currentHealthPercent = currentHealth / maxHealth;
+
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
         List<object> items = new(){ armor, jewelry, book, currentWeapon };
@@ -286,6 +309,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_defence = results[3];
         E_critRate = results[4];
         E_critDamage = results[5];
+
+        currentHealth = maxHealth * currentHealthPercent;
 
         return true;
     }
@@ -355,32 +380,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 break;
         }
         return currentWeapon;
-    }
-
-
-
-
-
-    public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
-    {
-        if (UpdateTimer() && damageEnabler)
-        {
-            Health -= damage / (1 +(0.001f * defence));
-            InstantiateDamageText(damage / (1 + (0.001f * defence)), "PlayerHit");
-
-            //knockback
-            currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
-
-            //delay
-            movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
-
-            //camera shake
-            CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
-            StartCoroutine(camera.Shake(0.1f, 0.2f));
-
-            //scene effect
-            onHitEffect.SetTrigger("OnHit");
-        }
     }
 
 
