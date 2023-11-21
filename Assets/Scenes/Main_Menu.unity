@@ -610,6 +610,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d798ac795ce4723a304058f3e7b552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 0}
+  actionType: 0
+  equipmentData: {fileID: 0}
+  listOfItemSlots: []
   armor: {fileID: 1361340099}
   jewelry: {fileID: 1364284882}
   book: {fileID: 1889055937}
@@ -1009,6 +1013,106 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109623916}
+  m_CullTransparentMesh: 1
+--- !u!1 &115078045
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 115078046}
+  - component: {fileID: 115078050}
+  - component: {fileID: 115078049}
+  - component: {fileID: 115078048}
+  - component: {fileID: 115078047}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &115078046
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115078045}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2014996545}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 0}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &115078047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115078045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f25d5bed0d54894baa50e561b8d36db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDisplayModel: {fileID: 7365383577249430305, guid: 1af295001454fb34dac2aacfb98e1838, type: 3}
+--- !u!114 &115078048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115078045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &115078049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115078045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!222 &115078050
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115078045}
   m_CullTransparentMesh: 1
 --- !u!1 &118490885
 GameObject:
@@ -2200,7 +2304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d393f966ca0f840faab6a50a489c1c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryType: 3
+  actionType: 0
   actionPanel: {fileID: 1901252446}
   itemImage: {fileID: 754897109}
   title: {fileID: 108941327}
@@ -2405,7 +2509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b28f28fd3b14240804a421e5f71a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossObject: {fileID: 0}
+  boss: {fileID: 0}
   slider: {fileID: 216006172}
   healthText: {fileID: 1495763071}
   bossName: {fileID: 1371641259}
@@ -5674,6 +5778,7 @@ MonoBehaviour:
   - {fileID: 76223836}
   descriptionPages: []
   backpackPages: []
+  equipmentPages: []
   mouseFollower: {fileID: 166259829}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
 --- !u!114 &468010867
@@ -6203,7 +6308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc23c88cf17f2c41a7416852a5ddd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryType: 0
+  actionType: 0
   isDragable: 1
   inventoryData: {fileID: 0}
   inventoryUI: {fileID: 468010866}
@@ -7259,9 +7364,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2ab589d484d0440bc20af99cc714ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Interactable: {fileID: 0}
-  weapon: {fileID: 0}
-  player: {fileID: 1706594406}
+  isflip: 0
+  startAngle: 0
+  mousePos: {x: 0, y: 0}
+  currentPos: {x: 0, y: 0}
+  Diraction: {x: 0, y: 0}
 --- !u!212 &558551605
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19159,6 +19266,7 @@ MonoBehaviour:
   - {fileID: 1702336524}
   descriptionPages: []
   backpackPages: []
+  equipmentPages: []
   mouseFollower: {fileID: 166259829}
   itemDropper: {fileID: 0}
 --- !u!114 &1669352353
@@ -19555,7 +19663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc23c88cf17f2c41a7416852a5ddd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryType: 2
+  actionType: 0
   isDragable: 0
   inventoryData: {fileID: 0}
   inventoryUI: {fileID: 0}
@@ -19830,8 +19938,8 @@ MonoBehaviour:
     itemState: []
   currentHealth: 0
   currentCoinAmount: 0
-  currentWeapon: {fileID: 0}
   weaponControl: 1
+  currentWeapon: {fileID: 0}
   meleeWeapon: {fileID: 0}
   rangedWeapon: {fileID: 0}
   potions: {fileID: 0}
@@ -19839,18 +19947,40 @@ MonoBehaviour:
   armor: {fileID: 0}
   jewelry: {fileID: 0}
   book: {fileID: 0}
-  onHitCounter: 0
   effectionList: []
   keyList: []
+  E_walkSpeed: 0
+  E_maxHealth: 0
+  E_strength: 0
+  E_defence: 0
+  E_critRate: 0
+  E_critDamage: 0
   sprintKey: 304
-  damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
-  pauseMenu: {fileID: 975590400}
+  backpackKey: 102
+  usePotionKey: 0
+  useWeaponKey: 0
+  meleeWeaponKey: 0
+  rangedWeaponKey: 0
   onHitEffect: {fileID: 176781245}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
   shopData: {fileID: 11400000, guid: 957fd7c0411c44910bb4f948058457de, type: 2}
+  equipmentData: {fileID: 0}
   inventoryUI: {fileID: 468010866}
   shopUI: {fileID: 1669352352}
   summonWeapon: {fileID: 558551604}
+  damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
+  itemDropper: {fileID: 0}
+  behaviourEnabler: 1
+  movementEnabler: 1
+  movementDisableTimer: 0
+  attackEnabler: 1
+  attackDisableTimer: 0
+  damageEnabler: 1
+  damageDisableTimer: 0
+  sprintEnabler: 1
+  sprintDisableTimer: 0
+  walkSpeedMutiplyerEnabler: 0
+  walkSpeedMutiplyerDisableTimer: 0
 --- !u!50 &1706594407
 Rigidbody2D:
   serializedVersion: 4
@@ -20193,7 +20323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc23c88cf17f2c41a7416852a5ddd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryType: 1
+  actionType: 0
   isDragable: 1
   inventoryData: {fileID: 0}
   inventoryUI: {fileID: 0}
@@ -23394,6 +23524,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000214754}
   m_CullTransparentMesh: 1
+--- !u!1 &2014996544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014996545}
+  m_Layer: 5
+  m_Name: EffectContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2014996545
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014996544}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 115078046}
+  m_Father: {fileID: 2044644925}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 241}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &2019039150
 GameObject:
   m_ObjectHideFlags: 0
@@ -23803,6 +23969,7 @@ RectTransform:
   - {fileID: 2019039151}
   - {fileID: 216006170}
   - {fileID: 243629853}
+  - {fileID: 2014996545}
   m_Father: {fileID: 547469573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -24351,7 +24518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d393f966ca0f840faab6a50a489c1c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryType: 3
+  actionType: 0
   actionPanel: {fileID: 980100609}
   itemImage: {fileID: 1336271501}
   title: {fileID: 978091596}

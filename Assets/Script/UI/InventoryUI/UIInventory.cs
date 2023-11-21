@@ -13,6 +13,7 @@ namespace Inventory.UI
         [SerializeField] public List<GameObject> contentPages;
         [SerializeField] public List<UIDescriptionPage> descriptionPages = new();
         [SerializeField] public List<UIItemSlotsPage> backpackPages = new();
+        [SerializeField] public List<UIEquipmentPage> equipmentPages = new();
 
         [Header("Connect Object")]
         [SerializeField] public MouseFollower mouseFollower;
@@ -109,6 +110,9 @@ namespace Inventory.UI
                             case ActionType.ShopGoods:
                                 if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton("Buy", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
                                 break;
+                            case ActionType.BackpackEquipment:
+                                if (inventoryItem.item is IUnequipable) descriptionPage.actionPanel.AddButton("Unequip", () => PerformAction(inventoryData, itemIndex, "Unequip", inventoryType));
+                                break;
                         }
                     }
                 }
@@ -163,6 +167,11 @@ namespace Inventory.UI
                                 itemAction.SelectAction("Buy", amountToUse, player, inventoryItem.itemState);
                                 if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
                                 break;
+                            case "Unequip":
+                                amountToUse = 1;
+                                itemAction.SelectAction("Unequip", amountToUse, player, inventoryItem.itemState);
+                                if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
+                                break;
                         }
 
                         if (inventoryData.GetItemAt(itemIndex).IsEmpty) ClearDescription(inventoryType);
@@ -185,6 +194,6 @@ namespace Inventory.UI
 
     public enum ActionType
     {
-        BackpackInventory, BackpackShop, ShopGoods, All
+        BackpackInventory, BackpackEquipment, BackpackShop, ShopGoods, All
     }
 }

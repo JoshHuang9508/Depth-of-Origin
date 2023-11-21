@@ -64,7 +64,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     [Header("Connect Object")]
     public Animator onHitEffect;
-    public InventorySO inventoryData, shopData;
+    public InventorySO inventoryData, shopData, equipmentData;
     public UIInventory inventoryUI, shopUI;
     public SummonWeapon summonWeapon;
     public GameObject damageText;
@@ -405,6 +405,25 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
+    public void UnEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
+    {
+        switch (type)
+        {
+            case EquippableItemSO.EquipmentType.armor:
+                if (armor != null) inventoryData.AddItem(armor, 1);
+                armor = null;
+                break;
+            case EquippableItemSO.EquipmentType.jewelry:
+                if (jewelry != null) inventoryData.AddItem(jewelry, 1);
+                jewelry = null;
+                break;
+            case EquippableItemSO.EquipmentType.book:
+                if (book != null) inventoryData.AddItem(book, 1);
+                book = null;
+                break;
+        }
+    }
+
     public void SetEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
     {
         switch (type)
@@ -419,12 +438,33 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 break;
         }
     }
+    public void UnEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
+    {
+        switch (type)
+        {
+            case WeaponSO.WeaponType.Melee:
+                if (meleeWeapon != null) inventoryData.AddItem(meleeWeapon, 1);
+                meleeWeapon = null;
+                break;
+            case WeaponSO.WeaponType.Ranged:
+                if (rangedWeapon != null) inventoryData.AddItem(rangedWeapon, 1);
+                rangedWeapon = null;
+                break;
+        }
+    }
 
     public void SetEquipment(EdibleItemSO edibleItem, int amount)
     {
         if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
         potions = edibleItem;
         currentPotionAmont = amount;
+    }
+
+    public void UnEquipment(EdibleItemSO edibleItem, int amount)
+    {
+        if (potions != null) inventoryData.AddItem(potions, currentPotionAmont);
+        potions = null;
+        currentPotionAmont = 0;
     }
 
     public void SetEffection(EdibleItemSO edibleItem, float effectTime)
