@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class SummonWeapon : MonoBehaviour
 {
-    public Interactable Interactable;
-    public WeaponSO weapon;
-    public PlayerBehaviour player;
+    [Header("Weapon Object")]
+    WeaponSO weapon;
+
+    [Header("Status")]
+    public bool isflip;
+    public float startAngle;
+    [SerializeField] Vector2 mousePos;
+    [SerializeField] Vector2 currentPos;
+    [SerializeField] Vector2 Diraction;
+
+    PlayerBehaviour player;
     SpriteRenderer spriteRenderer;
-
-    bool isflip;
-    float startAngle;
-
-    Vector2 mousePos;
-    Vector2 currentPos;
-    Vector2 Diraction;
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
     void Update()
@@ -37,12 +39,32 @@ public class SummonWeapon : MonoBehaviour
             isflip = false;
         }
 
-        UpdateCurrentWeapon();
+
+        weapon = player.UpdateCurrentWeapon();
+
+        if (weapon == null)
+        {
+            spriteRenderer.sprite = null;
+            weapon = null;
+        }
+        else
+        {
+            switch (weapon.weaponType)
+            {
+                case WeaponSO.WeaponType.Melee:
+                    spriteRenderer.sprite = null;
+                    break;
+                case WeaponSO.WeaponType.Ranged:
+                    spriteRenderer.sprite = weapon.Image;
+                    transform.rotation = Quaternion.Euler(0, 0, startAngle);
+                    break;
+            }
+        }
     }
 
     public void Summon()
     {
-        UpdateCurrentWeapon();
+        weapon = player.UpdateCurrentWeapon();
 
         if (weapon == null) return;
 
@@ -54,7 +76,7 @@ public class SummonWeapon : MonoBehaviour
         switch (weapon.weaponType)
         {
             case WeaponSO.WeaponType.Melee:
-                //MeleeWeaponSO meleeWeaponSO = weapon as MeleeWeaponSO;
+                //MeleeWeaponSO meleeWeapon = weapon as MeleeWeaponSO;
 
                 var meleeWeaponSummoned = Instantiate(
                     weapon.weaponObject,
@@ -101,30 +123,6 @@ public class SummonWeapon : MonoBehaviour
                         break;
                 }
                 break;
-        }
-    }
-
-    private void UpdateCurrentWeapon()
-    {
-        if (player.currentWeapon == null)
-        {
-            spriteRenderer.sprite = null;
-            weapon = null;
-        }
-        else if (player.currentWeapon is WeaponSO)
-        {
-            weapon = player.currentWeapon;
-
-            switch (weapon.weaponType)
-            {
-                case WeaponSO.WeaponType.Melee:
-                    spriteRenderer.sprite = null;
-                    break;
-                case WeaponSO.WeaponType.Ranged:
-                    spriteRenderer.sprite = weapon.Image;
-                    transform.rotation = Quaternion.Euler(0, 0, startAngle);
-                    break;
-            }
         }
     }
 }

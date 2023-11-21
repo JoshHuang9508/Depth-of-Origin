@@ -7,8 +7,15 @@ using UnityEngine.UI;
 
 public class UIEquipmentPage : MonoBehaviour
 {
+    [Header("State")]
+    public UIItemSlot armor;
+    public UIItemSlot jewelry;
+    public UIItemSlot book;
+    public UIItemSlot meleeWeapon;
+    public UIItemSlot rangedWeapon;
+    public UIItemSlot potions;
+
     [Header("Connect Object")]
-    public UIItemSlot armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
     public GameObject target, statsdisplay;
     public TMP_Text health, str, movespeed, def, critrate, critdamage;
 
@@ -17,6 +24,7 @@ public class UIEquipmentPage : MonoBehaviour
 
     private void Start()
     {
+        target = GameObject.FindWithTag("Player");
         player = target.GetComponent<PlayerBehaviour>();
     }
 

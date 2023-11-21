@@ -11,10 +11,10 @@ namespace Inventory.UI
     public class UIDescriptionPage : MonoBehaviour
     {
         [Header("Settings")]
-        [SerializeField] public InventoryType inventoryType;
+        public ActionType actionType;
 
         [Header("Connect Object")]
-        [SerializeField] public ItemActionPanel actionPanel;
+        public ItemActionPanel actionPanel;
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text title;
         [SerializeField] private TMP_Text description;

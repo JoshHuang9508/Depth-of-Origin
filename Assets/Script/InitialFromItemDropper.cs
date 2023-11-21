@@ -17,16 +17,16 @@ public class InitialFromItemDropper : MonoBehaviour
 
     void Start()
     {
-        if(InventoryItem is CoinSO)
+        if(InventoryItem is CoinSO coin)
         {
-            if(((CoinSO)InventoryItem).runtimeAnimatorController != null)
+            if(coin.runtimeAnimatorController != null)
             {
-                animator.runtimeAnimatorController = ((CoinSO)InventoryItem).runtimeAnimatorController;
+                animator.runtimeAnimatorController = coin.runtimeAnimatorController;
             }
             SetSpriteImage();
             SetSpriteLight();
         }
-        else if(InventoryItem is KeySO)
+        else if(InventoryItem is KeySO key)
         {
             SetSpriteImage();
             SetSpriteLight();

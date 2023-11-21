@@ -6,11 +6,12 @@ using Inventory.UI;
 
 public class Bazaar : MonoBehaviour
 {
+    [Header("Setting")]
+    public List<InventoryItem> shopGoodsList = new();
+
+    [Header("Connect Object")]
     public UIInventory shopUI;
     public InventorySO shopData;
-
-    public List<InventoryItem> shopGoodsList = new List<InventoryItem>();
-
 
     private void Update()
     {
@@ -34,13 +35,15 @@ public class Bazaar : MonoBehaviour
             shopData.AddItem(item);
         }
 
-        shopUI.SetInventoryContent(GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData, InventoryType.BackpackShop);
-        shopUI.SetInventoryContent(shopData, InventoryType.ShopGoods);
+        shopUI.SetInventoryContent(GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData, ActionType.BackpackShop);
+        shopUI.SetInventoryContent(shopData, ActionType.ShopGoods);
         shopUI.gameObject.SetActive(!shopUI.gameObject.activeInHierarchy);
+        Time.timeScale = shopUI.gameObject.activeInHierarchy ? 0 : 1;
     }
 
     public void CloseShop()
     {
+        Time.timeScale = 1;
         shopUI.gameObject.SetActive(false);
     }
 }

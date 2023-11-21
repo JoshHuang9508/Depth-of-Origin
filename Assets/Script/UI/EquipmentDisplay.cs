@@ -6,12 +6,14 @@ using TMPro;
 
 public class EquipmentDisplay : MonoBehaviour
 {
+    [Header("Connect Object")]
     public Image meleeWeaponImage;
     public Image rangedWeaponImage;
     public Image potionImage;
     public Image meleeWeaponBorder;
     public Image rangedWeaponBorder;
     public TMP_Text potionAmountText;
+
     PlayerBehaviour player;
 
     void Start()
