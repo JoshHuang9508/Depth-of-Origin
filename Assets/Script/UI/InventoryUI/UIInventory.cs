@@ -11,14 +11,9 @@ namespace Inventory.UI
     {
         [Header("Pages")]
         [SerializeField] public List<GameObject> contentPages;
-<<<<<<< HEAD
-        [SerializeField] public List<UIDescriptionPage> descriptionPages = new List<UIDescriptionPage>();
-        [SerializeField] public List<UIBackpackPage> backpackPages = new List<UIBackpackPage>();
-        [SerializeField] public List<UIEquipmentPage> equipmentPages = new List<UIEquipmentPage>();
-=======
         [SerializeField] public List<UIDescriptionPage> descriptionPages = new();
         [SerializeField] public List<UIItemSlotsPage> backpackPages = new();
->>>>>>> origin/main
+        [SerializeField] public List<UIEquipmentPage> equipmentPages = new();
 
         [Header("Connect Object")]
         [SerializeField] public MouseFollower mouseFollower;
@@ -115,7 +110,7 @@ namespace Inventory.UI
                             case ActionType.ShopGoods:
                                 if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton("Buy", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
                                 break;
-                            case InventoryType.BackpackEquipment:
+                            case ActionType.BackpackEquipment:
                                 if (inventoryItem.item is IUnequipable) descriptionPage.actionPanel.AddButton("Unequip", () => PerformAction(inventoryData, itemIndex, "Unequip", inventoryType));
                                 break;
                         }

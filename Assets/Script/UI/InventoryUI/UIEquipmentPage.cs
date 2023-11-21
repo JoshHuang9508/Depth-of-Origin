@@ -11,7 +11,7 @@ public class UIEquipmentPage : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] public UIInventory inventoryUI;
-    [SerializeField] public InventoryType inventoryType;
+    [SerializeField] public ActionType ActionType;
     [SerializeField] public InventorySO equipmentData;
 
     public List<UIItemSlot> listOfItemSlots = new List<UIItemSlot>();
@@ -25,6 +25,7 @@ public class UIEquipmentPage : MonoBehaviour
 
     private void Start()
     {
+        target = GameObject.FindWithTag("Player");
         player = target.GetComponent<PlayerBehaviour>();
     }
 
