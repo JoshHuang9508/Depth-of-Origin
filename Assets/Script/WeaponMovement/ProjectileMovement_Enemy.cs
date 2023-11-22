@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 public class ProjectileMovement_Enemy : WeaponMovementRanged
 {
-    [Header("Connect Object")]
+    [Header("Object Reference")]
     public EnemySO enemy;
 
     private void Start()

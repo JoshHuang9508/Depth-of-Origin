@@ -5,11 +5,10 @@ using TMPro;
 
 public class CoinCounter : MonoBehaviour
 {
-    [Header("Connect Object")]
-    public TMP_Text coinCounterText;
+    [Header("Object Reference")]
+    [SerializeField] private TMP_Text coinCounterText;
+    [SerializeField] private PlayerBehaviour player;
 
-    PlayerBehaviour player;
-    
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();

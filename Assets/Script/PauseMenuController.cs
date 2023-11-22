@@ -10,7 +10,6 @@ public class PauseMenuController : MonoBehaviour
         string currentSceneName = SceneManager.GetActiveScene().name;
         PlayerPrefs.SetString("SavedLevel", currentSceneName);
         PlayerPrefs.Save();
-        
     }
 
     public void ContinueButtonClicked()

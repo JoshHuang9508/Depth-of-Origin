@@ -7,10 +7,12 @@ using TMPro;
 public class HealthWarning : MonoBehaviour
 {
     [Header("Setting")]
-    public Gradient gradient;
-    public Image fill;
+    [SerializeField] private Gradient gradient;
 
-    PlayerBehaviour player;
+    [Header("Object Reference")]
+    [SerializeField] private Image fill;
+    [SerializeField] private PlayerBehaviour player;
+
 
     void Start()
     {

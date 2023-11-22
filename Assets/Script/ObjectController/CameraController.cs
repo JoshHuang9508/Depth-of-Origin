@@ -6,12 +6,14 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Setting")]
-    public Transform target;
-    public Collider2D mapBounds;
-    public float smoothing;
-    public Vector3 offset = Vector3.zero;
+    [SerializeField] private float smoothing;
+    [SerializeField] private Vector3 offset = Vector3.zero;
 
-    [Header("Status")]
+    [Header("Object Reference")]
+    [SerializeField] private Transform target;
+    [SerializeField] private Collider2D mapBounds;
+
+    [Header("Stats")]
     public bool isFollowing_x = true;
     public bool isFollowing_y = true;
 

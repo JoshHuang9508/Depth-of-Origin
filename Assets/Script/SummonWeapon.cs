@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class SummonWeapon : MonoBehaviour
 {
-    [Header("Weapon Object")]
-    WeaponSO weapon;
+    [Header("Object Reference")]
+    [SerializeField] private WeaponSO weapon;
+    [SerializeField] private PlayerBehaviour player;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
-    [Header("Status")]
-    public bool isflip;
-    public float startAngle;
+    [Header("Dynamic Data")]
     [SerializeField] Vector2 mousePos;
     [SerializeField] Vector2 currentPos;
     [SerializeField] Vector2 Diraction;
 
-    PlayerBehaviour player;
-    SpriteRenderer spriteRenderer;
+    [Header("Stats")]
+    public bool isflip;
+    public float startAngle;
+    
 
     void Start()
     {
@@ -93,9 +95,9 @@ public class SummonWeapon : MonoBehaviour
             case WeaponSO.WeaponType.Ranged:
                 RangedWeaponSO rangedWeapon = weapon as RangedWeaponSO;
 
-                switch (rangedWeapon.projectileType)
+                switch (rangedWeapon.shootingType)
                 {
-                    case RangedWeaponSO.ProjectileType.Straight:
+                    case RangedWeaponSO.ShootingType.Single:
                         var arrowSummoned = Instantiate(
                             rangedWeapon.projectileObject,
                             transform.position,
@@ -107,7 +109,7 @@ public class SummonWeapon : MonoBehaviour
                         arrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
                         break;
 
-                    case RangedWeaponSO.ProjectileType.Split:
+                    case RangedWeaponSO.ShootingType.Split:
                         for (int i = -60 + (120 / (rangedWeapon.splitAmount + 1)); i < 60; i += 120 / (rangedWeapon.splitAmount + 1))
                         {
                             var splitArrowSummoned = Instantiate(

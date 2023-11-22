@@ -5,7 +5,7 @@ using Inventory.Model;
 
 public class ItemDropper : MonoBehaviour
 {
-    [Header("Connect Object")]
+    [Header("Object Reference")]
     public GameObject itemModel;
 
     private void Start()

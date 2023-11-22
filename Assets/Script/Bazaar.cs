@@ -7,11 +7,11 @@ using Inventory.UI;
 public class Bazaar : MonoBehaviour
 {
     [Header("Setting")]
-    public List<InventoryItem> shopGoodsList = new();
+    [SerializeField] private List<InventoryItem> shopGoodsList = new();
 
-    [Header("Connect Object")]
-    public UIInventory shopUI;
-    public InventorySO shopData;
+    [Header("Object Reference")]
+    [SerializeField] private UIInventory shopUI;
+    [SerializeField] private InventorySO shopData;
 
     private void Update()
     {

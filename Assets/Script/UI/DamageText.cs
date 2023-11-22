@@ -6,16 +6,18 @@ using TMPro;
 public class DamageText : MonoBehaviour
 {
     [Header("Setting")]
-    public float timeToLive = 0.5f;
-    public float floatSpeed = 500;
-    public Vector3 floatingDir = new Vector3(0, 1, 0);
+    [SerializeField] private float timeToLive = 0.5f;
+    [SerializeField] private float floatSpeed = 500;
+    [SerializeField] private Vector3 floatingDir = new(0, 1, 0);
 
-    [Header("Status")]
-    public float timeElapsed = 0.0f;
+    [Header("Object Reference")]
+    [SerializeField] private TextMeshProUGUI textmesh;
+    [SerializeField] private RectTransform rtransform;
 
-    TextMeshProUGUI textmesh;
-    RectTransform rtransform;
-    Color starting_Color;
+    [Header("Dynamic Data")]
+    [SerializeField] private Color starting_Color;
+    [SerializeField] float timeElapsed = 0.0f;
+    
 
     void Start()
     {

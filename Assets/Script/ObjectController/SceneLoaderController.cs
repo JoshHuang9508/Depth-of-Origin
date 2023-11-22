@@ -6,25 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoaderController : MonoBehaviour
 {
+    [Header("Setting")]
     [SerializeField] LoadType loadType = LoadType.Scene;
+    [SerializeField] private int SceneNum = 0;
+    [SerializeField] private GameObject transformPos;
+
+    [Header("Stats")]
+    public static bool inAction = false;
+
+    [Header("Object Reference")]
+    public Animator transition;
 
     enum LoadType
     {
         Scene, Chunk
     }
 
-    [Header("Scene Loader Setting")]
-    public int SceneNum = 0;
-
-    [Header("Chunk Loader Setting")]
-    public SceneLoaderController transformPos;
-
-    [Header("Status")]
-    public static bool inAction = false;
-
-    [Header("Connect Object")]
-    public Animator transition;
-    
 
     private void Start()
     {

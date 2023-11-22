@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MouseFollower : MonoBehaviour
 {
+    [Header("Object Reference")]
     [SerializeField] private Canvas canvas;
     [SerializeField] private UIItemSlot item;
 

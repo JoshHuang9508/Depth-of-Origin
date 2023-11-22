@@ -6,22 +6,22 @@ using Inventory.Model;
 public class ChestController : MonoBehaviour
 {
     [Header("Setting")]
-    public bool requiredKeys;
-    public string keyName;
-
-    [Header("Status")]
-    public bool isOpen;
+    [SerializeField] private bool requiredKeys;
+    [SerializeField] private string keyName;
 
     [Header("Looting")]
     public List<Coins> coins;
     public List<Lootings> lootings;
 
-    [Header("Connect Object")]
-    public GameObject itemDropper;
+    [Header("Object Reference")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private PlayerBehaviour player;
+    [SerializeField] private Interactable interactable;
+    [SerializeField] private GameObject itemDropper;
 
-    Animator animator;
-    PlayerBehaviour player;
-    Interactable interactable;
+    [Header("Stats")]
+    public bool isOpen;
+
 
     void Start()
     {

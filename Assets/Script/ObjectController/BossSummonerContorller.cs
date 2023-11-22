@@ -6,15 +6,19 @@ using UnityEngine;
 public class BossSummonerContorller : MonoBehaviour
 {
     [Header("Settings")]
-    public int neededActionTimes;
-    public EnemySO boss;
-    public Vector3 summonPos;
+    [SerializeField] private int neededActionTimes;
+    [SerializeField] private Vector3 summonPos;
 
-    [Header("Status")]
-    public static int currentActionTimes;
+    [Header("Object Reference")]
+    [SerializeField] private EnemySO boss;
+    [SerializeField] private Interactable interactable;
+
+    [Header("Dynamic Data")]
+    [SerializeField] private static int currentActionTimes;
+
+    [Header("Stats")]
     public bool isActived = false;
 
-    Interactable interactable;
 
     private void Start()
     {

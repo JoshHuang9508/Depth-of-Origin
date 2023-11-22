@@ -6,18 +6,20 @@ public class SpawnerController : MonoBehaviour
 {
     [Header("Setting")]
     public bool autoSpawn = true;
-    public int spawnLimit = 4;
     public float minSpawnDistance = 15;
     public float spawnRange;
-    public int maxSpawnTimes = -1;
+    public int mobsStayedLimit = 4;
+    public int spawnTimesLimit = -1;
     public float spawnGapMin = 3;
     public float spawnGapMax = 10;
-    public LayerMask targetLayer;
-    public List<EnemySO> spawnList;
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private List<EnemySO> spawnList;
 
-    [Header("Status")]
-    public int spawnTimes;
-    public int stayMobs;
+    [Header("Dynamic Data")]
+    [SerializeField] private int spawnTimes;
+    [SerializeField] private int stayedMobs;
+
+    [Header("Stats")]
     public bool spawnEnabler = true;
     public bool playerStayed = false;
 
@@ -40,12 +42,12 @@ public class SpawnerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy")) stayMobs++;
+        if (collision.CompareTag("Enemy")) stayedMobs++;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy")) stayMobs--;
+        if (collision.CompareTag("Enemy")) stayedMobs--;
         if (collision.CompareTag("Player"))
         {
             playerStayed = false;
@@ -56,7 +58,7 @@ public class SpawnerController : MonoBehaviour
     public void SpawnMobs()
     {
         //detect spawn restrict
-        if(spawnEnabler && (stayMobs < spawnLimit || spawnLimit == -1) && (maxSpawnTimes > spawnTimes || maxSpawnTimes == -1) &&
+        if(spawnEnabler && (stayedMobs < mobsStayedLimit || mobsStayedLimit == -1) && (spawnTimesLimit > spawnTimes || spawnTimesLimit == -1) &&
             GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().behaviourEnabler)
         {
             //spawn delay

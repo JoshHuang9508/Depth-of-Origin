@@ -13,7 +13,7 @@ namespace Inventory.UI
         [Header("Settings")]
         public ActionType actionType;
 
-        [Header("Connect Object")]
+        [Header("Object Reference")]
         public ItemActionPanel actionPanel;
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text title;

@@ -10,35 +10,33 @@ public class UIEquipmentPage : MonoBehaviour
 {
 
     [Header("Settings")]
-    [SerializeField] public UIInventory inventoryUI;
-    [SerializeField] public ActionType ActionType;
-    [SerializeField] public InventorySO equipmentData;
+    public ActionType ActionType;
 
-    public List<UIItemSlot> listOfItemSlots = new List<UIItemSlot>();
+    [Header("Dynamic Data")]
+    public List<UIItemSlot> listOfItemSlots = new();
 
-    [Header("Connect Object")]
-    public UIItemSlot armor, jewelry, book, meleeWeapon, rangedWeapon, potions;
-    public GameObject target, statsdisplay;
-    public TMP_Text health, str, movespeed, def, critrate, critdamage;
-
-    PlayerBehaviour player;
+    [Header("Object Reference")]
+    [SerializeField] private InventorySO equipmentData;
+    [SerializeField] private TMP_Text healthText, strengthText, moveSpeedText, defenceText, critRateText, critDamageText;
+    [SerializeField] private UIItemSlot armor;
+    [SerializeField] private UIItemSlot jewelry;
+    [SerializeField] private UIItemSlot book;
+    [SerializeField] private UIItemSlot meleeWeapon;
+    [SerializeField] private UIItemSlot rangedWeapon;
+    [SerializeField] private UIItemSlot potions;
+    [SerializeField] private UIInventory inventoryUI;
+    [SerializeField] private PlayerBehaviour player;
 
     private void Start()
     {
-        target = GameObject.FindWithTag("Player");
-        player = target.GetComponent<PlayerBehaviour>();
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
-
-
 
     private void Update()
     {
         SetImage();
-        GetPlayerStats();
-        
+        SetPlayerStats();
     }
-
-
 
 
     public void SetImage()
@@ -51,13 +49,13 @@ public class UIEquipmentPage : MonoBehaviour
         book.SetData(player.book != null ? player.book.Image : null, player.book != null ? 1 : 0);
     }
 
-    public void GetPlayerStats()
+    public void SetPlayerStats()
     {
-        health.text = player.maxHealth.ToString();
-        str.text = player.strength.ToString();
-        movespeed.text = player.walkSpeed.ToString();
-        def.text = player.defence.ToString();
-        critrate.text = player.critRate.ToString();
-        critdamage.text = player.critDamage.ToString();
+        healthText.text = player.maxHealth.ToString();
+        strengthText.text = player.strength.ToString();
+        moveSpeedText.text = player.walkSpeed.ToString();
+        defenceText.text = player.defence.ToString();
+        critRateText.text = player.critRate.ToString();
+        critDamageText.text = player.critDamage.ToString();
     }
 }

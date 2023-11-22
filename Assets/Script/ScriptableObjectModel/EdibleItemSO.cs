@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
 public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
 {
-    [Header("Effect settings")]
+    [Header("Effection")]
     public float E_heal;
     public float E_maxHealth;
     public float E_strength;
@@ -16,8 +16,6 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
     public float E_critRate;
     public float E_critDamage;
     public float effectTime;
-
-    
 
 
     public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)

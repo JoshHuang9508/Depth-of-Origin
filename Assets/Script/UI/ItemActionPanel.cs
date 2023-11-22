@@ -8,6 +8,7 @@ namespace Inventory.UI
 {
     public class ItemActionPanel : MonoBehaviour
     {
+        [Header("Object Reference")]
         [SerializeField] private GameObject buttonprefab;
 
 

@@ -8,18 +8,20 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 public class Interactable : MonoBehaviour
 {
     [Header("Setting")]
-    public bool interactable;
-    public KeyCode interactKey;
-    public UnityEvent interactAction, enterRangeAction, leaveRangeAction;
+    [SerializeField] private bool interactable;
+    [SerializeField] private KeyCode interactKey;
+    [SerializeField] private UnityEvent interactAction, enterRangeAction, leaveRangeAction;
 
-    [Header("Status")]
-    public bool isInRange;
+    [Header("Object Reference")]
+    [SerializeField] private GameObject interactDialogObject;
 
-    [Header("Connect Object")]
-    public GameObject interactDialogObject;
+    [Header("Dynamic Data")]
+    [SerializeField] private TMP_Text interactDialogText;
+    [SerializeField] private GameObject interactDialog;
 
-    TMP_Text interactDialogText;
-    GameObject interactDialog;
+    [Header("Stats")]
+    [SerializeField] private bool isInRange;
+    
 
     void Start()
     {

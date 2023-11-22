@@ -10,13 +10,16 @@ namespace Inventory.UI
 {
     public class UIItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
     {
-        [SerializeField] public Image itemImage;
+        [Header("Object Reference")]
+        [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text quantityTxt;
-
         [SerializeField] private Image borderImage;
-        public Action<UIItemSlot> OnItemClicked, OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag, OnRightMouseBtnClick;
 
-        private bool empty = true;
+        [Header("Stats")]
+        [SerializeField] private bool empty = true;
+
+        public Action<UIItemSlot> OnItemClicked, OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag, OnRightMouseBtnClick;
+        
 
         private void Awake()
         {

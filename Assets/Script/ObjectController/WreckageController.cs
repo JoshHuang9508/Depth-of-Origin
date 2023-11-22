@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WreckageController : MonoBehaviour
 {
-    [Header("Status")]
+    [Header("Dynamic Data")]
     [SerializeField] float timeElapse = 0;
 
     void Update()

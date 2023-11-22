@@ -10,19 +10,19 @@ public class UIItemSlotsPage : MonoBehaviour
 {
     [Header("Settings")]
     public ActionType actionType;
-    public bool isDragable;
+    [SerializeField] private bool isDragable;
 
-    [Header("Connect Object")]
+    [Header("Dynamic Data")]
+    [SerializeField] private List<UIItemSlot> listOfItemSlots = new();
+    [SerializeField] private int currentDraggedItemIndex = -1;
+
+    [Header("Object Reference")]
     public InventorySO inventoryData;
     [SerializeField] private UIInventory inventoryUI;
     [SerializeField] private UIItemSlot itemSlot;
     [SerializeField] private RectTransform contentPanel;
 
-    public List<UIItemSlot> listOfItemSlots = new();
-
-    int currentDraggedItemIndex = -1;
-
-
+    
     private void Start()
     {
         inventoryUI = GetComponentInParent<UIInventory>();

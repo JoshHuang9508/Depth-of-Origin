@@ -8,12 +8,12 @@ public class InitialFromItemDropper : MonoBehaviour
 {
     [field: SerializeField] public ItemSO InventoryItem { get; set; }
 
-    [Header("Connect Object")]
-    public SpriteRenderer spriteRenderer;
-    public GameObject backgroundLightObject;
-    public Light2D spriteLight2D;
-    public Light2D backgroundLight2D;
-    public Animator animator;
+    [Header("Object Reference")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject backgroundLightObject;
+    [SerializeField] private Light2D spriteLight2D;
+    [SerializeField] private Light2D backgroundLight2D;
+    [SerializeField] private Animator animator;
 
     void Start()
     {

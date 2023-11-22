@@ -9,7 +9,7 @@ public class BossColumnController : MonoBehaviour
     [Header("Settings")]
     public int totalColumnAmount;
 
-    [Header("Status")]
+    [Header("Stats")]
     public static int currentCoulumnAmount;
 
     public Action shieldBreak;

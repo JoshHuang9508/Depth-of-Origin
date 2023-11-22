@@ -5,20 +5,42 @@ using UnityEngine;
 public class FloorSpikeController : MonoBehaviour
 {
     [Header("Setting")]
-    public float damage;
-    public float inactiveTime;
-    public float activeTime;
+    [SerializeField] private float damage;
+    [SerializeField] private float inactiveTime;
+    [SerializeField] private float activeTime;
 
-    [Header("Status")]
+    [Header("Object Reference")]
+    [SerializeField] private Animator animator;
+
+    [Header("Dynamic Data")]
+    [SerializeField] private float timeElapse;
+
+    [Header("Stats")]
     public bool activeEnabler = true;
     public bool isActive = false;
 
-    Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
+        Activiting();
+
+        if (activeEnabler && isActive && DetectPlayer())
+        {
+            Damageable damageableObject = GameObject.FindWithTag("Player").GetComponent<Damageable>();
+
+            damageableObject.OnHit(damage, false, Vector2.zero, 0);
+        }
+    }
+
+    private bool DetectPlayer()
+    {
         List<Collider2D> colliderResult = new();
-        int colliderCount = Physics2D.OverlapCollider(GetComponent<Collider2D>(), new(), colliderResult);
+        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new(), colliderResult);
 
         bool isPlayerInRange = false;
         for (int i = 0; i < colliderResult.Count; i++)
@@ -26,43 +48,21 @@ public class FloorSpikeController : MonoBehaviour
             if (colliderResult[i] != null && colliderResult[i].CompareTag("Player")) isPlayerInRange = true;
         }
 
-        if(activeEnabler && isActive && colliderCount > 0 && isPlayerInRange)
+        return isPlayerInRange;
+    }
+
+    private void Activiting()
+    {
+        timeElapse += Time.deltaTime;
+        animator.SetBool("isActive", isActive);
+
+        if (timeElapse >= inactiveTime && !isActive)
         {
-            Damageable damageableObject = GameObject.FindWithTag("Player").GetComponent<Damageable>();
-
-            damageableObject.OnHit(damage, false, new(), 0);
-
-            StartCoroutine(delay((enabler) => {
-                activeEnabler = enabler;
-            }, 1));
+            isActive = true;
         }
-    }
-
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-
-        Active();
-    }
-
-    private void Active()
-    {
-        StartCoroutine(delay(callback =>
+        else if (timeElapse >= activeTime && isActive)
         {
-            isActive = callback;
-            animator.SetBool("isActive", callback);
-
-            if (callback == true) StartCoroutine(delay(callback =>
-            {
-                if (callback == true) Active();
-            }, activeTime));
-        }, inactiveTime));
-    }
-
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
-    {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
+            isActive = false;
+        }
     }
 }

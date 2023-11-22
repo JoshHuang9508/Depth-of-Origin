@@ -5,11 +5,12 @@ using UnityEngine.Rendering.Universal;
 
 public class TorchLightController : MonoBehaviour
 {
+    [Header("Object Reference")]
     Light2D torchLight;
     Animator animator;
 
-    [Header("Status")]
-    public bool extinguished = false;
+    [Header("Stats")]
+    [SerializeField] private bool extinguished = false;
 
     void Start()
     {

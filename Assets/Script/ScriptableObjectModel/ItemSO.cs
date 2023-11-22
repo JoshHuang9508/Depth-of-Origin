@@ -7,17 +7,16 @@ namespace Inventory.Model
 {
     public abstract class ItemSO : ScriptableObject, IItemAction
     {
-        [Header("Describtion")]
+        [Header("Basic Data")]
         public string Name;
-        [TextArea]public string Description;
+        [TextArea] public string Description;
 
-        [Header("State")]
+        [Header("Setting")]
         public bool IsStackable;
         public bool isStorable = true;
         public int MaxStackSize = 1;
         public Rarity Rarity;
         public int sellPrice, buyPrice;
-        
 
         [Header("Reference")]
         public Sprite Image;

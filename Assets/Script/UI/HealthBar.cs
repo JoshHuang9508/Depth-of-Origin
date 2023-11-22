@@ -6,13 +6,14 @@ using TMPro;
 
 public class HealthBar : MonoBehaviour
 {
-    [Header("Connect Object")]
-    public Slider slider;
-    public TMP_Text healthText;
-    public Gradient gradient;
-    public Image fill;
+    [Header("Setting")]
+    [SerializeField] private Gradient gradient;
 
-    PlayerBehaviour player;
+    [Header("Object Reference")]
+    [SerializeField] private Slider slider;
+    [SerializeField] private TMP_Text healthText;
+    [SerializeField] private Image fill;
+    [SerializeField] private PlayerBehaviour player;
 
 
     void Start()

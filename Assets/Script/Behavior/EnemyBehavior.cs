@@ -7,18 +7,21 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyBehavior : MonoBehaviour, Damageable
 {
+    [Header("Object Reference")]
     public EnemySO enemy;
+    [SerializeField] private GameObject damageText;
+    [SerializeField] private GameObject itemDropper;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Rigidbody2D currentRb;
+    [SerializeField] private GameObject target;
+    [SerializeField] private Damageable damageableObject;
 
-    [Header("Connect Object")]
-    public GameObject damageText;
-    public GameObject itemDropper;
-
-    [Header("Current Data")]
-    public Transform target;
-    public Vector2 currentPos, targetPos, diraction;
+    [Header("Dynamic Data")]
     public float currentHealth;
+    [SerializeField] private Vector2 currentPos, targetPos, diraction;
 
-    [Header("Status")]
+    [Header("Stats")]
     public bool movementEnabler = true;
     public float movementDisableTimer = 0;
     public bool attackEnabler = true;
@@ -41,8 +44,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
             if (currentHealth <= 0)
             {
-                //play dead animation
-
                 //drop items
                 ItemDropper ItemDropper = Instantiate(
                     itemDropper,
@@ -59,17 +60,12 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
     }
 
-    SpriteRenderer spriteRenderer;
-    Animator animator;
-    Rigidbody2D currentRb;
-    Damageable damageableObject;
-
 
 
     void Start()
     {
         currentHealth = enemy.health;
-        target = GameObject.FindWithTag("Player").transform;
+        target = GameObject.FindWithTag("Player");
         animator = GetComponentInChildren<Animator>();
         currentRb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();

@@ -6,19 +6,19 @@ using Inventory.Model;
 
 public class BreakableObject : MonoBehaviour, Damageable
 {
-    [Header("Basic Data")]
-    public float health;
+    [Header("Setting")]
+    [SerializeField] private float health;
 
     [Header("Looting")]
-    public List<Coins> coins;
-    public List<Lootings> lootings;
-    public List<GameObject> wreckage;
+    [SerializeField] private List<Coins> coins;
+    [SerializeField] private List<Lootings> lootings;
+    [SerializeField] private List<GameObject> wreckage;
 
-    [Header("Connect Object")]
-    public GameObject damageText;
-    public GameObject itemDropper;
+    [Header("Object Reference")]
+    [SerializeField] private GameObject damageText;
+    [SerializeField] private GameObject itemDropper;
 
-    [Header("Status")]
+    [Header("Stats")]
     public bool damageEnabler = true;
     public float damageDisableTimer = 0;
 

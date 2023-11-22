@@ -10,14 +10,14 @@ namespace Inventory.UI
     public class UIInventory : MonoBehaviour
     {
         [Header("Pages")]
-        [SerializeField] public List<GameObject> contentPages;
-        [SerializeField] public List<UIDescriptionPage> descriptionPages = new();
-        [SerializeField] public List<UIItemSlotsPage> backpackPages = new();
-        [SerializeField] public List<UIEquipmentPage> equipmentPages = new();
+        [SerializeField] private List<GameObject> contentPages;
+        [SerializeField] private List<UIDescriptionPage> descriptionPages = new();
+        [SerializeField] private List<UIItemSlotsPage> backpackPages = new();
+        [SerializeField] private List<UIEquipmentPage> equipmentPages = new();
 
-        [Header("Connect Object")]
-        [SerializeField] public MouseFollower mouseFollower;
-        [SerializeField] public GameObject itemDropper;
+        [Header("Object Reference")]
+        [SerializeField] private MouseFollower mouseFollower;
+        [SerializeField] private GameObject itemDropper;
 
 
         private void OnDisable()

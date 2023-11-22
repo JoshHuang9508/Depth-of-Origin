@@ -8,14 +8,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new ranged weapon", menuName = "Items/Weapon/Ranged Weapon")]
 public class RangedWeaponSO : WeaponSO, IEquipable, IDestoryableItem, IItemAction, ISellable
 {
-    [Header("Projectile Object Settings")]
+    [Header("Object Reference")]
     public GameObject projectileObject;
+
+    [Header("Settings")]
+    public ShootingType shootingType;
     public float flySpeed;
     public int splitAmount = 1;
-    public ProjectileType projectileType;
 
-    public enum ProjectileType
+    public enum ShootingType
     {
-        Straight, Split
+        Single, Split
     }
 }

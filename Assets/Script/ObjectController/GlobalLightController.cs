@@ -6,34 +6,58 @@ using UnityEngine.Rendering.Universal;
 public class GlobalLightController : MonoBehaviour
 {
     [Header("Setting")]
-    public Gradient gradient;
-    public float dayTime, nightTime;
-    public float gap;
+    [SerializeField] private Gradient gradient;
+    [SerializeField] private float dayTime, nightTime;
+    [SerializeField] private float transformTimeGap;
 
-    Light2D globalLight;
+    [Header("Dynamic Data")]
+    [SerializeField] private float timeElapse;
 
-    void Start()
+    [Header("Object Reference")]
+    [SerializeField] private Light2D globalLight;
+
+    private void Start()
     {
         globalLight = GetComponent<Light2D>();
-
         globalLight.color = gradient.Evaluate(1);
-        StartCoroutine(DayNightCycle());
     }
 
-    private IEnumerator DayNightCycle()
+    private void Update()
     {
-        yield return new WaitForSeconds(dayTime);
-        for(float i = 1f; i > 0; i -= 0.01f)
+        timeElapse += Time.deltaTime;
+
+        int dayNightControl = 1;
+
+        if(timeElapse >= dayTime && dayNightControl == 1)
         {
-            globalLight.color = gradient.Evaluate(i);
-            yield return new WaitForSeconds(gap);
+            StartCoroutine(DayNightTransform("Night"));
+            timeElapse = 0;
         }
-        yield return new WaitForSeconds(nightTime);
-        for (float i = 0f; i < 1; i += 0.01f)
+        else if(timeElapse >= nightTime && dayNightControl == 0)
         {
-            globalLight.color = gradient.Evaluate(i);
-            yield return new WaitForSeconds(gap);
+            StartCoroutine(DayNightTransform("Day"));
+            timeElapse = 0;
         }
-        StartCoroutine(DayNightCycle());
+    }
+
+    private IEnumerator DayNightTransform(string type)
+    {
+        switch (type)
+        {
+            case "Night":
+                for (float i = 1f; i > 0; i -= 0.01f)
+                {
+                    globalLight.color = gradient.Evaluate(i);
+                    yield return new WaitForSeconds(transformTimeGap);
+                }
+                break;
+            case "Day":
+                for (float i = 0f; i < 1; i += 0.01f)
+                {
+                    globalLight.color = gradient.Evaluate(i);
+                    yield return new WaitForSeconds(transformTimeGap);
+                }
+                break;
+        }
     }
 }

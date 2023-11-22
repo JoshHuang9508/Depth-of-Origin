@@ -5,17 +5,19 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     [Header("Setting")]
-    public bool requiredKeys;
-    public string keyName;
-    public bool canReopen;
+    [SerializeField] private bool requiredKeys;
+    [SerializeField] private string keyName;
+    [SerializeField] private bool canReopen;
 
-    [Header("Status")]
+    [Header("Object Reference")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private PlayerBehaviour player;
+    [SerializeField] private BoxCollider2D BoxCollider2D;
+    [SerializeField] private Interactable interactable;
+
+    [Header("Stats")]
     public bool isOpen;
 
-    Animator animator;
-    BoxCollider2D BoxCollider2D;
-    PlayerBehaviour player;
-    Interactable interactable;
 
     void Start()
     {

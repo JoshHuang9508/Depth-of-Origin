@@ -6,12 +6,14 @@ using TMPro;
 
 public class BossHealthBar : MonoBehaviour
 {
-    [Header("Connect Object")]
-    public EnemyBehavior boss;
-    public Slider slider;
-    public TMP_Text healthText, bossName;
-    public Gradient gradient;
-    public Image fill;
+    [Header("Setting")]
+    [SerializeField] private Gradient gradient;
+
+    [Header("Object Reference")]
+    [SerializeField] private EnemyBehavior boss;
+    [SerializeField] private Slider slider;
+    [SerializeField] private TMP_Text healthText, bossName;
+    [SerializeField] private Image fill;
 
     void Update()
     {

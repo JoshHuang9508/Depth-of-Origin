@@ -8,18 +8,42 @@ using System;
 
 public class PlayerBehaviour : MonoBehaviour, Damageable
 {
-    [Header("Basic Data")]
-    public float Basic_walkSpeed;
-    public float Basic_maxHealth;
-    public float Basic_strength;
-    public float Basic_defence;
-    public float Basic_critRate;
-    public float Basic_critDamage;
-    public List<InventoryItem> initialItems;
+    [Header("Setting")]
+    [SerializeField] private float B_WalkSpeed;
+    [SerializeField] private float B_MaxHealth;
+    [SerializeField] private float B_Strength;
+    [SerializeField] private float B_Defence;
+    [SerializeField] private float B_CritRate;
+    [SerializeField] private float B_CritDamage;
+    [SerializeField] private List<InventoryItem> initialItems;
 
-    [Header("Current Data")]
+    [Header("Key Settings")]
+    [SerializeField] private KeyCode sprintKey;
+    [SerializeField] private KeyCode backpackKey;
+    [SerializeField] private KeyCode usePotionKey;
+    [SerializeField] private KeyCode useWeaponKey;
+    [SerializeField] private KeyCode meleeWeaponKey;
+    [SerializeField] private KeyCode rangedWeaponKey;
+
+    [Header("Object Reference")]
+    public InventorySO inventoryData;
+    public InventorySO equipmentData;
+    public UIInventory inventoryUI;
+    public UIInventory shopUI;
+    [SerializeField] private Animator camEffect;
+    [SerializeField] private SummonWeapon summonWeapon;
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Rigidbody2D currentRb;
+    [SerializeField] private GameObject damageText;
+    [SerializeField] private GameObject itemDropper;
+
+    [Header("Dynamic Data")]
     public float currentHealth;
     public int currentCoinAmount = 0;
+    public List<KeyList> keyList = new();
+
+    [Header("Equipment")]
     public int weaponControl = 0;
     public WeaponSO currentWeapon;
     public WeaponSO meleeWeapon;
@@ -29,53 +53,35 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public EquippableItemSO armor;
     public EquippableItemSO jewelry;
     public EquippableItemSO book;
+
+    [Header("Effection")]
     public List<EffectionList> effectionList = new();
-    public List<KeyList> keyList = new();
+    [SerializeField] private float E_WalkSpeed;
+    [SerializeField] private float E_MaxHealth;
+    [SerializeField] private float E_Strength;
+    [SerializeField] private float E_Defence;
+    [SerializeField] private float E_CritRate;
+    [SerializeField] private float E_CritDamage;
 
-    [Serializable]
-    public class EffectionList
-    {
-        public EdibleItemSO effectingItem;
-        public float effectingTime;
-    }
+    [Header("Stats")]
+    public bool behaviourEnabler = true;
+    public bool movementEnabler = true;
+    public float movementDisableTimer = 0;
+    public bool attackEnabler = true;
+    public float attackDisableTimer = 0;
+    public bool damageEnabler = true;
+    public float damageDisableTimer = 0;
+    public bool sprintEnabler = true;
+    public float sprintDisableTimer = 0;
+    public bool walkSpeedMutiplyerEnabler = false;
+    public float walkSpeedMutiplyerDisableTimer = 0;
 
-    [Serializable]
-    public class KeyList
-    {
-        public KeySO key;
-        public int quantity;
-    }
-
-    [Header("Current Effect")]
-    public float E_walkSpeed;
-    public float E_maxHealth;
-    public float E_strength;
-    public float E_defence;
-    public float E_critRate;
-    public float E_critDamage;
-
-    [Header("Key Settings")]
-    public KeyCode sprintKey;
-    public KeyCode backpackKey;
-    public KeyCode usePotionKey;
-    public KeyCode useWeaponKey;
-    public KeyCode meleeWeaponKey;
-    public KeyCode rangedWeaponKey;
-
-    [Header("Connect Object")]
-    public Animator onHitEffect;
-    public InventorySO inventoryData, shopData, equipmentData;
-    public UIInventory inventoryUI, shopUI;
-    public SummonWeapon summonWeapon;
-    public GameObject damageText;
-    public GameObject itemDropper;
-
-    public float walkSpeed { get { return Basic_walkSpeed + E_walkSpeed; } }
-    public float maxHealth { get { return Basic_maxHealth + E_maxHealth; } }
-    public float strength { get { return Basic_strength + E_strength; } }
-    public float defence { get { return Basic_defence + E_defence; } }
-    public float critRate { get { return Basic_critRate + E_critRate; } }
-    public float critDamage { get { return Basic_critDamage + E_critDamage; } }
+    public float walkSpeed { get { return B_WalkSpeed + E_WalkSpeed; } }
+    public float maxHealth { get { return B_MaxHealth + E_MaxHealth; } }
+    public float strength { get { return B_Strength + E_Strength; } }
+    public float defence { get { return B_Defence + E_Defence; } }
+    public float critRate { get { return B_CritRate + E_CritRate; } }
+    public float critDamage { get { return B_CritDamage + E_CritDamage; } }
 
     public float Health
     {
@@ -135,31 +141,29 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
-    [Header("Status")]
-    public bool behaviourEnabler = true;
-    public bool movementEnabler = true;
-    public float movementDisableTimer = 0;
-    public bool attackEnabler = true;
-    public float attackDisableTimer = 0;
-    public bool damageEnabler = true;
-    public float damageDisableTimer = 0;
-    public bool sprintEnabler = true;
-    public float sprintDisableTimer = 0;
-    public bool walkSpeedMutiplyerEnabler = false;
-    public float walkSpeedMutiplyerDisableTimer = 0;
+    [Serializable]
+    public class EffectionList
+    {
+        public EdibleItemSO effectingItem;
+        public float effectingTime;
+    }
 
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-    Rigidbody2D currentRb;
+    [Serializable]
+    public class KeyList
+    {
+        public KeySO key;
+        public int quantity;
+    }
 
 
 
     void Start()
     {
-        currentHealth = maxHealth;
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         currentRb = GetComponent<Rigidbody2D>();
+
+        currentHealth = maxHealth;
 
         //initial items
         inventoryData.initialize();
@@ -268,8 +272,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
             StartCoroutine(camera.Shake(0.1f, 0.2f));
 
-            //scene effect
-            onHitEffect.SetTrigger("OnHit");
+            //camera effect
+            camEffect.SetTrigger("OnHit");
         }
     }
 
@@ -303,12 +307,12 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             i++;
         }
 
-        E_walkSpeed = results[0];
-        E_maxHealth = results[1];
-        E_strength = results[2];
-        E_defence = results[3];
-        E_critRate = results[4];
-        E_critDamage = results[5];
+        E_WalkSpeed = results[0];
+        E_MaxHealth = results[1];
+        E_Strength = results[2];
+        E_Defence = results[3];
+        E_CritRate = results[4];
+        E_CritDamage = results[5];
 
         currentHealth = maxHealth * currentHealthPercent;
 

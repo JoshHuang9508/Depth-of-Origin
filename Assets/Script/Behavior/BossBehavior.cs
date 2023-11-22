@@ -6,16 +6,15 @@ using UnityEngine.Events;
 
 public class BossBehavior : MonoBehaviour
 {
-    EnemyBehavior enemyBehavior;
-    Rigidbody2D currentRb;
-    EnemySO enemy;
-
     [Header("Setting")]
     public List<Vector2> positionList;
 
-    [Header("Connect Object")]
-    public GameObject shield;
-    public GameObject column;
+    [Header("Object Reference")]
+    [SerializeField] private EnemySO enemy;
+    [SerializeField] private EnemyBehavior enemyBehavior;
+    [SerializeField] private Rigidbody2D currentRb;
+    [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject column;
 
     int behaviorType = 1;
 
