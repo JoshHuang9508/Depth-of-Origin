@@ -12,9 +12,15 @@ public class GlobalLightController : MonoBehaviour
 
     [Header("Dynamic Data")]
     [SerializeField] private float timeElapse;
+    [SerializeField] private GlobalTime time = GlobalTime.Day;
 
     [Header("Object Reference")]
     [SerializeField] private Light2D globalLight;
+
+    enum GlobalTime
+    {
+        Day, Night
+    }
 
     private void Start()
     {
@@ -26,35 +32,35 @@ public class GlobalLightController : MonoBehaviour
     {
         timeElapse += Time.deltaTime;
 
-        int dayNightControl = 1;
-
-        if(timeElapse >= dayTime && dayNightControl == 1)
+        if(timeElapse >= dayTime && time == GlobalTime.Day)
         {
-            StartCoroutine(DayNightTransform("Night"));
-            timeElapse = 0;
+            StartCoroutine(DayNightTransform(time));
+            time = GlobalTime.Night;
         }
-        else if(timeElapse >= nightTime && dayNightControl == 0)
+        else if(timeElapse >= nightTime && time == GlobalTime.Night)
         {
-            StartCoroutine(DayNightTransform("Day"));
-            timeElapse = 0;
+            StartCoroutine(DayNightTransform(time));
+            time = GlobalTime.Day;
         }
     }
 
-    private IEnumerator DayNightTransform(string type)
+    private IEnumerator DayNightTransform(GlobalTime globalTime)
     {
-        switch (type)
+        switch (globalTime)
         {
-            case "Night":
+            case GlobalTime.Day:
                 for (float i = 1f; i > 0; i -= 0.01f)
                 {
                     globalLight.color = gradient.Evaluate(i);
+                    timeElapse = 0;
                     yield return new WaitForSeconds(transformTimeGap);
                 }
                 break;
-            case "Day":
+            case GlobalTime.Night:
                 for (float i = 0f; i < 1; i += 0.01f)
                 {
                     globalLight.color = gradient.Evaluate(i);
+                    timeElapse = 0;
                     yield return new WaitForSeconds(transformTimeGap);
                 }
                 break;

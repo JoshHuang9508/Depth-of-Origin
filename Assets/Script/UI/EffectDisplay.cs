@@ -4,23 +4,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class effectdisplay : MonoBehaviour
+public class EffectDisplay : MonoBehaviour
 {
-    List<GameObject> effectionDisplayList = new();
+    [Header("Dynamic Data")]
+    [SerializeField] private List<GameObject> effectionDisplayList = new();
 
-    PlayerBehaviour player;
-
+    [Header("Object Reference")]
     [SerializeField] private GameObject effectDisplayModel;
+    [SerializeField] private PlayerBehaviour player;
+
 
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
-
     void Update()
     {
-        List<PlayerBehaviour.EffectionList> effectionList = player.UpdateEffectionList();
+        List<PlayerBehaviour.EffectionList> effectionList = player.effectionList;
 
         if (effectionDisplayList.Count < effectionList.Count)
         {

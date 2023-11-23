@@ -42,7 +42,7 @@ public class SummonWeapon : MonoBehaviour
         }
 
 
-        weapon = player.UpdateCurrentWeapon();
+        weapon = player.currentWeapon;
 
         if (weapon == null)
         {
@@ -66,8 +66,6 @@ public class SummonWeapon : MonoBehaviour
 
     public void Summon()
     {
-        weapon = player.UpdateCurrentWeapon();
-
         if (weapon == null) return;
 
         for (var i = this.transform.childCount - 1; i >= 0; i--)
