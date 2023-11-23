@@ -15,7 +15,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private GameObject target;
-    [SerializeField] private Damageable damageableObject;
 
     [Header("Dynamic Data")]
     public float currentHealth;
@@ -69,7 +68,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         animator = GetComponentInChildren<Animator>();
         currentRb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        damageableObject = target.GetComponentInParent<Damageable>();
 
         if (enemy.isBoss) gameObject.tag = "Boss";
     }
@@ -155,10 +153,15 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
                 {
-                    damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
+                    Damageable damageableObject = target.GetComponent<Damageable>();
 
-                    attackDisableTimer += enemy.attackSpeed;
-                    movementDisableTimer += enemy.attackSpeed;
+                    if(damageableObject != null)
+                    {
+                        damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
+
+                        attackDisableTimer += enemy.attackSpeed;
+                        movementDisableTimer += enemy.attackSpeed;
+                    }
                 }
                 break;
 

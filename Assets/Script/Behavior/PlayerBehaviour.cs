@@ -75,6 +75,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public float sprintDisableTimer = 0;
     public bool walkSpeedMutiplyerEnabler = false;
     public float walkSpeedMutiplyerDisableTimer = 0;
+    public bool healingEnabler = true;
+    public float healingDisableTimer = 0;
 
     public float walkSpeed { get { return B_WalkSpeed + E_WalkSpeed; } }
     public float maxHealth { get { return B_MaxHealth + E_MaxHealth; } }
@@ -91,6 +93,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
         set
         {
+            if (value > currentHealth) camEffect.SetTrigger("Heal");
+
+            if (value < currentHealth) camEffect.SetTrigger("OnHit");
+
             currentHealth = value;
 
             if (currentHealth <= 0)
@@ -179,6 +185,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         if(!behaviourEnabler) return;
 
         Moving();
+        Heal();
         UpdatePlayerStates();
         UpdateTimer();
         UpdateEffectionList();
@@ -212,7 +219,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         //use weapon
         if (Input.GetKey(useWeaponKey) && attackEnabler)
         {
-            currentWeapon = UpdateCurrentWeapon();
+            UpdateCurrentWeapon();
+
             if(currentWeapon != null)
             {
                 attackDisableTimer += currentWeapon.attackCooldown;
@@ -255,9 +263,19 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
+    private void Heal()
+    {
+        if (healingEnabler && currentHealth != maxHealth)
+        {
+            Health += Mathf.Min(maxHealth - currentHealth, maxHealth * 0.05f);
+            InstantiateDamageText(Mathf.Min(maxHealth - currentHealth, maxHealth * 0.05f), "Heal");
+            healingDisableTimer += 5;
+        }
+    }
+
     public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (UpdateTimer() && damageEnabler && behaviourEnabler)
+        if (damageEnabler && behaviourEnabler)
         {
             Health -= damage / (1 + (0.001f * defence));
             InstantiateDamageText(damage / (1 + (0.001f * defence)), "PlayerHit");
@@ -265,15 +283,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
 
-            //delay
+            //set timer
             movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
+            healingDisableTimer = 20;
 
             //camera shake
             CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
             StartCoroutine(camera.Shake(0.1f, 0.2f));
-
-            //camera effect
-            camEffect.SetTrigger("OnHit");
         }
     }
 
@@ -281,9 +297,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
 
-    public bool UpdatePlayerStates()
+    private void UpdatePlayerStates()
     {
-        float currentHealthPercent = currentHealth / maxHealth;
+        //float currentHealthPercent = currentHealth / maxHealth;
 
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
@@ -314,12 +330,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_CritRate = results[4];
         E_CritDamage = results[5];
 
-        currentHealth = maxHealth * currentHealthPercent;
-
-        return true;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+        //currentHealth = maxHealth * currentHealthPercent;
     }
 
-    public bool UpdateTimer()
+    private void UpdateTimer()
     {
         //update timer
         movementDisableTimer = Mathf.Max(0, movementDisableTimer - Time.deltaTime);
@@ -327,14 +342,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
         sprintDisableTimer = Mathf.Max(0, sprintDisableTimer - Time.deltaTime);
         walkSpeedMutiplyerDisableTimer = Mathf.Max(0, walkSpeedMutiplyerDisableTimer - Time.deltaTime);
+        healingDisableTimer = Mathf.Max(0, healingDisableTimer - Time.deltaTime);
 
         movementEnabler = movementDisableTimer <= 0;
         attackEnabler = attackDisableTimer <= 0;
         damageEnabler = damageDisableTimer <= 0;
         sprintEnabler = sprintDisableTimer <= 0;
         walkSpeedMutiplyerEnabler = !(walkSpeedMutiplyerDisableTimer <= 0);
-
-        return true;
+        healingEnabler = healingDisableTimer <= 0;
     }
 
     public List<KeyList> UpdateKeyList()
@@ -352,7 +367,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         return keyList;
     }
 
-    public List<EffectionList> UpdateEffectionList()
+    private void UpdateEffectionList()
     {
         //update effection list
         int indexOfEffectionList = -1;
@@ -365,10 +380,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             }
         }
         effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
-        return effectionList;
     }
 
-    public WeaponSO UpdateCurrentWeapon()
+    private void UpdateCurrentWeapon()
     {
         //update current weapon
         switch (weaponControl)
@@ -383,7 +397,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 currentWeapon = attackEnabler ? rangedWeapon : currentWeapon;
                 break;
         }
-        return currentWeapon;
     }
 
 
@@ -494,8 +507,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             effectionList.Add(new EffectionList {effectingItem = edibleItem , effectingTime = effectTime});
         }
 
-        if (edibleItem.E_heal != 0) Health += Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
-        InstantiateDamageText(Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal), "Heal");
+        if (edibleItem.E_heal != 0)
+        {
+            Health += Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
+            InstantiateDamageText(Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal), "Heal");
+        }  
     }
 
     private void InstantiateDamageText(float value, string type)

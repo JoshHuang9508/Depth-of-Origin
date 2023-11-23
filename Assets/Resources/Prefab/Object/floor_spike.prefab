@@ -170,5 +170,8 @@ MonoBehaviour:
   damage: 10
   inactiveTime: 5
   activeTime: 3
+  animator: {fileID: 0}
+  timeElapse: 0
   activeEnabler: 1
+  activeDisableTimer: 0
   isActive: 0

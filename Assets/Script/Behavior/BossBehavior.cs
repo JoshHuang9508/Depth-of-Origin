@@ -26,7 +26,7 @@ public class BossBehavior : MonoBehaviour
 
         column.GetComponent<BossColumnController>().shieldBreak += RemoveShield;
 
-        StartCoroutine(delay(callback => {
+        StartCoroutine(SetTimer(callback => {
             enemyBehavior.behaviourEnabler = callback;
         }, 5f));
 
@@ -37,8 +37,7 @@ public class BossBehavior : MonoBehaviour
     {
         if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
-            StartCoroutine(delay(callback =>
-            {
+            StartCoroutine(SetTimer(callback => {
                 shield.SetActive(!callback);
                 if (callback)
                 {
@@ -74,13 +73,12 @@ public class BossBehavior : MonoBehaviour
 
     public void RemoveShield()
     {
-        StartCoroutine(delay((callback) =>
-        {
+        StartCoroutine(SetTimer((callback) =>{
             shield.SetActive(callback && behaviorType == 1);
             if (callback && behaviorType == 1)  BuildColumns();
         }, 60));
 
-        StartCoroutine(delay(callback => {
+        StartCoroutine(SetTimer(callback => {
             enemyBehavior.behaviourEnabler = callback;
         }, 65f));
     }
@@ -99,10 +97,10 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
+    private IEnumerator SetTimer(System.Action<bool> callback, float time)
     {
         callback(false);
-        yield return new WaitForSeconds(delayTime);
+        yield return new WaitForSeconds(time);
         callback(true);
     }
 }
