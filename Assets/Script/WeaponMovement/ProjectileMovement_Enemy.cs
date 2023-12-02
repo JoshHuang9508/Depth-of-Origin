@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class ProjectileMovement_Enemy : WeaponMovementRanged
+public class ProjectileMovement_Enemy : MonoBehaviour
 {
     [Header("Object Reference")]
-    public EnemySO enemy;
+    public Rigidbody2D objectRigidbody;
+    public SpriteRenderer spriteRenderer;
 
-    private void Start()
-    {
-        objectRigidbody = GetComponent<Rigidbody2D>();
+    [Header("Data")]
+    public RangedWeaponSO rangedWeapon;
+    public EnemySO enemyData;
 
-        ProjectileFly(startAngle);
-        StartCoroutine(DestroyCooldown());
-    }
+    [Header("Audio")]
+    public AudioSource audioPlayer;
+    public AudioClip shotSound;
+
+    [Header("Stats")]
+    public Quaternion startAngle;
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -28,10 +33,10 @@ public class ProjectileMovement_Enemy : WeaponMovementRanged
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
                 damageableObject.OnHit(
-                    enemy.attackDamage,
+                    enemyData.attackDamage,
                     false,
-                    direction * enemy.knockbackForce,
-                    enemy.knockbackTime);
+                    direction * enemyData.knockbackForce,
+                    enemyData.knockbackTime);
 
                 Destroy(gameObject);
             }
@@ -43,12 +48,18 @@ public class ProjectileMovement_Enemy : WeaponMovementRanged
         }
     }
 
+    private void Start()
+    {
+        ProjectileFly(startAngle);
+        StartCoroutine(DestroyCooldown());
+    }
+
     public void ProjectileFly(Quaternion angle)
     {
         Vector3 angleVec3 = angle.eulerAngles;
         objectRigidbody.velocity = new Vector3(
-            enemy.projectileFlySpeed * Mathf.Cos(angleVec3.z * Mathf.Deg2Rad),
-            enemy.projectileFlySpeed * Mathf.Sin(angleVec3.z * Mathf.Deg2Rad),
+            enemyData.projectileFlySpeed * Mathf.Cos(angleVec3.z * Mathf.Deg2Rad),
+            enemyData.projectileFlySpeed * Mathf.Sin(angleVec3.z * Mathf.Deg2Rad),
             0);
     }
 

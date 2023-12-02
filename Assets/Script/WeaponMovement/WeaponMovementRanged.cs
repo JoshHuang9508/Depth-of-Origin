@@ -6,11 +6,17 @@ using UnityEngine.Rendering.Universal;
 public class WeaponMovementRanged : MonoBehaviour
 {
     [Header("Object Reference")]
-    public RangedWeaponSO rangedWeapon;
-    public PlayerBehaviour player;
     public Rigidbody2D objectRigidbody;
     public SpriteRenderer spriteRenderer;
 
-    [Header("Dynamic Data")]
+    [Header("Data")]
+    public RangedWeaponSO weaponData;
+    public PlayerBehaviour playerData;
+
+    [Header("Audio")]
+    public AudioSource audioPlayer;
+    public AudioClip shotSound;
+
+    [Header("Stats")]
     public Quaternion startAngle;
 }

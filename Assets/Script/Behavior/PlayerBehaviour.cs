@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using Inventory.Model;
 using Inventory.UI;
@@ -25,20 +24,24 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private KeyCode meleeWeaponKey;
     [SerializeField] private KeyCode rangedWeaponKey;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioPlayer;
+    [SerializeField] private AudioClip hitSound;
+
     [Header("Object Reference")]
-    public InventorySO inventoryData;
-    public InventorySO equipmentData;
-    public UIInventory inventoryUI;
-    public UIInventory shopUI;
+    public GameObject inventoryUI;
+    public GameObject shopUI;
     [SerializeField] private Animator camEffect;
-    [SerializeField] private SummonWeapon summonWeapon;
     [SerializeField] private Animator animator;
+    [SerializeField] private SummonWeapon summonWeapon;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private GameObject damageText;
     [SerializeField] private GameObject itemDropper;
 
     [Header("Dynamic Data")]
+    public InventorySO inventoryData;
+    public InventorySO equipmentData;
     public float currentHealth;
     public int currentCoinAmount = 0;
     public List<KeyList> keyList = new();
@@ -93,7 +96,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
         set
         {
-            if (value > currentHealth) camEffect.SetTrigger("Heal");
+            //if (value > currentHealth) camEffect.SetTrigger("Heal");
 
             if (value < currentHealth) camEffect.SetTrigger("OnHit");
 
@@ -106,8 +109,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 currentCoinAmount = 0;
                 currentRb.bodyType = RigidbodyType2D.Static;
                 behaviourEnabler = false;
-                shopUI.gameObject.SetActive(false);
-                inventoryUI.gameObject.SetActive(false);
+                shopUI.SetActive(false);
+                inventoryUI.SetActive(false);
 
                 //drop item
                 List<Lootings> dropList = new();
@@ -163,12 +166,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
 
-    void Start()
+    public void OnSceneLoaded()
     {
-        animator = GetComponentInChildren<Animator>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        currentRb = GetComponent<Rigidbody2D>();
+        audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
+    }
 
+    private void Start()
+    {
         currentHealth = maxHealth;
 
         //initial items
@@ -180,17 +184,20 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
     
-    void Update()
+    private void Update()
     {
         if(!behaviourEnabler) return;
 
-        Moving();
-        Heal();
+        //update timer
         UpdatePlayerStates();
         UpdateTimer();
         UpdateEffectionList();
         UpdateKeyList();
         UpdateCurrentWeapon();
+
+        //actions
+        Moving();
+        Heal();
 
         //sprint
         if (Input.GetKeyDown(sprintKey)) Sprint();
@@ -211,8 +218,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         //UI
         if (Input.GetKeyDown(backpackKey))
         {
-            inventoryUI.SetInventoryContent(inventoryData, ActionType.BackpackInventory);
-            inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeInHierarchy);
+            inventoryUI.GetComponent<UIInventory>().SetInventoryContent(inventoryData, ActionType.BackpackInventory);
+            inventoryUI.SetActive(!inventoryUI.gameObject.activeInHierarchy);
             Time.timeScale = inventoryUI.gameObject.activeInHierarchy ? 0 : 1;
         }
 
@@ -267,9 +274,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         if (healingEnabler && currentHealth != maxHealth)
         {
-            Health += Mathf.Min(maxHealth - currentHealth, maxHealth * 0.05f);
-            InstantiateDamageText(Mathf.Min(maxHealth - currentHealth, maxHealth * 0.05f), "Heal");
-            healingDisableTimer += 5;
+            float healValue = Mathf.Min(maxHealth - currentHealth, maxHealth * 0.05f);
+            Health += healValue;
+            DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
+            healingDisableTimer = 5;
         }
     }
 
@@ -277,8 +285,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         if (damageEnabler && behaviourEnabler)
         {
+            //update heath
             Health -= damage / (1 + (0.001f * defence));
-            InstantiateDamageText(damage / (1 + (0.001f * defence)), "PlayerHit");
+
+            //instantiate damege text
+            DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * defence)), "PlayerHit");
+
+            //play audio
+            audioPlayer.PlayOneShot(hitSound);
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
@@ -509,20 +523,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
         if (edibleItem.E_heal != 0)
         {
-            Health += Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
-            InstantiateDamageText(Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal), "Heal");
+            float healValue = Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
+            Health += healValue;
+            DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
         }  
-    }
-
-    private void InstantiateDamageText(float value, string type)
-    {
-        var damageTextInstantiated = Instantiate(
-            damageText,
-            Camera.main.WorldToScreenPoint(gameObject.transform.position),
-            Quaternion.identity,
-            GameObject.Find("ScreenUI").transform
-            ).GetComponent<DamageText>();
-
-        damageTextInstantiated.SetContent(value, type);
     }
 }

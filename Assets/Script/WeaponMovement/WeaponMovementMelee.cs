@@ -5,11 +5,17 @@ using UnityEngine;
 public class WeaponMovementMelee : MonoBehaviour
 {
     [Header("Object Reference")]
-    public WeaponSO weapon;
-    public PlayerBehaviour player;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
 
-    [Header("Status")]
+    [Header("Data")]
+    public WeaponSO weaponData;
+    public PlayerBehaviour playerData;
+
+    [Header("Audio")]
+    public AudioSource audioPlayer;
+    public AudioClip swingSound;
+
+    [Header("Stats")]
     public bool isflip;
 }

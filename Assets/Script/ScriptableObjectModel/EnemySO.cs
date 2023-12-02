@@ -65,7 +65,7 @@ public class EnemySO : ScriptableObject
 
                 ArrowSummoned.AddComponent<ProjectileMovement_Enemy>();
                 ArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
-                ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemy = this;
+                ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
                 break;
                 
             case ShootingType.Split:
@@ -79,7 +79,7 @@ public class EnemySO : ScriptableObject
 
                     splitArrowSummoned.AddComponent<ProjectileMovement_Enemy>();
                     splitArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
-                    splitArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemy = this;
+                    splitArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
                 }
                 break;
 
@@ -94,7 +94,7 @@ public class EnemySO : ScriptableObject
 
                     allAngleArrowSummoned.AddComponent<ProjectileMovement_Enemy>();
                     allAngleArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
-                    allAngleArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemy = this;
+                    allAngleArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
                 }
                 break;
         }

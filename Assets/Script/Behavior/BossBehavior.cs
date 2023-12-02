@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BossBehavior : MonoBehaviour
 {
@@ -10,9 +8,7 @@ public class BossBehavior : MonoBehaviour
     public List<Vector2> positionList;
 
     [Header("Object Reference")]
-    [SerializeField] private EnemySO enemy;
     [SerializeField] private EnemyBehavior enemyBehavior;
-    [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject column;
 
@@ -20,10 +16,6 @@ public class BossBehavior : MonoBehaviour
 
     void Start()
     {
-        enemyBehavior = GetComponent<EnemyBehavior>();
-        currentRb = GetComponent<Rigidbody2D>();
-        enemy = enemyBehavior.enemy;
-
         column.GetComponent<BossColumnController>().shieldBreak += RemoveShield;
 
         StartCoroutine(SetTimer(callback => {
@@ -51,22 +43,22 @@ public class BossBehavior : MonoBehaviour
         switch (behaviorType)
         {
             case 1:
-                enemyBehavior.movementDisableTimer += enemyBehavior.movementDisableTimer < 5 ? 1000 : 0;
-                currentRb.bodyType = RigidbodyType2D.Static;
-                enemy.attackType = EnemySO.AttackType.Sniper;
-                enemy.attackField = 100;
-                enemy.chaseField = 0;
-                enemy.attackSpeed = 0.4f;
-                enemy.attackDamage = 1500;
+                enemyBehavior.movementDisableTimer = enemyBehavior.movementDisableTimer < 5 ? 1000 : 0;
+                enemyBehavior.currentRb.bodyType = RigidbodyType2D.Static;
+                enemyBehavior.enemy.attackType = EnemySO.AttackType.Sniper;
+                enemyBehavior.enemy.attackField = 100;
+                enemyBehavior.enemy.chaseField = 0;
+                enemyBehavior.enemy.attackSpeed = 0.4f;
+                enemyBehavior.enemy.attackDamage = 1500;
                 break;
 
             case 2:
-                currentRb.bodyType = RigidbodyType2D.Dynamic;
-                enemy.attackType = EnemySO.AttackType.Melee;
-                enemy.attackField = 1.5f;
-                enemy.chaseField = 100;
-                enemy.attackSpeed = 1;
-                enemy.attackDamage = 2000;
+                enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
+                enemyBehavior.enemy.attackType = EnemySO.AttackType.Melee;
+                enemyBehavior.enemy.attackField = 1.5f;
+                enemyBehavior.enemy.chaseField = 100;
+                enemyBehavior.enemy.attackSpeed = 1;
+                enemyBehavior.enemy.attackDamage = 2000;
                 break;
         }
     }

@@ -17,16 +17,15 @@ public class DamageText : MonoBehaviour
     [Header("Dynamic Data")]
     [SerializeField] private Color starting_Color;
     [SerializeField] float timeElapsed = 0.0f;
-    
 
-    void Start()
+
+
+    private void Start()
     {
-        textmesh = GetComponent<TextMeshProUGUI>();
         starting_Color = textmesh.color;
-        rtransform = GetComponent<RectTransform>();
     }
 
-    void Update()
+    private void Update()
     {
         timeElapsed += Time.deltaTime;
         rtransform.position += floatSpeed * Time.deltaTime * floatingDir;
@@ -40,6 +39,7 @@ public class DamageText : MonoBehaviour
     public void SetContent(float value, string type)
     {
         Start();
+
         switch (type)
         {
             case "Damage":
@@ -64,5 +64,17 @@ public class DamageText : MonoBehaviour
                 textmesh.outlineWidth = 0f;
                 break;
         }
+    }
+
+    public static void InstantiateDamageText(GameObject damageText, Vector3 position, float value, string type)
+    {
+        var damageTextInstantiated = Instantiate(
+            damageText,
+            Camera.main.WorldToScreenPoint(position),
+            Quaternion.identity,
+            GameObject.Find("ScreenUI").transform
+            ).GetComponent<DamageText>();
+
+        damageTextInstantiated.SetContent(value, type);
     }
 }

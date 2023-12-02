@@ -240,8 +240,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isInRange: 0
   interactDialogObject: {fileID: 6383876599670681586, guid: f0b84136927864e46a5e0f0158c677e3, type: 3}
+  interactDialogText: {fileID: 0}
+  interactDialog: {fileID: 0}
+  isInRange: 0
 --- !u!114 &8306560759883220146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,4 +259,11 @@ MonoBehaviour:
   requiredKeys: 0
   keyName: 
   canReopen: 1
+  audioPlayer: {fileID: 0}
+  openSound: {fileID: 8300000, guid: 45a47f72091334a7a8d361a9050ba899, type: 3}
+  closeSound: {fileID: 8300000, guid: 29d7c6363f116490d95baf31272bc3b7, type: 3}
+  animator: {fileID: 1704195695562299193}
+  BoxCollider2D: {fileID: 4606750690632038253}
+  interactable: {fileID: 5012347381110029217}
+  player: {fileID: 0}
   isOpen: 0

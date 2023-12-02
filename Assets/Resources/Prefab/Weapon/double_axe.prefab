@@ -167,4 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5996085bc784b674a87108f92f55edb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSO: {fileID: 0}
+  spriteRenderer: {fileID: 1106780877391962154}
+  animator: {fileID: 9174834730059873725}
+  weapon: {fileID: 0}
+  player: {fileID: 0}
+  audioPlayer: {fileID: 0}
+  swingSound: {fileID: 0}
+  isflip: 0

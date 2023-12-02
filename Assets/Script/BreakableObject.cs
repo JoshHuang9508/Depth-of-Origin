@@ -14,7 +14,12 @@ public class BreakableObject : MonoBehaviour, Damageable
     [SerializeField] private List<Lootings> lootings;
     [SerializeField] private List<GameObject> wreckage;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip breakSound;
+
     [Header("Object Reference")]
+    [SerializeField] private AudioSource audioPlayer;
     [SerializeField] private GameObject damageText;
     [SerializeField] private GameObject itemDropper;
 
@@ -37,17 +42,27 @@ public class BreakableObject : MonoBehaviour, Damageable
                 //drop items
                 ItemDropper ItemDropper = Instantiate(
                     itemDropper,
-                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    transform.position,
                     Quaternion.identity,
                     GameObject.FindWithTag("Item").transform
                     ).GetComponent<ItemDropper>();
+
                 ItemDropper.DropItems(lootings);
                 ItemDropper.DropCoins(coins);
                 ItemDropper.DropWrackages(wreckage);
+
+                //play audio
+                audioPlayer.PlayOneShot(breakSound);
+
                 Destroy(gameObject);
             }
         }
         
+    }
+
+    private void Start()
+    {
+        audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -57,34 +72,29 @@ public class BreakableObject : MonoBehaviour, Damageable
 
     public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (UpdateTimer() && damageEnabler)
+        if (damageEnabler)
         {
+            //update heath
             Health -= damage;
-            InstantiateDamageText(damage, isCrit ? "DamageCrit" : "Damage");
 
+            //instantiate damege text
+            DamageText.InstantiateDamageText(damageText, transform.position, damage, isCrit ? "DamageCrit" : "Damage");
+
+            //play audio
+            audioPlayer.PlayOneShot(hitSound);
+
+            //set timer
             damageDisableTimer += 0.2f;
         }
     }
 
-    public bool UpdateTimer()
+    public void UpdateTimer()
     {
         //update timer
         damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
 
         damageEnabler = damageDisableTimer <= 0;
-
-        return true;
     }
 
-    private void InstantiateDamageText(float value, string type)
-    {
-        var damageTextInstantiated = Instantiate(
-            damageText,
-            Camera.main.WorldToScreenPoint(gameObject.transform.position),
-            Quaternion.identity,
-            GameObject.Find("ScreenUI").transform
-            ).GetComponent<DamageText>();
-
-        damageTextInstantiated.SetContent(value, type);
-    }
+    
 }

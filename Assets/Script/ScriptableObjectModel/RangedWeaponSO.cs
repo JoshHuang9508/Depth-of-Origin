@@ -11,7 +11,7 @@ public class RangedWeaponSO : WeaponSO, IEquipable, IDestoryableItem, IItemActio
     [Header("Object Reference")]
     public GameObject projectileObject;
 
-    [Header("Settings")]
+    [Header("Projectile Settings")]
     public ShootingType shootingType;
     public float flySpeed;
     public int splitAmount = 1;

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class WeaponSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
 {
-    [Header("Setting")]
+    [Header("Basic Data")]
     public WeaponType weaponType;
     public float attackSpeed = 1f;
     public float attackCooldown;

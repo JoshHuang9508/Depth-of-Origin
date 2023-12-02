@@ -1,22 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
-using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyBehavior : MonoBehaviour, Damageable
 {
     [Header("Object Reference")]
-    public EnemySO enemy;
-    [SerializeField] private GameObject damageText;
-    [SerializeField] private GameObject itemDropper;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody2D currentRb;
-    [SerializeField] private GameObject target;
+    public Rigidbody2D currentRb;
+    [SerializeField] private GameObject damageText;
+    [SerializeField] private GameObject itemDropper;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioPlayer;
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip deadSound;
 
     [Header("Dynamic Data")]
+    public EnemySO enemy;
+    [SerializeField] private GameObject target;
     public float currentHealth;
     [SerializeField] private Vector2 currentPos, targetPos, diraction;
 
@@ -54,6 +54,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 ItemDropper.DropCoins(enemy.coins);
                 ItemDropper.DropWrackages(enemy.wreckage);
 
+                audioPlayer.PlayOneShot(deadSound);
+
                 Destroy(gameObject);
             }
         }
@@ -64,25 +66,28 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     void Start()
     {
         currentHealth = enemy.health;
-        target = GameObject.FindWithTag("Player");
-        animator = GetComponentInChildren<Animator>();
-        currentRb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
 
         if (enemy.isBoss) gameObject.tag = "Boss";
     }
 
     void Update()
     {
+        try { target = GameObject.FindWithTag("Player"); } catch { }
+
         if (!behaviourEnabler) return;
 
         currentPos = transform.position;
         targetPos = target.transform.position;
         diraction = (targetPos - currentPos).normalized;
 
+        //update timer
+        UpdateTimer();
+
+        //actions
         Moving();
         Attacking();
-        UpdateTimer();
     }
 
     private void Moving()
@@ -182,8 +187,14 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         if (UpdateTimer() && damageEnabler)
         {
+            //update heath
             Health -= damage / (1 + (0.001f * enemy.defence));
-            InstantiateDamageText(damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
+
+            //instantiate damage text
+            DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
+
+            //play audio
+            audioPlayer.PlayOneShot(hitSound);
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
@@ -208,17 +219,5 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         dodgeEnabler = dodgeDisableTimer <= 0;
 
         return true;
-    }
-
-    private void InstantiateDamageText(float value, string type)
-    {
-        var damageTextInstantiated = Instantiate(
-            damageText,
-            Camera.main.WorldToScreenPoint(gameObject.transform.position),
-            Quaternion.identity,
-            GameObject.Find("ScreenUI").transform
-            ).GetComponent<DamageText>();
-
-            damageTextInstantiated.SetContent(value, type);
     }
 }

@@ -6,16 +6,16 @@ using UnityEngine.Rendering.Universal;
 public class TorchLightController : MonoBehaviour
 {
     [Header("Object Reference")]
-    Light2D torchLight;
-    Animator animator;
+    [SerializeField] private Light2D torchLight;
+    [SerializeField] private Animator animator;
 
     [Header("Stats")]
-    [SerializeField] private bool extinguished = false;
+    public bool extinguished = false;
 
     void Start()
     {
-        torchLight = GetComponent<Light2D>();
-        animator = GetComponentInParent<Animator>();
+        torchLight = GetComponentInChildren<Light2D>();
+        animator = GetComponent<Animator>();
         if(!extinguished) StartCoroutine(torchLightShining());
     }
 

@@ -40,8 +40,11 @@ public class NPCBehaviour : MonoBehaviour, Damageable
 
         timeElapse += Time.deltaTime;
 
-        Moving();
+        //update timer
         UpdateTimer();
+
+        //actions
+        Moving();
     }
 
     private void Moving()

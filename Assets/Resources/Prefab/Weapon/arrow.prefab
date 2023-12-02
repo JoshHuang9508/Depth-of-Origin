@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 7743498473900126501}
   - component: {fileID: 7300832798547735004}
   - component: {fileID: -1218907183699438290}
+  - component: {fileID: 4905944335896430137}
   m_Layer: 0
   m_Name: arrow
   m_TagString: Untagged
@@ -338,6 +339,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4905944335896430137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4857680875645216774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beabe3dd7b9024148b1f9d45a73e8d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectRigidbody: {fileID: -1218907183699438290}
+  spriteRenderer: {fileID: 7743498473900126501}
+  rangedWeapon: {fileID: 0}
+  player: {fileID: 0}
+  audioPlayer: {fileID: 0}
+  shotSound: {fileID: 0}
+  startAngle: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4862878874472483793
 GameObject:
   m_ObjectHideFlags: 0

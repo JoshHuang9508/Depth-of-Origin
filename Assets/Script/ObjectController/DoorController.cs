@@ -9,11 +9,18 @@ public class DoorController : MonoBehaviour
     [SerializeField] private string keyName;
     [SerializeField] private bool canReopen;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioPlayer;
+    [SerializeField] private AudioClip openSound;
+    [SerializeField] private AudioClip closeSound;
+
     [Header("Object Reference")]
     [SerializeField] private Animator animator;
-    [SerializeField] private PlayerBehaviour player;
     [SerializeField] private BoxCollider2D BoxCollider2D;
     [SerializeField] private Interactable interactable;
+
+    [Header("Player Data")]
+    [SerializeField] private PlayerBehaviour player;
 
     [Header("Stats")]
     public bool isOpen;
@@ -21,9 +28,7 @@ public class DoorController : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        BoxCollider2D = GetComponent<BoxCollider2D>();
-        interactable = GetComponent<Interactable>();
+        audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
         player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
@@ -34,7 +39,10 @@ public class DoorController : MonoBehaviour
             isOpen = true;
             interactable.enabled = false;
             BoxCollider2D.enabled = false;
+
             animator.SetTrigger("Open");
+
+            audioPlayer.PlayOneShot(openSound);
         }
     }
 
@@ -45,7 +53,10 @@ public class DoorController : MonoBehaviour
             isOpen = false;
             interactable.enabled = true;
             BoxCollider2D.enabled = true;
+
             animator.SetTrigger("Close");
+
+            audioPlayer.PlayOneShot(closeSound);
         }
     }
 

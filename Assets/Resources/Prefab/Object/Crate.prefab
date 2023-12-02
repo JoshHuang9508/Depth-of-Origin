@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6418074242122330549}
-  - component: {fileID: 8512722144222009612}
-  - component: {fileID: 3027661421850618480}
-  - component: {fileID: 4925476841127222390}
+  - component: {fileID: 7935414256776215589}
+  - component: {fileID: 2596380447608284058}
+  - component: {fileID: 2716684344592604355}
   m_Layer: 0
   m_Name: crate
   m_TagString: BreakableObject
@@ -34,7 +34,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8512722144222009612
+--- !u!212 &7935414256776215589
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!61 &3027661421850618480
+--- !u!61 &2596380447608284058
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,7 +132,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4925476841127222390
+--- !u!114 &2716684344592604355
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,5 +151,10 @@ MonoBehaviour:
   lootings: []
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
+  hitSound: {fileID: 8300000, guid: b36c3f4eeb64e47bb9e02c21fee65075, type: 3}
+  breakSound: {fileID: 8300000, guid: 13c084cbb971c4613ae31bdac7b32888, type: 3}
+  audioPlayer: {fileID: 0}
   damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
+  damageEnabler: 1
+  damageDisableTimer: 0

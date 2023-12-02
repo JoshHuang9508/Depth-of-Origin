@@ -206,8 +206,10 @@ MonoBehaviour:
   leaveRangeAction:
     m_PersistentCalls:
       m_Calls: []
-  isInRange: 0
   interactDialogObject: {fileID: 6383876599670681586, guid: f0b84136927864e46a5e0f0158c677e3, type: 3}
+  interactDialogText: {fileID: 0}
+  interactDialog: {fileID: 0}
+  isInRange: 0
 --- !u!114 &3104876453195976919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,10 +224,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requiredKeys: 0
   keyName: 
-  isOpen: 0
   coins: []
   lootings: []
+  openSound: {fileID: 8300000, guid: bcd5582e3fd4c4ac8b936d84bd83efd6, type: 3}
+  animator: {fileID: 344404685478440640}
+  player: {fileID: 0}
+  audioPlayer: {fileID: 0}
+  interactable: {fileID: 334294825837532046}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
+  isOpen: 0
 --- !u!95 &344404685478440640
 Animator:
   serializedVersion: 7

@@ -10,19 +10,12 @@ public class Bazaar : MonoBehaviour
     [SerializeField] private List<InventoryItem> shopGoodsList = new();
 
     [Header("Object Reference")]
-    [SerializeField] private UIInventory shopUI;
+    [SerializeField] private GameObject shopUI;
     [SerializeField] private InventorySO shopData;
 
     private void Update()
     {
-        try
-        {
-            shopUI = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().shopUI;
-        }
-        catch
-        {
-
-        }
+        try{ shopUI = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().shopUI; } catch { }
     }
 
     public void OpenShop()
@@ -35,15 +28,15 @@ public class Bazaar : MonoBehaviour
             shopData.AddItem(item);
         }
 
-        shopUI.SetInventoryContent(GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData, ActionType.BackpackShop);
-        shopUI.SetInventoryContent(shopData, ActionType.ShopGoods);
-        shopUI.gameObject.SetActive(!shopUI.gameObject.activeInHierarchy);
-        Time.timeScale = shopUI.gameObject.activeInHierarchy ? 0 : 1;
+        shopUI.GetComponent<UIInventory>().SetInventoryContent(GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData, ActionType.BackpackShop);
+        shopUI.GetComponent<UIInventory>().SetInventoryContent(shopData, ActionType.ShopGoods);
+        shopUI.SetActive(!shopUI.activeInHierarchy);
+        Time.timeScale = shopUI.activeInHierarchy ? 0 : 1;
     }
 
     public void CloseShop()
     {
         Time.timeScale = 1;
-        shopUI.gameObject.SetActive(false);
+        shopUI.SetActive(false);
     }
 }

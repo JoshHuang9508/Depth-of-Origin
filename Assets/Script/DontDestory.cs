@@ -33,6 +33,7 @@ public class DontDestoryOnLoad : MonoBehaviour
         {
             GameObject.FindWithTag("Player").transform.position = GameObject.FindWithTag("Respawn").transform.position;
             GameObject.FindWithTag("CameraHold").transform.position = GameObject.FindWithTag("Respawn").transform.position;
+            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().OnSceneLoaded();
         }
     }
 }

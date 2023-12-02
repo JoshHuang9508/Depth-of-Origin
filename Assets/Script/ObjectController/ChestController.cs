@@ -13,11 +13,17 @@ public class ChestController : MonoBehaviour
     public List<Coins> coins;
     public List<Lootings> lootings;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioPlayer;
+    [SerializeField] private AudioClip openSound;
+
     [Header("Object Reference")]
     [SerializeField] private Animator animator;
-    [SerializeField] private PlayerBehaviour player;
     [SerializeField] private Interactable interactable;
     [SerializeField] private GameObject itemDropper;
+
+    [Header("Player Data")]
+    [SerializeField] private PlayerBehaviour player;
 
     [Header("Stats")]
     public bool isOpen;
@@ -25,8 +31,7 @@ public class ChestController : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        interactable = GetComponent<Interactable>();
+        audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
         player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
@@ -36,13 +41,20 @@ public class ChestController : MonoBehaviour
         {
             isOpen = true;
             interactable.enabled = false;
+
             animator.SetTrigger("Open");
 
-            var ItemDropper = Instantiate(itemDropper, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-            ItemDropper.transform.parent = GameObject.FindWithTag("Item").transform;
-            ItemDropper itemDropperController = ItemDropper.GetComponent<ItemDropper>();
-            itemDropperController.DropCoins(coins);
-            itemDropperController.DropItems(lootings);
+            audioPlayer.PlayOneShot(openSound);
+
+            var ItemDropper = Instantiate(
+                itemDropper,
+                transform.position,
+                new Quaternion(0.0f, 0.0f, 0.0f, 0.0f),
+                GameObject.FindWithTag("Item").transform
+                ).GetComponent<ItemDropper>();
+
+            ItemDropper.DropCoins(coins);
+            ItemDropper.DropItems(lootings);
         }
     }
 

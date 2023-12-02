@@ -25,15 +25,18 @@ public class Interactable : MonoBehaviour
 
     void Start()
     {
-        interactDialog = Instantiate(
+        if(interactable)
+        {
+            interactDialog = Instantiate(
             interactDialogObject,
             transform.position + new Vector3(0, 1.5f, 0),
             Quaternion.identity,
             transform
             );
 
-        interactDialog.SetActive(false);
-        interactDialogText = interactDialog.GetComponentInChildren<TMP_Text>();
+            interactDialog.SetActive(false);
+            interactDialogText = interactDialog.GetComponentInChildren<TMP_Text>();
+        }
     }
 
     void Update()
@@ -58,7 +61,6 @@ public class Interactable : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("Player in range");
             isInRange = true;
             enterRangeAction.Invoke();
 
@@ -74,23 +76,15 @@ public class Interactable : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("Player leave range");
             isInRange = false;
             leaveRangeAction.Invoke();
 
-            //if(currentDialogObject != null) Destroy(currentDialogObject.gameObject);
-            interactDialog.SetActive(false);
+            if (interactable) interactDialog.SetActive(false);
         }
     }
 
     private void OnDisable()
     {
-        //if (currentDialogObject != null) Destroy(currentDialogObject.gameObject);
-        interactDialog.SetActive(false);
-    }
-
-    private void OnEnable()
-    {
-
+        if (interactable) interactDialog.SetActive(false);
     }
 }

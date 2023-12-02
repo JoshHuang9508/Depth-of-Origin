@@ -15,13 +15,13 @@ public class MeleeMovement : WeaponMovementMelee
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
-                bool isCrit = Random.Range(0f, 100f) <= player.critRate;
+                bool isCrit = Random.Range(0f, 100f) <= playerData.critRate;
 
                 damageableObject.OnHit(
-                    weapon.weaponDamage * (1 + (0.01f * player.strength)) * (isCrit ? 1 + (0.01f * player.critDamage) : 1),
+                    weaponData.weaponDamage * (1 + (0.01f * playerData.strength)) * (isCrit ? 1 + (0.01f * playerData.critDamage) : 1),
                     isCrit,
-                    direction * weapon.knockbackForce,
-                    weapon.knockbackTime);
+                    direction * weaponData.knockbackForce,
+                    weaponData.knockbackTime);
 
                 //camera shake
                 CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
@@ -32,18 +32,19 @@ public class MeleeMovement : WeaponMovementMelee
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        player = GetComponentInParent<PlayerBehaviour>();
+        audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
 
         WeaponSwing(isflip);
     }
 
     public void WeaponSwing(bool _isflip)
     {
+        audioPlayer.PlayOneShot(swingSound);
+
         spriteRenderer.flipX = _isflip;
         spriteRenderer.transform.Rotate(Vector3.forward, 90f);
-        animator.speed = weapon.attackSpeed;
+
+        animator.speed = weaponData.attackSpeed;
         animator.SetBool("isflip", _isflip);
         animator.SetTrigger("swing");
     }

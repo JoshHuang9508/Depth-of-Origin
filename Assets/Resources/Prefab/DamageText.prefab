@@ -150,4 +150,8 @@ MonoBehaviour:
   timeToLive: 0.5
   floatSpeed: 500
   floatingDir: {x: 0, y: 1, z: 0}
+  textmesh: {fileID: 6136122144018578225}
+  rtransform: {fileID: 872122634983077702}
+  starting_Color: {r: 0, g: 0, b: 0, a: 0}
   timeElapsed: 0
+  damageText: {fileID: 8842133498016202654}
