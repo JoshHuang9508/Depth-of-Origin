@@ -18,12 +18,12 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private List<InventoryItem> initialItems;
 
     [Header("Key Settings")]
-    [SerializeField] private KeyCode sprintKey;
-    [SerializeField] private KeyCode backpackKey;
-    [SerializeField] private KeyCode usePotionKey;
-    [SerializeField] private KeyCode useWeaponKey;
-    [SerializeField] private KeyCode meleeWeaponKey;
-    [SerializeField] private KeyCode rangedWeaponKey;
+    [SerializeField] public KeyCode sprintKey;
+    [SerializeField] public KeyCode backpackKey;
+    [SerializeField] public KeyCode usePotionKey;
+    [SerializeField] public KeyCode useWeaponKey;
+    [SerializeField] public KeyCode meleeWeaponKey;
+    [SerializeField] public KeyCode rangedWeaponKey;
 
     [Header("Object Reference")]
     public InventorySO inventoryData;
@@ -227,12 +227,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 summonWeapon.Summon();
             }
         }
+       
     }
-
-
-
-
-
     private void Moving()
     {
         animator.SetBool("isHit", !movementEnabler);
