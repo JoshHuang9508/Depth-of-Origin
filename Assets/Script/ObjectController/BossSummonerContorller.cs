@@ -25,6 +25,7 @@ public class BossSummonerContorller : MonoBehaviour
         interactable = GetComponent<Interactable>();
 
         currentActionTimes = 0;
+        Console.WriteLine("GAY!!!");
     }
 
     private void Update()
