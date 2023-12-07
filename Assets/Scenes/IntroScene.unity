@@ -2971,7 +2971,7 @@ PrefabInstance:
     - target: {fileID: 3104876453195976919, guid: de04c4e6d73c0f44ba7e951541c5420e, type: 3}
       propertyPath: lootings.Array.data[0].lootings
       value: 
-      objectReference: {fileID: 11400000, guid: 49937913fc2184167978723e4a572107, type: 2}
+      objectReference: {fileID: 11400000, guid: 316d24bfff278e6428f1be9bfe0cae46, type: 2}
     - target: {fileID: 3104876453195976919, guid: de04c4e6d73c0f44ba7e951541c5420e, type: 3}
       propertyPath: lootings.Array.data[0].quantity
       value: 1
@@ -34937,7 +34937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadType: 0
-  SceneNum: 6
+  SceneNum: 7
   transformPos: {fileID: 0}
   transition: {fileID: 0}
 --- !u!1001 &2056745517
