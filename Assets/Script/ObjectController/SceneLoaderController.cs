@@ -8,7 +8,7 @@ public class SceneLoaderController : MonoBehaviour
 {
     [Header("Setting")]
     [SerializeField] LoadType loadType = LoadType.Scene;
-    [SerializeField] private int SceneNum = 0;
+    [SerializeField] public int SceneNum = 0;
     [SerializeField] private GameObject transformPos;
 
     [Header("Stats")]

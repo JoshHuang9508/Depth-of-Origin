@@ -81,17 +81,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7237c65133b61804d9412a3aa58cd4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnLimit: 4
+  autoSpawn: 1
+  minSpawnDistance: 15
   spawnRange: 12
-  maxSpawnTimes: -1
-  spawnGapMin: 0.1
-  spawnGapMax: 0.1
+  mobsStayedLimit: 4
+  spawnTimesLimit: -1
+  spawnGapMin: 5
+  spawnGapMax: 10
   targetLayer:
     serializedVersion: 2
     m_Bits: 264
   spawnList:
   - {fileID: 11400000, guid: 647874ec2cace5945b1dfb487daf102d, type: 2}
   spawnTimes: 0
-  stayMobs: 0
+  stayedMobs: 0
   spawnEnabler: 1
   playerStayed: 0

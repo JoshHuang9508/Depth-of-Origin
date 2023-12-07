@@ -16,21 +16,20 @@ MonoBehaviour:
   health: 50
   moveSpeed: 5
   defence: 0
-  difficulty: 0
-  projectile: {fileID: 0}
-  projectileFlySpeed: 0
-  EnemyObject: {fileID: 91700730297484186, guid: f74f0a1550e5f4a4aa8ac8bf9e8c7d98, type: 3}
+  isBoss: 0
   attackType: 0
-  shootingType: 0
   attackSpeed: 0.6
   attackDamage: 2
   chaseField: 15
   attackField: 0.5
-  knockbackForce: 1
+  knockbackForce: 2
   knockbackTime: 0.2
-  knockbackSpeed: 0
-  lootMinItems: 1
-  lootMaxItems: 2
+  shootingType: 0
+  projectileFlySpeed: 0
+  difficulty: 0
+  coins: []
   lootings: []
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
+  EnemyObject: {fileID: 91700730297484186, guid: f74f0a1550e5f4a4aa8ac8bf9e8c7d98, type: 3}
+  projectile: {fileID: 0}
