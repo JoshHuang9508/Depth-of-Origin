@@ -19,7 +19,7 @@ public class ChestController : MonoBehaviour
 
     [Header("Object Reference")]
     [SerializeField] private Animator animator;
-    [SerializeField] private Interactable interactable;
+    [SerializeField] public Interactable interactable;
     [SerializeField] private GameObject itemDropper;
 
     [Header("Player Data")]

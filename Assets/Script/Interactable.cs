@@ -8,7 +8,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 public class Interactable : MonoBehaviour
 {
     [Header("Setting")]
-    [SerializeField] private bool interactable;
+    [SerializeField] public bool interactable;
     [SerializeField] private KeyCode interactKey;
     [SerializeField] private UnityEvent interactAction, enterRangeAction, leaveRangeAction;
 
@@ -21,11 +21,10 @@ public class Interactable : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] private bool isInRange;
-    
 
-    void Start()
+    private void Awake()
     {
-        if(interactable)
+        if (interactable)
         {
             interactDialog = Instantiate(
             interactDialogObject,
@@ -38,6 +37,10 @@ public class Interactable : MonoBehaviour
             interactDialogText = interactDialog.GetComponentInChildren<TMP_Text>();
         }
     }
+
+    
+
+    
 
     void Update()
     {
