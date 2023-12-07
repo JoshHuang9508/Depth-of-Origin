@@ -12,6 +12,7 @@ using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.EventSystems;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEditor;
+using UnityEditor.Build.Content;
 
 public class MainMenuController1 : MonoBehaviour
 {
@@ -33,8 +34,8 @@ public class MainMenuController1 : MonoBehaviour
 
 
     [Header("Level To load")]
-    public string newGameLevel;
-    public string leveltoLoad;
+    public int newGameLevel;
+    public int leveltoLoad;
 
     [Header("Resolution DropDown")]
     public CustomDropdown resolutionDropdown;
@@ -382,7 +383,8 @@ public class MainMenuController1 : MonoBehaviour
 
     public void NewGameYesClicked()
     {
-        PlayerPrefs.SetString("loadscene", newGameLevel);
+        PlayerPrefs.SetInt("loadscene", newGameLevel);
+        
         SceneManager.LoadScene("Loading");
     }
 
@@ -390,10 +392,10 @@ public class MainMenuController1 : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("SavedLevel"))
         {
-            leveltoLoad = PlayerPrefs.GetString("SavedLevel");
-            if(leveltoLoad == "")
+            leveltoLoad = PlayerPrefs.GetInt("SavedLevel");
+            if(leveltoLoad != -1)
             {
-                PlayerPrefs.SetString("loadscene", leveltoLoad);
+                PlayerPrefs.SetInt("loadscene", leveltoLoad);
                 SceneManager.LoadScene("Loading");
             }
             else
