@@ -21,7 +21,6 @@ public class SpawnerController : MonoBehaviour
 
     [Header("Stats")]
     public bool spawnEnabler = true;
-    public bool playerStayed = false;
 
     private void Update()
     {
@@ -35,7 +34,6 @@ public class SpawnerController : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            playerStayed = true;
             spawnEnabler = false;
         }
     }
@@ -50,7 +48,6 @@ public class SpawnerController : MonoBehaviour
         if (collision.CompareTag("Enemy")) stayedMobs--;
         if (collision.CompareTag("Player"))
         {
-            playerStayed = false;
             spawnEnabler = true;
         }
     }
@@ -63,7 +60,7 @@ public class SpawnerController : MonoBehaviour
         {
             //spawn delay
             StartCoroutine(delay(enabler =>
-            spawnEnabler = playerStayed ? false : enabler,
+            spawnEnabler = enabler,
             Random.Range(spawnGapMin, spawnGapMax)));
 
             Vector3 spawnPos = Vector3.zero;

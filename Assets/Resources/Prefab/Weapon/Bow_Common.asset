@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8428f26531561e408a136938af2aa91, type: 3}
   m_Name: Bow_Common
   m_EditorClassIdentifier: 
-  Name: The Bow
-  Description: 
+  Name: Bow
+  Description: The only ranged weapon in this world
   IsStackable: 0
   isStorable: 1
   MaxStackSize: 1
@@ -22,19 +22,20 @@ MonoBehaviour:
   buyPrice: 0
   Image: {fileID: 21300000, guid: 9d447732954d7044e84749cbe971fb7a, type: 3}
   DefaultParameterList: []
+  weaponType: 1
   attackSpeed: 1
   attackCooldown: 1
-  weaponDamage: 50
-  knockbackForce: 20
+  weaponDamage: 20
+  knockbackForce: 10
   knockbackTime: 0.2
-  weaponType: 1
-  weaponObject: {fileID: 0}
   E_walkSpeed: 1
   E_maxHealth: 0
-  E_strength: 0
+  E_strength: 10
   E_defence: 0
-  E_critRate: 25
-  E_critDamage: 40
+  E_critRate: 5
+  E_critDamage: 10
+  weaponObject: {fileID: 0}
   projectileObject: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
+  shootingType: 0
   flySpeed: 15
-  projectileType: 0
+  splitAmount: 1

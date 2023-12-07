@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Axe_Common
   m_EditorClassIdentifier: 
   Name: Axe
-  Description: 
+  Description: An throwable axe
   IsStackable: 0
   isStorable: 1
   MaxStackSize: 1
@@ -22,16 +22,16 @@ MonoBehaviour:
   buyPrice: 0
   Image: {fileID: 21300000, guid: d89374f3432c3804ab24a3382a352f2e, type: 3}
   DefaultParameterList: []
-  attackSpeed: 0.8
-  attackCooldown: 1
-  weaponDamage: 8
-  knockbackForce: 10
-  knockbackTime: 0.4
   weaponType: 0
-  weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}
-  E_walkSpeed: 0
+  attackSpeed: 1
+  attackCooldown: 1.5
+  weaponDamage: 25
+  knockbackForce: 10
+  knockbackTime: 0.7
+  E_walkSpeed: 0.5
   E_maxHealth: 0
-  E_strength: 0
+  E_strength: 10
   E_defence: 0
-  E_critRate: 0
-  E_critDamage: 0
+  E_critRate: 5
+  E_critDamage: 10
+  weaponObject: {fileID: 4857680875645216774, guid: 4a88ba3215fccb74fbb93dbe56c19931, type: 3}
