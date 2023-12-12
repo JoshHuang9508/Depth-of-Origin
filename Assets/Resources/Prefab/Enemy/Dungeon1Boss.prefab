@@ -166,7 +166,6 @@ GameObject:
   - component: {fileID: 1428952571654295317}
   - component: {fileID: 3771346367461194354}
   - component: {fileID: 1972468773916951807}
-  - component: {fileID: 4004926426947952567}
   - component: {fileID: 1346561704555181041}
   m_Layer: 0
   m_Name: Dungeon1Boss
@@ -273,30 +272,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &4004926426947952567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3003323560790490449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9c526d61aeb1da4099321292410c163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  positionList:
-  - {x: -20, y: 71}
-  - {x: 18, y: 71}
-  - {x: 16, y: 56}
-  - {x: -18, y: 56}
-  - {x: -20, y: 41}
-  - {x: 18, y: 41}
-  enemy: {fileID: 0}
-  enemyBehavior: {fileID: 0}
-  currentRb: {fileID: 1972468773916951807}
-  shield: {fileID: 6542578947097696725}
-  column: {fileID: 305361051521810641, guid: b121304f78ed84ae9814c8f1712b97cc, type: 3}
 --- !u!114 &1346561704555181041
 MonoBehaviour:
   m_ObjectHideFlags: 0
