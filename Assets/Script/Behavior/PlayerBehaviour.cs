@@ -286,7 +286,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * defence)), "PlayerHit");
 
             //play audio
-            audioPlayer.PlayOneShot(hitSound);
+            //audioPlayer.PlayOneShot(hitSound);
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
