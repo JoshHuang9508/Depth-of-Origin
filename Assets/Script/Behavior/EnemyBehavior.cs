@@ -93,6 +93,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     private void Moving()
     {
         spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
+        animator.enabled = movementEnabler;
 
         switch (enemy.attackType)
         {

@@ -46,7 +46,7 @@ public class SceneLoaderController : MonoBehaviour
             case LoadType.Scene:
                 SceneManager.LoadScene(SceneNum, LoadSceneMode.Single);
                 GameObject.FindWithTag("Player").transform.position = GameObject.FindWithTag("Respawn").transform.position;
-                GameObject.FindWithTag("CameraHold").transform.position = GameObject.FindWithTag("Respawn").transform.position;
+                GameObject.FindWithTag("CameraHold").transform.position = GameObject.FindWithTag("Respawn").transform.position + new Vector3(0, 0, -10);
                 transition.SetTrigger("End");
 
                 inAction = false;
@@ -54,8 +54,8 @@ public class SceneLoaderController : MonoBehaviour
                 break;
 
             case LoadType.Chunk:
-                GameObject.FindWithTag("Player").transform.position = transformPos.gameObject.transform.position;
-                GameObject.FindWithTag("CameraHold").transform.position = transformPos.gameObject.transform.position;
+                GameObject.FindWithTag("Player").transform.position = transformPos.transform.position;
+                GameObject.FindWithTag("CameraHold").transform.position = transformPos.transform.position + new Vector3(0, 0, -10); ;
                 transition.SetTrigger("End");
 
                 yield return new WaitForSeconds(0.5f);

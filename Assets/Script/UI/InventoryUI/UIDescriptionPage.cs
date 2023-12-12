@@ -64,8 +64,7 @@ namespace Inventory.UI
             {
                 var weapon = (WeaponSO)item;
                 descriptionText =
-                    $"- Damage : {weapon.weaponDamage}\n" +
-                    $"- ATK Speed : {weapon.attackSpeed}x\n" +
+                    $"- ATK Damage : {weapon.weaponDamage}\n" +
                     $"- ATK CD : {weapon.attackCooldown}s\n" +
                     $"- Knockback : {weapon.knockbackForce}\n" +
                     $"- Stunned : {weapon.knockbackTime}s\n" +

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new ranged weapon", menuName = "Items/Weapon/Ranged Weapon")]
-public class RangedWeaponSO : WeaponSO, IEquipable, IDestoryableItem, IItemAction, ISellable
+public class RangedWeaponSO : WeaponSO, IEquipable, IUnequipable
 {
     [Header("Object Reference")]
     public GameObject projectileObject;
@@ -19,5 +19,28 @@ public class RangedWeaponSO : WeaponSO, IEquipable, IDestoryableItem, IItemActio
     public enum ShootingType
     {
         Single, Split
+    }
+
+
+    public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+
+        if (player != null)
+        {
+            player.SetEquipment(this, WeaponType.Ranged);
+        }
+        return false;
+    }
+
+    public bool UnequipObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    {
+        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+
+        if (player != null)
+        {
+            player.UnEquipment(this, WeaponType.Ranged);
+        }
+        return false;
     }
 }
