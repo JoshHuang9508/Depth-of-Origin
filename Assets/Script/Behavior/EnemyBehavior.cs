@@ -152,7 +152,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     private void Attacking()
     {
         if (!attackEnabler) return;
-        Debug.Log("1");
 
         switch (enemy.attackType)
         {

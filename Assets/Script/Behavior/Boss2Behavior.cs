@@ -13,7 +13,7 @@ public class Boss2Behavior : MonoBehaviour
 
     [Header("Dynamic Data")]
     [SerializeField] private GameObject target;
-    bool poisonEnabler = true , directionEnabler = true;
+    bool poisonEnabler = true , directionEnabler = true ;
     int behaviorType = 1;
 
     private void Start()
@@ -34,7 +34,7 @@ public class Boss2Behavior : MonoBehaviour
         switch(behaviorType)
         {
             case 1:
-                if (distant <= enemyBehavior.enemy.chaseField && distant >= 5f)
+                if (distant <= enemyBehavior.enemy.chaseField && distant > 5f)
                 {
                     enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
                     enemyBehavior.enemy.attackType = EnemySO.AttackType.Sniper;
@@ -44,7 +44,7 @@ public class Boss2Behavior : MonoBehaviour
                     enemyBehavior.enemy.attackDamage = 2000;
                     directionEnabler = true;
                     enemyBehavior.attackEnabler = true;
-                    if (directionEnabler)
+                    if (directionEnabler && enemyBehavior.enemy.moveSpeed >= 0)
                     {
                         enemyBehavior.enemy.moveSpeed *= -1; 
                         directionEnabler = false;
@@ -61,7 +61,7 @@ public class Boss2Behavior : MonoBehaviour
                     enemyBehavior.enemy.attackDamage = 2000;
                     enemyBehavior.attackEnabler = false;
                     directionEnabler = true;
-                    if (directionEnabler)
+                    if (directionEnabler && enemyBehavior.enemy.moveSpeed < 0)
                     {
                         enemyBehavior.enemy.moveSpeed *= -1;
                         directionEnabler = false;
@@ -76,7 +76,7 @@ public class Boss2Behavior : MonoBehaviour
                         _poison.GetComponent<Projectile_SlimeBalls_Behavior>().alivetime = 10f;
                         _poison.GetComponent<CircleCollider2D>().radius = 1.0f / 6.0f;
                     }
-                    
+                    //1
                 }
                 break;
             case 2:
