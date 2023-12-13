@@ -40,7 +40,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -104,12 +104,12 @@ TextureImporter:
       name: KingSlime_Moving3_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 7
-        width: 60
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,31 +121,10 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: KingSlime_Moving3_1
-      rect:
-        serializedVersion: 2
-        x: 26
-        y: 36
-        width: 13
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8af60495db784a9b0800000000000000
-      internalID: -5069778033196372056
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6357d4839ce753e488dcd0d84f834741
     internalID: 0
     vertices: []
     indices: 
@@ -154,7 +133,6 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       KingSlime_Moving3_0: -414325670860162993
-      KingSlime_Moving3_1: -5069778033196372056
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

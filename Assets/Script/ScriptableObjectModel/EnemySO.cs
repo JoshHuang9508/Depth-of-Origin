@@ -54,6 +54,8 @@ public class EnemySO : ScriptableObject
 
     public void Attack_Ranged(float startAngle, Vector3 startPosition)
     {
+        Debug.Log(startAngle);
+        Debug.Log(startPosition);
         switch (shootingType)
         {
             case ShootingType.Single:

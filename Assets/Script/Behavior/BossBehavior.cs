@@ -14,6 +14,7 @@ public class BossBehavior : MonoBehaviour
 
     int behaviorType = 1;
 
+
     void Start()
     {
         column.GetComponent<BossColumnController>().shieldBreak += RemoveShield;

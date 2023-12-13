@@ -5,10 +5,12 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Projectile_SlimeBalls_Behavior : MonoBehaviour
 {
-    float alivetime = 0f;
+    [SerializeField] private EdibleItemSO poisonEffect;
+    public float alivetime = 10f;
     float currentTime=0f;
     bool damageEnabler = true;
-    void Start()
+
+    private void Start()
     {
         
     }
@@ -16,7 +18,6 @@ public class Projectile_SlimeBalls_Behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        alivetime = Random.Range(10f, 15f);
         currentTime += Time.deltaTime;
         if(currentTime >= alivetime)
         {
@@ -26,7 +27,7 @@ public class Projectile_SlimeBalls_Behavior : MonoBehaviour
         if(DetectPlayer() && damageEnabler)
         {
             Damageable damageableObject = GameObject.FindWithTag("Player").GetComponent<Damageable>();
-
+            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().SetEffection(poisonEffect, poisonEffect.effectTime);
             damageableObject.OnHit(10, false, Vector2.zero, 0);
 
             StartCoroutine(SetTimer(callback => { damageEnabler = callback; }, 2));
