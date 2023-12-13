@@ -14,9 +14,9 @@ public class WeaponSO : ItemSO, IDestoryableItem, ISellable, IBuyable
     public float knockbackTime;
 
     [Header("Effection")]
-    public float E_walkSpeed;
     public float E_maxHealth;
     public float E_strength;
+    public float E_walkSpeed;
     public float E_defence;
     public float E_critRate;
     public float E_critDamage;
