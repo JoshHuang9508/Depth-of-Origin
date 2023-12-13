@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da5fdab1992064e6987ea28b292f0e4f, type: 3}
-  m_Name: C_DoubleAxe
+  m_Name: E_DoubleAxe
   m_EditorClassIdentifier: 
   Name: Double Axe
   Description: An axe which has blades at two sides of it. KURU KURU KURURIN
   IsStackable: 0
   isStorable: 1
   MaxStackSize: 1
-  Rarity: 0
-  sellPrice: 0
-  buyPrice: 0
+  Rarity: 3
+  sellPrice: 3200
+  buyPrice: 8000
   Image: {fileID: 21300000, guid: 85b785ab014598c40b5ae2d423367ee4, type: 3}
   DefaultParameterList: []
-  attackCooldown: 1
-  weaponDamage: 20
-  knockbackForce: 7
-  knockbackTime: 0.7
-  E_walkSpeed: 0.5
-  E_maxHealth: 0
-  E_strength: 10
-  E_defence: 0
-  E_critRate: 5
-  E_critDamage: 10
+  attackCooldown: 1.75
+  weaponDamage: 420
+  knockbackForce: 14
+  knockbackTime: 0.8
+  E_maxHealth: 50
+  E_strength: 100
+  E_walkSpeed: -30
+  E_defence: 50
+  E_critRate: -10
+  E_critDamage: 50
   weaponObject: {fileID: 6740076035439635677, guid: b89b9cb154ba65e47aea34bf9c5efc90, type: 3}
-  attackSpeed: 1
+  attackSpeed: 1.5

@@ -18,19 +18,19 @@ MonoBehaviour:
   isStorable: 1
   MaxStackSize: 1
   Rarity: 0
-  sellPrice: 0
-  buyPrice: 0
+  sellPrice: 100
+  buyPrice: 250
   Image: {fileID: 21300000, guid: df36e5b4c29a79d46a85e765df452cac, type: 3}
   DefaultParameterList: []
-  attackCooldown: 0.8
-  weaponDamage: 20
+  attackCooldown: 1.2
+  weaponDamage: 18
   knockbackForce: 5
   knockbackTime: 0.5
-  E_walkSpeed: 0
   E_maxHealth: 0
-  E_strength: 10
+  E_strength: 0
+  E_walkSpeed: 10
   E_defence: 0
-  E_critRate: 5
-  E_critDamage: 10
+  E_critRate: 0
+  E_critDamage: 0
   weaponObject: {fileID: 4857680875645216774, guid: 91aa8beedc05d9243b97995866405f0a, type: 3}
   attackSpeed: 1.5
