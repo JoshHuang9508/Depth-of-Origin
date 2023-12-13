@@ -22,19 +22,16 @@ MonoBehaviour:
   buyPrice: 0
   Image: {fileID: 21300000, guid: 9d447732954d7044e84749cbe971fb7a, type: 3}
   DefaultParameterList: []
-  weaponType: 1
-  attackSpeed: 1
   attackCooldown: 1
   weaponDamage: 15
   knockbackForce: 10
   knockbackTime: 0.2
-  E_walkSpeed: 1
+  E_walkSpeed: 180
   E_maxHealth: 0
   E_strength: 10
   E_defence: 0
   E_critRate: 5
   E_critDamage: 10
-  weaponObject: {fileID: 0}
   projectileObject: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
   shootingType: 0
   flySpeed: 15

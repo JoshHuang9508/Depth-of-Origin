@@ -99,9 +99,9 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         {
             case EnemySO.AttackType.Melee:
 
-                if (!movementEnabler) return;
+                if (!movementEnabler || !attackEnabler) return;
 
-                if (Vector3.Distance(targetPos, currentPos) <= enemy.chaseField && Vector3.Distance(targetPos, currentPos) >= enemy.attackField)
+                if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
                     currentRb.MovePosition(currentPos + enemy.moveSpeed * Time.deltaTime * diraction);
 
@@ -112,11 +112,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 {
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
-                }
-                else if (Vector3.Distance(targetPos, currentPos) < enemy.attackField)
-                {
-                    animator.SetBool("ismove", false);
-                    animator.SetBool("ischase", true);
                 }
                 break;
 
@@ -129,13 +124,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     currentRb.MovePosition(currentPos - enemy.moveSpeed * Time.deltaTime * diraction);
 
                     animator.SetBool("ismove", true);
-                    animator.SetBool("ischase", true);
-                }
-                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField && Vector3.Distance(targetPos, currentPos) < enemy.attackField)
-                {
-                    currentRb.velocity = Vector2.zero;
-
-                    animator.SetBool("ismove", false);
                     animator.SetBool("ischase", true);
                 }
                 else if (Vector3.Distance(targetPos, currentPos) > enemy.attackField)
@@ -166,7 +154,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                         damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                         attackDisableTimer += enemy.attackSpeed;
-                        movementDisableTimer += enemy.attackSpeed;
                     }
                 }
                 break;

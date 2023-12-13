@@ -179,7 +179,7 @@ MonoBehaviour:
   interactAction:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 162835833134180432}
+      - m_Target: {fileID: 2623224994631245027}
         m_TargetAssemblyTypeName: TorchLightController, Assembly-CSharp
         m_MethodName: LightTorch
         m_Mode: 1
@@ -209,10 +209,10 @@ MonoBehaviour:
   leaveRangeAction:
     m_PersistentCalls:
       m_Calls: []
-  isInRange: 0
-  isEnable: 0
+  interactDialogObject: {fileID: 6383876599670681586, guid: f0b84136927864e46a5e0f0158c677e3, type: 3}
+  interactDialogText: {fileID: 0}
   interactDialog: {fileID: 1424550860853803207, guid: d28b66e9e1d46d746ac11b926bc5a58a, type: 3}
-  temp: {fileID: 0}
+  isInRange: 0
 --- !u!114 &913835287913082600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +226,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neededActionTimes: 6
-  boss: {fileID: 11400000, guid: 1bb86e3160f664581a37649b249404cc, type: 2}
   summonPos: {x: -1, y: 56, z: 0}
+  boss: {fileID: 11400000, guid: 1bb86e3160f664581a37649b249404cc, type: 2}
+  interactable: {fileID: 0}
   isActived: 0
 --- !u!1001 &8379319902053916319
 PrefabInstance:
@@ -298,9 +299,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 406a92560457f4767925f4d8576e1829, type: 3}
---- !u!114 &162835833134180432 stripped
+--- !u!114 &2623224994631245027 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8506122522807383759, guid: 406a92560457f4767925f4d8576e1829, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5777768908603982460, guid: 406a92560457f4767925f4d8576e1829, type: 3}
   m_PrefabInstance: {fileID: 8379319902053916319}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
