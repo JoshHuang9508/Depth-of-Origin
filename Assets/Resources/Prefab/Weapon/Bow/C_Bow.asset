@@ -18,24 +18,21 @@ MonoBehaviour:
   isStorable: 1
   MaxStackSize: 1
   Rarity: 0
-  sellPrice: 0
-  buyPrice: 0
+  sellPrice: 100
+  buyPrice: 250
   Image: {fileID: 21300000, guid: 9d447732954d7044e84749cbe971fb7a, type: 3}
   DefaultParameterList: []
-  weaponType: 1
-  attackSpeed: 1
   attackCooldown: 1
-  weaponDamage: 15
-  knockbackForce: 10
-  knockbackTime: 0.2
-  E_walkSpeed: 1
-  E_maxHealth: 0
-  E_strength: 10
-  E_defence: 0
+  weaponDamage: 8
+  knockbackForce: 7
+  knockbackTime: 0.3
+  E_maxHealth: 20
+  E_strength: 0
+  E_walkSpeed: 10
+  E_defence: 10
   E_critRate: 5
   E_critDamage: 10
-  weaponObject: {fileID: 0}
   projectileObject: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
   shootingType: 0
-  flySpeed: 15
+  flySpeed: 12
   splitAmount: 1
