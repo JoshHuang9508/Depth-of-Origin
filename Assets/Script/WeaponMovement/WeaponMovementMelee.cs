@@ -9,7 +9,7 @@ public class WeaponMovementMelee : MonoBehaviour
     public Animator animator;
 
     [Header("Data")]
-    public WeaponSO weaponData;
+    public MeleeWeaponSO weaponData;
     public PlayerBehaviour playerData;
 
     [Header("Audio")]

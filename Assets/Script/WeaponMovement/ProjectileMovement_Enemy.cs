@@ -8,6 +8,8 @@ public class ProjectileMovement_Enemy : MonoBehaviour
     [Header("Object Reference")]
     public Rigidbody2D objectRigidbody;
     public SpriteRenderer spriteRenderer;
+    public Collider2D thisCollider;
+    public TrailRenderer trail;
 
     [Header("Data")]
     public RangedWeaponSO rangedWeapon;
@@ -68,4 +70,5 @@ public class ProjectileMovement_Enemy : MonoBehaviour
         yield return new WaitForSeconds(10f);
         Destroy(gameObject);
     }
+
 }

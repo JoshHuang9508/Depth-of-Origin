@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     [Header("Stats")]
     public bool isFollowing_x = true;
     public bool isFollowing_y = true;
-    public Vector2 newPosition;
+    public Vector3 newPosition;
 
     private void Start()
     {
@@ -39,12 +39,12 @@ public class CameraController : MonoBehaviour
             mapBounds = null;
         }
 
-        newPosition = Vector2.Lerp(transform.position, target.transform.position + offset, smoothing);
+        newPosition = Vector3.Lerp(transform.position, target.transform.position + offset, smoothing);
 
         if(mapBounds != null)
         {
-            Vector2 targetPos_x = new Vector2(newPosition.x, 0);
-            Vector2 targetPos_y = new Vector2(0, newPosition.y);
+            Vector2 targetPos_x = new(newPosition.x, 0);
+            Vector2 targetPos_y = new(0, newPosition.y);
 
             if (!mapBounds.bounds.Contains(targetPos_x)) isFollowing_x = false;
             else isFollowing_x = true;

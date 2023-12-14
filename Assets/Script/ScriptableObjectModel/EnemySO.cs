@@ -54,49 +54,39 @@ public class EnemySO : ScriptableObject
 
     public void Attack_Ranged(float startAngle, Vector3 startPosition)
     {
+        Debug.Log(startAngle);
+        Debug.Log(startPosition);
         switch (shootingType)
         {
             case ShootingType.Single:
-                var ArrowSummoned = Instantiate(
-                        projectile,
-                        startPosition,
-                        Quaternion.Euler(0, 0, startAngle - 90),
-                        GameObject.FindWithTag("Item").transform);
-
-                ArrowSummoned.AddComponent<ProjectileMovement_Enemy>();
-                ArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle);
-                ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
+                SummonArrow(startPosition, startAngle);
                 break;
                 
             case ShootingType.Split:
                 for (int i = -60; i <= 60; i += 30)
                 {
-                    var splitArrowSummoned = Instantiate(
-                        projectile,
-                        startPosition,
-                        Quaternion.Euler(0, 0, startAngle + i - 90),
-                        GameObject.FindWithTag("Item").transform);
-
-                    splitArrowSummoned.AddComponent<ProjectileMovement_Enemy>();
-                    splitArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
-                    splitArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
+                    SummonArrow(startPosition, startAngle + i);
                 }
                 break;
 
             case ShootingType.AllAngle:
                 for (int i = -180; i <= 180; i += 18)
                 {
-                    var allAngleArrowSummoned = Instantiate(
-                        projectile,
-                        startPosition,
-                        Quaternion.Euler(0, 0, startAngle - 90 + i),
-                        GameObject.FindWithTag("Item").transform);
-
-                    allAngleArrowSummoned.AddComponent<ProjectileMovement_Enemy>();
-                    allAngleArrowSummoned.GetComponent<WeaponMovementRanged>().startAngle = Quaternion.Euler(0, 0, startAngle + i);
-                    allAngleArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
+                    SummonArrow(startPosition, startAngle + i);
                 }
                 break;
         }
+    }
+
+    private void SummonArrow(Vector3 position, float angle)
+    {
+        var ArrowSummoned = Instantiate(
+                        projectile,
+                        position,
+                        Quaternion.Euler(0, 0, angle - 90),
+                        GameObject.FindWithTag("Item").transform);
+
+        ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().startAngle = Quaternion.Euler(0, 0, angle);
+        ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
     }
 }

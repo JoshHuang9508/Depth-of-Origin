@@ -81,7 +81,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public bool healingEnabler = true;
     public float healingDisableTimer = 0;
 
-    public float walkSpeed { get { return B_WalkSpeed + E_WalkSpeed; } }
+    public float walkSpeed { get { return B_WalkSpeed * ((100 + E_WalkSpeed) / 100); } }
     public float maxHealth { get { return B_MaxHealth + E_MaxHealth; } }
     public float strength { get { return B_Strength + E_Strength; } }
     public float defence { get { return B_Defence + E_Defence; } }
@@ -226,8 +226,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         //use weapon
         if (Input.GetKey(useWeaponKey) && attackEnabler)
         {
-            UpdateCurrentWeapon();
-
             if(currentWeapon != null)
             {
                 attackDisableTimer += currentWeapon.attackCooldown;
@@ -288,7 +286,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * defence)), "PlayerHit");
 
             //play audio
-            audioPlayer.PlayOneShot(hitSound);
+            //audioPlayer.PlayOneShot(hitSound);
 
             //knockback
             currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
@@ -392,7 +390,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         effectionList.Remove(indexOfEffectionList != -1 ? effectionList[indexOfEffectionList] : null);
     }
 
-    private void UpdateCurrentWeapon()
+    public WeaponSO UpdateCurrentWeapon()
     {
         //update current weapon
         switch (weaponControl)
@@ -407,6 +405,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 currentWeapon = attackEnabler ? rangedWeapon : currentWeapon;
                 break;
         }
+
+        return currentWeapon;
     }
 
 
@@ -514,7 +514,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
         else
         {
-            effectionList.Add(new EffectionList {effectingItem = edibleItem , effectingTime = effectTime});
+            if (edibleItem.effectTime != 0)
+            {
+                effectionList.Add(new EffectionList { effectingItem = edibleItem, effectingTime = effectTime });
+            }
         }
 
         if (edibleItem.E_heal != 0)

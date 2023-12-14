@@ -22,6 +22,14 @@ public class SpawnerController : MonoBehaviour
     [Header("Stats")]
     public bool spawnEnabler = true;
 
+    private void Start()
+    {
+        if (GetComponent<CircleCollider2D>())
+        {
+            spawnRange = GetComponent<CircleCollider2D>().radius;
+        }
+    }
+
     private void Update()
     {
         if(autoSpawn)

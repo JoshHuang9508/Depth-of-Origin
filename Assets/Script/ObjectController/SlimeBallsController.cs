@@ -1,0 +1,1 @@
+using UnityEngine; public class SlimeBallsController : MonoBehaviour { [SerializeField] private GameObject slimePoison; private void OnDestroy() { Instantiate(slimePoison, transform.position, Quaternion.identity,GameObject.Find("Object_Grid").transform); } }

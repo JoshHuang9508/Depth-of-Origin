@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7013729961195538209}
   - component: {fileID: 8259937006636223684}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TorchLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1588636778863846795}
   - component: {fileID: 844096241242444398}
   - component: {fileID: 5777768908603982460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_Extinguished
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,6 +205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c82e43b35629b840a79f862fc541cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torchLight: {fileID: 0}
-  animator: {fileID: 0}
+  torchLight: {fileID: 8259937006636223684}
+  animator: {fileID: 844096241242444398}
   extinguished: 1
