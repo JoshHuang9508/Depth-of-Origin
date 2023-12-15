@@ -159,7 +159,6 @@ GameObject:
   - component: {fileID: 4016301241676461820}
   - component: {fileID: 2896010502797295798}
   - component: {fileID: 1178550356016480739}
-  - component: {fileID: -8969953579865835941}
   m_Layer: 0
   m_Name: D2_Boss_split_1
   m_TagString: Boss
@@ -306,41 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdcd7f500faa1b747952ce255fd2b85f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyBehavior: {fileID: 0}
+  enemyBehavior: {fileID: 4016301241676461820}
   controller: {fileID: 0}
-  smallerSlime: {fileID: 0}
---- !u!114 &-8969953579865835941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5028839146323068152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82a764b5128e60043a10798561f6d592, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 6652575723853700527}
-  animator: {fileID: 1504601024561477397}
-  currentRb: {fileID: 2345314214863091639}
-  damageText: {fileID: 8842133498016202654, guid: 1ece5649299024e42bb29bc9f2f0ef8f, type: 3}
-  itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
-  audioPlayer: {fileID: 0}
-  hitSound: {fileID: 0}
-  deadSound: {fileID: 0}
-  enemy: {fileID: 0}
-  target: {fileID: 0}
-  currentHealth: 0
-  currentPos: {x: 0, y: 0}
-  targetPos: {x: 0, y: 0}
-  diraction: {x: 0, y: 0}
-  movementEnabler: 1
-  movementDisableTimer: 0
-  attackEnabler: 1
-  attackDisableTimer: 0
-  damageEnabler: 1
-  damageDisableTimer: 0
-  dodgeEnabler: 1
-  dodgeDisableTimer: 0
-  behaviourEnabler: 1
+  smallestSlime: {fileID: 11400000, guid: 12139a8d9ffba5e4b83874b01990bcbc, type: 2}

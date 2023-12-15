@@ -306,7 +306,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyBehavior: {fileID: 5369529024397327833}
-  poison: {fileID: 5108460191125810354, guid: b74793539b50de4458def55b2aa2b96c, type: 3}
-  smallerSlime: {fileID: 5028839146323068152, guid: 7327272e541fa50489fe974d2506c814, type: 3}
+  poison: {fileID: 718031478521818914, guid: dcb55353656e9f24084ff090e5b534a8, type: 3}
+  smallerSlime: {fileID: 11400000, guid: ba34b01e9b8c9444fbef1fdafa682e4c, type: 2}
   target: {fileID: 0}
-  currentHealth: 0
