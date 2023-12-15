@@ -7,13 +7,15 @@ using TMPro;
 public class BossHealthBar : MonoBehaviour
 {
     [Header("Setting")]
-    [SerializeField] private Gradient gradient;
+    [SerializeField] private Gradient healthBarGradient;
+    [SerializeField] private Gradient ShieldBarGradient;
 
     [Header("Object Reference")]
     [SerializeField] private EnemyBehavior boss;
-    [SerializeField] private Slider slider;
     [SerializeField] private TMP_Text healthText, bossName;
-    [SerializeField] private Image fill;
+    [SerializeField] private Slider healthBarSlider, shieldBarSlider;
+    [SerializeField] private Image healthBarFill, shieldBarFill;
+    [SerializeField] private GameObject shieldBar;
 
     void Update()
     {
@@ -31,9 +33,16 @@ public class BossHealthBar : MonoBehaviour
             setVisiable(true);
 
             bossName.text = boss.enemy.Name;
-            slider.value = boss.currentHealth / boss.enemy.health;
+            healthBarSlider.value = boss.currentHealth / boss.enemy.health;
             healthText.text = $"{Mathf.RoundToInt(boss.currentHealth)} / {boss.enemy.health}";
-            fill.color = gradient.Evaluate(boss.currentHealth / boss.enemy.health);
+            healthBarFill.color = healthBarGradient.Evaluate(boss.currentHealth / boss.enemy.health);
+
+            shieldBar.SetActive(boss.enemy.haveShield);
+            if (boss.enemy.haveShield)
+            {
+                shieldBarSlider.value = boss.currnetShieldHealth / boss.enemy.shieldHealth;
+                shieldBarFill.color = ShieldBarGradient.Evaluate(boss.currnetShieldHealth / boss.enemy.shieldHealth);
+            }
         }
         else
         {

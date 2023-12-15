@@ -37,6 +37,8 @@ public class BossBehavior : MonoBehaviour
             behaviorType = 2;
         }
 
+        if (!enemyBehavior.behaviourEnabler) return;
+
         switch (behaviorType)
         {
             case 1:
@@ -64,8 +66,6 @@ public class BossBehavior : MonoBehaviour
     {
         enemyBehavior.ShieldHealth = 0;
         enemyBehavior.attackDisableTimer = 65f;
-
-        Debug.Log("REMOVE");
 
         StartCoroutine(SetTimer((callback) =>{
             if (callback && behaviorType == 1)

@@ -6,8 +6,6 @@ using UnityEngine.Rendering.Universal;
 
 public class Boss2Behavior : MonoBehaviour
 {
-
-
     [Header("Object Reference")]
     [SerializeField] private EnemyBehavior enemyBehavior;
     [SerializeField] private GameObject poison;

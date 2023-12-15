@@ -20,6 +20,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     [SerializeField] private GameObject target;
     public float currentHealth;
     public float currnetShieldHealth;
+    public bool haveShield;
     [SerializeField] private Vector2 currentPos, targetPos, diraction;
 
     [Header("Stats")]
@@ -63,6 +64,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
     }
 
+    public Vector2 CurrentPos { get { return currentPos; } }
+    public Vector2 TargetPos { get { return targetPos; } }
+    public Vector2 Diraction { get { return diraction; } }
+
     public float ShieldHealth
     {
         get
@@ -75,10 +80,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
             if(currnetShieldHealth <= 0)
             {
-                enemy.haveShield = false;
+                haveShield = false;
             }
         }
     }
+
+    public delegate void EnemyAttack();
+    public event EnemyAttack OnAttack;
 
 
 
@@ -86,6 +94,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         currentHealth = enemy.health;
         currnetShieldHealth = enemy.shieldHealth;
+        haveShield = enemy.haveShield;
 
         audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
 
@@ -146,7 +155,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true);
                 }
-                else if (Vector3.Distance(targetPos, currentPos) > enemy.attackField)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField)
                 {
                     currentRb.velocity = Vector2.zero;
 
@@ -174,6 +183,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                         damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                         attackDisableTimer += enemy.attackSpeed;
+
+                        OnAttack.Invoke();
                     }
                 }
                 break;
@@ -185,6 +196,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     enemy.Attack_Ranged(Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg, transform.position + new Vector3(0, 0.5f, 0));
 
                     attackDisableTimer += enemy.attackSpeed;
+
+                    OnAttack.Invoke();
                 }
                 break;
         }
@@ -195,12 +208,12 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         if (!damageEnabler) return;
 
-        if (enemy.haveShield)
+        if (haveShield)
         {
             //update shield health
             ShieldHealth -= damage / (1 + (0.001f * enemy.defence));
         }
-        else if (!enemy.haveShield)
+        else if (!haveShield)
         {
             //update heath
             Health -= damage / (1 + (0.001f * enemy.defence));
@@ -224,16 +237,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
     public void SetShield(float _shieldHealth = 0)
     {
-        if (_shieldHealth != 0)
-        {
-            ShieldHealth = _shieldHealth;
-            enemy.haveShield = true;
-        }
-        else
-        {
-            ShieldHealth = enemy.shieldHealth;
-            enemy.haveShield = true;
-        }
+        if (_shieldHealth != 0) ShieldHealth = _shieldHealth;
+        else ShieldHealth = enemy.shieldHealth;
+
+        haveShield = true;
     }
 
     private bool UpdateTimer()
