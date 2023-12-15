@@ -51,8 +51,8 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.394
   m_Color: {r: 0, g: 0.15686275, b: 0, a: 0.39215687}
-  m_Intensity: 1
-  m_LightVolumeIntensity: 2
+  m_Intensity: 0.1
+  m_LightVolumeIntensity: 20
   m_LightVolumeEnabled: 1
   m_ApplyToSortingLayers: 8577cca41ba5d6de5b06122f000000009fd65809
   m_LightCookieSprite: {fileID: 0}
@@ -135,3 +135,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poisonEffect: {fileID: 11400000, guid: 27580388986d0c347a86fcaaedfe39fa, type: 2}
+  alivetime: 10

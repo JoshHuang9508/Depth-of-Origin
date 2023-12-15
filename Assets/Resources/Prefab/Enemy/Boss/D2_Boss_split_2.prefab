@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 812301980102618983}
   - component: {fileID: 7157335225308510838}
   - component: {fileID: 2347631727813085903}
+  - component: {fileID: -6602899348773838938}
   m_Layer: 0
   m_Name: D2_Boss_split_2
   m_TagString: Boss
@@ -147,6 +148,19 @@ MonoBehaviour:
   dodgeEnabler: 1
   dodgeDisableTimer: 0
   behaviourEnabler: 1
+--- !u!114 &-6602899348773838938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612676216720201261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7335e84faed03e24c9ccb21422ec1565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerPos: {fileID: 0}
 --- !u!1 &9116436088349190450
 GameObject:
   m_ObjectHideFlags: 0

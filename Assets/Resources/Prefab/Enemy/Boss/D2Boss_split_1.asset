@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 194b6416e2c41514984d0126cd02fd2e, type: 3}
-  m_Name: D2Boss
+  m_Name: D2Boss_split_1
   m_EditorClassIdentifier: 
-  Name: Slime King
-  health: 500000
-  moveSpeed: 5
-  defence: 1100
+  Name: Slime King(minion)
+  health: 200000
+  moveSpeed: 15
+  defence: 500
   isBoss: 1
   attackType: 0
-  attackSpeed: 1
-  attackDamage: 2000
+  attackSpeed: 0.75
+  attackDamage: 1000
   chaseField: 100
   attackField: 2
-  knockbackForce: 100
-  knockbackTime: 1
+  knockbackForce: 50
+  knockbackTime: 0.5
   shootingType: 0
-  projectileFlySpeed: 12
-  difficulty: 4
+  projectileFlySpeed: 0
+  difficulty: 0
   coins: []
   lootings: []
   wreckage: []
-  EnemyObject: {fileID: 5319692153324330543, guid: 5e1043b191eef68409548edaf001cd41, type: 3}
-  projectile: {fileID: 8859390899598628619, guid: 26cc197d2738981458a2e9e481f80bab, type: 3}
+  EnemyObject: {fileID: 5028839146323068152, guid: 7327272e541fa50489fe974d2506c814, type: 3}
+  projectile: {fileID: 0}

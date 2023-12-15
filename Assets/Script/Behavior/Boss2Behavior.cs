@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Boss2Behavior : MonoBehaviour
 {
@@ -9,12 +10,15 @@ public class Boss2Behavior : MonoBehaviour
 
     [Header("Object Reference")]
     [SerializeField] private EnemyBehavior enemyBehavior;
-    [SerializeField] private GameObject poison, smallerSlime;
+    [SerializeField] private GameObject poison;
+    [SerializeField] private EnemySO smallerSlime;
 
     [Header("Dynamic Data")]
     [SerializeField] private GameObject target;
     bool poisonEnabler = true , directionEnabler = true ;
     int behaviorType = 1;
+
+    
 
     private void Start()
     {
@@ -22,9 +26,10 @@ public class Boss2Behavior : MonoBehaviour
         enemyBehavior.enemy.attackType = EnemySO.AttackType.Melee;
         enemyBehavior.enemy.attackField = 2f;
         enemyBehavior.enemy.chaseField = 100;
-        enemyBehavior.enemy.attackSpeed = 1;
+        enemyBehavior.enemy.attackSpeed = 0.5f;
         enemyBehavior.enemy.attackDamage = 2000;
         target = GameObject.FindWithTag("Player");
+        
     }
     private void Update()
     {
@@ -34,14 +39,15 @@ public class Boss2Behavior : MonoBehaviour
         switch(behaviorType)
         {
             case 1:
-                if (distant <= enemyBehavior.enemy.chaseField && distant > 5f)
+                if (distant <= enemyBehavior.enemy.chaseField && distant > 9f)
                 {
                     enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
                     enemyBehavior.enemy.attackType = EnemySO.AttackType.Sniper;
                     enemyBehavior.enemy.attackField = 100f;
                     enemyBehavior.enemy.chaseField = 100;
-                    enemyBehavior.enemy.attackSpeed = 1;
+                    enemyBehavior.enemy.attackSpeed = 3f;
                     enemyBehavior.enemy.attackDamage = 2000;
+                    enemyBehavior.enemy.knockbackForce = 30f;
                     directionEnabler = true;
                     enemyBehavior.attackEnabler = true;
                     if (directionEnabler && enemyBehavior.enemy.moveSpeed >= 0)
@@ -51,7 +57,7 @@ public class Boss2Behavior : MonoBehaviour
                     }
                     enemyBehavior.enemy.attackType = EnemySO.AttackType.Sniper;
                 }
-                else if(distant <= 5f)
+                else if(distant <= 9f)
                 {
                     enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
                     enemyBehavior.enemy.attackType = EnemySO.AttackType.Melee;
@@ -59,6 +65,7 @@ public class Boss2Behavior : MonoBehaviour
                     enemyBehavior.enemy.chaseField = 100;
                     enemyBehavior.enemy.attackSpeed = 1;
                     enemyBehavior.enemy.attackDamage = 2000;
+                    enemyBehavior.enemy.knockbackForce = 100f;
                     enemyBehavior.attackEnabler = false;
                     directionEnabler = true;
                     if (directionEnabler && enemyBehavior.enemy.moveSpeed < 0)
@@ -69,14 +76,12 @@ public class Boss2Behavior : MonoBehaviour
                     enemyBehavior.enemy.attackType = EnemySO.AttackType.Melee;
                     if (poisonEnabler)
                     {
-                        GameObject _poison = Instantiate(poison, gameObject.transform.position, Quaternion.identity, GameObject.Find("D2_Boss(Clone)").transform);
+                        GameObject _poison = Instantiate(poison, gameObject.transform.position, Quaternion.identity, this.transform);
                         StartCoroutine(SetTimer(callback => {
                             poisonEnabler = callback;
                         }, 10f));
                         _poison.GetComponent<Projectile_SlimeBalls_Behavior>().alivetime = 10f;
-                        _poison.GetComponent<CircleCollider2D>().radius = 1.0f / 6.0f;
                     }
-                    //1
                 }
                 break;
             case 2:
@@ -84,7 +89,7 @@ public class Boss2Behavior : MonoBehaviour
                 break;
         }
 
-        if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5f && behaviorType == 1)
+        if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.01f && behaviorType == 1)
         {
             behaviorType = 2;
         }
@@ -94,7 +99,12 @@ public class Boss2Behavior : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            Instantiate(smallerSlime, transform.position, Quaternion.identity, GameObject.FindWithTag("Entity").transform);
+            var bossSummoned = Instantiate(
+                smallerSlime.EnemyObject,
+                transform.position,
+                Quaternion.identity,
+                GameObject.FindWithTag("Entity").transform);
+            bossSummoned.GetComponent<EnemyBehavior>().enemy = smallerSlime;
         }
     }
     private IEnumerator SetTimer(System.Action<bool> callback, float time)
