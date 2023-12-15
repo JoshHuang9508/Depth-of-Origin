@@ -1,3 +1,4 @@
+using NUnit;
 using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour, Damageable
@@ -18,6 +19,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public EnemySO enemy;
     [SerializeField] private GameObject target;
     public float currentHealth;
+    public float currnetShieldHealth;
     [SerializeField] private Vector2 currentPos, targetPos, diraction;
 
     [Header("Stats")]
@@ -61,11 +63,29 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
     }
 
+    public float ShieldHealth
+    {
+        get
+        {
+            return currnetShieldHealth;
+        }
+        set
+        {
+            currnetShieldHealth = value;
+
+            if(currnetShieldHealth <= 0)
+            {
+                enemy.haveShield = false;
+            }
+        }
+    }
+
 
 
     void Start()
     {
         currentHealth = enemy.health;
+        currnetShieldHealth = enemy.shieldHealth;
 
         audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
 
@@ -95,11 +115,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
         animator.enabled = movementEnabler;
 
+        if (!movementEnabler) return;
+
         switch (enemy.attackType)
         {
             case EnemySO.AttackType.Melee:
 
-                if (!movementEnabler || !attackEnabler) return;
+                if (!attackEnabler) return;
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -116,8 +138,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 break;
 
             case EnemySO.AttackType.Sniper:
-
-                if (!movementEnabler) return;
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -173,24 +193,46 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
     public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (UpdateTimer() && damageEnabler)
+        if (!damageEnabler) return;
+
+        if (enemy.haveShield)
+        {
+            //update shield health
+            ShieldHealth -= damage / (1 + (0.001f * enemy.defence));
+        }
+        else if (!enemy.haveShield)
         {
             //update heath
             Health -= damage / (1 + (0.001f * enemy.defence));
 
-            //instantiate damage text
-            DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
+            //knockback
+            currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
 
             //play audio
             audioPlayer.PlayOneShot(hitSound);
 
-            //knockback
-            currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
-
-            //delay
-            damageDisableTimer += 0.2f;
             movementDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
             attackDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
+        }
+
+        //instantiate damage text
+        DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
+
+        //delay
+        damageDisableTimer += 0.2f;
+    }
+
+    public void SetShield(float _shieldHealth = 0)
+    {
+        if (_shieldHealth != 0)
+        {
+            ShieldHealth = _shieldHealth;
+            enemy.haveShield = true;
+        }
+        else
+        {
+            ShieldHealth = enemy.shieldHealth;
+            enemy.haveShield = true;
         }
     }
 

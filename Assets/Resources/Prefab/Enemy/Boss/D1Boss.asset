@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Boss1
   health: 200000
+  haveShield: 0
+  shieldHealth: 1e+11
   moveSpeed: 7
   defence: 1000
   isBoss: 0
   attackType: 0
-  attackSpeed: 0.5
+  attackSpeed: 1
   attackDamage: 2000
   chaseField: 100
   attackField: 1.5
@@ -35,5 +37,5 @@ MonoBehaviour:
   lootings: []
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
-  EnemyObject: {fileID: 3003323560790490449, guid: b74fe314d6d034804b38d1ac3480c254, type: 3}
+  EnemyObject: {fileID: 4630222022334304219, guid: 42b4cf4629c7a44428043927055d1a8a, type: 3}
   projectile: {fileID: 4857680875645216774, guid: 156e08d50d589419c8f5d06eb57403c5, type: 3}

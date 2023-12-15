@@ -13,6 +13,8 @@ public class EnemySO : ScriptableObject
 
     [Header("Setting")]
     public float health;
+    public bool haveShield;
+    public float shieldHealth;
     public float moveSpeed;
     public float defence;
     public bool isBoss;

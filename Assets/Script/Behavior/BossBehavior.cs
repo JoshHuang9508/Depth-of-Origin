@@ -17,7 +17,7 @@ public class BossBehavior : MonoBehaviour
 
     void Start()
     {
-        column.GetComponent<BossColumnController>().shieldBreak += RemoveShield;
+        column.GetComponent<ShieldHolderController>().shieldBreak += RemoveShield;
 
         StartCoroutine(SetTimer(callback => {
             enemyBehavior.behaviourEnabler = callback;
@@ -28,23 +28,19 @@ public class BossBehavior : MonoBehaviour
 
     private void Update()
     {
+        shield.SetActive(enemyBehavior.enemy.haveShield);
+
         if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
-            StartCoroutine(SetTimer(callback => {
-                shield.SetActive(!callback);
-                if (callback)
-                {
-                    enemyBehavior.movementDisableTimer = 0;
-                    enemyBehavior.behaviourEnabler = true;
-                    behaviorType = 2;
-                }
-            }, 3f));
+            enemyBehavior.movementDisableTimer = 3;
+            enemyBehavior.attackDisableTimer = 3;
+            behaviorType = 2;
         }
 
         switch (behaviorType)
         {
             case 1:
-                enemyBehavior.movementDisableTimer = enemyBehavior.movementDisableTimer < 5 ? 1000 : 0;
+                enemyBehavior.movementDisableTimer = 1000;
                 enemyBehavior.currentRb.bodyType = RigidbodyType2D.Static;
                 enemyBehavior.enemy.attackType = EnemySO.AttackType.Sniper;
                 enemyBehavior.enemy.attackField = 100;
@@ -66,27 +62,32 @@ public class BossBehavior : MonoBehaviour
 
     public void RemoveShield()
     {
-        StartCoroutine(SetTimer((callback) =>{
-            shield.SetActive(callback && behaviorType == 1);
-            if (callback && behaviorType == 1)  BuildColumns();
-        }, 60));
+        enemyBehavior.ShieldHealth = 0;
+        enemyBehavior.attackDisableTimer = 65f;
 
-        StartCoroutine(SetTimer(callback => {
-            enemyBehavior.behaviourEnabler = callback;
-        }, 65f));
+        Debug.Log("REMOVE");
+
+        StartCoroutine(SetTimer((callback) =>{
+            if (callback && behaviorType == 1)
+            {
+                enemyBehavior.SetShield();
+                BuildColumns();
+            }
+        }, 60));
     }
 
     public void BuildColumns()
     {
         for(int i = 0; i < 6; i++)
         {
-            BossColumnController columnSummoned = Instantiate(column, new Vector3(
+            ShieldHolderController columnSummoned = Instantiate(column, new Vector3(
                 positionList[i].x, positionList[i].y, 0),
                 Quaternion.identity,
                 GameObject.FindWithTag("Object").transform
-                ).GetComponent<BossColumnController>();
+                ).GetComponent<ShieldHolderController>();
             columnSummoned.shieldBreak += RemoveShield;
-            columnSummoned.Reset();
+
+            ShieldHolderController.Reset();
         }
     }
 
