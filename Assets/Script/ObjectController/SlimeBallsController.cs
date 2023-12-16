@@ -1,1 +1,15 @@
-using UnityEngine; public class SlimeBallsController : MonoBehaviour { [SerializeField] private GameObject slimePoison; private void OnDestroy() { Debug.Log("1"); GameObject poison = Instantiate(slimePoison, transform.position, Quaternion.identity,GameObject.Find("Object_Grid").transform); poison.GetComponent<Projectile_SlimeBalls_Behavior>().alivetime = 5f; } }
+using UnityEngine; 
+
+public class SlimeBallsController : MonoBehaviour 
+{ 
+    [SerializeField] private GameObject slimePoison; 
+
+    private void OnDestroy() 
+    { 
+        GameObject poison = Instantiate(
+            slimePoison, transform.position, 
+            Quaternion.identity,GameObject.Find("Object_Grid").transform
+            ); 
+        poison.GetComponent<PoisonController>().alivetime = 5f; 
+    } 
+}

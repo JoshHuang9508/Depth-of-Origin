@@ -15,6 +15,7 @@ public class EnemySO : ScriptableObject
     public float health;
     public bool haveShield;
     public float shieldHealth;
+    public WalkType walkType;
     public float moveSpeed;
     public float defence;
     public bool isBoss;
@@ -53,11 +54,14 @@ public class EnemySO : ScriptableObject
         Melee, Sniper
     }
 
+    public enum WalkType
+    {
+        Melee, Sniper, None
+    }
+
 
     public void Attack_Ranged(float startAngle, Vector3 startPosition)
     {
-        Debug.Log(startAngle);
-        Debug.Log(startPosition);
         switch (shootingType)
         {
             case ShootingType.Single:
@@ -72,7 +76,7 @@ public class EnemySO : ScriptableObject
                 break;
 
             case ShootingType.AllAngle:
-                for (int i = -180; i <= 180; i += 18)
+                for (int i = -180; i < 180; i += 18)
                 {
                     SummonArrow(startPosition, startAngle + i);
                 }

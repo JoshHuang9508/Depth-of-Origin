@@ -182,19 +182,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2733243644986615339, guid: d3a2522da0f8d8042ae0c4f2503d4c04, type: 3}
       propertyPath: spawnGapMax
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2733243644986615339, guid: d3a2522da0f8d8042ae0c4f2503d4c04, type: 3}
       propertyPath: spawnGapMin
-      value: 2.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2733243644986615339, guid: d3a2522da0f8d8042ae0c4f2503d4c04, type: 3}
       propertyPath: mobsStayedLimit
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2733243644986615339, guid: d3a2522da0f8d8042ae0c4f2503d4c04, type: 3}
       propertyPath: minSpawnDistance
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2733243644986615339, guid: d3a2522da0f8d8042ae0c4f2503d4c04, type: 3}
       propertyPath: spawnList.Array.size

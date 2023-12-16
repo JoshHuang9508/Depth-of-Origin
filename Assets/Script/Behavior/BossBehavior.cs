@@ -19,6 +19,11 @@ public class BossBehavior : MonoBehaviour
     {
         column.GetComponent<ShieldHolderController>().shieldBreak += RemoveShield;
 
+        enemyBehavior.currentRb.bodyType = RigidbodyType2D.Static;
+        enemyBehavior.movementDisableTimer = 3;
+        enemyBehavior.damageDisableTimer = 3;
+        enemyBehavior.attackDisableTimer = 5;
+
         StartCoroutine(SetTimer(callback => {
             enemyBehavior.behaviourEnabler = callback;
         }, 5f));
@@ -28,13 +33,19 @@ public class BossBehavior : MonoBehaviour
 
     private void Update()
     {
-        shield.SetActive(enemyBehavior.enemy.haveShield);
+        shield.SetActive(enemyBehavior.haveShield);
 
         if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
             enemyBehavior.movementDisableTimer = 3;
-            enemyBehavior.attackDisableTimer = 3;
+            enemyBehavior.damageDisableTimer = 3;
+            enemyBehavior.attackDisableTimer = 5;
             behaviorType = 2;
+        }
+
+        if (Mathf.RoundToInt(enemyBehavior.attackDisableTimer) == 2)
+        {
+            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().PlayAnimator("Warning");
         }
 
         if (!enemyBehavior.behaviourEnabler) return;
@@ -42,8 +53,8 @@ public class BossBehavior : MonoBehaviour
         switch (behaviorType)
         {
             case 1:
-                enemyBehavior.movementDisableTimer = 1000;
                 enemyBehavior.currentRb.bodyType = RigidbodyType2D.Static;
+                enemyBehavior.enemy.walkType = EnemySO.WalkType.None;
                 enemyBehavior.enemy.attackType = EnemySO.AttackType.Sniper;
                 enemyBehavior.enemy.attackField = 100;
                 enemyBehavior.enemy.chaseField = 0;
@@ -53,6 +64,7 @@ public class BossBehavior : MonoBehaviour
 
             case 2:
                 enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
+                enemyBehavior.enemy.walkType = EnemySO.WalkType.Melee;
                 enemyBehavior.enemy.attackType = EnemySO.AttackType.Melee;
                 enemyBehavior.enemy.attackField = 1.5f;
                 enemyBehavior.enemy.chaseField = 100;

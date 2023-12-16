@@ -16,13 +16,14 @@ MonoBehaviour:
   health: 200000
   haveShield: 1
   shieldHealth: 10000
-  moveSpeed: 7
+  walkType: 1
+  moveSpeed: 6
   defence: 1000
   isBoss: 1
   attackType: 1
-  attackSpeed: 10
+  attackSpeed: 0.6
   attackDamage: 2000
-  chaseField: 25
+  chaseField: 10
   attackField: 100
   knockbackForce: 50
   knockbackTime: 1

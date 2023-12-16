@@ -11,6 +11,9 @@ public class ProjectileMovement_Enemy : MonoBehaviour
     public Collider2D thisCollider;
     public TrailRenderer trail;
 
+    [Header("Setting")]
+    [SerializeField] private bool ignoreWalls;
+
     [Header("Data")]
     public RangedWeaponSO rangedWeapon;
     public EnemySO enemyData;
@@ -39,12 +42,10 @@ public class ProjectileMovement_Enemy : MonoBehaviour
                     false,
                     direction * enemyData.knockbackForce,
                     enemyData.knockbackTime);
-
-                Destroy(gameObject);
             }
         }
 
-        if (collision.CompareTag("Wall") || collision.CompareTag("BreakableObject") || collision.CompareTag("Object"))
+        if ((collision.CompareTag("Wall") || collision.CompareTag("BreakableObject") || collision.CompareTag("Object") || collision.CompareTag("PlayerHitBox")) && !ignoreWalls)
         {
             Destroy(gameObject);
         }

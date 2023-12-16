@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Boss1
   health: 200000
-  haveShield: 0
+  haveShield: 1
   shieldHealth: 1e+11
+  walkType: 0
   moveSpeed: 7
   defence: 1000
-  isBoss: 0
+  isBoss: 1
   attackType: 0
   attackSpeed: 1
   attackDamage: 2000

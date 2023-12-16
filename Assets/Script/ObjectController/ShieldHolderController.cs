@@ -29,12 +29,5 @@ public class ShieldHolderController : MonoBehaviour
         {
             shieldBreak.Invoke();
         }
-
-        //HolderBreak(currentCoulumnAmount);
-    }
-
-    private static void HolderBreak(int holderLeftAmonut)
-    {
-        
     }
 }

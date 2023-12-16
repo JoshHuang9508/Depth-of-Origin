@@ -32,6 +32,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public float damageDisableTimer = 0;
     public bool dodgeEnabler = true;
     public float dodgeDisableTimer = 0;
+    public bool onHit = false;
+    public float onHitTimer = 0;
     public bool behaviourEnabler = true;
 
     public float Health
@@ -111,6 +113,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         targetPos = target.transform.position;
         diraction = (targetPos - currentPos).normalized;
 
+        //update states
+        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
+        animator.enabled = !onHit;
+
         //update timer
         UpdateTimer();
 
@@ -121,16 +127,11 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
     private void Moving()
     {
-        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
-        animator.enabled = movementEnabler;
-
         if (!movementEnabler) return;
 
-        switch (enemy.attackType)
+        switch (enemy.walkType)
         {
-            case EnemySO.AttackType.Melee:
-
-                if (!attackEnabler) return;
+            case EnemySO.WalkType.Melee:
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -146,7 +147,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 }
                 break;
 
-            case EnemySO.AttackType.Sniper:
+            case EnemySO.WalkType.Sniper:
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -162,6 +163,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
+                break;
+
+            case EnemySO.WalkType.None:
+
                 break;
         }
     }
@@ -183,8 +188,9 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                         damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                         attackDisableTimer += enemy.attackSpeed;
+                        movementDisableTimer += enemy.attackSpeed;
 
-                        OnAttack.Invoke();
+                        if(OnAttack != null) OnAttack.Invoke();
                     }
                 }
                 break;
@@ -197,7 +203,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
                     attackDisableTimer += enemy.attackSpeed;
 
-                    OnAttack.Invoke();
+                    if (OnAttack != null) OnAttack.Invoke();
                 }
                 break;
         }
@@ -226,6 +232,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
             movementDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
             attackDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
+            onHitTimer += knockbackTime / (1 + (0.001f * enemy.defence));
         }
 
         //instantiate damage text
@@ -249,11 +256,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
         damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
         dodgeDisableTimer = Mathf.Max(0, dodgeDisableTimer - Time.deltaTime);
+        onHitTimer = Mathf.Max(0, onHitTimer - Time.deltaTime);
 
         movementEnabler = movementDisableTimer <= 0;
         attackEnabler = attackDisableTimer <= 0;
         damageEnabler = damageDisableTimer <= 0;
         dodgeEnabler = dodgeDisableTimer <= 0;
+        onHit = !(onHitTimer <= 0);
 
         return true;
     }

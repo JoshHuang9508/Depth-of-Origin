@@ -40,10 +40,10 @@ public class SpawnerController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        /*if (collision.CompareTag("Player"))
         {
             spawnEnabler = false;
-        }
+        }*/
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -54,10 +54,10 @@ public class SpawnerController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy")) stayedMobs--;
-        if (collision.CompareTag("Player"))
+        /*if (collision.CompareTag("Player"))
         {
             spawnEnabler = true;
-        }
+        }*/
     }
 
     public void SpawnMobs()
@@ -74,7 +74,7 @@ public class SpawnerController : MonoBehaviour
             Vector3 spawnPos = Vector3.zero;
 
             //detect spawn position
-            while ((DetectBlankAreas(spawnPos, new Vector2(1f, 1f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPos) < minSpawnDistance || spawnPos == Vector3.zero) && !spawnEnabler)
+            while ((DetectBlankAreas(spawnPos, new Vector2(1f, 1f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPos) < minSpawnDistance || spawnPos == Vector3.zero))
             {
                 //random spawn position
                 float spawnX = Random.Range(-1 * spawnRange, spawnRange);

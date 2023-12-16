@@ -183,7 +183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4951248919102362414}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: 56, z: 6.439033}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -286,10 +286,11 @@ MonoBehaviour:
   audioPlayer: {fileID: 0}
   hitSound: {fileID: 8300000, guid: b5cac5eda0f7442b0ba98cfaaa5e24b6, type: 3}
   deadSound: {fileID: 8300000, guid: 2f013d40041724aac8be138606612cc1, type: 3}
-  enemy: {fileID: 0}
+  enemy: {fileID: 11400000, guid: b073c0e6a01727e4a9f8c06c183dce23, type: 2}
   target: {fileID: 0}
   currentHealth: 0
   currnetShieldHealth: 0
+  haveShield: 0
   currentPos: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
   diraction: {x: 0, y: 0}
@@ -301,6 +302,8 @@ MonoBehaviour:
   damageDisableTimer: 0
   dodgeEnabler: 1
   dodgeDisableTimer: 0
+  onHit: 0
+  onHitTimer: 0
   behaviourEnabler: 1
 --- !u!114 &2055480943259558358
 MonoBehaviour:
@@ -315,3 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyBehavior: {fileID: 2920453782795210329}
+  firstProjectile: {fileID: 1761251827591191704, guid: d26789e22d3c5d14398953ffecf0ac62, type: 3}
+  seconedProjectile: {fileID: 4857680875645216774, guid: 603aa29fd3f0d4941adfe46351023cc8, type: 3}
+  disableTimer: 10
+  behaviorType: 1

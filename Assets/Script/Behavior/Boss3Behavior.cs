@@ -6,16 +6,22 @@ public class Boss3Behavior : MonoBehaviour
 {
     [Header("Object Reference")]
     [SerializeField] private EnemyBehavior enemyBehavior;
+    [SerializeField] private GameObject firstProjectile;
+    [SerializeField] private GameObject seconedProjectile;
 
+    [Header("Setting")]
     [SerializeField] private float disableTimer = 10;
     [SerializeField] private int behaviorType = 1;
-
     
-
 
     private void Start()
     {
         enemyBehavior.OnAttack += Attacking;
+
+        enemyBehavior.currentRb.bodyType = RigidbodyType2D.Static;
+        enemyBehavior.movementDisableTimer = 3;
+        enemyBehavior.damageDisableTimer = 3;
+        enemyBehavior.attackDisableTimer = 13;
 
         StartCoroutine(SetTimer(callback => {
             enemyBehavior.behaviourEnabler = callback;
@@ -27,20 +33,27 @@ public class Boss3Behavior : MonoBehaviour
         if (enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
             enemyBehavior.movementDisableTimer = 3;
-            enemyBehavior.attackDisableTimer = 13;
+            enemyBehavior.damageDisableTimer = 3;
+            enemyBehavior.attackDisableTimer = 5;
             behaviorType = 2;
         }
 
         if (!enemyBehavior.behaviourEnabler) return;
 
-        if (enemyBehavior.attackDisableTimer <= 3)
+        if (Mathf.RoundToInt(enemyBehavior.attackDisableTimer) == 2)
         {
-            //attack warning
+            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().PlayAnimator("Warning");
         }
 
         switch (behaviorType)
         {
             case 1:
+                
+                enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
+                enemyBehavior.enemy.shootingType = EnemySO.ShootingType.AllAngle;
+                enemyBehavior.enemy.moveSpeed = 2;
+                enemyBehavior.enemy.attackSpeed = 10;
+                enemyBehavior.enemy.projectile = firstProjectile;
 
                 if (enemyBehavior.haveShield)
                 {
@@ -48,8 +61,8 @@ public class Boss3Behavior : MonoBehaviour
                 }
                 else if (!enemyBehavior.haveShield)
                 {
-                    enemyBehavior.attackDisableTimer = 3;
                     enemyBehavior.movementDisableTimer = 3;
+                    enemyBehavior.attackDisableTimer = 13;
 
                     disableTimer -= Time.deltaTime;
 
@@ -61,7 +74,11 @@ public class Boss3Behavior : MonoBehaviour
 
             case 2:
 
-                //switch projectile
+                enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
+                enemyBehavior.enemy.shootingType = EnemySO.ShootingType.Single;
+                enemyBehavior.enemy.moveSpeed = 6;
+                enemyBehavior.enemy.attackSpeed = 0.6f;
+                enemyBehavior.enemy.projectile = seconedProjectile;
                 enemyBehavior.ShieldHealth = 0;
 
                 break;

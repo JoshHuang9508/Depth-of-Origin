@@ -36,9 +36,9 @@ public class Pickable : MonoBehaviour
 
         if (player.behaviourEnabler && (storable ? !isInventoryFull : true) && pickEnabler && Vector2.Distance(player.transform.position, this.transform.position) < pickupDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 50 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 30 * Time.deltaTime);
 
-            if(Vector2.Distance(this.transform.position, player.transform.position) <= 0.8)
+            if(Vector2.Distance(this.transform.position, player.transform.position) <= 0.2)
             {
                 if(inventoryItem is CoinSO)
                 {
