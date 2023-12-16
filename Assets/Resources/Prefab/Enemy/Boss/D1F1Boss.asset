@@ -37,6 +37,9 @@ MonoBehaviour:
   - lootings: {fileID: 11400000, guid: 86f195c2b84ad462eb0f8508dd6e514c, type: 2}
     chances: 100
     quantity: 1
+  - lootings: {fileID: 11400000, guid: d4d6a9dbbbd23f84584d0e4fcd2cc505, type: 2}
+    chances: 20
+    quantity: 1
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
   EnemyObject: {fileID: 2376734355973025706, guid: 3a34748eac96bf94e951cbbb55081f31, type: 3}

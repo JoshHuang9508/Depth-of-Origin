@@ -5,8 +5,6 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     [Header("Setting")]
-    [SerializeField] private bool requiredKeys;
-    [SerializeField] private string keyName;
     [SerializeField] private bool canReopen;
 
     [Header("Audio")]
@@ -19,9 +17,6 @@ public class DoorController : MonoBehaviour
     [SerializeField] private BoxCollider2D BoxCollider2D;
     [SerializeField] private Interactable interactable;
 
-    [Header("Player Data")]
-    [SerializeField] private PlayerBehaviour player;
-
     [Header("Stats")]
     public bool isOpen;
 
@@ -29,12 +24,11 @@ public class DoorController : MonoBehaviour
     void Start()
     {
         audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
     public void OpenDoor()
     {
-        if (!isOpen && HaveKey())
+        if (!isOpen)
         {
             isOpen = true;
             interactable.enabled = false;
@@ -58,30 +52,5 @@ public class DoorController : MonoBehaviour
 
             audioPlayer.PlayOneShot(closeSound);
         }
-    }
-
-    private bool HaveKey()
-    {
-        bool haveKey = false;
-        int indexOfKeyList = -1;
-
-        if (requiredKeys)
-        {
-            foreach (var key in player.keyList)
-            {
-                if (key.key.Name == keyName)
-                {
-                    haveKey = true;
-                    indexOfKeyList = player.keyList.IndexOf(key);
-                }
-            }
-            if (haveKey)
-            {
-                player.keyList[indexOfKeyList].quantity--;
-            }
-        }
-        else haveKey = true;
-
-        return haveKey;
     }
 }

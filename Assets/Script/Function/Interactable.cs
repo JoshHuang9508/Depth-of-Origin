@@ -44,18 +44,22 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (isInRange && this.enabled && interactable)
+        if (isInRange && this.enabled && interactable && Input.GetKeyDown(interactKey))
         {
-            if (Input.GetKeyDown(interactKey))
+            if (gameObject.GetComponent<KeyRequired>())
             {
-                try
+                if (GetComponent<KeyRequired>().HaveKey())
                 {
                     interactAction.Invoke();
                 }
-                catch
+                else
                 {
-                    Debug.LogWarning("Unexpecting problem, please check if something went wrong!!");
+                    //warning text
                 }
+            }
+            else
+            {
+                interactAction.Invoke();
             }
         }
     }
