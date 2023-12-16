@@ -188,8 +188,8 @@ public class InGameUIController : MonoBehaviour
         {
             keys.Add(keycodeInputField[i].inputText.text);
         }
-        ChangeAxisKey("Horizontal", keys[1], keys[2]);
-        ChangeAxisKey("Vertical", keys[0], keys[3]);
+        //ChangeAxisKey("Horizontal", keys[1], keys[2]);
+        //ChangeAxisKey("Vertical", keys[0], keys[3]);
         player.meleeWeaponKey = StringToKeyCode(keys[4]);
         player.rangedWeaponKey = StringToKeyCode(keys[5]);
         player.usePotionKey = StringToKeyCode(keys[6]);
@@ -211,7 +211,7 @@ public class InGameUIController : MonoBehaviour
         }
     }
 
-    private void ChangeAxisKey(string axisName, string newPositiveButton, string newNegativeButton)
+    /*private void ChangeAxisKey(string axisName, string newPositiveButton, string newNegativeButton)
     {
         SerializedObject serializedObject = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0]);
         SerializedProperty axesArray = serializedObject.FindProperty("m_Axes");
@@ -228,7 +228,7 @@ public class InGameUIController : MonoBehaviour
             }
         }
         serializedObject.ApplyModifiedProperties();
-    }
+    }*/
 
     public void KeyCodeResetBtn(int index)
     {

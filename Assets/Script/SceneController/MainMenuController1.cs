@@ -383,7 +383,7 @@ public class MainMenuController1 : MonoBehaviour
     public void NewGameYesClicked()
     {
         PlayerPrefs.SetInt("loadscene", newGameLevel);
-        
+
         SceneManager.LoadScene("Loading");
     }
 

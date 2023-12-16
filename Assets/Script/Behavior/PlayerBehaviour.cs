@@ -32,6 +32,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public GameObject inventoryUI;
     public GameObject shopUI;
     public GameObject pauseUI;
+    public GameObject deathUI;
     [SerializeField] private Animator camEffect;
     [SerializeField] private Animator animator;
     [SerializeField] private Animator warningAnim;
@@ -116,6 +117,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 behaviourEnabler = false;
                 shopUI.SetActive(false);
                 inventoryUI.SetActive(false);
+                deathUI.SetActive(true);
 
                 //drop item
                 List<Lootings> dropList = new();
@@ -151,6 +153,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                     Transform child = transform.GetChild(i);
                     child.gameObject.SetActive(false);
                 }
+                
             }
         }
     }
@@ -537,9 +540,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     }
 
 
-
-
-
     public void PlayAnimator(string animatorName)
     {
         switch (animatorName)
@@ -549,6 +549,18 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 warningAnim.SetTrigger("Play");
 
                 break;
+        }
+    }
+
+    public void RevivePlayer()
+    {
+        currentHealth = maxHealth;
+        currentRb.bodyType = RigidbodyType2D.Dynamic;
+        behaviourEnabler = true;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            child.gameObject.SetActive(true);
         }
     }
 }

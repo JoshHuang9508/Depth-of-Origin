@@ -39,28 +39,23 @@ public class IntroTransitionController : MonoBehaviour
     }
     IEnumerator fourthdialog()
     {
-        StartCoroutine(SetTextContent("After a long time"));
+        StartCoroutine(SetTextContent("You finally see some light"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(fifthdialog());
     }
     IEnumerator fifthdialog()
     {
-        StartCoroutine(SetTextContent("You finally see some light"));
+        StartCoroutine(SetTextContent("you walked through the forest"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(sixthdialog());
     }
     IEnumerator sixthdialog()
     {
-        StartCoroutine(SetTextContent("you walked through the forest"));
-        yield return new WaitForSeconds(waitTime);
-        StartCoroutine(seventhdialog());
-    }
-    IEnumerator seventhdialog()
-    {
         StartCoroutine(SetTextContent("and see a village"));
         yield return new WaitForSeconds(waitTime);
         temp.GetComponent<SceneLoaderController>().Load();
     }
+    
 
     IEnumerator SetTextContent(string description)
     {
