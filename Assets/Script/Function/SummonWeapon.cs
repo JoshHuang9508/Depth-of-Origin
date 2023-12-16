@@ -68,7 +68,7 @@ public class SummonWeapon : MonoBehaviour
 
         for (var i = this.transform.childCount - 1; i >= 0; i--)
         {
-            Object.Destroy(this.transform.GetChild(i).gameObject);
+            Destroy(this.transform.GetChild(i).gameObject);
         }
 
         if (weapon is MeleeWeaponSO)

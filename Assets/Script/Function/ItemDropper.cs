@@ -10,9 +10,7 @@ public class ItemDropper : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(delay(callback =>{
-            if (callback) Destroy(gameObject);
-        }, 0.2f));
+        Destroy(gameObject, 5);
     }
 
     public void DropCoins(List<Coins> coins = null)
@@ -26,15 +24,7 @@ public class ItemDropper : MonoBehaviour
         {
             for(int i = 0; i < coin.amount; i++)
             {
-                var dropCoin = Instantiate(
-                    itemModel,
-                    new Vector3(
-                        transform.position.x,
-                        transform.position.y,
-                        transform.position.z),
-                    Quaternion.identity,
-                    transform.parent
-                    );
+                var dropCoin = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
                 dropCoin.GetComponent<Pickable>().inventoryItem = coin.coins;
                 dropCoin.GetComponent<Pickable>().pickupDistance = 100;
@@ -46,7 +36,7 @@ public class ItemDropper : MonoBehaviour
         }
     }
 
-    public void DropItems(List<Lootings> lootings)
+    public void DropItems(List<Lootings> lootings = null)
     {
         if (lootings.Count == 0)
         {
@@ -59,15 +49,7 @@ public class ItemDropper : MonoBehaviour
             {
                 for(int i = 0; i < looting.quantity; i++)
                 {
-                    var dropItem = Instantiate(
-                        itemModel,
-                        new Vector3(
-                            transform.position.x,
-                            transform.position.y,
-                            transform.position.z),
-                        Quaternion.identity,
-                        transform.parent
-                        );
+                    var dropItem = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
                     dropItem.GetComponent<Pickable>().inventoryItem = looting.lootings;
 
@@ -83,15 +65,7 @@ public class ItemDropper : MonoBehaviour
     {
         for (int i = 0; i < quantity; i++)
         {
-            var dropItem = Instantiate(
-                itemModel,
-                new Vector3(
-                    transform.position.x,
-                    transform.position.y,
-                    transform.position.z),
-                Quaternion.identity,
-                transform.parent
-                );
+            var dropItem = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
             dropItem.GetComponent<Pickable>().inventoryItem = looting;
 
@@ -110,26 +84,10 @@ public class ItemDropper : MonoBehaviour
 
         foreach (GameObject wreckage in wreckages)
         {
-            var Wreckage = Instantiate(
-                wreckage, 
-                new Vector3(
-                    transform.position.x, 
-                    transform.position.y, 
-                    transform.position.z), 
-                Quaternion.identity,
-                transform.parent
-                );
+            var Wreckage = Instantiate(wreckage, transform.position, Quaternion.identity, transform.parent);
 
-            Rigidbody2D WreckageRb = Wreckage.GetComponent<Rigidbody2D>();
-            WreckageRb.velocity = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), 0);
+            Wreckage.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
         }
-    }
-
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
-    {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
     }
 }
 

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 using Inventory.Model;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 

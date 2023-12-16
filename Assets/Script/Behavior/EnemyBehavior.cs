@@ -214,38 +214,42 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         if (!damageEnabler) return;
 
+        float localDamage = damage / (1 + (0.001f * enemy.defence));
+        Vector2 localKnockbackForce = knockbackForce / (1 + (0.001f * enemy.defence));
+        float localKnockbackTime = knockbackTime / (1 + (0.001f * enemy.defence));
+
         if (haveShield)
         {
             //update shield health
-            ShieldHealth -= damage / (1 + (0.001f * enemy.defence));
+            ShieldHealth -= localDamage;
         }
         else if (!haveShield)
         {
             //update heath
-            Health -= damage / (1 + (0.001f * enemy.defence));
+            Health -= localDamage;
 
             //knockback
-            currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
+            currentRb.velocity = localKnockbackForce;
 
             //play audio
             audioPlayer.PlayOneShot(hitSound);
 
-            movementDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
-            attackDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
-            onHitTimer += knockbackTime / (1 + (0.001f * enemy.defence));
+            //set timer
+            movementDisableTimer = movementDisableTimer < localKnockbackTime ? localKnockbackTime : movementDisableTimer;
+            attackDisableTimer = attackDisableTimer < localKnockbackTime ? localKnockbackTime : attackDisableTimer;
+            onHitTimer = onHitTimer < localKnockbackTime ? localKnockbackTime : onHitTimer;
         }
 
         //instantiate damage text
         DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
 
-        //delay
+        //set timer
         damageDisableTimer += 0.2f;
     }
 
     public void SetShield(float _shieldHealth = 0)
     {
-        if (_shieldHealth != 0) ShieldHealth = _shieldHealth;
-        else ShieldHealth = enemy.shieldHealth;
+        ShieldHealth = _shieldHealth == 0 ? enemy.shieldHealth : _shieldHealth;
 
         haveShield = true;
     }
