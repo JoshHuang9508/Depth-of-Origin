@@ -12,7 +12,6 @@ using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.EventSystems;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEditor;
-using UnityEditor.Build.Content;
 
 public class MainMenuController1 : MonoBehaviour
 {
@@ -231,8 +230,8 @@ public class MainMenuController1 : MonoBehaviour
         {
             keys.Add(keycodeInputField[i].inputText.text);
         }
-        ChangeAxisKey("Horizontal", keys[1], keys[2]);
-        ChangeAxisKey("Vertical", keys[0], keys[3]);
+        //ChangeAxisKey("Horizontal", keys[1], keys[2]);
+        //ChangeAxisKey("Vertical", keys[0], keys[3]);
         player.meleeWeaponKey = StringToKeyCode(keys[4]);
         player.rangedWeaponKey = StringToKeyCode(keys[5]);
         player.usePotionKey = StringToKeyCode(keys[6]);
@@ -253,7 +252,7 @@ public class MainMenuController1 : MonoBehaviour
             return KeyCode.None; 
         }
     }
-    private void ChangeAxisKey(string axisName, string newPositiveButton, string newNegativeButton)
+    /*private void ChangeAxisKey(string axisName, string newPositiveButton, string newNegativeButton)
     {
         SerializedObject serializedObject = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0]);
         SerializedProperty axesArray = serializedObject.FindProperty("m_Axes");
@@ -270,7 +269,7 @@ public class MainMenuController1 : MonoBehaviour
             }
         }
         serializedObject.ApplyModifiedProperties();
-    } 
+    } */
 
     public void KeyCodeResetBtn(int index)
     {
@@ -384,7 +383,7 @@ public class MainMenuController1 : MonoBehaviour
     public void NewGameYesClicked()
     {
         PlayerPrefs.SetInt("loadscene", newGameLevel);
-        
+
         SceneManager.LoadScene("Loading");
     }
 
