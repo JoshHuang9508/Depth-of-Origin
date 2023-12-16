@@ -27,13 +27,11 @@ public class UIEquipmentPage : MonoBehaviour
     [SerializeField] private UIInventory inventoryUI;
     [SerializeField] private PlayerBehaviour player;
 
-    private void Start()
-    {
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-    }
 
     private void Update()
     {
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+
         SetImage();
         SetPlayerStats();
     }

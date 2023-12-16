@@ -18,6 +18,7 @@ public class SpawnerController : MonoBehaviour
     [Header("Dynamic Data")]
     [SerializeField] private int spawnTimes;
     [SerializeField] private int stayedMobs;
+    [SerializeField] private float spawnTimer = 0;
 
     [Header("Stats")]
     public bool spawnEnabler = true;
@@ -32,18 +33,16 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if(autoSpawn)
+        if (spawnEnabler && autoSpawn)
         {
-            SpawnMobs();
-        }
-    }
+            spawnTimer += Time.deltaTime;
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        /*if (collision.CompareTag("Player"))
-        {
-            spawnEnabler = false;
-        }*/
+            if(spawnTimer > spawnGapMin)
+            {
+                SpawnMobs();
+                spawnTimer = 0;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -54,35 +53,35 @@ public class SpawnerController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy")) stayedMobs--;
-        /*if (collision.CompareTag("Player"))
-        {
-            spawnEnabler = true;
-        }*/
     }
 
     public void SpawnMobs()
     {
         //detect spawn restrict
-        if(spawnEnabler && (stayedMobs < mobsStayedLimit || mobsStayedLimit == -1) && (spawnTimesLimit > spawnTimes || spawnTimesLimit == -1) &&
+        if (spawnEnabler && (stayedMobs < mobsStayedLimit || mobsStayedLimit == -1) && (spawnTimesLimit > spawnTimes || spawnTimesLimit == -1) &&
             GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().behaviourEnabler)
         {
-            //spawn delay
-            StartCoroutine(delay(enabler =>
-            spawnEnabler = enabler,
-            Random.Range(spawnGapMin, spawnGapMax)));
+            spawnEnabler = false;
 
-            Vector3 spawnPos = Vector3.zero;
+            Vector2 spawnPos = Vector2.zero;
+            Vector2 playerPos = GameObject.FindWithTag("Player").transform.position;
 
             //detect spawn position
-            while ((DetectBlankAreas(spawnPos, new Vector2(1f, 1f), 0.1f) || Vector2.Distance(GameObject.FindWithTag("Player").transform.position, spawnPos) < minSpawnDistance || spawnPos == Vector3.zero))
+            while (DetectBlankAreas(spawnPos, new Vector2(1f, 1f), 0.1f) || spawnPos == Vector2.zero)
             {
                 //random spawn position
                 float spawnX = Random.Range(-1 * spawnRange, spawnRange);
                 float spawnY = Random.Range(-1 * Mathf.Sqrt((spawnRange * spawnRange) - (spawnX * spawnX)), Mathf.Sqrt((spawnRange * spawnRange) - (spawnX * spawnX)));
-                spawnPos = new Vector3(
+                spawnPos = new Vector2(
                         transform.position.x + spawnX,
-                        transform.position.y + spawnY,
-                        transform.position.z);
+                        transform.position.y + spawnY);
+            }
+
+            //detect player distance
+            if (Vector2.Distance(playerPos, spawnPos) < minSpawnDistance)
+            {
+                spawnEnabler = true;
+                return;
             }
 
             //spawn mobs
@@ -94,10 +93,9 @@ public class SpawnerController : MonoBehaviour
                 GameObject.FindWithTag("Entity").transform);
             spawnMob.GetComponent<EnemyBehavior>().enemy = spawnList[randomSpawnIndex];
             spawnTimes++;
-        }
-        else
-        {
-            return;
+
+            //spawn delay
+            spawnEnabler = true;
         }
     }
 
@@ -107,7 +105,7 @@ public class SpawnerController : MonoBehaviour
         {
             for (float y = areaCenter.y - areaSize.y / 2; y < areaCenter.y + areaSize.y / 2; y += cellSize)
             {
-                Vector2 cellPosition = new Vector2(x, y);
+                Vector2 cellPosition = new(x, y);
                 Collider2D[] colliders = Physics2D.OverlapBoxAll(cellPosition, new Vector2(cellSize, cellSize), 0f, targetLayer);
 
                 if (colliders.Length == 0) return true;
@@ -120,8 +118,6 @@ public class SpawnerController : MonoBehaviour
 
         return false;
     }
-
-    
 
     private IEnumerator delay(System.Action<bool> callback, float delayTime)
     {

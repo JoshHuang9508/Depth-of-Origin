@@ -13,7 +13,7 @@ public class MeleeMovement : WeaponMovementMelee
             if (collision.CompareTag("HitBox") || collision.CompareTag("BreakableObject"))
             {
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
-                Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
+                Vector2 direction = (collision.gameObject.transform.position - parentPos).normalized;
 
                 bool isCrit = Random.Range(0f, 100f) <= playerData.critRate;
 
