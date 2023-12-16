@@ -18,11 +18,11 @@ MonoBehaviour:
   isStorable: 1
   MaxStackSize: 20
   Rarity: 2
-  sellPrice: 172
-  buyPrice: 430
+  sellPrice: 480
+  buyPrice: 1200
   Image: {fileID: 1981699296613311681, guid: b2f9abfc7009743449fd618eff2ad5c4, type: 3}
   DefaultParameterList: []
-  E_heal: 250
+  E_heal: 120
   E_maxHealth: 0
   E_strength: 0
   E_walkSpeed: 0

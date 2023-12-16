@@ -7,10 +7,10 @@ public class BossSummonerContorller : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private int neededActionTimes;
+    [SerializeField] private EnemySO boss;
     [SerializeField] private Vector3 summonPos;
 
     [Header("Object Reference")]
-    [SerializeField] private EnemySO boss;
     [SerializeField] private Interactable interactable;
 
     [Header("Dynamic Data")]
@@ -25,7 +25,6 @@ public class BossSummonerContorller : MonoBehaviour
         interactable = GetComponent<Interactable>();
 
         currentActionTimes = 0;
-        Console.WriteLine("GAY!!!");
     }
 
     private void Update()
@@ -46,12 +45,17 @@ public class BossSummonerContorller : MonoBehaviour
 
         if (currentActionTimes >= neededActionTimes)
         {
-            var bossSummoned = Instantiate(
-                boss.EnemyObject,
-                summonPos,
-                Quaternion.identity,
-                GameObject.FindWithTag("Entity").transform);
-            bossSummoned.GetComponent<EnemyBehavior>().enemy = boss;
+            SummonBoss(boss, summonPos);
         }
+    }
+
+    public static void SummonBoss(EnemySO boss, Vector3 summonPos)
+    {
+        var bossSummoned = Instantiate(
+            boss.EnemyObject,
+            summonPos,
+            Quaternion.identity,
+            GameObject.FindWithTag("Entity").transform);
+        bossSummoned.GetComponent<EnemyBehavior>().enemy = boss;
     }
 }

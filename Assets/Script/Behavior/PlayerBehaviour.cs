@@ -34,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public GameObject pauseUI;
     [SerializeField] private Animator camEffect;
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator warningAnim;
     [SerializeField] private SummonWeapon summonWeapon;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D currentRb;
@@ -239,6 +240,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
        
     }
+
     private void Moving()
     {
         animator.SetBool("isHit", !movementEnabler);
@@ -531,5 +533,21 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             Health += healValue;
             DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
         }  
+    }
+
+
+
+
+
+    public void PlayAnimator(string animatorName)
+    {
+        switch (animatorName)
+        {
+            case "Warning":
+
+                warningAnim.SetTrigger("Play");
+
+                break;
+        }
     }
 }

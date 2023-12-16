@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class Projectile_SlimeBalls_Behavior : MonoBehaviour
+public class PoisonController : MonoBehaviour
 {
+    [Header("Setting")]
     [SerializeField] private EdibleItemSO poisonEffect;
     public float alivetime = 10f;
-    float currentTime=0f;
+
+    float currentTime = 0f;
     bool damageEnabler = true;
 
     private void Start()
@@ -19,7 +21,7 @@ public class Projectile_SlimeBalls_Behavior : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
-        if(currentTime >= alivetime)
+        if(currentTime >= alivetime && alivetime != 0)
         {
             Destroy(gameObject);
         }

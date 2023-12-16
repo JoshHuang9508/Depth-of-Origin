@@ -4,19 +4,16 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BossColumnController : MonoBehaviour
+public class ShieldHolderController : MonoBehaviour
 {
-    [Header("Settings")]
-    public int totalColumnAmount;
-
     [Header("Stats")]
     public static int currentCoulumnAmount;
 
     public Action shieldBreak;
 
-    public void Reset()
+    public static void Reset()
     {
-        currentCoulumnAmount = totalColumnAmount;
+        currentCoulumnAmount = 6;
     }
 
     private void Start()
@@ -24,10 +21,11 @@ public class BossColumnController : MonoBehaviour
         Reset();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         currentCoulumnAmount--;
-        if(currentCoulumnAmount <= 0)
+
+        if (currentCoulumnAmount <= 0)
         {
             shieldBreak.Invoke();
         }
