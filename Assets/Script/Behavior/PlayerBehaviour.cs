@@ -31,6 +31,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [Header("Object Reference")]
     public GameObject inventoryUI;
     public GameObject shopUI;
+    public GameObject pauseUI;
     [SerializeField] private Animator camEffect;
     [SerializeField] private Animator animator;
     [SerializeField] private SummonWeapon summonWeapon;
@@ -231,6 +232,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 attackDisableTimer += currentWeapon.attackCooldown;
                 summonWeapon.Summon();
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseUI.SetActive(true);
         }
        
     }
