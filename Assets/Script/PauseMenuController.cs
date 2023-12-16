@@ -5,10 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
+    private void Start()
+    {
+        Time.timeScale = 0.0f;
+    }
+
     public void saveData()
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        PlayerPrefs.SetString("SavedLevel", currentSceneName);
+        int currentSceneName = SceneManager.GetActiveScene().buildIndex;
+        PlayerPrefs.SetInt("SavedLevel", currentSceneName);
         PlayerPrefs.Save();
     }
 
@@ -19,6 +24,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void ExitButtonClicked()
     {
+        
         SceneManager.LoadScene("Main_Menu");
     }
 }
