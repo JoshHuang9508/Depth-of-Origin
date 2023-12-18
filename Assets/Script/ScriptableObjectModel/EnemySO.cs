@@ -37,6 +37,7 @@ public class EnemySO : ScriptableObject
     [Header("Object Reference")]
     public GameObject EnemyObject;
     public GameObject projectile;
+    public int angleOffset;
 
     public enum Difficulty
     {
@@ -91,7 +92,7 @@ public class EnemySO : ScriptableObject
                         Quaternion.Euler(0, 0, angle - 90),
                         GameObject.FindWithTag("Item").transform);
 
-        ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().startAngle = Quaternion.Euler(0, 0, angle);
+        ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().startAngle = Quaternion.Euler(0, 0, angle + angleOffset);
         ArrowSummoned.GetComponent<ProjectileMovement_Enemy>().enemyData = this;
     }
 }

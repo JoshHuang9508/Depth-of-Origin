@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4630222022334304219}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.245799, y: 64.657326, z: 6.439033}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -205,8 +205,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.4
+  m_Offset: {x: 0.9733205, y: -0.12559009}
+  m_Radius: 2.1836662
 --- !u!50 &4799094238588377314
 Rigidbody2D:
   serializedVersion: 4
@@ -258,6 +258,7 @@ MonoBehaviour:
   target: {fileID: 0}
   currentHealth: 0
   currnetShieldHealth: 0
+  haveShield: 0
   currentPos: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
   diraction: {x: 0, y: 0}
@@ -269,6 +270,8 @@ MonoBehaviour:
   damageDisableTimer: 0
   dodgeEnabler: 1
   dodgeDisableTimer: 0
+  onHit: 0
+  onHitTimer: 0
   behaviourEnabler: 1
 --- !u!114 &4256683260064870743
 MonoBehaviour:
@@ -321,7 +324,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 14, y: 14, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5470910788934662469}
@@ -367,7 +370,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 6389790121533867865, guid: 6803e6367bc9cb343870be1cb08ff204, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -412,17 +415,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.07008405, y: 0.007358074}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.2}
+    oldSize: {x: 0.5, y: 0.41}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.3040891, y: 0.39510673}
   m_EdgeRadius: 0
 --- !u!95 &2689885128776559870
 Animator:
@@ -434,7 +437,7 @@ Animator:
   m_GameObject: {fileID: 5948186893157686601}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b365e064574995e46bf857dadb443008, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

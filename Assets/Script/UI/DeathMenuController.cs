@@ -11,7 +11,7 @@ public class DeathMenuController : MonoBehaviour
     {
         player.GetComponent<PlayerBehaviour>().RevivePlayer();
 
-        PlayerPrefs.SetInt("loadscene", 1);
+        PlayerPrefs.SetInt("loadscene", 4);
 
         SceneManager.LoadScene("Loading");
     }
