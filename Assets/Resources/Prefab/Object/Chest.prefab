@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3104876453195976919}
   - component: {fileID: 344404685478440640}
   m_Layer: 0
-  m_Name: chest
+  m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,7 +205,19 @@ MonoBehaviour:
       m_Calls: []
   leaveRangeAction:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3104876453195976919}
+        m_TargetAssemblyTypeName: ChestController, Assembly-CSharp
+        m_MethodName: CloseChest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   interactDialogObject: {fileID: 6383876599670681586, guid: f0b84136927864e46a5e0f0158c677e3, type: 3}
   interactDialogText: {fileID: 0}
   interactDialog: {fileID: 0}
@@ -222,14 +234,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b9ce23ab9198747a9bfab51a260524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredKeys: 0
-  keyName: 
+  canReopen: 0
   coins: []
   lootings: []
+  audioPlayer: {fileID: 0}
   openSound: {fileID: 8300000, guid: bcd5582e3fd4c4ac8b936d84bd83efd6, type: 3}
   animator: {fileID: 344404685478440640}
-  player: {fileID: 0}
-  audioPlayer: {fileID: 0}
   interactable: {fileID: 334294825837532046}
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
   isOpen: 0

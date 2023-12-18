@@ -5,6 +5,9 @@ using Inventory.Model;
 
 public class ChestController : MonoBehaviour
 {
+    [Header("Setting")]
+    [SerializeField] private bool canReopen;
+
     [Header("Looting")]
     public List<Coins> coins;
     public List<Lootings> lootings;
@@ -47,6 +50,17 @@ public class ChestController : MonoBehaviour
 
             ItemDropper.DropCoins(coins);
             ItemDropper.DropItems(lootings);
+        }
+    }
+
+    public void CloseChest()
+    {
+        if (isOpen && canReopen)
+        {
+            isOpen = false;
+            interactable.enabled = true;
+
+            animator.SetTrigger("Close");
         }
     }
 }

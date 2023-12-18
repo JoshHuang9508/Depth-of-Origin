@@ -5841,6 +5841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b9ce23ab9198747a9bfab51a260524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canReopen: 0
   coins:
   - coins: {fileID: 11400000, guid: 25fe53387134b4704a58ffd41583d842, type: 2}
     amount: 2
@@ -5868,9 +5869,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 1635661863}
   chest: {fileID: 649638023399775088, guid: de04c4e6d73c0f44ba7e951541c5420e, type: 3}
-  exit: {fileID: 0}
-  chestData: {fileID: 0}
-  exitData: {fileID: 0}
+  exit: {fileID: 1872864187052449066, guid: 42d01681f6683cc4997b26ae10eca7b7, type: 3}
+  chestData: {fileID: 330616360}
+  exitData: {fileID: 330616363}
   bossAlive: 0
   bossCounter: 0
   chestSummonPos: {x: -3.5, y: 56.25, z: 0}
@@ -28698,7 +28699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1673140961}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: PlayerSpawner
   m_TagString: Respawn
   m_Icon: {fileID: 0}
@@ -28714,7 +28715,7 @@ Transform:
   m_GameObject: {fileID: 1673140960}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 42, z: 0}
+  m_LocalPosition: {x: -1, y: -7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

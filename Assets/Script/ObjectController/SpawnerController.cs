@@ -10,6 +10,7 @@ public class SpawnerController : MonoBehaviour
     public int mobsStayedLimit = 4;
     public int spawnTimesLimit = -1;
     public float spawnGap = 3;
+    public int trySpawnTimes = -1;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private List<EnemySO> spawnList;
 
@@ -66,8 +67,10 @@ public class SpawnerController : MonoBehaviour
             Vector2 spawnPos = Vector2.zero;
             Vector2 playerPos = GameObject.FindWithTag("Player").transform.position;
 
+            int tryTimes = 0;
+
             //detect spawn position
-            while (DetectBlankAreas(spawnPos, new Vector2(1f, 1f), 0.1f) || spawnPos == Vector2.zero)
+            while (DetectBlankAreas(spawnPos, new Vector2(2f, 2f), 0.1f) || spawnPos == Vector2.zero)
             {
                 //random spawn position
                 float spawnX = Random.Range(-1 * spawnRange, spawnRange);
@@ -75,6 +78,13 @@ public class SpawnerController : MonoBehaviour
                 spawnPos = new Vector2(
                         transform.position.x + spawnX,
                         transform.position.y + spawnY);
+
+                tryTimes++;
+                if (tryTimes >= trySpawnTimes && trySpawnTimes != -1)
+                {
+                    spawnEnabler = true;
+                    return;
+                }
             }
 
             //detect player distance
@@ -111,18 +121,11 @@ public class SpawnerController : MonoBehaviour
                 if (colliders.Length == 0) return true;
                 foreach (Collider2D collider in colliders)
                 {
-                    if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject") || collider.CompareTag("Wall")) return true;
+                    if (collider.CompareTag("Water") || collider.CompareTag("HitBox") || collider.CompareTag("BreakableObject") || collider.CompareTag("Wall") || collider.CompareTag("Object")) return true;
                 }
             }
         }
 
         return false;
-    }
-
-    private IEnumerator delay(System.Action<bool> callback, float delayTime)
-    {
-        callback(false);
-        yield return new WaitForSeconds(delayTime);
-        callback(true);
     }
 }

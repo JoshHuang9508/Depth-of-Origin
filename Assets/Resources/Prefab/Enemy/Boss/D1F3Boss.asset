@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BigDemon
   health: 50000
-  haveShield: 0
-  shieldHealth: 0
+  haveShield: 1
+  shieldHealth: 10000
   walkType: 0
   moveSpeed: 3
   defence: 500
