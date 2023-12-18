@@ -10,31 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 194b6416e2c41514984d0126cd02fd2e, type: 3}
-  m_Name: D1F1Boss
+  m_Name: D1F3Boss
   m_EditorClassIdentifier: 
   Name: BigDemon
-  health: 1000
-  haveShield: 1
-  shieldHealth: 100
+  health: 50000
+  haveShield: 0
+  shieldHealth: 0
   walkType: 0
   moveSpeed: 3
-  defence: 100
+  defence: 500
   isBoss: 1
   attackType: 0
-  attackSpeed: 1
-  attackDamage: 60
+  attackSpeed: 0.8
+  attackDamage: 700
   chaseField: 10
   attackField: 0.8
-  knockbackForce: 12
-  knockbackTime: 1
+  knockbackForce: 20
+  knockbackTime: 2
   shootingType: 2
   projectileFlySpeed: 15
   difficulty: 4
   coins:
-  - coins: {fileID: 11400000, guid: a75219c0e21414b1c870bdba565d31dd, type: 2}
+  - coins: {fileID: 11400000, guid: 25fe53387134b4704a58ffd41583d842, type: 2}
     amount: 2
+  - coins: {fileID: 11400000, guid: eebdb48914b2a472aa1889d85c5ec113, type: 2}
+    amount: 1
   lootings:
-  - lootings: {fileID: 11400000, guid: 86f195c2b84ad462eb0f8508dd6e514c, type: 2}
+  - lootings: {fileID: 11400000, guid: 9f44d93b6d6304540864797fc1f378c2, type: 2}
     chances: 100
     quantity: 1
   wreckage:

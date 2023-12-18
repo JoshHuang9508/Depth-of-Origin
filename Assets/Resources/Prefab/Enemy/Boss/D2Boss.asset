@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: D2Boss
   m_EditorClassIdentifier: 
   Name: Slime King
-  health: 500000
+  health: 200000
+  haveShield: 0
+  shieldHealth: 0
+  walkType: 0
   moveSpeed: 5
   defence: 1100
   isBoss: 1
@@ -21,7 +24,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 2000
   chaseField: 100
-  attackField: 2
+  attackField: 3
   knockbackForce: 100
   knockbackTime: 1
   shootingType: 0
