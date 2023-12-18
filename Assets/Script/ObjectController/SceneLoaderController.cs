@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class SceneLoaderController : MonoBehaviour
 {
     [Header("Setting")]
-    [SerializeField] LoadType loadType = LoadType.Scene;
-    [SerializeField] public int SceneNum = 0;
-    [SerializeField] private GameObject transformPos;
+    public LoadType loadType = LoadType.Scene;
+    public int SceneNum = 0;
+    public GameObject transformPos;
 
     [Header("Stats")]
     public static bool inAction = false;
@@ -17,7 +17,7 @@ public class SceneLoaderController : MonoBehaviour
     [Header("Object Reference")]
     public Animator transition;
 
-    enum LoadType
+    public enum LoadType
     {
         Scene, Chunk
     }
