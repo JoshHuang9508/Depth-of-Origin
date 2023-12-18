@@ -7,11 +7,9 @@ public class SpawnerController : MonoBehaviour
     [Header("Setting")]
     public bool autoSpawn = true;
     public float minSpawnDistance = 15;
-    public float spawnRange;
     public int mobsStayedLimit = 4;
     public int spawnTimesLimit = -1;
-    public float spawnGapMin = 3;
-    public float spawnGapMax = 10;
+    public float spawnGap = 3;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private List<EnemySO> spawnList;
 
@@ -22,6 +20,8 @@ public class SpawnerController : MonoBehaviour
 
     [Header("Stats")]
     public bool spawnEnabler = true;
+
+    float spawnRange;
 
     private void Start()
     {
@@ -37,7 +37,7 @@ public class SpawnerController : MonoBehaviour
         {
             spawnTimer += Time.deltaTime;
 
-            if(spawnTimer > spawnGapMin)
+            if(spawnTimer > spawnGap)
             {
                 SpawnMobs();
                 spawnTimer = 0;
