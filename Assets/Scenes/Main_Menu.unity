@@ -5463,11 +5463,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160349183}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: bed2567579a947b4eb54761f70d9e0eb, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: a8b470dca207b0b4da30db8182e022e4, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: b95923d2e61b4724ab54ad9beb3c902e, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 6a017df0aade23b488fc7799bbe6213c, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -31140,7 +31140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: b95923d2e61b4724ab54ad9beb3c902e, type: 2}
+  m_Texture: {fileID: 8400000, guid: 6a017df0aade23b488fc7799bbe6213c, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -63095,7 +63095,7 @@ MonoBehaviour:
   volumeSlider: {fileID: 807496390}
   defaultVolume: 50
   fullscreenToggle: {fileID: 1901185624}
-  newGameLevel: 8
+  newGameLevel: 2
   leveltoLoad: -1
   resolutionDropdown: {fileID: 534170012}
   dropdownIcon: {fileID: 21300000, guid: 692a50acc1b51e747b22a0a765cf262d, type: 3}

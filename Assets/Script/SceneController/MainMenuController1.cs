@@ -97,7 +97,7 @@ public class MainMenuController1 : MonoBehaviour
 
     IEnumerator OpenMainMenu()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(4.5f);
         logopanel.SetActive(false);
         StartCoroutine(MainMenuAnimation());
     }

@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InGameUIController : MonoBehaviour
 {
@@ -360,6 +361,7 @@ public class InGameUIController : MonoBehaviour
     }
     public void QuitBtnClick()
     {
-        
+        PlayerPrefs.SetInt("loadscene", 0);
+        SceneManager.LoadScene(1);
     }
 }
