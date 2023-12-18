@@ -16,15 +16,15 @@ MonoBehaviour:
   health: 200000
   haveShield: 1
   shieldHealth: 1e+11
-  walkType: 0
+  walkType: 2
   moveSpeed: 7
   defence: 1000
   isBoss: 1
-  attackType: 0
-  attackSpeed: 1
-  attackDamage: 2000
-  chaseField: 100
-  attackField: 1.5
+  attackType: 1
+  attackSpeed: 0.4
+  attackDamage: 1500
+  chaseField: 0
+  attackField: 100
   knockbackForce: 50
   knockbackTime: 1
   shootingType: 2
@@ -39,4 +39,5 @@ MonoBehaviour:
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
   EnemyObject: {fileID: 4630222022334304219, guid: 42b4cf4629c7a44428043927055d1a8a, type: 3}
-  projectile: {fileID: 4857680875645216774, guid: 156e08d50d589419c8f5d06eb57403c5, type: 3}
+  projectile: {fileID: 4839907261286179381, guid: 367b5a8f9af763d46926a8abaff905f6, type: 3}
+  angleOffset: -90
