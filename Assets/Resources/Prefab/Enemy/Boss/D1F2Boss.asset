@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: D1F2Boss
   m_EditorClassIdentifier: 
   Name: BigDemon
-  health: 20000
+  health: 10000
+  haveShield: 0
+  shieldHealth: 0
+  walkType: 0
   moveSpeed: 3
   defence: 500
   isBoss: 1
