@@ -31,8 +31,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [Header("Object Reference")]
     public GameObject inventoryUI;
     public GameObject shopUI;
+    public GameObject pauseUI;
+    public GameObject deathUI;
     [SerializeField] private Animator camEffect;
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator warningAnim;
     [SerializeField] private SummonWeapon summonWeapon;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D currentRb;
@@ -80,6 +83,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public float walkSpeedMutiplyerDisableTimer = 0;
     public bool healingEnabler = true;
     public float healingDisableTimer = 0;
+    public bool onHit = false;
+    public float onHitTimer = 0;
 
     public float walkSpeed { get { return B_WalkSpeed * ((100 + E_WalkSpeed) / 100); } }
     public float maxHealth { get { return B_MaxHealth + E_MaxHealth; } }
@@ -104,13 +109,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
             if (currentHealth <= 0)
             {
-                //disable player object
                 currentHealth = 0;
                 currentCoinAmount = 0;
+
+                //disable player object
                 currentRb.bodyType = RigidbodyType2D.Static;
                 behaviourEnabler = false;
                 shopUI.SetActive(false);
                 inventoryUI.SetActive(false);
+                deathUI.SetActive(true);
 
                 //drop item
                 List<Lootings> dropList = new();
@@ -146,6 +153,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                     Transform child = transform.GetChild(i);
                     child.gameObject.SetActive(false);
                 }
+                
             }
         }
     }
@@ -171,22 +179,19 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
     }
 
-    private void Start()
+    private void Awake()
     {
         currentHealth = maxHealth;
-
-        //initial items
-        inventoryData.initialize();
-        foreach (InventoryItem item in initialItems)
-        {
-            if (item.IsEmpty) continue;
-            inventoryData.AddItem(item);
-        }
     }
     
     private void Update()
     {
         if(!behaviourEnabler) return;
+
+        animator.SetBool("isHit", onHit);
+        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
+        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+        spriteRenderer.flipX = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 ? Input.GetAxis("Horizontal") < 0 : spriteRenderer.flipX;
 
         //update timer
         UpdatePlayerStates();
@@ -232,15 +237,15 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 summonWeapon.Summon();
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseUI.SetActive(true);
+        }
        
     }
+
     private void Moving()
     {
-        animator.SetBool("isHit", !movementEnabler);
-        animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
-        animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
-        spriteRenderer.flipX = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 ? Input.GetAxis("Horizontal") < 0 : spriteRenderer.flipX;
-
         if (movementEnabler && Input.anyKey)
         {
             int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
@@ -277,28 +282,31 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
     {
-        if (damageEnabler && behaviourEnabler)
-        {
-            //update heath
-            Health -= damage / (1 + (0.001f * defence));
+        if (!damageEnabler || !behaviourEnabler) return;
 
-            //instantiate damege text
-            DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * defence)), "PlayerHit");
+        float localDamage = damage / (1 + (0.001f * defence));
+        Vector2 localKnockbackForce = knockbackForce / (1 + (0.001f * defence));
+        float localKnockbackTime = knockbackTime / (1f + (0.001f * defence));
 
-            //play audio
-            //audioPlayer.PlayOneShot(hitSound);
+        //update heath
+        Health -= localDamage;
 
-            //knockback
-            currentRb.velocity = knockbackForce / (1 + (0.001f * defence));
+        //knockback
+        currentRb.velocity = localKnockbackForce;
 
-            //set timer
-            movementDisableTimer = movementDisableTimer > knockbackTime / (1f + (0.001f * defence)) ? movementDisableTimer : knockbackTime / (1f + (0.001f * defence));
-            healingDisableTimer = 20;
+        //play audio
+        audioPlayer.PlayOneShot(hitSound);
 
-            //camera shake
-            CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
-            StartCoroutine(camera.Shake(0.1f, 0.2f));
-        }
+        //instantiate damege text
+        DamageText.InstantiateDamageText(damageText, transform.position, localDamage, "PlayerHit");
+
+        //camera shake
+        CameraController camera = GameObject.FindWithTag("MainCamera").GetComponentInParent<CameraController>();
+        StartCoroutine(camera.Shake(0.1f, 0.2f));
+
+        //set timer
+        movementDisableTimer = movementDisableTimer < localKnockbackTime ? localKnockbackTime : movementDisableTimer;
+        healingDisableTimer = 20;
     }
 
 
@@ -307,8 +315,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void UpdatePlayerStates()
     {
-        //float currentHealthPercent = currentHealth / maxHealth;
-
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
         List<object> items = new(){ armor, jewelry, book, currentWeapon };
@@ -338,8 +344,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_CritRate = results[4];
         E_CritDamage = results[5];
 
+        //check overhealing
         if (currentHealth > maxHealth) currentHealth = maxHealth;
-        //currentHealth = maxHealth * currentHealthPercent;
     }
 
     private void UpdateTimer()
@@ -351,6 +357,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         sprintDisableTimer = Mathf.Max(0, sprintDisableTimer - Time.deltaTime);
         walkSpeedMutiplyerDisableTimer = Mathf.Max(0, walkSpeedMutiplyerDisableTimer - Time.deltaTime);
         healingDisableTimer = Mathf.Max(0, healingDisableTimer - Time.deltaTime);
+        onHitTimer = Mathf.Max(0, onHitTimer - Time.deltaTime);
 
         movementEnabler = movementDisableTimer <= 0;
         attackEnabler = attackDisableTimer <= 0;
@@ -358,6 +365,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         sprintEnabler = sprintDisableTimer <= 0;
         walkSpeedMutiplyerEnabler = !(walkSpeedMutiplyerDisableTimer <= 0);
         healingEnabler = healingDisableTimer <= 0;
+        onHit = !(onHitTimer <= 0);
     }
 
     public List<KeyList> UpdateKeyList()
@@ -524,7 +532,35 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         {
             float healValue = Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
             Health += healValue;
+
             DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
+
+            camEffect.SetTrigger("Heal");
         }  
+    }
+
+
+    public void PlayAnimator(string animatorName)
+    {
+        switch (animatorName)
+        {
+            case "Warning":
+
+                warningAnim.SetTrigger("Play");
+
+                break;
+        }
+    }
+
+    public void RevivePlayer()
+    {
+        currentHealth = maxHealth;
+        currentRb.bodyType = RigidbodyType2D.Dynamic;
+        behaviourEnabler = true;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            child.gameObject.SetActive(true);
+        }
     }
 }

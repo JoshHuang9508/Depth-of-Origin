@@ -6,8 +6,7 @@ using Inventory.Model;
 public class ChestController : MonoBehaviour
 {
     [Header("Setting")]
-    [SerializeField] private bool requiredKeys;
-    [SerializeField] private string keyName;
+    [SerializeField] private bool canReopen;
 
     [Header("Looting")]
     public List<Coins> coins;
@@ -22,9 +21,6 @@ public class ChestController : MonoBehaviour
     [SerializeField] public Interactable interactable;
     [SerializeField] private GameObject itemDropper;
 
-    [Header("Player Data")]
-    [SerializeField] private PlayerBehaviour player;
-
     [Header("Stats")]
     public bool isOpen;
 
@@ -32,12 +28,11 @@ public class ChestController : MonoBehaviour
     void Start()
     {
         audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
     }
 
     public void OpenChest()
     {
-        if (!isOpen && HaveKey())
+        if (!isOpen)
         {
             isOpen = true;
             interactable.enabled = false;
@@ -58,28 +53,14 @@ public class ChestController : MonoBehaviour
         }
     }
 
-    public bool HaveKey()
+    public void CloseChest()
     {
-        bool haveKey = false;
-        int indexOfKeyList = -1;
-
-        if (requiredKeys)
+        if (isOpen && canReopen)
         {
-            foreach (var key in player.keyList)
-            {
-                if (key.key.Name == keyName)
-                {
-                    haveKey = true;
-                    indexOfKeyList = player.keyList.IndexOf(key);
-                }
-            }
-            if (haveKey)
-            {
-                player.keyList[indexOfKeyList].quantity--;
-            }
-        }
-        else haveKey = true;
+            isOpen = false;
+            interactable.enabled = true;
 
-        return haveKey;
+            animator.SetTrigger("Close");
+        }
     }
 }

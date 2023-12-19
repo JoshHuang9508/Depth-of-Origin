@@ -83,11 +83,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoSpawn: 1
   minSpawnDistance: 15
-  spawnRange: 12
   mobsStayedLimit: 4
   spawnTimesLimit: -1
-  spawnGapMin: 5
-  spawnGapMax: 10
+  spawnGap: 3
+  trySpawnTimes: -1
   targetLayer:
     serializedVersion: 2
     m_Bits: 264
@@ -95,5 +94,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 647874ec2cace5945b1dfb487daf102d, type: 2}
   spawnTimes: 0
   stayedMobs: 0
+  spawnTimer: 0
   spawnEnabler: 1
-  playerStayed: 0

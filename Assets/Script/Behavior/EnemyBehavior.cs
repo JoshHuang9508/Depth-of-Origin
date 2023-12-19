@@ -20,6 +20,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     [SerializeField] private GameObject target;
     public float currentHealth;
     public float currnetShieldHealth;
+    public bool haveShield;
     [SerializeField] private Vector2 currentPos, targetPos, diraction;
 
     [Header("Stats")]
@@ -31,6 +32,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public float damageDisableTimer = 0;
     public bool dodgeEnabler = true;
     public float dodgeDisableTimer = 0;
+    public bool onHit = false;
+    public float onHitTimer = 0;
     public bool behaviourEnabler = true;
 
     public float Health
@@ -63,6 +66,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
     }
 
+    public Vector2 CurrentPos { get { return currentPos; } }
+    public Vector2 TargetPos { get { return targetPos; } }
+    public Vector2 Diraction { get { return diraction; } }
+
     public float ShieldHealth
     {
         get
@@ -75,10 +82,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
             if(currnetShieldHealth <= 0)
             {
-                enemy.haveShield = false;
+                haveShield = false;
             }
         }
     }
+
+    public delegate void EnemyAttack();
+    public event EnemyAttack OnAttack;
 
 
 
@@ -86,6 +96,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         currentHealth = enemy.health;
         currnetShieldHealth = enemy.shieldHealth;
+        haveShield = enemy.haveShield;
 
         audioPlayer = GameObject.FindWithTag("AudioPlayer").GetComponent<AudioSource>();
 
@@ -102,6 +113,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         targetPos = target.transform.position;
         diraction = (targetPos - currentPos).normalized;
 
+        //update states
+        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
+        animator.enabled = !onHit;
+
         //update timer
         UpdateTimer();
 
@@ -112,16 +127,11 @@ public class EnemyBehavior : MonoBehaviour, Damageable
 
     private void Moving()
     {
-        spriteRenderer.flipX = (currentPos.x - targetPos.x) > 0.2;
-        animator.enabled = movementEnabler;
-
         if (!movementEnabler) return;
 
-        switch (enemy.attackType)
+        switch (enemy.walkType)
         {
-            case EnemySO.AttackType.Melee:
-
-                if (!attackEnabler) return;
+            case EnemySO.WalkType.Melee:
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -137,7 +147,7 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                 }
                 break;
 
-            case EnemySO.AttackType.Sniper:
+            case EnemySO.WalkType.Sniper:
 
                 if (Vector3.Distance(targetPos, currentPos) < enemy.chaseField)
                 {
@@ -146,13 +156,17 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     animator.SetBool("ismove", true);
                     animator.SetBool("ischase", true);
                 }
-                else if (Vector3.Distance(targetPos, currentPos) > enemy.attackField)
+                else if (Vector3.Distance(targetPos, currentPos) > enemy.chaseField)
                 {
                     currentRb.velocity = Vector2.zero;
 
                     animator.SetBool("ismove", false);
                     animator.SetBool("ischase", false);
                 }
+                break;
+
+            case EnemySO.WalkType.None:
+
                 break;
         }
     }
@@ -174,6 +188,9 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                         damageableObject.OnHit(enemy.attackDamage, false, diraction * enemy.knockbackForce, enemy.knockbackTime);
 
                         attackDisableTimer += enemy.attackSpeed;
+                        movementDisableTimer += enemy.attackSpeed;
+
+                        if(OnAttack != null) OnAttack.Invoke();
                     }
                 }
                 break;
@@ -185,6 +202,8 @@ public class EnemyBehavior : MonoBehaviour, Damageable
                     enemy.Attack_Ranged(Mathf.Atan2(diraction.y, diraction.x) * Mathf.Rad2Deg, transform.position + new Vector3(0, 0.5f, 0));
 
                     attackDisableTimer += enemy.attackSpeed;
+
+                    if (OnAttack != null) OnAttack.Invoke();
                 }
                 break;
         }
@@ -195,45 +214,44 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     {
         if (!damageEnabler) return;
 
-        if (enemy.haveShield)
+        float localDamage = damage / (1 + (0.001f * enemy.defence));
+        Vector2 localKnockbackForce = knockbackForce / (1 + (0.001f * enemy.defence));
+        float localKnockbackTime = knockbackTime / (1 + (0.001f * enemy.defence));
+
+        if (haveShield)
         {
             //update shield health
-            ShieldHealth -= damage / (1 + (0.001f * enemy.defence));
+            ShieldHealth -= localDamage;
         }
-        else if (!enemy.haveShield)
+        else if (!haveShield)
         {
             //update heath
-            Health -= damage / (1 + (0.001f * enemy.defence));
+            Health -= localDamage;
 
             //knockback
-            currentRb.velocity = knockbackForce / (1 + (0.001f * enemy.defence));
+            currentRb.velocity = localKnockbackForce;
 
             //play audio
             audioPlayer.PlayOneShot(hitSound);
 
-            movementDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
-            attackDisableTimer += knockbackTime / (1 + (0.001f * enemy.defence));
+            //set timer
+            movementDisableTimer = movementDisableTimer < localKnockbackTime ? localKnockbackTime : movementDisableTimer;
+            attackDisableTimer = attackDisableTimer < localKnockbackTime ? localKnockbackTime : attackDisableTimer;
+            onHitTimer = onHitTimer < localKnockbackTime ? localKnockbackTime : onHitTimer;
         }
 
         //instantiate damage text
         DamageText.InstantiateDamageText(damageText, transform.position, damage / (1 + (0.001f * enemy.defence)), isCrit ? "DamageCrit" : "Damage");
 
-        //delay
+        //set timer
         damageDisableTimer += 0.2f;
     }
 
     public void SetShield(float _shieldHealth = 0)
     {
-        if (_shieldHealth != 0)
-        {
-            ShieldHealth = _shieldHealth;
-            enemy.haveShield = true;
-        }
-        else
-        {
-            ShieldHealth = enemy.shieldHealth;
-            enemy.haveShield = true;
-        }
+        ShieldHealth = _shieldHealth == 0 ? enemy.shieldHealth : _shieldHealth;
+
+        haveShield = true;
     }
 
     private bool UpdateTimer()
@@ -242,11 +260,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         attackDisableTimer = Mathf.Max(0, attackDisableTimer - Time.deltaTime);
         damageDisableTimer = Mathf.Max(0, damageDisableTimer - Time.deltaTime);
         dodgeDisableTimer = Mathf.Max(0, dodgeDisableTimer - Time.deltaTime);
+        onHitTimer = Mathf.Max(0, onHitTimer - Time.deltaTime);
 
         movementEnabler = movementDisableTimer <= 0;
         attackEnabler = attackDisableTimer <= 0;
         damageEnabler = damageDisableTimer <= 0;
         dodgeEnabler = dodgeDisableTimer <= 0;
+        onHit = !(onHitTimer <= 0);
 
         return true;
     }
