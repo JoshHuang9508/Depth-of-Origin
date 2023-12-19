@@ -40,7 +40,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private GameObject damageText;
-    [SerializeField] private GameObject itemDropper;
+    public GameObject itemDropper;
 
     [Header("Dynamic Data")]
     public InventorySO inventoryData;
@@ -214,7 +214,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         //use potion
         if (Input.GetKeyDown(usePotionKey) && potions != null)
         {
-            potions.ConsumeObject(1, gameObject);
+            SetEffection(potions, potions.effectTime);
             currentPotionAmont -= 1;
 
             if (currentPotionAmont <= 0) potions = null;

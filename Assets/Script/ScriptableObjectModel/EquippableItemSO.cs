@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new equippableItem", menuName = "Items/Equippable Itme")]
-public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
+public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable, IDroppable
 {
     [Header("Setting")]
     public EquipmentType equipmentType;
@@ -23,24 +23,26 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable,
     }
 
 
-    public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
     {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
         if (player != null)
         {
             player.SetEquipment(this, equipmentType);
+            if (inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
         }
         return false;
     }
 
-    public bool UnequipObject(int amont, GameObject character, List<ItemParameter> itemstate)
+    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
     {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
         if (player != null)
         {
             player.UnEquipment(this, equipmentType);
+            player.inventoryData.AddItem(inventoryData.GetItemAt(inventoryIndex));
         }
         return false;
     }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new edibleItem", menuName = "Items/Edible Itme")]
-public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable
+public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, ISellable, IBuyable, IUnequipable, IDroppable
 {
     [Header("Effection")]
     public float E_heal;
@@ -18,35 +18,38 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
     public float effectTime;
 
 
-    public bool EquipObject(int amount, GameObject character, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
     {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
 
         if (player != null)
         {
             player.SetEquipment(this, amount);
+            if (inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
         }
         return false;
     }
 
-    public bool ConsumeObject(int amount, GameObject character, List<ItemParameter> itemState = null)
+    public bool ConsumeObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
     {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
 
         if (player != null)
         {
             player.SetEffection(this, effectTime);
+            if (inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
         }
         return false;
     }
 
-    public bool UnequipObject(int amount, GameObject character, List<ItemParameter> itemstate)
+    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
     {
-        PlayerBehaviour player = character.GetComponent<PlayerBehaviour>();
+        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
 
         if (player != null)
         {
             player.UnEquipment(this, amount);
+            player.inventoryData.AddItem(inventoryData.GetItemAt(inventoryIndex));
         }
         return false;
     }

@@ -12,8 +12,6 @@ public class EquipmentSO : ScriptableObject
     public event Action<Dictionary<int, EquimentItem>> OnInventoryUpdated;
     [SerializeField] private List<EquimentItem> equipmentItems = new List<EquimentItem>();
 
-    private float Size = 10;
-
     enum equipmentType
     {
         meleeWeapon,rangedWeapon,potions,armor,jewery,book

@@ -102,7 +102,7 @@ namespace Inventory.UI
                             case ActionType.BackpackInventory:
                                 if (inventoryItem.item is IEquipable) descriptionPage.actionPanel.AddButton("Equip", () => PerformAction(inventoryData, itemIndex, "Equip", inventoryType));
                                 if (inventoryItem.item is IConsumeable) descriptionPage.actionPanel.AddButton("Consume", () => PerformAction(inventoryData, itemIndex, "Consume", inventoryType));
-                                if (inventoryItem.item is IDestoryableItem) descriptionPage.actionPanel.AddButton("Drop", () => PerformAction(inventoryData, itemIndex, "Drop", inventoryType));
+                                if (inventoryItem.item is IDroppable) descriptionPage.actionPanel.AddButton("Drop", () => PerformAction(inventoryData, itemIndex, "Drop", inventoryType));
                                 break;
                             case ActionType.BackpackShop:
                                 if (inventoryItem.item is ISellable) descriptionPage.actionPanel.AddButton("Sell", () => PerformAction(inventoryData, itemIndex, "Sell", inventoryType));
@@ -126,51 +126,43 @@ namespace Inventory.UI
                 if (descriptionPage.actionType == inventoryType || descriptionPage.actionType == ActionType.All)
                 {
                     InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-                    IDestoryableItem destoryableItem = inventoryItem.item as IDestoryableItem;
-                    IItemAction itemAction = inventoryItem.item as IItemAction;
-                    GameObject player = GameObject.FindWithTag("Player");
+                    InventorySO playerInventoryData = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData;
                     int amountToUse = 0;
 
-                    if (itemAction != null && !inventoryItem.IsEmpty)
+                    if (!inventoryItem.IsEmpty)
                     {
                         switch (actionName)
                         {
                             case "Equip":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
-                                itemAction.SelectAction("Equip", amountToUse, player, inventoryItem.itemState);
-                                if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                                IEquipable ObjectToEquip = inventoryItem.item as IEquipable;
+                                ObjectToEquip.EquipObject(amountToUse, playerInventoryData, itemIndex, inventoryItem.itemState);
+                                break;
+                            case "Unequip":
+                                amountToUse = 1;
+                                IUnequipable ObjectToUnequip = inventoryItem.item as IUnequipable;
+                                ObjectToUnequip.UnequipObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
                                 break;
                             case "Consume":
                                 amountToUse = 1;
-                                itemAction.SelectAction("Consume", amountToUse, player, inventoryItem.itemState);
-                                if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                                IConsumeable ObjectToConsume = inventoryItem.item as IConsumeable;
+                                ObjectToConsume.ConsumeObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
                                 break;
                             case "Drop":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
-                                ItemDropper ItemDropper = Instantiate(
-                                    itemDropper,
-                                    new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z),
-                                    new Quaternion(0.0f, 0.0f, 0.0f, 0.0f),
-                                    GameObject.FindWithTag("Item").transform
-                                    ).GetComponent<ItemDropper>();
-                                ItemDropper.DropItems(inventoryItem.item, amountToUse);
-                                inventoryData.RemoveItem(itemIndex, amountToUse);
+                                IDroppable ObjectToDrop = inventoryItem.item as IDroppable;
+                                ObjectToDrop.DropItem(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
                                 ClearDescription(inventoryType);
                                 break;
                             case "Sell":
                                 amountToUse = 1;
-                                itemAction.SelectAction("Sell", amountToUse, player, inventoryItem.itemState);
-                                if (destoryableItem != null) inventoryData.RemoveItem(itemIndex, amountToUse);
+                                ISellable ObjectToSell = inventoryItem.item as ISellable;
+                                ObjectToSell.SellObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
                                 break;
                             case "Buy":
                                 amountToUse = 1;
-                                itemAction.SelectAction("Buy", amountToUse, player, inventoryItem.itemState);
-                                if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
-                                break;
-                            case "Unequip":
-                                amountToUse = 1;
-                                itemAction.SelectAction("Unequip", amountToUse, player, inventoryItem.itemState);
-                                if (destoryableItem != null) player.GetComponent<PlayerBehaviour>().inventoryData.AddItem(inventoryItem.item, amountToUse);
+                                IBuyable ObjectToBuy = inventoryItem.item as IBuyable;
+                                ObjectToBuy.BuyObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
                                 break;
                         }
 
