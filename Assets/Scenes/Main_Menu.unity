@@ -63080,7 +63080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd43c581bc33524c8f5795559596006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundImage: {fileID: 164486161}
+  backgroundImage: {fileID: 1997346862}
   mainmenu: {fileID: 71571056}
   settingmenu: {fileID: 404032106}
   logopanel: {fileID: 1915759224}
@@ -63093,15 +63093,15 @@ MonoBehaviour:
   fadeOutDuration: 5
   volumeValueText: {fileID: 1718238544}
   volumeSlider: {fileID: 807496390}
-  defaultVolume: 50
+  defaultVolume: 1
   fullscreenToggle: {fileID: 1901185624}
   newGameLevel: 2
   leveltoLoad: -1
   resolutionDropdown: {fileID: 534170012}
-  dropdownIcon: {fileID: 21300000, guid: 692a50acc1b51e747b22a0a765cf262d, type: 3}
+  dropdownIcon: {fileID: 0}
   NewGamemodalWindow: {fileID: 1672727992}
   LoadGamemodalWindow: {fileID: 675371968}
-  NoSavedGameNotification: {fileID: 1910267757}
+  NoSavedGameNotification: {fileID: 0}
   keybindsavedNotification: {fileID: 709428626}
   keybindsMenu: {fileID: 1958273923}
   keycodeInputField:

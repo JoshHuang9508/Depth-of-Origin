@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Security.Cryptography;
 using TMPro;
 using System;
 using UnityEngine.Video;
 using Michsky.MUIP;
-using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.EventSystems;
-using static UnityEngine.Rendering.DebugUI;
-using UnityEditor;
 
 public class MainMenuController1 : MonoBehaviour
 {

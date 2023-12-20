@@ -13,25 +13,28 @@ MonoBehaviour:
   m_Name: D_TinyZombie
   m_EditorClassIdentifier: 
   Name: 
-  health: 0
+  health: 40
   haveShield: 0
   shieldHealth: 0
   walkType: 0
-  moveSpeed: 0
+  moveSpeed: 5
   defence: 0
   isBoss: 0
   attackType: 0
-  attackSpeed: 0
-  attackDamage: 0
-  chaseField: 0
-  attackField: 0
-  knockbackForce: 0
-  knockbackTime: 0
+  attackSpeed: 0.4
+  attackDamage: 10
+  chaseField: 20
+  attackField: 0.5
+  knockbackForce: 4
+  knockbackTime: 0.2
   shootingType: 0
   projectileFlySpeed: 0
   difficulty: 0
-  coins: []
+  coins:
+  - coins: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+    amount: 1
   lootings: []
   wreckage: []
   EnemyObject: {fileID: 91700730297484186, guid: f9573147ab4174f889a7edb00e2e80e5, type: 3}
   projectile: {fileID: 0}
+  angleOffset: 0

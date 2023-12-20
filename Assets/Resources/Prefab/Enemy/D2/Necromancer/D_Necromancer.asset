@@ -23,8 +23,8 @@ MonoBehaviour:
   attackType: 1
   attackSpeed: 1
   attackDamage: 2
-  chaseField: 15
-  attackField: 0.5
+  chaseField: 10
+  attackField: 15
   knockbackForce: 10
   knockbackTime: 0.5
   shootingType: 0
@@ -35,4 +35,5 @@ MonoBehaviour:
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
   EnemyObject: {fileID: 91700730297484186, guid: c1378c4a575f7c842a03692f500bbc76, type: 3}
-  projectile: {fileID: 4857680875645216774, guid: dfc8f3167d1dd443faee5d6dae255b51, type: 3}
+  projectile: {fileID: 4857680875645216774, guid: 156e08d50d589419c8f5d06eb57403c5, type: 3}
+  angleOffset: 0

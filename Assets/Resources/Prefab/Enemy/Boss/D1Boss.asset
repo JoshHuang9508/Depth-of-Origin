@@ -35,7 +35,10 @@ MonoBehaviour:
     amount: 3
   - coins: {fileID: 11400000, guid: eebdb48914b2a472aa1889d85c5ec113, type: 2}
     amount: 1
-  lootings: []
+  lootings:
+  - lootings: {fileID: 11400000, guid: 416fb001a449c45c5a879e4ad284e1e6, type: 2}
+    chances: 100
+    quantity: 1
   wreckage:
   - {fileID: 6210577483765107436, guid: d131c40cbb94cbc44b82983c8f03af13, type: 3}
   EnemyObject: {fileID: 4630222022334304219, guid: 42b4cf4629c7a44428043927055d1a8a, type: 3}

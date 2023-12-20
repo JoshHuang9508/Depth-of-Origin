@@ -20,73 +20,73 @@ public class OuttroTextController : MonoBehaviour
 
     IEnumerator firstdialog()
     {
-        StartCoroutine(SetTextContent("§A¨«¤J¶Â·t"));
+        StartCoroutine(SetTextContent("ä½ èµ°å…¥é»‘æš—"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(seconddialog());
     }
 
     IEnumerator seconddialog()
     {
-        StartCoroutine(SetTextContent("·NÃÑÃ©Äï"));
+        StartCoroutine(SetTextContent("æ„è­˜æ¨¡ç³Š"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(thirddialog());
     }
     IEnumerator thirddialog()
     {
-        StartCoroutine(SetTextContent("¥uÅ¥¨£¦Õ»y»¡µÛ:"));
+        StartCoroutine(SetTextContent("åªè½è¦‹è€³èªèªªè‘—:"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(fourthdialog());
     }
     IEnumerator fourthdialog()
     {
-        StartCoroutine(SetTextContent("¥L­Ì·|³QÅX³v"));
+        StartCoroutine(SetTextContent("ä»–å€‘æœƒè¢«é©…é€"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(fifthdialog());
     }
     IEnumerator fifthdialog()
     {
-        StartCoroutine(SetTextContent("¦ı¥L­Ì¤£·|®ø´²"));
+        StartCoroutine(SetTextContent("ä½†ä»–å€‘ä¸æœƒæ¶ˆæ•£"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(sixthdialog());
     }
     IEnumerator sixthdialog()
     {
-        StartCoroutine(SetTextContent("³o¬OµLªkÁ×§Kªº©R¹B"));
+        StartCoroutine(SetTextContent("é€™æ˜¯ç„¡æ³•é¿å…çš„å‘½é‹"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(seventhdialog());
     }
 
     IEnumerator seventhdialog()
     {
-        StartCoroutine(SetTextContent("§A¤]µLªk©Úµ´"));
+        StartCoroutine(SetTextContent("ä½ ä¹Ÿç„¡æ³•æ‹’çµ•"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(eighthdialog());
     }
 
     IEnumerator eighthdialog()
     {
-        StartCoroutine(SetTextContent("±Òµ{§a"));
+        StartCoroutine(SetTextContent("å•Ÿç¨‹å§"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(ninethdialog());
     }
 
     IEnumerator ninethdialog()
     {
-        StartCoroutine(SetTextContent("Ä±®©§a"));
+        StartCoroutine(SetTextContent("è¦ºæ‚Ÿå§"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(tenthdialog());
     }
 
     IEnumerator tenthdialog()
     {
-        StartCoroutine(SetTextContent("¥H±´¯Á"));
+        StartCoroutine(SetTextContent("ä»¥æ¢ç´¢"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(eleventhdialog());
     }
 
     IEnumerator eleventhdialog()
     {
-        StartCoroutine(SetTextContent("°_·½¤§²`¡C"));
+        StartCoroutine(SetTextContent("èµ·æºä¹‹æ·±"));
         yield return new WaitForSeconds(waitTime);
         SceneManager.LoadScene(0);
     }

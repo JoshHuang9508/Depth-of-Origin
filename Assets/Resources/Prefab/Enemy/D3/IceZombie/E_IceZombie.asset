@@ -13,25 +13,28 @@ MonoBehaviour:
   m_Name: E_IceZombie
   m_EditorClassIdentifier: 
   Name: 
-  health: 0
+  health: 70
   haveShield: 0
   shieldHealth: 0
   walkType: 0
-  moveSpeed: 0
+  moveSpeed: 4
   defence: 0
   isBoss: 0
   attackType: 0
-  attackSpeed: 0
-  attackDamage: 0
-  chaseField: 0
-  attackField: 0
-  knockbackForce: 0
-  knockbackTime: 0
+  attackSpeed: 0.8
+  attackDamage: 20
+  chaseField: 12
+  attackField: 0.5
+  knockbackForce: 5
+  knockbackTime: 0.5
   shootingType: 0
   projectileFlySpeed: 0
   difficulty: 0
-  coins: []
+  coins:
+  - coins: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+    amount: 1
   lootings: []
   wreckage: []
   EnemyObject: {fileID: 91700730297484186, guid: 9e20e88f3a7d34e1283d2751c2a60abd, type: 3}
   projectile: {fileID: 0}
+  angleOffset: 0

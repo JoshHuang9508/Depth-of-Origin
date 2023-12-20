@@ -13,25 +13,28 @@ MonoBehaviour:
   m_Name: N_Skeleton
   m_EditorClassIdentifier: 
   Name: 
-  health: 0
+  health: 60
   haveShield: 0
   shieldHealth: 0
   walkType: 1
-  moveSpeed: 0
+  moveSpeed: 4
   defence: 0
   isBoss: 0
   attackType: 1
-  attackSpeed: 0
-  attackDamage: 0
-  chaseField: 0
-  attackField: 0
-  knockbackForce: 0
-  knockbackTime: 0
+  attackSpeed: 0.8
+  attackDamage: 20
+  chaseField: 10
+  attackField: 15
+  knockbackForce: 3
+  knockbackTime: 0.2
   shootingType: 0
   projectileFlySpeed: 0
   difficulty: 0
-  coins: []
+  coins:
+  - coins: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}
+    amount: 1
   lootings: []
   wreckage: []
   EnemyObject: {fileID: 91700730297484186, guid: 4d719bd56b38d4d5e9ff799310b0e2e2, type: 3}
   projectile: {fileID: 4857680875645216774, guid: 156e08d50d589419c8f5d06eb57403c5, type: 3}
+  angleOffset: 0

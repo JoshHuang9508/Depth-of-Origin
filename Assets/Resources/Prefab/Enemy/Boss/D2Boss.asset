@@ -30,8 +30,16 @@ MonoBehaviour:
   shootingType: 0
   projectileFlySpeed: 12
   difficulty: 4
-  coins: []
-  lootings: []
+  coins:
+  - coins: {fileID: 11400000, guid: 25fe53387134b4704a58ffd41583d842, type: 2}
+    amount: 3
+  - coins: {fileID: 11400000, guid: eebdb48914b2a472aa1889d85c5ec113, type: 2}
+    amount: 1
+  lootings:
+  - lootings: {fileID: 11400000, guid: 2f5b0132a166748838fdaa2445002f6f, type: 2}
+    chances: 100
+    quantity: 1
   wreckage: []
   EnemyObject: {fileID: 5319692153324330543, guid: 5e1043b191eef68409548edaf001cd41, type: 3}
   projectile: {fileID: 8859390899598628619, guid: 26cc197d2738981458a2e9e481f80bab, type: 3}
+  angleOffset: 0

@@ -21,37 +21,37 @@ public class IntroTransitionController : MonoBehaviour
 
     IEnumerator firstdialog()
     {
-        StartCoroutine(SetTextContent("§A¨«¶i¤F´ËªL"));
+        StartCoroutine(SetTextContent("ä½ èµ°é€²äº†æ£®æ—"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(seconddialog());
     }
     IEnumerator seconddialog()
     {
-        StartCoroutine(SetTextContent("¹L¤F«Üªø¤@¬q®É¶¡"));
+        StartCoroutine(SetTextContent("éäº†å¾ˆé•·ä¸€æ®µæ™‚é–“"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine (thirddialog());
     }
     IEnumerator thirddialog()
     {
-        StartCoroutine(SetTextContent("´X¹D¨ë²´ªº¥ú³z®g¶i¨Ó"));
+        StartCoroutine(SetTextContent("å¹¾é“åˆºçœ¼çš„å…‰é€å°„é€²ä¾†"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(fourthdialog());
     }
     IEnumerator fourthdialog()
     {
-        StartCoroutine(SetTextContent("§Aª¾¹D§A¤w¬ï¹L´ËªL"));
+        StartCoroutine(SetTextContent("ä½ çŸ¥é“ä½ å·²ç©¿éæ£®æ—"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(fifthdialog());
     }
     IEnumerator fifthdialog()
     {
-        StartCoroutine(SetTextContent("ÀH¤§¬M¤J²´Ã®ªº"));
+        StartCoroutine(SetTextContent("éš¨ä¹‹æ˜ å…¥çœ¼ç°¾çš„"));
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(sixthdialog());
     }
     IEnumerator sixthdialog()
     {
-        StartCoroutine(SetTextContent("¬O¤@®y¥Í®ğ¯sµMªº§ø²ø¡C"));
+        StartCoroutine(SetTextContent("æ˜¯ä¸€åº§ç”Ÿæ°£ç›ç„¶çš„æ‘èŠ"));
         yield return new WaitForSeconds(waitTime);
         PlayerPrefs.SetInt("loadscene", 4);
         temp.GetComponent<SceneLoaderController>().Load();
