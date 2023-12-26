@@ -66,7 +66,7 @@ public class BossBehavior : MonoBehaviour
                 enemyBehavior.currentRb.bodyType = RigidbodyType2D.Dynamic;
                 enemyBehavior.enemy.walkType = EnemySO.WalkType.Melee;
                 enemyBehavior.enemy.attackType = EnemySO.AttackType.Melee;
-                enemyBehavior.enemy.attackField = 1.5f;
+                enemyBehavior.enemy.attackField = 3f;
                 enemyBehavior.enemy.chaseField = 100;
                 enemyBehavior.enemy.attackSpeed = 1;
                 enemyBehavior.enemy.attackDamage = 2000;
