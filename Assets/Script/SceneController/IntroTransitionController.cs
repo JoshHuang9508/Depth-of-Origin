@@ -80,6 +80,4 @@ public class IntroTransitionController : MonoBehaviour
             yield return null;
         }
     }
-
-    
 }
