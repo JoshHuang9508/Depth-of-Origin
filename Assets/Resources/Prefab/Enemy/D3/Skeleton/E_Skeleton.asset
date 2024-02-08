@@ -21,14 +21,14 @@ MonoBehaviour:
   defence: 0
   isBoss: 0
   attackType: 1
-  attackSpeed: 0.8
+  attackSpeed: 1.5
   attackDamage: 20
   chaseField: 10
   attackField: 15
   knockbackForce: 3
   knockbackTime: 0.2
   shootingType: 0
-  projectileFlySpeed: 0
+  projectileFlySpeed: 12
   difficulty: 0
   coins:
   - coins: {fileID: 11400000, guid: 3c6f55420d7522f45929837f50736624, type: 2}

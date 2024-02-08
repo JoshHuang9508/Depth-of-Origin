@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class IntroUiController : MonoBehaviour
+public class IntroSceneController : MonoBehaviour
 {
     [SerializeField] private NotificationManager notification;
     [SerializeField] private Sprite complete, hint;
