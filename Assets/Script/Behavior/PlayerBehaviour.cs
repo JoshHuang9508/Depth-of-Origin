@@ -237,6 +237,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 summonWeapon.Summon();
             }
         }
+
+        //Pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pauseUI.SetActive(true);

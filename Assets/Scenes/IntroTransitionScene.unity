@@ -653,9 +653,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1098637334}
+  sceneLoader: {fileID: 503834439}
+  dialog:
+  - "\u4F60\u8D70\u9032\u4E86\u68EE\u6797"
+  - "\u904E\u4E86\u5F88\u9577\u4E00\u6BB5\u6642\u9593"
+  - "\u5E7E\u9053\u523A\u773C\u7684\u5149\u900F\u5C04\u9032\u4F86"
+  - "\u4F60\u77E5\u9053\u4F60\u5DF2\u7A7F\u904E\u68EE\u6797"
+  - "\u96A8\u4E4B\u6620\u5165\u773C\u7C3E\u7684"
+  - "\u662F\u4E00\u5EA7\u751F\u6C23\u76CE\u7136\u7684\u6751\u838A"
   fadeInDuration: 1
   fadeOutDuration: 1
-  temp: {fileID: 503834438}
+  waitTime: 0
 --- !u!4 &1467653476
 Transform:
   m_ObjectHideFlags: 0

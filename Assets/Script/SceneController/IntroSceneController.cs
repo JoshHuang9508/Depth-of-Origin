@@ -14,6 +14,8 @@ public class IntroSceneController : MonoBehaviour
     [SerializeField] private ChestController meleeChestController, rangeChestController, potionChestController;
     [SerializeField] private List<GameObject> potList, crateList;
     [SerializeField] private int progressNum;
+    [SerializeField] private float timer = 0;
+    bool enemyAlive = true;
 
 
     void Start()
@@ -30,104 +32,131 @@ public class IntroSceneController : MonoBehaviour
         potionChestController.interactable.interactable = false;
 
         progressNum = 0;
-
-        
     }
 
     void Update()
     {
         notification.UpdateUI();
+        UpdateTimer();
+
+        if (timer > 0) return;
 
         switch (progressNum)
         {
             case 0:
-                if (!meleeChestController.isOpen)
-                {
-                    SetHint("Hint", "Open the chest");
-                    notification.Open();
-                }
-                else
+                notification.Close();
+                SetHint("Hint", "Open the chest");
+                notification.Open();
+
+                progressNum = 1;
+                break;
+
+            case 1:
+                if (meleeChestController.isOpen)
                 {
                     notification.Close();
                     SetHint("Complete", "Chest has been opened!");
                     notification.Open();
 
-                    progressNum = 1;
-                }
-                break;
-
-            case 1:
-                if (!crateList.All(item => item == null))
-                {
-                    SetHint("Hint", "Press 'F' to open backpack and equip the sword. \n Press 'Alpha 1' to select melee weapon then use 'Mouse 0' to swing the sword.");
-                    notification.Open();
-                }
-                else
-                {
-                    notification.Close();
-                    SetHint("Complete", "The crate has been broken!");
-                    notification.Open();
-
+                    timer += 3;
                     progressNum = 2;
                 }
                 break;
 
             case 2:
-                if (!rangeChestController.isOpen)
-                {
-                    SetHint("Hint", "Open the chest");
-                    notification.Open();
+                notification.Close();
+                SetHint("Hint", "Press 'F' to open backpack and equip the sword. \n Press 'Alpha 1' to select melee weapon then use 'Mouse 0' to swing the sword.");
+                notification.Open();
 
-                    rangeChestController.interactable.interactable = true;
-                }
-                else
-                {
-                    notification.Close();
-                    SetHint("Complete", "Chest has been opened!");
-                    notification.Open();
-
-                    progressNum = 3;
-                }
+                progressNum = 3;
                 break;
 
             case 3:
-                if (!potList.All(item => item == null))
-                {
-                    SetHint("Hint", "Press 'F' to open backpack and equip the bow \n Press 'Alpha 2' to select ranged weapon then use 'Mouse 0' to shot the pots in the water");
-                    notification.Open();
-                }
-                else
+                if (crateList.All(item => item == null))
                 {
                     notification.Close();
-                    SetHint("Complete", "The pot has been broken!");
+                    SetHint("Complete", "The crate has been broken!");
                     notification.Open();
 
+                    timer += 3;
                     progressNum = 4;
                 }
                 break;
 
             case 4:
-                if (!potionChestController.isOpen)
-                {
-                    SetHint("Hint", "Open the chest");
-                    notification.Open();
+                notification.Close();
+                SetHint("Hint", "Open the chest");
+                notification.Open();
 
-                    potionChestController.interactable.interactable = true;
-                }
-                else
+                rangeChestController.interactable.interactable = true;
+                progressNum = 5;
+                break;
+
+            case 5:
+                if (rangeChestController.isOpen)
                 {
                     notification.Close();
                     SetHint("Complete", "Chest has been opened!");
                     notification.Open();
 
-                    progressNum = 5;
+                    timer += 3;
+                    progressNum = 6;
                 }
                 break;
 
-            case 5:
+            case 6:
+                notification.Close();
+                SetHint("Hint", "Press 'F' to open backpack and equip the bow \n Press 'Alpha 2' to select ranged weapon then use 'Mouse 0' to shot the pots in the water");
+                notification.Open();
+
+                progressNum = 7;
+                break;
+
+            case 7:
+                if (potList.All(item => item == null))
+                {
+                    notification.Close();
+                    SetHint("Complete", "The pot has been broken!");
+                    notification.Open();
+
+                    timer += 3;
+                    progressNum = 8;
+                }
+                break;
+
+            case 8:
+                notification.Close();
+                SetHint("Hint", "Open the chest");
+                notification.Open();
+
+                potionChestController.interactable.interactable = true;
+                progressNum = 9;
+                break;
+
+            case 9:
+                if (potionChestController.isOpen)
+                {
+                    notification.Close();
+                    SetHint("Complete", "Chest has been opened!");
+                    notification.Open();
+
+                    timer += 3;
+                    progressNum = 10;
+                }
+                break;
+
+            case 10:
                 spawner.SpawnMobs();
+
+                notification.Close();
+                SetHint("Hint", "Press 'F' to open backpack and equip the potions \n Press 'Alpha 3' to consume Potion then try to kill the enemy ahead");
+                notification.Open();
+
+                progressNum = 11;
+                break;
+
+            case 11:
                 GameObject enemy = GameObject.FindWithTag("Enemy");
-                bool enemyAlive = true;
                 try
                 {
                     if (enemy != null) enemyAlive = true;
@@ -135,22 +164,18 @@ public class IntroSceneController : MonoBehaviour
                 }
                 catch { }
 
-                if (enemyAlive)
-                {
-                    SetHint("Hint", "Press 'F' to open backpack and equip the potions \n Press 'Alpha 3' to consume Potion then try to kill the enemy ahead");
-                    notification.Open();
-                }
-                else
+                if (!enemyAlive)
                 {
                     notification.Close();
                     SetHint("Complete", "Enemy has been defeated!");
                     notification.Open();
 
-                    progressNum = 6;
+                    timer += 3;
+                    progressNum = 12;
                 }
                 break;
 
-            case 6:
+            case 12:
                 SetHint("Hint", "Walk forward to the forest");
                 notification.enableTimer = false;
                 notification.Open();
@@ -173,19 +198,13 @@ public class IntroSceneController : MonoBehaviour
         }
     }
 
+    private void UpdateTimer()
+    {
+        timer = Mathf.Max(timer - Time.deltaTime, 0);
+    }
+
     public void enterForest()
     {
         PlayerPrefs.SetString("loadscene", "Town");
-    }
-
-    IEnumerator missionComplete(string completeMsg)
-    {
-        notification.Close();
-
-        yield return new WaitForSeconds(1f);
-
-        SetHint("Complete", completeMsg);
-        notification.enableTimer = true;
-        notification.Open();
     }
 }
