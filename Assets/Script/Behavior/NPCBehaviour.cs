@@ -45,6 +45,7 @@ public class NPCBehaviour : MonoBehaviour, Damageable
 
         //actions
         Moving();
+        
     }
 
     private void Moving()
