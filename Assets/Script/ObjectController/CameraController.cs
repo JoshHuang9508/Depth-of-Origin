@@ -13,10 +13,10 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Collider2D mapBounds;
 
-    [Header("Stats")]
-    public bool isFollowing_x = true;
-    public bool isFollowing_y = true;
-    public Vector3 newPosition;
+    [Header("Dynamic Data")]
+    [SerializeField] private bool isFollowing_x = true;
+    [SerializeField] private bool isFollowing_y = true;
+    [SerializeField] private Vector3 newPosition;
 
     private void Start()
     {
@@ -25,10 +25,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(target == null)
-        {
-            return;
-        }
+        if(target == null) return;
 
         try
         {
@@ -46,15 +43,14 @@ public class CameraController : MonoBehaviour
             Vector2 targetPos_x = new(newPosition.x, 0);
             Vector2 targetPos_y = new(0, newPosition.y);
 
-            if (!mapBounds.bounds.Contains(targetPos_x)) isFollowing_x = false;
-            else isFollowing_x = true;
+            isFollowing_x = mapBounds.bounds.Contains(targetPos_x);
+            isFollowing_y = mapBounds.bounds.Contains(targetPos_y);
 
-            if (!mapBounds.bounds.Contains(targetPos_y)) isFollowing_y = false;
-            else isFollowing_y = true;
-
-            Vector2 currentPos = transform.position;
-
-            transform.position = new Vector3(isFollowing_x ? newPosition.x : currentPos.x, isFollowing_y ? newPosition.y : currentPos.y, -10);
+            transform.position = new Vector3(
+                isFollowing_x ? newPosition.x : transform.position.x,
+                isFollowing_y ? newPosition.y : transform.position.y,
+                -10
+            );
         }
         else
         {

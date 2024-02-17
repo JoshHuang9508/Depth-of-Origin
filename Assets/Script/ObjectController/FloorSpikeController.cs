@@ -14,14 +14,9 @@ public class FloorSpikeController : MonoBehaviour
 
     [Header("Dynamic Data")]
     [SerializeField] private float timeElapse;
+    [SerializeField] private bool isActive = false;
+    [SerializeField] private static bool damageEnablerStatic = true;
 
-    [Header("Stats")]
-    public bool activeEnabler = true;
-    public bool isActive = false;
-
-    private static bool activeEnablerStatic = true;
-    //private static float updateInterval = 0.1f;
-    //private static float lastUpdateTime = 0f;
 
 
     private void Start()
@@ -33,15 +28,13 @@ public class FloorSpikeController : MonoBehaviour
     {
         Activiting();
 
-        activeEnabler = activeEnablerStatic;
-
-        if (activeEnabler && isActive && DetectPlayer())
+        if (damageEnablerStatic && isActive && DetectPlayer())
         {
             Damageable damageableObject = GameObject.FindWithTag("Player").GetComponent<Damageable>();
 
             damageableObject.OnHit(damage, false, Vector2.zero, 0);
 
-            StartCoroutine(SetStaticTimer(callback => { activeEnablerStatic = callback; }, 1));
+            StartCoroutine(SetStaticTimer(callback => { damageEnablerStatic = callback; }, 1));
         }
     }
 

@@ -16,7 +16,7 @@ namespace Inventory.UI
         [SerializeField] private Image borderImage;
 
         [Header("Stats")]
-        [SerializeField] private bool empty = true;
+        [SerializeField] private bool isEmpty = true;
 
         public Action<UIItemSlot> OnItemClicked, OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag, OnRightMouseBtnClick;
         
@@ -30,16 +30,7 @@ namespace Inventory.UI
         public void ResetData()
         {
             itemImage.gameObject.SetActive(false);
-            empty = true;
-        }
-
-        public void Deselect()
-        {
-            try
-            {
-                borderImage.enabled = false;
-            }
-            catch { }
+            isEmpty = true;
         }
 
         public void SetData(Sprite sprite, int quantity)
@@ -48,12 +39,18 @@ namespace Inventory.UI
             itemImage.color = (sprite == null) ? new Color(255, 255, 255, 0) : new Color(255, 255, 255, 255);
             itemImage.sprite = sprite;
             quantityTxt.text = (quantity == 0) ? "" : quantity.ToString();
-            empty = false;
+            isEmpty = false;
         }
 
         public void Select()
         {
             borderImage.enabled = true;
+        }
+
+        public void Deselect()
+        {
+            try { borderImage.enabled = false; }
+            catch { }
         }
 
         public void OnPointerClick(PointerEventData pointerData)
@@ -70,7 +67,7 @@ namespace Inventory.UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (empty)
+            if (isEmpty)
             {
                 return;
             }

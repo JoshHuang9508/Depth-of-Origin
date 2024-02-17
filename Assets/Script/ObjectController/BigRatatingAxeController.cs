@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BigRatatingAxeController : MonoBehaviour
 {
-    [SerializeField] private GameObject splitProjectile;
+    [Header("Object Reference")]
     [SerializeField] private EnemySO enemyData;
+    [SerializeField] private GameObject splitProjectile;
 
     private void Start()
     {

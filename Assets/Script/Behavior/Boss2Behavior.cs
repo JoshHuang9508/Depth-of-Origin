@@ -13,7 +13,7 @@ public class Boss2Behavior : MonoBehaviour
 
     [Header("Setting")]
     [SerializeField] private SlimeSplitStage slimeSplitStage;
-    public enum SlimeSplitStage
+    [SerializeField] private enum SlimeSplitStage
     {
         Big, Mid, Small
     }

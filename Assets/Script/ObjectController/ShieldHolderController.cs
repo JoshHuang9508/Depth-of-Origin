@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class ShieldHolderController : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Dynamic Data")]
     public static int currentCoulumnAmount;
 
     public Action shieldBreak;

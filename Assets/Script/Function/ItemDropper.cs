@@ -26,8 +26,7 @@ public class ItemDropper : MonoBehaviour
             {
                 var dropCoin = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
-                dropCoin.GetComponent<Pickable>().inventoryItem = coin.coins;
-                dropCoin.GetComponent<Pickable>().pickupDistance = 100;
+                dropCoin.GetComponent<Pickable>().PickableSetup(coin.coins, 1, 100);
 
                 dropCoin.GetComponent<DropItemSetup>().InventoryItem = coin.coins;
 
@@ -51,7 +50,7 @@ public class ItemDropper : MonoBehaviour
                 {
                     var dropItem = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
-                    dropItem.GetComponent<Pickable>().inventoryItem = looting.lootings;
+                    dropItem.GetComponent<Pickable>().PickableSetup(looting.lootings);
 
                     dropItem.GetComponent<DropItemSetup>().InventoryItem = looting.lootings;
 
@@ -67,7 +66,7 @@ public class ItemDropper : MonoBehaviour
         {
             var dropItem = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
-            dropItem.GetComponent<Pickable>().inventoryItem = looting;
+            dropItem.GetComponent<Pickable>().PickableSetup(looting);
 
             dropItem.GetComponent<DropItemSetup>().InventoryItem = looting;
 

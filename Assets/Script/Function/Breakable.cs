@@ -8,8 +8,6 @@ public class Breakable : MonoBehaviour, Damageable
 {
     [Header("Setting")]
     [SerializeField] private float health;
-
-    [Header("Looting")]
     [SerializeField] private List<Coins> coins;
     [SerializeField] private List<Lootings> lootings;
     [SerializeField] private List<GameObject> wreckage;
@@ -23,7 +21,7 @@ public class Breakable : MonoBehaviour, Damageable
     [SerializeField] private GameObject damageText;
     [SerializeField] private GameObject itemDropper;
 
-    [Header("Stats")]
+    [Header("Dynamic Data")]
     public bool damageEnabler = true;
     public float damageDisableTimer = 0;
 

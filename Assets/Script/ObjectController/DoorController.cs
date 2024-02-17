@@ -17,8 +17,9 @@ public class DoorController : MonoBehaviour
     [SerializeField] private BoxCollider2D BoxCollider2D;
     [SerializeField] private Interactable interactable;
 
-    [Header("Stats")]
-    public bool isOpen;
+    [Header("Dynamic Data")]
+    [SerializeField] private bool isOpen;
+
 
 
     void Start()

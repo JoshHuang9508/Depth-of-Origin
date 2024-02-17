@@ -37,7 +37,7 @@ public class ShopSO : ScriptableObject
 
 
 
-    public int AddItem(ItemSO item, int quantity, List<ItemParameter> itemState = null)
+    public int AddItem(ItemSO item, int quantity)
     {
         if (item.IsStackable == false)
         {
@@ -45,7 +45,7 @@ public class ShopSO : ScriptableObject
             {
                 while (quantity > 0 && IsInventoryFull() == false)
                 {
-                    quantity -= AddItemToFristFreeSlot(item, 1, itemState);
+                    quantity -= AddItemToFristFreeSlot(item, 1);
                 }
             }
 
@@ -88,13 +88,12 @@ public class ShopSO : ScriptableObject
             return quantity;
         }
     }
-    private int AddItemToFristFreeSlot(ItemSO item, int quantity, List<ItemParameter> itemState = null)
+    private int AddItemToFristFreeSlot(ItemSO item, int quantity)
     {
         ShopItem newItem = new ShopItem
         {
             item = item,
             quantity = quantity,
-            itemState = new List<ItemParameter>(itemState == null ? item.DefaultParameterList : itemState)
         };
         for (int i = 0; i < shopItems.Count; i++)
         {
@@ -149,7 +148,6 @@ public struct ShopItem
 {
     public int quantity;
     public ItemSO item;
-    public List<ItemParameter> itemState;
 
     public bool IsEmpty => item == null;
 
@@ -159,7 +157,6 @@ public struct ShopItem
         {
             item = this.item,
             quantity = newQuantity,
-            itemState = new List<ItemParameter>(this.itemState)
         };
     }
 
@@ -167,6 +164,5 @@ public struct ShopItem
     {
         item = null,
         quantity = 0,
-        itemState = new List<ItemParameter>()
     };
 }

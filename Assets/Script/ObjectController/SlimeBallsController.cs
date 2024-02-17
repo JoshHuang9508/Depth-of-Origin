@@ -7,9 +7,10 @@ public class SlimeBallsController : MonoBehaviour
     private void OnDestroy() 
     { 
         GameObject poison = Instantiate(
-            slimePoison, transform.position, 
+            slimePoison,
+            transform.position, 
             Quaternion.identity,GameObject.Find("Object_Grid").transform
             ); 
-        poison.GetComponent<PoisonController>().alivetime = 5f; 
+        poison.GetComponent<PoisonController>().PoisonSetup(5f); 
     } 
 }

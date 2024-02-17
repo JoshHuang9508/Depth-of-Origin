@@ -17,12 +17,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private List<InventoryItem> initialItems;
 
     [Header("Key Settings")]
-    [SerializeField] public KeyCode sprintKey;
-    [SerializeField] public KeyCode backpackKey;
-    [SerializeField] public KeyCode usePotionKey;
-    [SerializeField] public KeyCode useWeaponKey;
-    [SerializeField] public KeyCode meleeWeaponKey;
-    [SerializeField] public KeyCode rangedWeaponKey;
+    public KeyCode sprintKey;
+    public KeyCode backpackKey;
+    public KeyCode usePotionKey;
+    public KeyCode useWeaponKey;
+    public KeyCode meleeWeaponKey;
+    public KeyCode rangedWeaponKey;
+    public KeyCode interactKey;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioPlayer;
@@ -40,36 +41,16 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private GameObject damageText;
-    public GameObject itemDropper;
+    //change this to private
+    [SerializeField] private GameObject itemDropper;
 
     [Header("Dynamic Data")]
     public InventorySO inventoryData;
     public InventorySO equipmentData;
     public float currentHealth;
     public int currentCoinAmount = 0;
-    public List<KeyList> keyList = new();
+    public List<Key> keyList = new();
 
-    [Header("Equipment")]
-    public int weaponControl = 0;
-    public WeaponSO currentWeapon;
-    public WeaponSO meleeWeapon;
-    public WeaponSO rangedWeapon;
-    public EdibleItemSO potions;
-    public int currentPotionAmont;
-    public EquippableItemSO armor;
-    public EquippableItemSO jewelry;
-    public EquippableItemSO book;
-
-    [Header("Effection")]
-    public List<EffectionList> effectionList = new();
-    [SerializeField] private float E_WalkSpeed;
-    [SerializeField] private float E_MaxHealth;
-    [SerializeField] private float E_Strength;
-    [SerializeField] private float E_Defence;
-    [SerializeField] private float E_CritRate;
-    [SerializeField] private float E_CritDamage;
-
-    [Header("Stats")]
     public bool behaviourEnabler = true;
     public bool movementEnabler = true;
     public float movementDisableTimer = 0;
@@ -86,12 +67,33 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public bool onHit = false;
     public float onHitTimer = 0;
 
-    public float walkSpeed { get { return B_WalkSpeed * ((100 + E_WalkSpeed) / 100); } }
-    public float maxHealth { get { return B_MaxHealth + E_MaxHealth; } }
-    public float strength { get { return B_Strength + E_Strength; } }
-    public float defence { get { return B_Defence + E_Defence; } }
-    public float critRate { get { return B_CritRate + E_CritRate; } }
-    public float critDamage { get { return B_CritDamage + E_CritDamage; } }
+    [Header("Equipment")]
+    //change these to list
+    public int weaponControl = 0;
+    public WeaponSO currentWeapon;
+    public WeaponSO meleeWeapon;
+    public WeaponSO rangedWeapon;
+    public EdibleItemSO potions;
+    public int currentPotionAmont;
+    public EquippableItemSO armor;
+    public EquippableItemSO jewelry;
+    public EquippableItemSO book;
+
+    [Header("Effection")]
+    [SerializeField] private List<Effection> effectionList = new();
+    [SerializeField] private float E_WalkSpeed;
+    [SerializeField] private float E_MaxHealth;
+    [SerializeField] private float E_Strength;
+    [SerializeField] private float E_Defence;
+    [SerializeField] private float E_CritRate;
+    [SerializeField] private float E_CritDamage;
+
+    public float WalkSpeed { get { return B_WalkSpeed * ((100 + E_WalkSpeed) / 100); } }
+    public float MaxHealth { get { return B_MaxHealth + E_MaxHealth; } }
+    public float Strength { get { return B_Strength + E_Strength; } }
+    public float Defence { get { return B_Defence + E_Defence; } }
+    public float CritRate { get { return B_CritRate + E_CritRate; } }
+    public float CritDamage { get { return B_CritDamage + E_CritDamage; } }
 
     public float Health
     {
@@ -158,15 +160,17 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
+    public List<Effection> GetEffectionList { get { return effectionList; } }
+
     [Serializable]
-    public class EffectionList
+    public class Effection
     {
         public EdibleItemSO effectingItem;
         public float effectingTime;
     }
 
     [Serializable]
-    public class KeyList
+    public class Key
     {
         public KeySO key;
         public int quantity;
@@ -181,7 +185,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        currentHealth = MaxHealth;
     }
     
     private void Update()
@@ -253,8 +257,8 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
 
             Vector2 movement = new Vector3(
-                Input.GetAxis("Horizontal") * walkSpeed * walkSpeedMutiplyer,
-                Input.GetAxis("Vertical") * walkSpeed * walkSpeedMutiplyer
+                Input.GetAxis("Horizontal") * WalkSpeed * walkSpeedMutiplyer,
+                Input.GetAxis("Vertical") * WalkSpeed * walkSpeedMutiplyer
             );
 
             currentRb.velocity = new Vector2(movement.x, movement.y);
@@ -273,9 +277,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     private void Heal()
     {
-        if (healingEnabler && currentHealth != maxHealth)
+        if (healingEnabler && currentHealth != MaxHealth)
         {
-            float healValue = Mathf.Min(maxHealth - currentHealth, maxHealth * 0.05f);
+            float healValue = Mathf.Min(MaxHealth - currentHealth, MaxHealth * 0.05f);
             Health += healValue;
             DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
             healingDisableTimer = 5;
@@ -286,9 +290,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         if (!damageEnabler || !behaviourEnabler) return;
 
-        float localDamage = damage / (1 + (0.001f * defence));
-        Vector2 localKnockbackForce = knockbackForce / (1 + (0.001f * defence));
-        float localKnockbackTime = knockbackTime / (1f + (0.001f * defence));
+        float localDamage = damage / (1 + (0.001f * Defence));
+        Vector2 localKnockbackForce = knockbackForce / (1 + (0.001f * Defence));
+        float localKnockbackTime = knockbackTime / (1f + (0.001f * Defence));
 
         //update heath
         Health -= localDamage;
@@ -347,7 +351,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         E_CritDamage = results[5];
 
         //check overhealing
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
+        if (currentHealth > MaxHealth) currentHealth = MaxHealth;
     }
 
     private void UpdateTimer()
@@ -370,11 +374,11 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         onHit = !(onHitTimer <= 0);
     }
 
-    public List<KeyList> UpdateKeyList()
+    public void UpdateKeyList()
     {
         //update key list
         int indexOfKeyList = -1;
-        foreach (KeyList key in keyList)
+        foreach (Key key in keyList)
         {
             if (key.quantity <= 0)
             {
@@ -382,14 +386,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             }
         }
         keyList.Remove(indexOfKeyList != -1 ? keyList[indexOfKeyList] : null);
-        return keyList;
     }
 
     private void UpdateEffectionList()
     {
         //update effection list
         int indexOfEffectionList = -1;
-        foreach (EffectionList effectingItem in effectionList)
+        foreach (Effection effectingItem in effectionList)
         {
             effectingItem.effectingTime -= Time.deltaTime;
             if (effectingItem.effectingTime <= 0)
@@ -509,7 +512,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         int indexOfEffectionList = 0;
         bool isEffectionExist = false;
 
-        foreach (EffectionList effectingItem in effectionList)
+        foreach (Effection effectingItem in effectionList)
         {
             if (edibleItem.ID == effectingItem.effectingItem.ID)
             {
@@ -526,13 +529,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         {
             if (edibleItem.effectTime != 0)
             {
-                effectionList.Add(new EffectionList { effectingItem = edibleItem, effectingTime = effectTime });
+                effectionList.Add(new Effection { effectingItem = edibleItem, effectingTime = effectTime });
             }
         }
 
         if (edibleItem.E_heal != 0)
         {
-            float healValue = Mathf.Min(maxHealth - currentHealth, edibleItem.E_heal);
+            float healValue = Mathf.Min(MaxHealth - currentHealth, edibleItem.E_heal);
             Health += healValue;
 
             DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
@@ -556,7 +559,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
     public void RevivePlayer()
     {
-        currentHealth = maxHealth;
+        currentHealth = MaxHealth;
         currentRb.bodyType = RigidbodyType2D.Dynamic;
         behaviourEnabler = true;
         for (int i = 0; i < transform.childCount; i++)
@@ -564,5 +567,17 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             Transform child = transform.GetChild(i);
             child.gameObject.SetActive(true);
         }
+    }
+
+    public void DropItems(ItemSO item, int amount)
+    {
+        ItemDropper ItemDropper = Instantiate(
+            itemDropper,
+            transform.position,
+            Quaternion.identity,
+            GameObject.FindWithTag("Item").transform
+            ).GetComponent<ItemDropper>();
+
+        ItemDropper.DropItems(item, amount);
     }
 }

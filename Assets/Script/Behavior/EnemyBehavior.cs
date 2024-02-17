@@ -3,13 +3,6 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour, Damageable
 {
-    [Header("Object Reference")]
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Animator animator;
-    public Rigidbody2D currentRb;
-    [SerializeField] private GameObject damageText;
-    [SerializeField] private GameObject itemDropper;
-
     [Header("Audio")]
     [SerializeField] private AudioSource audioPlayer;
     [SerializeField] private AudioClip hitSound;
@@ -18,12 +11,10 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     [Header("Dynamic Data")]
     public EnemySO enemy;
     [SerializeField] private GameObject target;
-    public float currentHealth;
-    public float currnetShieldHealth;
-    public bool haveShield;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float currnetShieldHealth;
+    [SerializeField] private bool haveShield;
     [SerializeField] private Vector2 currentPos, targetPos, diraction;
-
-    [Header("Stats")]
     public bool movementEnabler = true;
     public float movementDisableTimer = 0;
     public bool attackEnabler = true;
@@ -35,6 +26,13 @@ public class EnemyBehavior : MonoBehaviour, Damageable
     public bool onHit = false;
     public float onHitTimer = 0;
     public bool behaviourEnabler = true;
+
+    [Header("Object Reference")]
+    public Rigidbody2D currentRb;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject damageText;
+    [SerializeField] private GameObject itemDropper;
 
     public float Health
     {
@@ -66,10 +64,6 @@ public class EnemyBehavior : MonoBehaviour, Damageable
         }
     }
 
-    public Vector2 CurrentPos { get { return currentPos; } }
-    public Vector2 TargetPos { get { return targetPos; } }
-    public Vector2 Diraction { get { return diraction; } }
-
     public float ShieldHealth
     {
         get
@@ -86,6 +80,11 @@ public class EnemyBehavior : MonoBehaviour, Damageable
             }
         }
     }
+
+    public bool HaveShield { get { return haveShield; } }
+    public Vector2 CurrentPos { get { return currentPos; } }
+    public Vector2 TargetPos { get { return targetPos; } }
+    public Vector2 Diraction { get { return diraction; } }
 
     public delegate void EnemyAttack();
     public event EnemyAttack OnAttack;

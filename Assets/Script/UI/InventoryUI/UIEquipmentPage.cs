@@ -49,11 +49,11 @@ public class UIEquipmentPage : MonoBehaviour
 
     public void SetPlayerStats()
     {
-        healthText.text = player.maxHealth.ToString();
-        strengthText.text = player.strength.ToString();
-        moveSpeedText.text = player.walkSpeed.ToString();
-        defenceText.text = player.defence.ToString();
-        critRateText.text = player.critRate.ToString();
-        critDamageText.text = player.critDamage.ToString();
+        healthText.text = player.MaxHealth.ToString();
+        strengthText.text = player.Strength.ToString();
+        moveSpeedText.text = player.WalkSpeed.ToString();
+        defenceText.text = player.Defence.ToString();
+        critRateText.text = player.CritRate.ToString();
+        critDamageText.text = player.CritDamage.ToString();
     }
 }

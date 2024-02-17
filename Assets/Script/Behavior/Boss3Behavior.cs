@@ -30,7 +30,7 @@ public class Boss3Behavior : MonoBehaviour
 
     private void Update()
     {
-        if (enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
+        if (enemyBehavior.Health <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
             enemyBehavior.movementDisableTimer = 3;
             enemyBehavior.damageDisableTimer = 3;
@@ -55,11 +55,11 @@ public class Boss3Behavior : MonoBehaviour
                 enemyBehavior.enemy.attackSpeed = 10;
                 enemyBehavior.enemy.projectile = firstProjectile;
 
-                if (enemyBehavior.haveShield)
+                if (enemyBehavior.HaveShield)
                 {
                     disableTimer = 10;
                 }
-                else if (!enemyBehavior.haveShield)
+                else if (!enemyBehavior.HaveShield)
                 {
                     enemyBehavior.movementDisableTimer = 3;
                     enemyBehavior.attackDisableTimer = 13;

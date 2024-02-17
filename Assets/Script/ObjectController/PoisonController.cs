@@ -7,34 +7,33 @@ public class PoisonController : MonoBehaviour
 {
     [Header("Setting")]
     [SerializeField] private EdibleItemSO poisonEffect;
-    public float alivetime = 10f;
+    [SerializeField] private float aliveTime = 10f;
 
-    float currentTime = 0f;
-    bool damageEnabler = true;
+    [Header("Dynamic Data")]
+    [SerializeField] private float currentTime = 0f;
+    [SerializeField] private static bool damageEnablerStatic = true;
 
-    private void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    
     void Update()
     {
         currentTime += Time.deltaTime;
-        if(currentTime >= alivetime && alivetime != 0)
+        if(currentTime >= aliveTime && aliveTime != 0)
         {
             Destroy(gameObject);
         }
 
-        if(DetectPlayer() && damageEnabler)
+        if(DetectPlayer() && damageEnablerStatic)
         {
             Damageable damageableObject = GameObject.FindWithTag("Player").GetComponent<Damageable>();
+
             GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().SetEffection(poisonEffect, poisonEffect.effectTime);
             damageableObject.OnHit(10, false, Vector2.zero, 0);
 
-            StartCoroutine(SetTimer(callback => { damageEnabler = callback; }, 2));
+            StartCoroutine(SetTimer(callback => { damageEnablerStatic = callback; }, 2));
         }
     }
+
     private bool DetectPlayer()
     {
         List<Collider2D> colliderResult = new();
@@ -54,5 +53,10 @@ public class PoisonController : MonoBehaviour
         callback(false);
         yield return new WaitForSeconds(time);
         callback(true);
+    }
+
+    public void PoisonSetup(float aliveTime)
+    {
+        this.aliveTime = aliveTime;
     }
 }

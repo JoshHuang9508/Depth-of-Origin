@@ -182,13 +182,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e63bcffa245fca43a04995d5eac67c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryItem: {fileID: 0}
   quantity: 1
   pickupDistance: 3
-  pickEnabler: 0
-  isInventoryFull: 0
-  storable: 1
+  item: {fileID: 0}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
+  player: {fileID: 0}
+  pickEnabler: 0
 --- !u!114 &-3344829333070863771
 MonoBehaviour:
   m_ObjectHideFlags: 0

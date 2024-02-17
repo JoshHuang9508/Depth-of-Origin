@@ -21,7 +21,7 @@ public class EffectDisplay : MonoBehaviour
 
     void Update()
     {
-        List<PlayerBehaviour.EffectionList> effectionList = player.effectionList;
+        List<PlayerBehaviour.Effection> effectionList = player.GetEffectionList;
 
         if (effectionDisplayList.Count < effectionList.Count)
         {
@@ -41,7 +41,7 @@ public class EffectDisplay : MonoBehaviour
             Destroy(Item);
         }
 
-        foreach (PlayerBehaviour.EffectionList effectionItem in effectionList)
+        foreach (PlayerBehaviour.Effection effectionItem in effectionList)
         {
             int indexOfEffectionList = effectionList.IndexOf(effectionItem);
 

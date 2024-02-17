@@ -16,10 +16,10 @@ public class ProjectileMovement_Player : WeaponMovementRanged
                 Vector3 parentPos = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(collision.gameObject.transform.position - parentPos).normalized;
 
-                bool isCrit = Random.Range(0f, 100f) <= playerData.critRate;
+                bool isCrit = Random.Range(0f, 100f) <= playerData.CritRate;
 
                 damageableObject.OnHit(
-                    weaponData.weaponDamage * (1 + (0.01f * playerData.strength)) * (isCrit ? 1 + (0.01f * playerData.critDamage) : 1),
+                    weaponData.weaponDamage * (1 + (0.01f * playerData.Strength)) * (isCrit ? 1 + (0.01f * playerData.CritDamage) : 1),
                     isCrit,
                     direction * weaponData.knockbackForce,
                     weaponData.knockbackTime);

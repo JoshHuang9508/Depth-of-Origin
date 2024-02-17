@@ -31,7 +31,7 @@ namespace Inventory.Model
             AddItem(item.item, item.quantity);
         }
 
-        public int AddItem(ItemSO item, int quantity, List<ItemParameter> itemState = null)
+        public int AddItem(ItemSO item, int quantity)
         {
             if(item.IsStackable == false)
             {
@@ -39,7 +39,7 @@ namespace Inventory.Model
                 {
                     while(quantity > 0 && IsInventoryFull() == false)
                     {
-                        quantity -= AddItemToFristFreeSlot(item, 1, itemState);
+                        quantity -= AddItemToFristFreeSlot(item, 1);
                     }
                 }
 
@@ -83,13 +83,12 @@ namespace Inventory.Model
             }
         }
 
-        private int AddItemToFristFreeSlot(ItemSO item, int quantity, List<ItemParameter> itemState = null)
+        private int AddItemToFristFreeSlot(ItemSO item, int quantity)
         {
             InventoryItem newItem = new InventoryItem
             {
                 item = item,
                 quantity = quantity,
-                itemState = new List<ItemParameter>(itemState == null ? item.DefaultParameterList : itemState)
             };
             for(int i = 0; i < inventoryItems.Count; i++)
             {
@@ -182,7 +181,6 @@ namespace Inventory.Model
     {
         public int quantity;
         public ItemSO item;
-        public List<ItemParameter> itemState;
 
         public bool IsEmpty => item == null;
 
@@ -192,7 +190,6 @@ namespace Inventory.Model
             {
                 item = this.item,
                 quantity = newQuantity,
-                itemState = new List<ItemParameter>(this.itemState)
             };
         }
 
@@ -200,7 +197,6 @@ namespace Inventory.Model
         {
             item = null,
             quantity = 0,
-            itemState = new List<ItemParameter>()
         };
     }
 }

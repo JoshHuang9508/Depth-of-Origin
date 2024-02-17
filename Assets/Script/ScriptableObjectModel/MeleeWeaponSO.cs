@@ -12,7 +12,7 @@ public class MeleeWeaponSO : WeaponSO, IEquipable, IUnequipable
     [Header("Melee Weapon Setting")]
     public float attackSpeed = 1f;
 
-    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
@@ -24,7 +24,7 @@ public class MeleeWeaponSO : WeaponSO, IEquipable, IUnequipable
         return false;
     }
 
-    public bool UnequipObject(int amont, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
+    public bool UnequipObject(int amont, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 

@@ -9,21 +9,21 @@ public class Interactable : MonoBehaviour
 {
     [Header("Setting")]
     [SerializeField] public bool interactable;
-    [SerializeField] private KeyCode interactKey;
     [SerializeField] private UnityEvent interactAction, enterRangeAction, leaveRangeAction;
 
     [Header("Object Reference")]
     [SerializeField] private GameObject interactDialogObject;
+    [SerializeField] private PlayerBehaviour player;
 
     [Header("Dynamic Data")]
-    [SerializeField] private TMP_Text interactDialogText;
     [SerializeField] private GameObject interactDialog;
-
-    [Header("Stats")]
+    [SerializeField] private TMP_Text interactDialogText;
     [SerializeField] private bool isInRange;
 
     private void Awake()
     {
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+
         if (interactable)
         {
             interactDialog = Instantiate(
@@ -44,11 +44,13 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (isInRange && this.enabled && interactable && Input.GetKeyDown(interactKey))
+        if (isInRange && this.enabled && interactable && Input.GetKeyDown(player.interactKey))
         {
             if (gameObject.GetComponent<KeyRequired>())
             {
-                if (GetComponent<KeyRequired>().HaveKey())
+                GetComponent<KeyRequired>().DetectKey(player.keyList);
+
+                if (GetComponent<KeyRequired>().HaveKey)
                 {
                     interactAction.Invoke();
                 }
@@ -74,7 +76,7 @@ public class Interactable : MonoBehaviour
             if (enabled && interactable)
             {
                 interactDialog.SetActive(true);
-                interactDialogText.text = $"Press {interactKey} to interact";
+                interactDialogText.text = $"Press {player.interactKey} to interact";
             }
         }
     }

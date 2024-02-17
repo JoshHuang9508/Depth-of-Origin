@@ -20,40 +20,13 @@ namespace Inventory.Model
 
         [Header("Reference")]
         public Sprite Image;
-        public List<ItemParameter> DefaultParameterList;
 
 
         public int ID => GetInstanceID();
 
-        //public bool SelectAction(string actionName, int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState)
-        //{
-        //    switch (actionName)
-        //    {
-        //        case "Equip":
-        //            IEquipable equipable = this as IEquipable;
-        //            equipable.EquipObject(amount, inventoryData, inventoryIndex, itemState);
-        //            break;
-        //        case "Consume":
-        //            IConsumeable actionable = this as IConsumeable;
-        //            actionable.ConsumeObject(amount, inventoryData, inventoryIndex, itemState);
-        //            break;
-        //        case "Sell":
-        //            ISellable sellable = this as ISellable;
-        //            sellable.SellObject(amount, inventoryData, inventoryIndex, itemState);
-        //            break;
-        //        case "Buy":
-        //            IBuyable buyable = this as IBuyable;
-        //            buyable.BuyObject(amount, inventoryData, inventoryIndex, itemState);
-        //            break;
-        //        case "Unequip":
-        //            IUnequipable unequipable = this as IUnequipable;
-        //            unequipable.UnequipObject(amount, inventoryData, inventoryIndex, itemState);
-        //            break;
-        //    }
-        //    return false;
-        //}
 
-        public bool SellObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
+
+        public bool SellObject(int amount, InventorySO inventoryData, int inventoryIndex)
         {
             PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
             if (player != null)
@@ -64,7 +37,7 @@ namespace Inventory.Model
             return false;
         }
 
-        public bool BuyObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
+        public bool BuyObject(int amount, InventorySO inventoryData, int inventoryIndex)
         {
             PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
             if (player != null)
@@ -82,33 +55,15 @@ namespace Inventory.Model
             return false;
         }
 
-        public bool DropItem(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
+        public bool DropItem(int amount, InventorySO inventoryData, int inventoryIndex)
         {
             PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
             if (player != null)
             {
-                ItemDropper ItemDropper = Instantiate(
-                    player.itemDropper,
-                    new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z),
-                    new Quaternion(0.0f, 0.0f, 0.0f, 0.0f),
-                    GameObject.FindWithTag("Item").transform
-                    ).GetComponent<ItemDropper>();
-                ItemDropper.DropItems(inventoryData.GetItemAt(inventoryIndex).item, amount);
+                player.DropItems(inventoryData.GetItemAt(inventoryIndex).item, amount);
                 inventoryData.RemoveItem(inventoryIndex, amount);
             }
             return false;
-        }
-    }
-
-    [Serializable]
-    public struct ItemParameter : IEquatable<ItemParameter>
-    {
-        public ItemParameterSO itemParameter;
-        public float value;
-
-        public bool Equals(ItemParameter other)
-        {
-            return other.itemParameter == itemParameter;
         }
     }
 
@@ -122,39 +77,34 @@ namespace Inventory.Model
 
     }
 
-    //public interface IItemAction
-    //{
-    //    bool SelectAction(string actionName, int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState);
-    //}
-
     public interface IEquipable
     {
-        bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState);
+        bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex);
     }
 
     public interface IUnequipable
     {
-        bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate);
+        bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex);
     }
 
     public interface IConsumeable
     {
-        bool ConsumeObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState);
+        bool ConsumeObject(int amount, InventorySO inventoryData, int inventoryIndex);
     }
 
     public interface ISellable
     {
-        bool SellObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate);
+        bool SellObject(int amount, InventorySO inventoryData, int inventoryIndex);
     }
 
     public interface IBuyable
     {
-        bool BuyObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate);
+        bool BuyObject(int amount, InventorySO inventoryData, int inventoryIndex);
     }
 
     public interface IDroppable
     {
-        bool DropItem(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate);
+        bool DropItem(int amount, InventorySO inventoryData, int inventoryIndex);
     }
 }
 

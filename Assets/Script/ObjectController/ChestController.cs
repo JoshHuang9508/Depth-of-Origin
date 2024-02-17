@@ -7,10 +7,8 @@ public class ChestController : MonoBehaviour
 {
     [Header("Setting")]
     [SerializeField] private bool canReopen;
-
-    [Header("Looting")]
-    public List<Coins> coins;
-    public List<Lootings> lootings;
+    [SerializeField] private List<Coins> coins;
+    [SerializeField] private List<Lootings> lootings;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioPlayer;
@@ -21,8 +19,11 @@ public class ChestController : MonoBehaviour
     [SerializeField] public Interactable interactable;
     [SerializeField] private GameObject itemDropper;
 
-    [Header("Stats")]
-    public bool isOpen;
+    [Header("Dynamic Data")]
+    [SerializeField] private bool isOpen;
+
+    public bool IsChestOpen { get { return isOpen; } }
+
 
 
     void Start()
@@ -62,5 +63,11 @@ public class ChestController : MonoBehaviour
 
             animator.SetTrigger("Close");
         }
+    }
+
+    public void SetChestContent(List<Coins> coins, List<Lootings> lootings)
+    {
+        this.coins = coins;
+        this.lootings = lootings;
     }
 }

@@ -33,15 +33,15 @@ public class BossHealthBar : MonoBehaviour
             setVisiable(true);
 
             bossName.text = boss.enemy.Name;
-            healthBarSlider.value = boss.currentHealth / boss.enemy.health;
-            healthText.text = $"{Mathf.RoundToInt(boss.currentHealth)} / {boss.enemy.health}";
-            healthBarFill.color = healthBarGradient.Evaluate(boss.currentHealth / boss.enemy.health);
+            healthBarSlider.value = boss.Health / boss.enemy.health;
+            healthText.text = $"{Mathf.RoundToInt(boss.Health)} / {boss.enemy.health}";
+            healthBarFill.color = healthBarGradient.Evaluate(boss.Health / boss.enemy.health);
 
             shieldBar.SetActive(boss.enemy.haveShield);
             if (boss.enemy.haveShield)
             {
-                shieldBarSlider.value = boss.currnetShieldHealth / boss.enemy.shieldHealth;
-                shieldBarFill.color = ShieldBarGradient.Evaluate(boss.currnetShieldHealth / boss.enemy.shieldHealth);
+                shieldBarSlider.value = boss.ShieldHealth / boss.enemy.shieldHealth;
+                shieldBarFill.color = ShieldBarGradient.Evaluate(boss.ShieldHealth / boss.enemy.shieldHealth);
             }
         }
         else

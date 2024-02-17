@@ -20,7 +20,7 @@ public class KeysDisplaylist : MonoBehaviour
 
     private void Update()
     {
-        List<PlayerBehaviour.KeyList> keysList = player.keyList;
+        List<PlayerBehaviour.Key> keysList = player.keyList;
 
         if(keysDisplayList.Count < keysList.Count)
         {
@@ -38,7 +38,7 @@ public class KeysDisplaylist : MonoBehaviour
             Destroy(Item);
         }
 
-        foreach(PlayerBehaviour.KeyList keysItem in keysList)
+        foreach(PlayerBehaviour.Key keysItem in keysList)
         {
 
             int indexOfKeyslist = keysList.IndexOf(keysItem);

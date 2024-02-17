@@ -12,6 +12,7 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject column;
 
+    [Header("Dynamic Data")]
     int behaviorType = 1;
 
 
@@ -33,9 +34,9 @@ public class BossBehavior : MonoBehaviour
 
     private void Update()
     {
-        shield.SetActive(enemyBehavior.haveShield);
+        shield.SetActive(enemyBehavior.HaveShield);
 
-        if(enemyBehavior.currentHealth <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
+        if(enemyBehavior.Health <= enemyBehavior.enemy.health * 0.5 && behaviorType == 1)
         {
             enemyBehavior.movementDisableTimer = 3;
             enemyBehavior.damageDisableTimer = 3;

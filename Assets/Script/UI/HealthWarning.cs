@@ -21,6 +21,6 @@ public class HealthWarning : MonoBehaviour
 
     void Update()
     {
-        fill.color = gradient.Evaluate(player.currentHealth / player.maxHealth);
+        fill.color = gradient.Evaluate(player.Health / player.MaxHealth);
     }
 }

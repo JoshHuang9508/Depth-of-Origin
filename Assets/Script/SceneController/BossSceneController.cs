@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class BossSceneController : MonoBehaviour
 {
+    [Header("Setting")]
+    [SerializeField] private Vector3 chestSummonPos;
+    [SerializeField] private Vector3 exitSummonPos;
+    [SerializeField] private List<Coins> coins;
+    [SerializeField] private List<Lootings> lootings;
+    [SerializeField] private int sceneNum;
+ 
     [Header("Object Reference")]
     [SerializeField] private GameObject spawner;
     [SerializeField] private GameObject chest;
     [SerializeField] private GameObject exit;
-    [SerializeField] private ChestController chestData;
-    [SerializeField] private SceneLoaderController exitData;
 
     [Header("Dynamic Data")]
     [SerializeField] private bool bossAlive = false;
     [SerializeField] private int bossCounter = 0;
-    [SerializeField] private Vector3 chestSummonPos;
-    [SerializeField] private Vector3 exitSummonPos;
     [SerializeField] private List<GameObject> entitylist = new();
     
 
@@ -52,16 +55,14 @@ public class BossSceneController : MonoBehaviour
                 chestSummonPos, 
                 Quaternion.identity, 
                 GameObject.Find("Object_Grid").transform).GetComponent<ChestController>();
-            chestSummoned.coins = chestData.coins;
-            chestSummoned.lootings = chestData.lootings;
+            chestSummoned.SetChestContent(coins, lootings);
 
             SceneLoaderController exitSummoned = Instantiate(
                 exit,
                 exitSummonPos,
                 Quaternion.identity,
                 GameObject.Find("Object_Grid").transform).GetComponent<SceneLoaderController>();
-            exitSummoned.SceneNum = exitData.SceneNum;
-            exitSummoned.loadType = SceneLoaderController.LoadType.Scene;
+            exitSummoned.SetSceneLoaderContent(sceneNum);
 
             bossAlive = false;
         }

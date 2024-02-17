@@ -52,7 +52,7 @@ public class IntroSceneController : MonoBehaviour
                 break;
 
             case 1:
-                if (meleeChestController.isOpen)
+                if (meleeChestController.IsChestOpen)
                 {
                     notification.Close();
                     SetHint("Complete", "Chest has been opened!");
@@ -93,7 +93,7 @@ public class IntroSceneController : MonoBehaviour
                 break;
 
             case 5:
-                if (rangeChestController.isOpen)
+                if (rangeChestController.IsChestOpen)
                 {
                     notification.Close();
                     SetHint("Complete", "Chest has been opened!");
@@ -134,7 +134,7 @@ public class IntroSceneController : MonoBehaviour
                 break;
 
             case 9:
-                if (potionChestController.isOpen)
+                if (potionChestController.IsChestOpen)
                 {
                     notification.Close();
                     SetHint("Complete", "Chest has been opened!");

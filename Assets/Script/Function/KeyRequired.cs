@@ -8,9 +8,9 @@ public class KeyRequired : MonoBehaviour
     [SerializeField] private string keyName;
     [SerializeField] private List<string> keyNames;
 
-    public bool HaveKey()
+    public List<PlayerBehaviour.Key> DetectKey(List<PlayerBehaviour.Key> keyList)
     {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+        //PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
         bool haveKey = false;
 
@@ -18,30 +18,30 @@ public class KeyRequired : MonoBehaviour
         {
             int indexOfKeyList = -1;
 
-            foreach (var key in player.keyList)
+            foreach (var key in keyList)
             {
                 if (key.key.Name == keyName)
                 {
                     haveKey = true;
-                    indexOfKeyList = player.keyList.IndexOf(key);
+                    indexOfKeyList = keyList.IndexOf(key);
                 }
             }
             if (haveKey)
             {
-                player.keyList[indexOfKeyList].quantity--;
+                keyList[indexOfKeyList].quantity--;
             }
         }
-        else if(keyNames.Count != 0)
+        if(keyNames.Count != 0)
         {
             List<int> indexOfKeyList = new(); 
 
             foreach(string keyName in keyNames)
             {
-                foreach(var key in player.keyList)
+                foreach(var key in keyList)
                 {
                     if(key.key.Name == keyName)
                     {
-                        indexOfKeyList.Add(player.keyList.IndexOf(key));
+                        indexOfKeyList.Add(keyList.IndexOf(key));
                     }
                 }
                 if(indexOfKeyList.Count == keyNames.Count)
@@ -53,11 +53,13 @@ public class KeyRequired : MonoBehaviour
             {
                 foreach(int index in indexOfKeyList)
                 {
-                    player.keyList[index].quantity--;
+                    keyList[index].quantity--;
                 }
             }
         }
 
-        return haveKey;
+        return keyList;
     }
+
+    public bool HaveKey { get { return HaveKey; } }
 }

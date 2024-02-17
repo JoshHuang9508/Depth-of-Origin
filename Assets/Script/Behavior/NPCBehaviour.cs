@@ -8,21 +8,20 @@ public class NPCBehaviour : MonoBehaviour, Damageable
     [Header("Setting")]
     public float walkSpeed;
 
+    [Header("Dynamic Data")]
+    [SerializeField] private float timeElapse;
+    [SerializeField] private Vector3 currentPos, targetPos, diraction;
+    [SerializeField] private bool isMoving;
+
+    public bool movementEnabler = true;
+    public float movementDisableTimer = 0;
+
     [Header("Object Reference")]
     [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
 
-    [Header("Dynamic Data")]
-    [SerializeField] private float timeElapse;
-    [SerializeField] private Vector3 currentPos, targetPos, diraction;
 
-    [Header("Stats")]
-    public bool movementEnabler = true;
-    public float movementDisableTimer = 0;
-    public bool isMoving;
-   
-    
     void Start()
     {
         currentRb = GetComponent<Rigidbody2D>();

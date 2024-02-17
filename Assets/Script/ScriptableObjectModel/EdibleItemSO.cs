@@ -18,7 +18,7 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
     public float effectTime;
 
 
-    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
 
@@ -30,7 +30,7 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
         return false;
     }
 
-    public bool ConsumeObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
+    public bool ConsumeObject(int amount, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
 
@@ -42,7 +42,7 @@ public class EdibleItemSO : ItemSO, IConsumeable, IEquipable, IDestoryableItem, 
         return false;
     }
 
-    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
+    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
 

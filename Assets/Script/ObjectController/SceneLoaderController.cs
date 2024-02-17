@@ -11,7 +11,7 @@ public class SceneLoaderController : MonoBehaviour
     public int SceneNum = 0;
     public GameObject transformPos;
 
-    [Header("Stats")]
+    [Header("Dynamic Data")]
     public static bool inAction = false;
 
     [Header("Object Reference")]
@@ -63,6 +63,17 @@ public class SceneLoaderController : MonoBehaviour
 
                 break;
         }
-        
+    }
+
+    public void SetSceneLoaderContent(int sceneNum)
+    {
+        this.loadType = LoadType.Scene;
+        this.SceneNum = sceneNum;
+    }
+
+    public void SetSceneLoaderContent(GameObject transformPos)
+    {
+        this.loadType = LoadType.Chunk;
+        this.transformPos = transformPos;
     }
 }

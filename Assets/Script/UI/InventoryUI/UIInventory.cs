@@ -1,6 +1,4 @@
 using Inventory.Model;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -136,33 +134,33 @@ namespace Inventory.UI
                             case "Equip":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
                                 IEquipable ObjectToEquip = inventoryItem.item as IEquipable;
-                                ObjectToEquip.EquipObject(amountToUse, playerInventoryData, itemIndex, inventoryItem.itemState);
+                                ObjectToEquip.EquipObject(amountToUse, playerInventoryData, itemIndex);
                                 break;
                             case "Unequip":
                                 amountToUse = 1;
                                 IUnequipable ObjectToUnequip = inventoryItem.item as IUnequipable;
-                                ObjectToUnequip.UnequipObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
+                                ObjectToUnequip.UnequipObject(amountToUse, inventoryData, itemIndex);
                                 break;
                             case "Consume":
                                 amountToUse = 1;
                                 IConsumeable ObjectToConsume = inventoryItem.item as IConsumeable;
-                                ObjectToConsume.ConsumeObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
+                                ObjectToConsume.ConsumeObject(amountToUse, inventoryData, itemIndex);
                                 break;
                             case "Drop":
                                 amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
                                 IDroppable ObjectToDrop = inventoryItem.item as IDroppable;
-                                ObjectToDrop.DropItem(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
+                                ObjectToDrop.DropItem(amountToUse, inventoryData, itemIndex);
                                 ClearDescription(inventoryType);
                                 break;
                             case "Sell":
                                 amountToUse = 1;
                                 ISellable ObjectToSell = inventoryItem.item as ISellable;
-                                ObjectToSell.SellObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
+                                ObjectToSell.SellObject(amountToUse, inventoryData, itemIndex);
                                 break;
                             case "Buy":
                                 amountToUse = 1;
                                 IBuyable ObjectToBuy = inventoryItem.item as IBuyable;
-                                ObjectToBuy.BuyObject(amountToUse, inventoryData, itemIndex, inventoryItem.itemState);
+                                ObjectToBuy.BuyObject(amountToUse, inventoryData, itemIndex);
                                 break;
                         }
 

@@ -9,7 +9,7 @@ public class TorchLightController : MonoBehaviour
     [SerializeField] private Light2D torchLight;
     [SerializeField] private Animator animator;
 
-    [Header("Stats")]
+    [Header("Dynamic Data")]
     public bool extinguished = false;
 
     void Start()

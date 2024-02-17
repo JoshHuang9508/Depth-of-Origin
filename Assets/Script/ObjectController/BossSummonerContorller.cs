@@ -14,9 +14,7 @@ public class BossSummonerContorller : MonoBehaviour
 
     [Header("Dynamic Data")]
     [SerializeField] private static int currentActionTimes;
-
-    [Header("Stats")]
-    public bool isActived = false;
+    [SerializeField] private bool isActived = false;
 
 
     private void Start()

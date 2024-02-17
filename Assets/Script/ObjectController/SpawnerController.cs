@@ -5,12 +5,13 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [Header("Setting")]
-    public bool autoSpawn = true;
-    public float minSpawnDistance = 15;
-    public int mobsStayedLimit = 4;
-    public int spawnTimesLimit = -1;
-    public float spawnGap = 3;
-    public int trySpawnTimes = -1;
+    [SerializeField] private float spawnRange;
+    [SerializeField] private bool autoSpawn = true;
+    [SerializeField] private float minSpawnDistance = 15;
+    [SerializeField] private int mobsStayedLimit = 4;
+    [SerializeField] private int spawnTimesLimit = -1;
+    [SerializeField] private float spawnGap = 3;
+    [SerializeField] private int trySpawnTimes = -1;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private List<EnemySO> spawnList;
 
@@ -18,11 +19,7 @@ public class SpawnerController : MonoBehaviour
     [SerializeField] private int spawnTimes;
     [SerializeField] private int stayedMobs;
     [SerializeField] private float spawnTimer = 0;
-
-    [Header("Stats")]
-    public bool spawnEnabler = true;
-
-    float spawnRange;
+    [SerializeField] private bool spawnEnabler = true;
 
     private void Start()
     {

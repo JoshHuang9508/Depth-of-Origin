@@ -7,23 +7,22 @@ public class MouseFollower : MonoBehaviour
 {
     [Header("Object Reference")]
     [SerializeField] private Canvas canvas;
-    [SerializeField] private UIItemSlot item;
+    [SerializeField] private UIItemSlot itemSlot;
 
     private void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
-        item = GetComponentInChildren<UIItemSlot>();
+        itemSlot = GetComponentInChildren<UIItemSlot>();
     }
 
     public void SetData(Sprite sprite,int quantity)
     {
-        item.SetData(sprite, quantity);
+        itemSlot.SetData(sprite, quantity);
     }
 
     private void Update()
     {
-        Vector2 position;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)canvas.transform, Input.mousePosition, canvas.worldCamera, out position);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)canvas.transform, Input.mousePosition, canvas.worldCamera, out Vector2 position);
         transform.position = canvas.transform.TransformPoint(position);
     }
 

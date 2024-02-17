@@ -23,7 +23,7 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable,
     }
 
 
-    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemState = null)
+    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
@@ -35,7 +35,7 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable,
         return false;
     }
 
-    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex, List<ItemParameter> itemstate)
+    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex)
     {
         PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
