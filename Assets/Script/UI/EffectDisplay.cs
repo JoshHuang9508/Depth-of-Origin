@@ -21,9 +21,7 @@ public class EffectDisplay : MonoBehaviour
 
     void Update()
     {
-        List<PlayerBehaviour.Effection> effectionList = player.GetEffectionList;
-
-        if (effectionDisplayList.Count < effectionList.Count)
+        if (effectionDisplayList.Count < player.GetEffectionList.Count)
         {
             //create display
             GameObject Item = Instantiate(
@@ -33,7 +31,7 @@ public class EffectDisplay : MonoBehaviour
                 transform);
             effectionDisplayList.Add(Item);
         }
-        else if (effectionDisplayList.Count > effectionList.Count)
+        else if (effectionDisplayList.Count > player.GetEffectionList.Count)
         {
             //delet display
             var Item = effectionDisplayList[effectionDisplayList.Count - 1];
@@ -41,9 +39,9 @@ public class EffectDisplay : MonoBehaviour
             Destroy(Item);
         }
 
-        foreach (PlayerBehaviour.Effection effectionItem in effectionList)
+        foreach (PlayerBehaviour.Effection effectionItem in player.GetEffectionList)
         {
-            int indexOfEffectionList = effectionList.IndexOf(effectionItem);
+            int indexOfEffectionList = player.GetEffectionList.IndexOf(effectionItem);
 
             foreach (GameObject effectionDisplayerItem in effectionDisplayList)
             {

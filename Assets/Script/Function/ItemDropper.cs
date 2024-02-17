@@ -60,15 +60,20 @@ public class ItemDropper : MonoBehaviour
         }
     }
 
-    public void DropItems(ItemSO looting, int quantity = 1)
+    public void DropItem(InventoryItem inventoryItem)
+    {
+        DropItem(inventoryItem.item, inventoryItem.quantity);
+    }
+
+    public void DropItem(ItemSO item, int quantity = 1)
     {
         for (int i = 0; i < quantity; i++)
         {
             var dropItem = Instantiate(itemModel, transform.position, Quaternion.identity, transform.parent);
 
-            dropItem.GetComponent<Pickable>().PickableSetup(looting);
+            dropItem.GetComponent<Pickable>().PickableSetup(item);
 
-            dropItem.GetComponent<DropItemSetup>().InventoryItem = looting;
+            dropItem.GetComponent<DropItemSetup>().InventoryItem = item;
 
             dropItem.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-2, 2f) * 10, Random.Range(-2f, 2f) * 10);
         }

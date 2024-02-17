@@ -11,28 +11,4 @@ public class MeleeWeaponSO : WeaponSO, IEquipable, IUnequipable
 
     [Header("Melee Weapon Setting")]
     public float attackSpeed = 1f;
-
-    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex)
-    {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        if (player != null)
-        {
-            player.SetEquipment(this, WeaponType.Melee);
-            if (inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
-        }
-        return false;
-    }
-
-    public bool UnequipObject(int amont, InventorySO inventoryData, int inventoryIndex)
-    {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        if (player != null)
-        {
-            player.UnEquipment(this, WeaponType.Melee);
-            player.inventoryData.AddItem(inventoryData.GetItemAt(inventoryIndex));
-        }
-        return false;
-    }
 }

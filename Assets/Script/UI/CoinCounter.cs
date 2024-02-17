@@ -16,6 +16,6 @@ public class CoinCounter : MonoBehaviour
 
     void Update()
     {
-        coinCounterText.text = $"x{player.currentCoinAmount}";
+        coinCounterText.text = $"x{player.CoinAmount}";
     }
 }

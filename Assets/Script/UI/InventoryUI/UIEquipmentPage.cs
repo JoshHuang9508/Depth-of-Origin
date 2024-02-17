@@ -8,46 +8,140 @@ using UnityEngine.UI;
 
 public class UIEquipmentPage : MonoBehaviour
 {
-
     [Header("Settings")]
-    public ActionType ActionType;
+    public ActionType actionType;
+    [SerializeField] private bool isDragable;
 
     [Header("Dynamic Data")]
-    public List<UIItemSlot> listOfItemSlots = new();
+    [SerializeField] private List<UIItemSlot> itemSlotList = new();
+    [SerializeField] private int currentDraggedItemIndex = -1;
 
     [Header("Object Reference")]
-    [SerializeField] private InventorySO equipmentData;
+    public InventorySO equipmentData;
+    [SerializeField] private UIInterface UIinterface;
+    [SerializeField] private UIItemSlot itemSlot;
+    [SerializeField] private RectTransform contentPanel;
     [SerializeField] private TMP_Text healthText, strengthText, moveSpeedText, defenceText, critRateText, critDamageText;
-    [SerializeField] private UIItemSlot armor;
-    [SerializeField] private UIItemSlot jewelry;
-    [SerializeField] private UIItemSlot book;
-    [SerializeField] private UIItemSlot meleeWeapon;
-    [SerializeField] private UIItemSlot rangedWeapon;
-    [SerializeField] private UIItemSlot potions;
-    [SerializeField] private UIInventory inventoryUI;
-    [SerializeField] private PlayerBehaviour player;
 
+
+    private void Awake()
+    {
+        UIinterface = GetComponentInParent<UIInterface>();
+
+        InitializeSlot();
+    }
+
+    private void OnEnable()
+    {
+        HandleSlotUpdate(equipmentData.GetCurrentInventoryState());
+    }
 
     private void Update()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        SetImage();
-        SetPlayerStats();
+        SetPlayerStats(GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>());
     }
 
-
-    public void SetImage()
+    public void InitializeSlot()
     {
-        meleeWeapon.SetData(player.meleeWeapon != null ? player.meleeWeapon.Image : null, player.meleeWeapon != null ? 1 : 0);
-        rangedWeapon.SetData(player.rangedWeapon != null ? player.rangedWeapon.Image : null, player.rangedWeapon != null ? 1 : 0);
-        potions.SetData(player.potions != null ? player.potions.Image : null, player.potions != null ? player.currentPotionAmont : 0);
-        armor.SetData(player.armor != null ? player.armor.Image : null, player.armor != null ? 1 : 0);
-        jewelry.SetData(player.jewelry != null ? player.jewelry.Image : null, player.jewelry != null ? 1 : 0);
-        book.SetData(player.book != null ? player.book.Image : null, player.book != null ? 1 : 0);
+        foreach (UIItemSlot _itemSlot in itemSlotList)
+        {
+            _itemSlot.OnItemClicked += HandleItemSelection;
+            _itemSlot.OnItemBeginDrag += HandleBeginDrag;
+            _itemSlot.OnItemEndDrag += HandleEndDrag;
+            _itemSlot.OnItemDroppedOn += HandleSwap;
+        }
+
+        equipmentData.OnInventoryUpdated += HandleSlotUpdate;
     }
 
-    public void SetPlayerStats()
+
+
+
+
+    public void HandleSlotUpdate(Dictionary<int, InventoryItem> inventoryState)
+    {
+        ResetAllItems();
+
+        foreach (var item in inventoryState)
+        {
+            if (itemSlotList.Count > item.Key)
+            {
+                itemSlotList[item.Key].SetData(item.Value.item.Image, item.Value.quantity);
+            }
+        }
+    }
+
+    public void HandleBeginDrag(UIItemSlot _itemSlot)
+    {
+        int index = itemSlotList.IndexOf(_itemSlot);
+        InventoryItem inventoryItem = equipmentData.GetItemAt(index);
+
+        if (index != -1 && !inventoryItem.IsEmpty && isDragable)
+        {
+            HandleItemSelection(_itemSlot);
+            currentDraggedItemIndex = index;
+            UIinterface.CreateDraggedItem(inventoryItem.item.Image, inventoryItem.quantity);
+        }
+    }
+
+    public void HandleEndDrag(UIItemSlot _itemSlot)
+    {
+        UIinterface.DeletDraggedItem();
+        currentDraggedItemIndex = -1;
+    }
+
+    public void HandleSwap(UIItemSlot _itemSlot)
+    {
+        int index = itemSlotList.IndexOf(_itemSlot);
+
+        if (index != -1 && isDragable)
+        {
+            equipmentData.SwapItems(currentDraggedItemIndex, index);
+            HandleItemSelection(_itemSlot);
+        }
+    }
+
+    public void HandleItemSelection(UIItemSlot _itemSlot)
+    {
+        int index = itemSlotList.IndexOf(_itemSlot);
+        InventoryItem inventoryItem = equipmentData.GetItemAt(index);
+
+        if (index != -1 && !inventoryItem.IsEmpty)
+        {
+            Deselect();
+            itemSlotList[index].Select();
+
+            UIinterface.SetDescription(inventoryItem.item, actionType);
+            UIinterface.SetActionBotton(equipmentData, index, actionType);
+        }
+        else
+        {
+            Deselect();
+        }
+    }
+
+
+
+
+
+    public void Deselect()
+    {
+        foreach (UIItemSlot _itemSlot in itemSlotList)
+        {
+            _itemSlot.Deselect();
+        }
+        UIinterface.ClearDescription(actionType);
+    }
+
+    public void ResetAllItems()
+    {
+        foreach (UIItemSlot _itemSlot in itemSlotList)
+        {
+            _itemSlot.ResetData();
+        }
+    }
+
+    public void SetPlayerStats(PlayerBehaviour player)
     {
         healthText.text = player.MaxHealth.ToString();
         strengthText.text = player.Strength.ToString();

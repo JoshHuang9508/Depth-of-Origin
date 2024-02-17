@@ -20,7 +20,7 @@ public class KeysDisplaylist : MonoBehaviour
 
     private void Update()
     {
-        List<PlayerBehaviour.Key> keysList = player.keyList;
+        List<PlayerBehaviour.Key> keysList = player.GetKeyList;
 
         if(keysDisplayList.Count < keysList.Count)
         {

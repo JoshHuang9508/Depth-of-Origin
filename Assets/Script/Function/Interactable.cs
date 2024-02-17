@@ -48,7 +48,7 @@ public class Interactable : MonoBehaviour
         {
             if (gameObject.GetComponent<KeyRequired>())
             {
-                GetComponent<KeyRequired>().DetectKey(player.keyList);
+                player.GetKeyList = GetComponent<KeyRequired>().DetectKey(player.GetKeyList);
 
                 if (GetComponent<KeyRequired>().HaveKey)
                 {

@@ -20,16 +20,13 @@ public class Tradable : MonoBehaviour
 
     public void OpenShop()
     {
-        shopData.initialize();
+        shopData.Initialize();
         foreach (InventoryItem item in shopGoodsList)
         {
             if (item.IsEmpty)
                 continue;
             shopData.AddItem(item);
         }
-
-        shopUI.GetComponent<UIInventory>().SetInventoryContent(GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData, ActionType.BackpackShop);
-        shopUI.GetComponent<UIInventory>().SetInventoryContent(shopData, ActionType.ShopGoods);
         shopUI.SetActive(!shopUI.activeInHierarchy);
         Time.timeScale = shopUI.activeInHierarchy ? 0 : 1;
     }

@@ -21,9 +21,4 @@ public class WeaponSO : ItemSO, IDestoryableItem, ISellable, IBuyable, IDroppabl
     public float E_defence;
     public float E_critRate;
     public float E_critDamage;
-
-    public enum WeaponType
-    {
-        Melee, Ranged
-    }
 }

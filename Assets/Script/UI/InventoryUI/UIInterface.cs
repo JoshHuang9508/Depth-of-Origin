@@ -5,17 +5,16 @@ using UnityEngine.UI;
 
 namespace Inventory.UI
 {
-    public class UIInventory : MonoBehaviour
+    public class UIInterface : MonoBehaviour
     {
         [Header("Pages")]
         [SerializeField] private List<GameObject> contentPages;
         [SerializeField] private List<UIDescriptionPage> descriptionPages = new();
-        [SerializeField] private List<UIItemSlotsPage> backpackPages = new();
+        [SerializeField] private List<UIItemPage> itemPages = new();
         [SerializeField] private List<UIEquipmentPage> equipmentPages = new();
 
         [Header("Object Reference")]
         [SerializeField] private MouseFollower mouseFollower;
-        [SerializeField] private GameObject itemDropper;
 
 
         private void OnDisable()
@@ -33,8 +32,9 @@ namespace Inventory.UI
 
             foreach(GameObject contentPage in contentPages)
             {
-                if (contentPage.GetComponent<UIItemSlotsPage>()) backpackPages.Add(contentPage.GetComponent<UIItemSlotsPage>());
+                if (contentPage.GetComponent<UIItemPage>()) itemPages.Add(contentPage.GetComponent<UIItemPage>());
                 if (contentPage.GetComponent<UIDescriptionPage>()) descriptionPages.Add(contentPage.GetComponent<UIDescriptionPage>());
+                if (contentPage.GetComponent<UIEquipmentPage>()) equipmentPages.Add(contentPage.GetComponent<UIEquipmentPage>());
             }
 
             foreach(UIDescriptionPage descriptionPage in descriptionPages)
@@ -50,12 +50,12 @@ namespace Inventory.UI
 
         public void SetInventoryContent(InventorySO inventoryData, ActionType inventoryType)
         {
-            foreach(UIItemSlotsPage backpackPage in backpackPages)
+            foreach(UIItemPage itemPage in itemPages)
             {
-                if(backpackPage.actionType == inventoryType || backpackPage.actionType == ActionType.All)
+                if(itemPage.actionType == inventoryType || itemPage.actionType == ActionType.All)
                 {
-                    backpackPage.inventoryData = inventoryData;
-                    backpackPage.UpdateBackpack(inventoryData.GetCurrentInventoryState());
+                    itemPage.inventoryData = inventoryData;
+                    itemPage.HandleSlotUpdate(inventoryData.GetCurrentInventoryState());
                 }
             }
             
@@ -97,18 +97,18 @@ namespace Inventory.UI
                     {
                         switch (inventoryType)
                         {
-                            case ActionType.BackpackInventory:
+                            case ActionType.BackpackItems:
                                 if (inventoryItem.item is IEquipable) descriptionPage.actionPanel.AddButton("Equip", () => PerformAction(inventoryData, itemIndex, "Equip", inventoryType));
                                 if (inventoryItem.item is IConsumeable) descriptionPage.actionPanel.AddButton("Consume", () => PerformAction(inventoryData, itemIndex, "Consume", inventoryType));
                                 if (inventoryItem.item is IDroppable) descriptionPage.actionPanel.AddButton("Drop", () => PerformAction(inventoryData, itemIndex, "Drop", inventoryType));
                                 break;
-                            case ActionType.BackpackShop:
+                            case ActionType.BackpackShopItems:
                                 if (inventoryItem.item is ISellable) descriptionPage.actionPanel.AddButton("Sell", () => PerformAction(inventoryData, itemIndex, "Sell", inventoryType));
                                 break;
-                            case ActionType.ShopGoods:
+                            case ActionType.ShopItems:
                                 if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton("Buy", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
                                 break;
-                            case ActionType.BackpackEquipment:
+                            case ActionType.Equipments:
                                 if (inventoryItem.item is IUnequipable) descriptionPage.actionPanel.AddButton("Unequip", () => PerformAction(inventoryData, itemIndex, "Unequip", inventoryType));
                                 break;
                         }
@@ -124,43 +124,35 @@ namespace Inventory.UI
                 if (descriptionPage.actionType == inventoryType || descriptionPage.actionType == ActionType.All)
                 {
                     InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-                    InventorySO playerInventoryData = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().inventoryData;
-                    int amountToUse = 0;
 
                     if (!inventoryItem.IsEmpty)
                     {
                         switch (actionName)
                         {
                             case "Equip":
-                                amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
                                 IEquipable ObjectToEquip = inventoryItem.item as IEquipable;
-                                ObjectToEquip.EquipObject(amountToUse, playerInventoryData, itemIndex);
+                                ObjectToEquip.EquipObject(itemIndex);
                                 break;
                             case "Unequip":
-                                amountToUse = 1;
                                 IUnequipable ObjectToUnequip = inventoryItem.item as IUnequipable;
-                                ObjectToUnequip.UnequipObject(amountToUse, inventoryData, itemIndex);
+                                ObjectToUnequip.UnequipObject(itemIndex);
                                 break;
                             case "Consume":
-                                amountToUse = 1;
                                 IConsumeable ObjectToConsume = inventoryItem.item as IConsumeable;
-                                ObjectToConsume.ConsumeObject(amountToUse, inventoryData, itemIndex);
+                                ObjectToConsume.ConsumeObject(inventoryData, itemIndex);
                                 break;
                             case "Drop":
-                                amountToUse = (inventoryItem.item.IsStackable) ? inventoryItem.quantity : 1;
                                 IDroppable ObjectToDrop = inventoryItem.item as IDroppable;
-                                ObjectToDrop.DropItem(amountToUse, inventoryData, itemIndex);
+                                ObjectToDrop.DropItem(inventoryData, itemIndex);
                                 ClearDescription(inventoryType);
                                 break;
                             case "Sell":
-                                amountToUse = 1;
                                 ISellable ObjectToSell = inventoryItem.item as ISellable;
-                                ObjectToSell.SellObject(amountToUse, inventoryData, itemIndex);
+                                ObjectToSell.SellObject(inventoryData, itemIndex);
                                 break;
                             case "Buy":
-                                amountToUse = 1;
                                 IBuyable ObjectToBuy = inventoryItem.item as IBuyable;
-                                ObjectToBuy.BuyObject(amountToUse, inventoryData, itemIndex);
+                                ObjectToBuy.BuyObject(inventoryData, itemIndex);
                                 break;
                         }
 
@@ -184,6 +176,6 @@ namespace Inventory.UI
 
     public enum ActionType
     {
-        BackpackInventory, BackpackEquipment, BackpackShop, ShopGoods, All
+        BackpackItems, Equipments, BackpackShopItems, ShopItems, All
     }
 }

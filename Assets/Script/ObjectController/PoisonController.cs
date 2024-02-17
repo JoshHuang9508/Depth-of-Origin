@@ -27,7 +27,7 @@ public class PoisonController : MonoBehaviour
         {
             Damageable damageableObject = GameObject.FindWithTag("Player").GetComponent<Damageable>();
 
-            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().SetEffection(poisonEffect, poisonEffect.effectTime);
+            GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>().SetEffection(poisonEffect);
             damageableObject.OnHit(10, false, Vector2.zero, 0);
 
             StartCoroutine(SetTimer(callback => { damageEnablerStatic = callback; }, 2));

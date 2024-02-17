@@ -20,28 +20,4 @@ public class RangedWeaponSO : WeaponSO, IEquipable, IUnequipable
     {
         Single, Split
     }
-
-    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex)
-    {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        if (player != null)
-        {
-            player.SetEquipment(this, WeaponType.Ranged);
-            if (inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
-        }
-        return false;
-    }
-
-    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex)
-    {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        if (player != null)
-        {
-            player.UnEquipment(this, WeaponType.Ranged);
-            player.inventoryData.AddItem(inventoryData.GetItemAt(inventoryIndex));
-        }
-        return false;
-    }
 }

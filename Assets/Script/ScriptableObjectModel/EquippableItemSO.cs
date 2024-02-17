@@ -21,29 +21,4 @@ public class EquippableItemSO : ItemSO, IEquipable, IDestoryableItem, ISellable,
     {
         armor, book, jewelry
     }
-
-
-    public bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex)
-    {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        if (player != null)
-        {
-            player.SetEquipment(this, equipmentType);
-            if (inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
-        }
-        return false;
-    }
-
-    public bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex)
-    {
-        PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
-
-        if (player != null)
-        {
-            player.UnEquipment(this, equipmentType);
-            player.inventoryData.AddItem(inventoryData.GetItemAt(inventoryIndex));
-        }
-        return false;
-    }
 }

@@ -14,7 +14,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private float B_Defence;
     [SerializeField] private float B_CritRate;
     [SerializeField] private float B_CritDamage;
-    [SerializeField] private List<InventoryItem> initialItems;
 
     [Header("Key Settings")]
     public KeyCode sprintKey;
@@ -41,15 +40,14 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D currentRb;
     [SerializeField] private GameObject damageText;
-    //change this to private
     [SerializeField] private GameObject itemDropper;
 
     [Header("Dynamic Data")]
     public InventorySO inventoryData;
     public InventorySO equipmentData;
-    public float currentHealth;
-    public int currentCoinAmount = 0;
-    public List<Key> keyList = new();
+    [SerializeField] private float currentHealth;
+    [SerializeField] private int currentCoinAmount = 0;
+    [SerializeField] private List<Key> keyList = new();
 
     public bool behaviourEnabler = true;
     public bool movementEnabler = true;
@@ -70,14 +68,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [Header("Equipment")]
     //change these to list
     public int weaponControl = 0;
-    public WeaponSO currentWeapon;
-    public WeaponSO meleeWeapon;
-    public WeaponSO rangedWeapon;
-    public EdibleItemSO potions;
-    public int currentPotionAmont;
-    public EquippableItemSO armor;
-    public EquippableItemSO jewelry;
-    public EquippableItemSO book;
+    [SerializeField] private WeaponSO currentWeapon;
 
     [Header("Effection")]
     [SerializeField] private List<Effection> effectionList = new();
@@ -123,23 +114,21 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
                 //drop item
                 List<Lootings> dropList = new();
-                List<int> indexOfInvetoryItem = new();
 
-                foreach (InventoryItem inventoryItem in inventoryData.inventoryItems)
+
+                for (int index = 0; index < inventoryData.Size; index++)
                 {
-                    if(UnityEngine.Random.Range(0, 100) >= 50)
+                    if (UnityEngine.Random.Range(0, 100) >= 50)
                     {
-                        dropList.Add(new Lootings(inventoryItem.item, 100, inventoryItem.quantity));
-                        indexOfInvetoryItem.Add(inventoryData.inventoryItems.IndexOf(inventoryItem));
+                        dropList.Add(new Lootings(
+                            inventoryData.GetItemAt(index).item,
+                            100,
+                            inventoryData.GetItemAt(index).quantity)
+                        );
+                        inventoryData.RemoveItem(index, -1);
                     }
                 }
-                foreach(int indexNum in indexOfInvetoryItem)
-                {
-                    if (indexNum <= inventoryData.inventoryItems.Count)
-                    {
-                        inventoryData.RemoveItem(indexNum, -1);
-                    }
-                }
+
                 ItemDropper ItemDropper = Instantiate(
                     itemDropper,
                     new Vector3(transform.position.x, transform.position.y, transform.position.z),
@@ -160,7 +149,9 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
-    public List<Effection> GetEffectionList { get { return effectionList; } }
+    public int CoinAmount { get { return currentCoinAmount; } set { currentCoinAmount = value; } }
+    public List<Effection> GetEffectionList { get { return effectionList; } set { effectionList = value; } }
+    public List<Key> GetKeyList { get { return keyList; } set { keyList = value; } }
 
     [Serializable]
     public class Effection
@@ -208,31 +199,21 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         Moving();
         Heal();
 
-        //sprint
-        if (Input.GetKeyDown(sprintKey)) Sprint();
 
-        //set current weapon
+        if (Input.GetKeyDown(sprintKey)) Sprint();
         if (Input.GetKeyDown(meleeWeaponKey)) weaponControl = weaponControl != 1 ? 1 : 0;
         if (Input.GetKeyDown(rangedWeaponKey)) weaponControl = weaponControl != 2 ? 2 : 0;
-
-        //use potion
-        if (Input.GetKeyDown(usePotionKey) && potions != null)
+        if (Input.GetKeyDown(usePotionKey) && equipmentData.GetItemAt(5).item != null)
         {
-            SetEffection(potions, potions.effectTime);
-            currentPotionAmont -= 1;
-
-            if (currentPotionAmont <= 0) potions = null;
+            EdibleItemSO potion = equipmentData.GetItemAt(5).item as EdibleItemSO;
+            SetEffection(potion);
+            equipmentData.RemoveItem(5, 1);
         } 
-
-        //UI
         if (Input.GetKeyDown(backpackKey))
         {
-            inventoryUI.GetComponent<UIInventory>().SetInventoryContent(inventoryData, ActionType.BackpackInventory);
-            inventoryUI.SetActive(!inventoryUI.gameObject.activeInHierarchy);
-            Time.timeScale = inventoryUI.gameObject.activeInHierarchy ? 0 : 1;
+            inventoryUI.SetActive(!inventoryUI.activeInHierarchy);
+            Time.timeScale = inventoryUI.activeInHierarchy ? 0 : 1;
         }
-
-        //use weapon
         if (Input.GetKey(useWeaponKey) && attackEnabler)
         {
             if(currentWeapon != null)
@@ -241,8 +222,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 summonWeapon.Summon();
             }
         }
-
-        //Pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pauseUI.SetActive(true);
@@ -323,7 +302,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     {
         //update player statistics
         string[] attributes = { "E_walkSpeed", "E_maxHealth", "E_strength", "E_defence", "E_critRate", "E_critDamage" };
-        List<object> items = new(){ armor, jewelry, book, currentWeapon };
+        List<object> items = new() { equipmentData.GetItemAt(0).item, equipmentData.GetItemAt(1).item, equipmentData.GetItemAt(2).item, currentWeapon };
         float[] results = new float[attributes.Length];
 
         for (int j = 0; j < effectionList.Count; j++)
@@ -412,10 +391,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 currentWeapon = attackEnabler ? null : currentWeapon;
                 break;
             case 1:
-                currentWeapon = attackEnabler ? meleeWeapon : currentWeapon;
+                currentWeapon = attackEnabler ? (WeaponSO)equipmentData.GetItemAt(3).item : currentWeapon;
                 break;
             case 2:
-                currentWeapon = attackEnabler ? rangedWeapon : currentWeapon;
+                currentWeapon = attackEnabler ? (WeaponSO)equipmentData.GetItemAt(4).item : currentWeapon;
                 break;
         }
 
@@ -426,88 +405,45 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
 
 
-    public void SetEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
+    public void SetEquipment(int index)
     {
-        switch (type)
+        ItemSO item = inventoryData.GetItemAt(index).item;
+
+        if (item is EquippableItemSO)
         {
-            case EquippableItemSO.EquipmentType.armor:
-                if (armor != null) inventoryData.AddItem(armor, 1);
-                armor = equipment;
-                break;
-            case EquippableItemSO.EquipmentType.jewelry:
-                if (jewelry != null) inventoryData.AddItem(jewelry, 1);
-                jewelry = equipment;
-                break;
-            case EquippableItemSO.EquipmentType.book:
-                if (book != null) inventoryData.AddItem(book, 1);
-                book = equipment;
-                break;
+            switch (((EquippableItemSO)item).equipmentType)
+            {
+                case EquippableItemSO.EquipmentType.armor:
+                    inventoryData.AddItem(equipmentData.AddItemTo(inventoryData.RemoveItem(index, -1), 0));
+                    break;
+                case EquippableItemSO.EquipmentType.jewelry:
+                    inventoryData.AddItem(equipmentData.AddItemTo(inventoryData.RemoveItem(index, -1), 1));
+                    break;
+                case EquippableItemSO.EquipmentType.book:
+                    inventoryData.AddItem(equipmentData.AddItemTo(inventoryData.RemoveItem(index, -1), 2));
+                    break;
+            }
+        }
+        else if (item is MeleeWeaponSO)
+        {
+            inventoryData.AddItem(equipmentData.AddItemTo(inventoryData.RemoveItem(index, -1), 3));
+        }
+        else if (item is RangedWeaponSO)
+        {
+            inventoryData.AddItem(equipmentData.AddItemTo(inventoryData.RemoveItem(index, -1), 4));
+        }
+        else if (item is EdibleItemSO)
+        {
+            inventoryData.AddItem(equipmentData.AddItemTo(inventoryData.RemoveItem(index, -1), 5));
         }
     }
 
-    public void UnEquipment(EquippableItemSO equipment, EquippableItemSO.EquipmentType type)
+    public void UnEquipment(int index)
     {
-        switch (type)
-        {
-            case EquippableItemSO.EquipmentType.armor:
-                if (armor != null) inventoryData.AddItem(armor, 1);
-                armor = null;
-                break;
-            case EquippableItemSO.EquipmentType.jewelry:
-                if (jewelry != null) inventoryData.AddItem(jewelry, 1);
-                jewelry = null;
-                break;
-            case EquippableItemSO.EquipmentType.book:
-                if (book != null) inventoryData.AddItem(book, 1);
-                book = null;
-                break;
-        }
+        equipmentData.AddItemTo(inventoryData.AddItem(equipmentData.RemoveItem(index, -1)), index);
     }
 
-    public void SetEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
-    {
-        switch (type)
-        {
-            case WeaponSO.WeaponType.Melee:
-                if (meleeWeapon != null) inventoryData.AddItem(meleeWeapon, 1);
-                meleeWeapon = weapon;
-                break;
-            case WeaponSO.WeaponType.Ranged:
-                if (rangedWeapon != null) inventoryData.AddItem(rangedWeapon, 1);
-                rangedWeapon = weapon;
-                break;
-        }
-    }
-    public void UnEquipment(WeaponSO weapon, WeaponSO.WeaponType type)
-    {
-        switch (type)
-        {
-            case WeaponSO.WeaponType.Melee:
-                if (meleeWeapon != null) inventoryData.AddItem(meleeWeapon, 1);
-                meleeWeapon = null;
-                break;
-            case WeaponSO.WeaponType.Ranged:
-                if (rangedWeapon != null) inventoryData.AddItem(rangedWeapon, 1);
-                rangedWeapon = null;
-                break;
-        }
-    }
-
-    public void SetEquipment(EdibleItemSO edibleItem, int amount)
-    {
-        if(potions != null) inventoryData.AddItem(potions, currentPotionAmont);
-        potions = edibleItem;
-        currentPotionAmont = amount;
-    }
-
-    public void UnEquipment(EdibleItemSO edibleItem, int amount)
-    {
-        if (potions != null) inventoryData.AddItem(potions, currentPotionAmont);
-        potions = null;
-        currentPotionAmont = 0;
-    }
-
-    public void SetEffection(EdibleItemSO edibleItem, float effectTime)
+    public void SetEffection(EdibleItemSO edibleItem)
     {
         int indexOfEffectionList = 0;
         bool isEffectionExist = false;
@@ -523,13 +459,13 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
 
         if (isEffectionExist)
         {
-            effectionList[indexOfEffectionList].effectingTime = effectTime;
+            effectionList[indexOfEffectionList].effectingTime = edibleItem.effectTime;
         }
         else
         {
             if (edibleItem.effectTime != 0)
             {
-                effectionList.Add(new Effection { effectingItem = edibleItem, effectingTime = effectTime });
+                effectionList.Add(new Effection { effectingItem = edibleItem, effectingTime = edibleItem.effectTime });
             }
         }
 
@@ -569,7 +505,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         }
     }
 
-    public void DropItems(ItemSO item, int amount)
+    public void DropItem(InventorySO inventory ,int index)
     {
         ItemDropper ItemDropper = Instantiate(
             itemDropper,
@@ -578,6 +514,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
             GameObject.FindWithTag("Item").transform
             ).GetComponent<ItemDropper>();
 
-        ItemDropper.DropItems(item, amount);
+        ItemDropper.DropItem(inventory.RemoveItem(index, -1));
     }
 }

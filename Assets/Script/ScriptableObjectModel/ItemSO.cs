@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static WeaponSO;
 
 namespace Inventory.Model
 {
@@ -26,45 +27,80 @@ namespace Inventory.Model
 
 
 
-        public bool SellObject(int amount, InventorySO inventoryData, int inventoryIndex)
+        public bool EquipObject(int index)
         {
             PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+
             if (player != null)
             {
-                player.currentCoinAmount += sellPrice;
-                if(inventoryData.GetItemAt(inventoryIndex).item is IDestoryableItem) inventoryData.RemoveItem(inventoryIndex, amount);
+                player.SetEquipment(index);
             }
             return false;
         }
 
-        public bool BuyObject(int amount, InventorySO inventoryData, int inventoryIndex)
+        public bool UnequipObject(int index)
+        {
+            PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+
+            if (player != null)
+            {
+                player.UnEquipment(index);
+            }
+            return false;
+        }
+
+        public bool ConsumeObject(InventorySO inventory, int index)
+        {
+            PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>(); ;
+
+            if (player != null)
+            {
+                player.SetEffection((EdibleItemSO)inventory.GetItemAt(index).item);
+                inventory.RemoveItem(index, 1);
+            }
+            return false;
+        }
+
+        public bool SellObject(InventorySO inventory, int index)
         {
             PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
             if (player != null)
             {
-                if(player.currentCoinAmount < buyPrice)
+                player.CoinAmount += sellPrice;
+                inventory.RemoveItem(index, 1);
+            }
+            return false;
+        }
+
+        public bool BuyObject(InventorySO inventory, int index)
+        {
+            PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+            if (player != null)
+            {
+                if(player.CoinAmount < buyPrice)
                 {
                     Debug.Log("You don't have enough money!");
                 }
                 else
                 {
-                    player.currentCoinAmount -= buyPrice;
-                    player.inventoryData.AddItem(inventoryData.GetItemAt(inventoryIndex));
+                    player.CoinAmount -= buyPrice;
+                    player.inventoryData.AddItem(inventory.GetItemAt(index));
                 }
             }
             return false;
         }
 
-        public bool DropItem(int amount, InventorySO inventoryData, int inventoryIndex)
+        public bool DropItem(InventorySO inventory, int index)
         {
             PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
             if (player != null)
             {
-                player.DropItems(inventoryData.GetItemAt(inventoryIndex).item, amount);
-                inventoryData.RemoveItem(inventoryIndex, amount);
+                player.DropItem(inventory, index);
             }
             return false;
         }
+
+        
     }
 
     public enum Rarity
@@ -79,32 +115,32 @@ namespace Inventory.Model
 
     public interface IEquipable
     {
-        bool EquipObject(int amount, InventorySO inventoryData, int inventoryIndex);
+        bool EquipObject(int index);
     }
 
     public interface IUnequipable
     {
-        bool UnequipObject(int amount, InventorySO inventoryData, int inventoryIndex);
+        bool UnequipObject(int index);
     }
 
     public interface IConsumeable
     {
-        bool ConsumeObject(int amount, InventorySO inventoryData, int inventoryIndex);
+        bool ConsumeObject(InventorySO inventory, int index);
     }
 
     public interface ISellable
     {
-        bool SellObject(int amount, InventorySO inventoryData, int inventoryIndex);
+        bool SellObject(InventorySO inventory, int index);
     }
 
     public interface IBuyable
     {
-        bool BuyObject(int amount, InventorySO inventoryData, int inventoryIndex);
+        bool BuyObject(InventorySO inventory, int index);
     }
 
     public interface IDroppable
     {
-        bool DropItem(int amount, InventorySO inventoryData, int inventoryIndex);
+        bool DropItem(InventorySO inventory, int index);
     }
 }
 

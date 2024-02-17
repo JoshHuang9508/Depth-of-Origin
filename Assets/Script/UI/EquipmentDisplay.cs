@@ -22,13 +22,13 @@ public class EquipmentDisplay : MonoBehaviour
 
     void Update()
     {
-        meleeWeaponImage.sprite = player.meleeWeapon != null ? player.meleeWeapon.Image : null;
-        meleeWeaponImage.color = player.meleeWeapon != null ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 0);
-        rangedWeaponImage.sprite = player.rangedWeapon != null ? player.rangedWeapon.Image : null;
-        rangedWeaponImage.color = player.rangedWeapon != null ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 0);
-        potionImage.sprite = player.potions != null ? player.potions.Image : null;
-        potionImage.color = player.potions != null ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 0);
-        potionAmountText.text = player.currentPotionAmont != 0 ? player.currentPotionAmont.ToString() : "";
+        meleeWeaponImage.sprite = player.equipmentData.GetItemAt(3).item != null ? player.equipmentData.GetItemAt(3).item.Image : null;
+        meleeWeaponImage.color = player.equipmentData.GetItemAt(3).item != null ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 0);
+        rangedWeaponImage.sprite = player.equipmentData.GetItemAt(4).item != null ? player.equipmentData.GetItemAt(4).item.Image : null;
+        rangedWeaponImage.color = player.equipmentData.GetItemAt(4).item != null ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 0);
+        potionImage.sprite = player.equipmentData.GetItemAt(5).item != null ? player.equipmentData.GetItemAt(5).item.Image : null;
+        potionImage.color = player.equipmentData.GetItemAt(5).item != null ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 0);
+        potionAmountText.text = player.equipmentData.GetItemAt(5).quantity != 0 ? player.equipmentData.GetItemAt(5).quantity.ToString() : "";
 
         switch (player.weaponControl)
         {

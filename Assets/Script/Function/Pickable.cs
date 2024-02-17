@@ -28,7 +28,7 @@ public class Pickable : MonoBehaviour
 
     void Update()
     {
-        bool isInventoryFull = inventoryData.IsInventoryFull() && inventoryData.IsCertainItemFull(item.ID);
+        bool isInventoryFull = inventoryData.IsInventoryFull(player.inventoryData, item);
 
         if (player.behaviourEnabler && (item.isStorable ? !isInventoryFull : true) && pickEnabler && Vector2.Distance(player.transform.position, this.transform.position) < pickupDistance)
         {
@@ -38,11 +38,11 @@ public class Pickable : MonoBehaviour
             {
                 if(item is CoinSO)
                 {
-                    player.currentCoinAmount += ((CoinSO)item).coinAmount;
+                    player.CoinAmount += ((CoinSO)item).coinAmount;
                 }
                 else if(item is KeySO)
                 {
-                    player.keyList.Add(new PlayerBehaviour.Key {key = (KeySO)item, quantity = 1});
+                    player.GetKeyList.Add(new PlayerBehaviour.Key {key = (KeySO)item, quantity = 1});
                 }
                 else
                 {

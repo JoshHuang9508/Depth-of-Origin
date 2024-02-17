@@ -23,8 +23,8 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
-        slider.value = player.currentHealth / player.MaxHealth;
-        healthText.text = $"{Mathf.RoundToInt(player.currentHealth)} / {player.MaxHealth}";
-        fill.color = gradient.Evaluate(player.currentHealth / player.MaxHealth);
+        slider.value = player.Health / player.MaxHealth;
+        healthText.text = $"{Mathf.RoundToInt(player.Health)} / {player.MaxHealth}";
+        fill.color = gradient.Evaluate(player.Health / player.MaxHealth);
     }
 }
