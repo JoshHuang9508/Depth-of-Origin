@@ -103,10 +103,10 @@ namespace Inventory.UI
                                 if (inventoryItem.item is IDroppable) descriptionPage.actionPanel.AddButton("Drop", () => PerformAction(inventoryData, itemIndex, "Drop", inventoryType));
                                 break;
                             case ActionType.BackpackShopItems:
-                                if (inventoryItem.item is ISellable) descriptionPage.actionPanel.AddButton("Sell", () => PerformAction(inventoryData, itemIndex, "Sell", inventoryType));
+                                if (inventoryItem.item is ISellable) descriptionPage.actionPanel.AddButton($"Sell(${inventoryItem.item.sellPrice})", () => PerformAction(inventoryData, itemIndex, "Sell", inventoryType));
                                 break;
                             case ActionType.ShopItems:
-                                if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton("Buy", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
+                                if (inventoryItem.item is IBuyable) descriptionPage.actionPanel.AddButton($"Buy(${inventoryItem.item.buyPrice})", () => PerformAction(inventoryData, itemIndex, "Buy", inventoryType));
                                 break;
                             case ActionType.Equipments:
                                 if (inventoryItem.item is IUnequipable) descriptionPage.actionPanel.AddButton("Unequip", () => PerformAction(inventoryData, itemIndex, "Unequip", inventoryType));

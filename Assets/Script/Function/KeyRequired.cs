@@ -7,12 +7,13 @@ public class KeyRequired : MonoBehaviour
     [Header("Setting")]
     [SerializeField] private string keyName;
     [SerializeField] private List<string> keyNames;
+    [SerializeField] private bool haveKey;
 
     public List<PlayerBehaviour.Key> DetectKey(List<PlayerBehaviour.Key> keyList)
     {
         //PlayerBehaviour player = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
-        bool haveKey = false;
+        haveKey = false;
 
         if(keyName != "")
         {
@@ -61,5 +62,5 @@ public class KeyRequired : MonoBehaviour
         return keyList;
     }
 
-    public bool HaveKey { get { return HaveKey; } }
+    public bool HaveKey { get { return haveKey; } }
 }
