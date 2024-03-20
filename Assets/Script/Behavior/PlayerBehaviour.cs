@@ -7,13 +7,25 @@ using System;
 
 public class PlayerBehaviour : MonoBehaviour, Damageable
 {
-    [Header("Setting")]
+    [Header("Player Stats")]
     [SerializeField] private float B_WalkSpeed;
     [SerializeField] private float B_MaxHealth;
     [SerializeField] private float B_Strength;
     [SerializeField] private float B_Defence;
     [SerializeField] private float B_CritRate;
     [SerializeField] private float B_CritDamage;
+    [SerializeField] private List<Effection> effectionList = new();
+    [SerializeField] private float E_WalkSpeed;
+    [SerializeField] private float E_MaxHealth;
+    [SerializeField] private float E_Strength;
+    [SerializeField] private float E_Defence;
+    [SerializeField] private float E_CritRate;
+    [SerializeField] private float E_CritDamage;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private int currentCoinAmount = 0;
+    [SerializeField] private WeaponSO currentWeapon;
+    [SerializeField] private List<Key> keyList = new();
+    public int weaponControl = 0;
 
     [Header("Key Settings")]
     public KeyCode sprintKey;
@@ -45,9 +57,6 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     [Header("Dynamic Data")]
     public InventorySO inventoryData;
     public InventorySO equipmentData;
-    [SerializeField] private float currentHealth;
-    [SerializeField] private int currentCoinAmount = 0;
-    [SerializeField] private List<Key> keyList = new();
 
     public bool behaviourEnabler = true;
     public bool movementEnabler = true;
@@ -65,19 +74,7 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     public bool onHit = false;
     public float onHitTimer = 0;
 
-    [Header("Equipment")]
-    //change these to list
-    public int weaponControl = 0;
-    [SerializeField] private WeaponSO currentWeapon;
 
-    [Header("Effection")]
-    [SerializeField] private List<Effection> effectionList = new();
-    [SerializeField] private float E_WalkSpeed;
-    [SerializeField] private float E_MaxHealth;
-    [SerializeField] private float E_Strength;
-    [SerializeField] private float E_Defence;
-    [SerializeField] private float E_CritRate;
-    [SerializeField] private float E_CritDamage;
 
     public float WalkSpeed { get { return B_WalkSpeed * ((100 + E_WalkSpeed) / 100); } }
     public float MaxHealth { get { return B_MaxHealth + E_MaxHealth; } }
