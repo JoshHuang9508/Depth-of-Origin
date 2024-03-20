@@ -193,11 +193,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
         UpdateCurrentWeapon();
 
         //actions
-        Moving();
-        Heal();
-
-
-        if (Input.GetKeyDown(sprintKey)) Sprint();
+        
+        if (healingEnabler && currentHealth != MaxHealth) Heal();
+        if (Input.anyKey && movementEnabler) Moving();
+        if (Input.GetKeyDown(sprintKey) && sprintEnabler && movementEnabler) Sprint();
         if (Input.GetKeyDown(meleeWeaponKey)) weaponControl = weaponControl != 1 ? 1 : 0;
         if (Input.GetKeyDown(rangedWeaponKey)) weaponControl = weaponControl != 2 ? 2 : 0;
         if (Input.GetKeyDown(usePotionKey) && equipmentData.GetItemAt(5).item != null)
@@ -227,39 +226,30 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
     }
 
     private void Moving()
-    {
-        if (movementEnabler && Input.anyKey)
-        {
-            int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
+    { 
+        int walkSpeedMutiplyer = walkSpeedMutiplyerEnabler ? 3 : 1;
 
-            Vector2 movement = new Vector3(
-                Input.GetAxis("Horizontal") * WalkSpeed * walkSpeedMutiplyer,
-                Input.GetAxis("Vertical") * WalkSpeed * walkSpeedMutiplyer
-            );
+        Vector2 movement = new(
+            Input.GetAxis("Horizontal") * WalkSpeed * walkSpeedMutiplyer,
+            Input.GetAxis("Vertical") * WalkSpeed * walkSpeedMutiplyer
+        );
 
-            currentRb.velocity = new Vector2(movement.x, movement.y);
-        }
+        currentRb.velocity = movement;
     }
 
     private void Sprint()
     {
-        if (sprintEnabler && movementEnabler)
-        {
-            sprintDisableTimer += 2f;
-            walkSpeedMutiplyerDisableTimer += 0.2f;
-            damageDisableTimer += 0.2f;
-        }
+        sprintDisableTimer += 2f;
+        walkSpeedMutiplyerDisableTimer += 0.2f;
+        damageDisableTimer += 0.2f;
     }
 
     private void Heal()
     {
-        if (healingEnabler && currentHealth != MaxHealth)
-        {
-            float healValue = Mathf.Min(MaxHealth - currentHealth, MaxHealth * 0.05f);
-            Health += healValue;
-            DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
-            healingDisableTimer = 5;
-        }
+        float healValue = Mathf.Min(MaxHealth - currentHealth, MaxHealth * 0.05f);
+        Health += healValue;
+        DamageText.InstantiateDamageText(damageText, transform.position, healValue, "Heal");
+        healingDisableTimer = 5;
     }
 
     public void OnHit(float damage, bool isCrit, Vector2 knockbackForce, float knockbackTime)
