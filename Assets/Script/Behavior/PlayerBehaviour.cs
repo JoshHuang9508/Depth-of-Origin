@@ -218,10 +218,10 @@ public class PlayerBehaviour : MonoBehaviour, Damageable
                 summonWeapon.Summon();
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pauseUI.SetActive(true);
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    pauseUI.SetActive(true);
+        //}
        
     }
 

@@ -3419,6 +3419,18 @@ MonoBehaviour:
   B_Defence: 10
   B_CritRate: 10
   B_CritDamage: 50
+  effectionList: []
+  E_WalkSpeed: 0
+  E_MaxHealth: 0
+  E_Strength: 0
+  E_Defence: 0
+  E_CritRate: 0
+  E_CritDamage: 0
+  currentHealth: 0
+  currentCoinAmount: 0
+  currentWeapon: {fileID: 0}
+  keyList: []
+  weaponControl: 0
   sprintKey: 304
   backpackKey: 102
   usePotionKey: 51
@@ -3442,9 +3454,6 @@ MonoBehaviour:
   itemDropper: {fileID: 4800655640655451192, guid: 72b490c07dabaf343bea163bbd9936d1, type: 3}
   inventoryData: {fileID: 11400000, guid: eb0377a7f3fb1ee49b9a9fd32dd76585, type: 2}
   equipmentData: {fileID: 11400000, guid: f8aedf2ea14a94e2f98cf6113f6d7e68, type: 2}
-  currentHealth: 0
-  currentCoinAmount: 0
-  keyList: []
   behaviourEnabler: 1
   movementEnabler: 1
   movementDisableTimer: 0
@@ -3460,15 +3469,6 @@ MonoBehaviour:
   healingDisableTimer: 0
   onHit: 0
   onHitTimer: 0
-  weaponControl: 0
-  currentWeapon: {fileID: 0}
-  effectionList: []
-  E_WalkSpeed: 0
-  E_MaxHealth: 0
-  E_Strength: 0
-  E_Defence: 0
-  E_CritRate: 0
-  E_CritDamage: 0
 --- !u!1 &524248352213000734
 GameObject:
   m_ObjectHideFlags: 0
